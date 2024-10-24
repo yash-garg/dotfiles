@@ -42,6 +42,7 @@ in
         printing = enabled;
         ssh = enabled;
         tailscale = enabled;
+        yubikey = enabled;
       };
 
       system = {
