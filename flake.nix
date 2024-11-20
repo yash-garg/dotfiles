@@ -6,7 +6,6 @@
     let
       commonModules = with inputs; [
         agenix.nixosModules.default
-        lix.nixosModules.default
         nix-topology.nixosModules.default
       ];
       lib = inputs.snowfall-lib.mkLib {

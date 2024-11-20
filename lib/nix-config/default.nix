@@ -2,8 +2,6 @@
   mkNixConfig =
     { pkgs, lib }:
     {
-      package = pkgs.lix;
-
       generateNixPathFromInputs = true;
       linkInputs = true;
       distributedBuilds = true;
