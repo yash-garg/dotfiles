@@ -12,7 +12,7 @@ let
   defaultJdk = pkgs.openjdk17;
   toolchains = [
     pkgs.openjdk11
-    pkgs.openjdk22
+    pkgs.openjdk21
     defaultJdk
   ];
   mapOpenJdk = pkg: "${pkg}/lib/openjdk";

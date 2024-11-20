@@ -102,7 +102,7 @@ in
 
     users.users.yash.packages = with pkgs; [
       (prismlauncher.override {
-        jdks = [ openjdk22 ];
+        jdks = [ openjdk21 ];
       })
     ];
 
