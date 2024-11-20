@@ -17,6 +17,7 @@ in
   age.secrets = {
     passwordfile-vortex.file = get-secret "user";
     feed-auth.file = get-secret "miniflux.env";
+    spotify.file = get-secret "spotify";
     tsauthkey.file = get-secret "tailscale";
     tsauthkey-env.file = get-secret "caddy.env";
   };
@@ -48,6 +49,11 @@ in
           "--ssh"
         ];
       };
+
+      your-spotify = enabled // {
+        clientID = "319c296e429946e2b6eca6487fd6edb5";
+        secretFile = config.age.secrets.spotify.path;
+      };
     };
 
     virtualisation = enabled;
@@ -72,6 +78,13 @@ in
             bind tailscale/miniflux
             tailscale_auth
             reverse_proxy :8889
+          '';
+        };
+        "https://spotify.${tailnet}" = {
+          extraConfig = ''
+            bind tailscale/spotify
+            tailscale_auth
+            reverse_proxy :9001
           '';
         };
       };
