@@ -21,7 +21,7 @@ in
     programs.kitty = enabled // {
       font = mkForce {
         name = "CaskaydiaCove Nerd Font Mono";
-        package = pkgs.nerdfonts;
+        package = pkgs.nerd-fonts.caskaydia-cove;
         size = 14;
       };
 

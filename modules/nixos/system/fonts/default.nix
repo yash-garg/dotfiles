@@ -5,7 +5,9 @@
       cabin
       dejavu_fonts
       pkgs.${namespace}.monolisa-nerdfonts
-      nerdfonts
+      nerd-fonts.caskaydia-cove
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji

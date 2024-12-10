@@ -1,9 +1,11 @@
 { pkgs, namespace, ... }:
 {
   fonts = {
-    packages = [
-      pkgs.cabin
-      pkgs.nerdfonts
+    packages = with pkgs; [
+      cabin
+      nerd-fonts.caskaydia-cove
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
       pkgs.${namespace}.monolisa-nerdfonts
     ];
   };
