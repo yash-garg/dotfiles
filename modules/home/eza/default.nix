@@ -2,7 +2,7 @@
 with lib.${namespace};
 {
   programs.eza = enabled // {
-    icons = false;
+    icons = null;
     extraOptions = [ "--all" ];
   };
 }

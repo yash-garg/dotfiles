@@ -46,10 +46,6 @@ in
       ];
     };
 
-    programs.nix-ld = enabled // {
-      libraries = pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
-    };
-
     programs.steam = enabled // {
       # Graphical glitches and broken rendering
       gamescopeSession = disabled;

@@ -80,7 +80,7 @@
         neovim.overlays.default
         nix-topology.overlays.default
         nixpkgs-wayland.overlay
-        nur.overlay
+        nur.overlays.default
       ];
 
       outputs-builder = channels: {
