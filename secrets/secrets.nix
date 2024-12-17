@@ -28,7 +28,6 @@ in
 
   "vortex/caddy.env.age".publicKeys = users ++ [ vortex ];
   "vortex/miniflux.env.age".publicKeys = users ++ [ vortex ];
-  "vortex/spotify.age".publicKeys = users ++ [ vortex ];
   "vortex/tailscale.age".publicKeys = users ++ [ vortex ];
   "vortex/user.age".publicKeys = users ++ [ vortex ];
 }
