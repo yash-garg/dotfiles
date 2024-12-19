@@ -15,7 +15,7 @@ let
     "pop"
     "raycast"
     "spotify"
-    "steam"
+    "transmission"
     "visual-studio-code"
     "wezterm"
     "zed"
