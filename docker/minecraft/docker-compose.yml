@@ -7,19 +7,37 @@ services:
     ports:
       - 25565:25565
     environment:
+      SEED: 5063885805507972000
       EULA: "TRUE"
       TYPE: FABRIC
-      MEMORY: 12G
-      MOTD: Welcome to the server!
-      SEED: 7599824378187852
-      DIFFICULTY: EASY
+      MEMORY: 20G
+      DIFFICULTY: NORMAL
+      MOTD: Pixel Paradise
       ENFORCE_WHITELIST: "TRUE"
-      ONLINE_MODE: "FALSE"
-      MAX_PLAYERS: 10
       WHITELIST_FILE: /extra/whitelist.json
       OPS_FILE: /extra/ops.json
-      RCON_CMDS_STARTUP: /gamerule keepInventory true
+      ONLINE_MODE: "FALSE"
+      REMOVE_OLD_MODS: "TRUE"
+      MAX_PLAYERS: 10
+      USE_AIKAR_FLAGS: "TRUE"
+      VANILLATWEAKS_SHARECODE: bmipN5,SLs3nU
+      LOG_TIMESTAMP: "TRUE"
+      TZ: Asia/Kolkata
+      MODRINTH_DOWNLOAD_DEPENDENCIES: "required"
+      MODRINTH_ALLOWED_VERSION_TYPE: "alpha"
+      MODRINTH_PROJECTS: |-
+        beautified-chat-server
+        c2me-fabric
+        fabric-api
+        ferrite-core
+        jade
+        krypton
+        lithium
+        netherportalfix
+        no-chat-reports
+        scaffolding-drops-nearby
+        skinrestorer
     volumes:
       - ./data:/data
-      - ./mods:/data/mods
       - ./extra:/extra
+    restart: unless-stopped
