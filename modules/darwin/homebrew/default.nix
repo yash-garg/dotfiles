@@ -6,6 +6,7 @@ let
     "arc"
     "chatgpt"
     "discord"
+    "firefox"
     "flutter"
     "iina"
     "imageoptim"
