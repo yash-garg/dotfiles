@@ -8,6 +8,7 @@ with lib.${namespace};
   profiles.${namespace} = {
     atuin = enabled;
     firefox = enabled;
+    ghostty = enabled;
     kitty = enabled;
     mpv = enabled;
     neovim = enabled;
