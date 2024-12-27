@@ -21,6 +21,7 @@ let
     "visual-studio-code"
     "zed"
   ];
+  hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
 in
 {
   homebrew = enabled // {
@@ -63,6 +64,8 @@ in
   # Since we aren't managing graphical apps with home-manager
   # on darwin, add the config files directly in xdg config
   snowfallorg.users.yash.home.config = {
-    xdg.configFile = {};
+    xdg.configFile = {
+      "ghostty/config".source = "${hmModules}/ghostty/config";
+    };
   };
 }
