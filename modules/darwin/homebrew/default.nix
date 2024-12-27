@@ -8,6 +8,7 @@ let
     "discord"
     "firefox"
     "flutter"
+    "ghostty"
     "iina"
     "imageoptim"
     "jetbrains-toolbox"
@@ -18,10 +19,8 @@ let
     "spotify"
     "transmission"
     "visual-studio-code"
-    "wezterm"
     "zed"
   ];
-  hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
 in
 {
   homebrew = enabled // {
@@ -64,8 +63,6 @@ in
   # Since we aren't managing graphical apps with home-manager
   # on darwin, add the config files directly in xdg config
   snowfallorg.users.yash.home.config = {
-    xdg.configFile = {
-      "wezterm".source = "${hmModules}/wezterm/config";
-    };
+    xdg.configFile = {};
   };
 }
