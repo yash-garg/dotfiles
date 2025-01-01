@@ -6,7 +6,6 @@ let
     "arc"
     "chatgpt"
     "discord"
-    "firefox"
     "flutter"
     "ghostty"
     "iina"
@@ -38,7 +37,7 @@ in
     caskArgs.appdir = "/Applications";
 
     global = {
-      autoUpdate = false;
+      autoUpdate = true;
       brewfile = true;
     };
 
