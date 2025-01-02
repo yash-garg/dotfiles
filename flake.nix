@@ -49,7 +49,6 @@
           impermanence.nixosModules.impermanence
           lanzaboote.nixosModules.lanzaboote
           nix-index-database.nixosModules.nix-index
-          nixified-ai.nixosModules.invokeai-nvidia
           nixos-cosmic.nixosModules.default
           nixos-generators.nixosModules.all-formats
           nixos-wsl.nixosModules.default
