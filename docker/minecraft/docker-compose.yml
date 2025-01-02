@@ -23,6 +23,7 @@ services:
       VANILLATWEAKS_SHARECODE: bmipN5,SLs3nU
       LOG_TIMESTAMP: "TRUE"
       TZ: Asia/Kolkata
+      RCON_CMDS_STARTUP: /gamerule keepInventory true
       MODRINTH_DOWNLOAD_DEPENDENCIES: "required"
       MODRINTH_ALLOWED_VERSION_TYPE: "alpha"
       MODRINTH_PROJECTS: |-
@@ -32,6 +33,7 @@ services:
         ferrite-core
         jade
         krypton
+        leaves-us-in-peace
         lithium
         netherportalfix
         no-chat-reports
