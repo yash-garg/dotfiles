@@ -6,8 +6,9 @@ services:
     stdin_open: true
     ports:
       - 25565:25565
+      - 81:8080
     environment:
-      SEED: 5063885805507972000
+      SEED: "-5584399987456711267"
       EULA: "TRUE"
       TYPE: FABRIC
       MEMORY: 20G
@@ -16,9 +17,9 @@ services:
       ENFORCE_WHITELIST: "TRUE"
       WHITELIST_FILE: /extra/whitelist.json
       OPS_FILE: /extra/ops.json
-      ONLINE_MODE: "FALSE"
+      ONLINE_MODE: "TRUE"
       REMOVE_OLD_MODS: "TRUE"
-      MAX_PLAYERS: 10
+      MAX_PLAYERS: 2
       USE_AIKAR_FLAGS: "TRUE"
       VANILLATWEAKS_SHARECODE: bmipN5,SLs3nU
       LOG_TIMESTAMP: "TRUE"
@@ -31,14 +32,13 @@ services:
         c2me-fabric
         fabric-api
         ferrite-core
-        jade
         krypton
         leaves-us-in-peace
         lithium
         netherportalfix
         no-chat-reports
+        pl3xmap
         scaffolding-drops-nearby
-        skinrestorer
     volumes:
       - ./data:/data
       - ./extra:/extra
