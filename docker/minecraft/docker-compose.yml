@@ -8,6 +8,8 @@ services:
       - 25565:25565
       - 81:8080
     environment:
+      UID: 1001
+      GID: 1001
       SEED: "-5584399987456711267"
       EULA: "TRUE"
       TYPE: FABRIC
@@ -26,6 +28,7 @@ services:
       VANILLATWEAKS_SHARECODE: bmipN5,SLs3nU
       LOG_TIMESTAMP: "TRUE"
       TZ: Asia/Kolkata
+      RCON_PASSWORD: "<placeholder>"
       MODRINTH_DOWNLOAD_DEPENDENCIES: "required"
       MODRINTH_ALLOWED_VERSION_TYPE: "alpha"
       MODRINTH_PROJECTS: |-
