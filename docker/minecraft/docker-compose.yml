@@ -11,9 +11,11 @@ services:
       SEED: "-5584399987456711267"
       EULA: "TRUE"
       TYPE: FABRIC
-      MEMORY: 20G
+      MEMORY: 16G
       DIFFICULTY: NORMAL
-      MOTD: Pixel Paradise
+      ICON: /extra/icon.jpeg
+      OVERRIDE_ICON: "TRUE"
+      MOTD: "§l§cPixel Paradise§r"
       ENFORCE_WHITELIST: "TRUE"
       WHITELIST_FILE: /extra/whitelist.json
       OPS_FILE: /extra/ops.json
@@ -24,12 +26,12 @@ services:
       VANILLATWEAKS_SHARECODE: bmipN5,SLs3nU
       LOG_TIMESTAMP: "TRUE"
       TZ: Asia/Kolkata
-      RCON_CMDS_STARTUP: /gamerule keepInventory true
       MODRINTH_DOWNLOAD_DEPENDENCIES: "required"
       MODRINTH_ALLOWED_VERSION_TYPE: "alpha"
       MODRINTH_PROJECTS: |-
         beautified-chat-server
         c2me-fabric
+        chunky
         fabric-api
         ferrite-core
         krypton
@@ -39,6 +41,15 @@ services:
         no-chat-reports
         pl3xmap
         scaffolding-drops-nearby
+      RCON_CMDS_STARTUP: |-
+        /gamerule keepInventory true
+        /chunky radius 1000
+        /chunky start
+      RCON_CMDS_FIRST_CONNECT: |-
+        /chunky pause
+      RCON_CMDS_LAST_DISCONNECT: |-
+        /save-all
+        /chunky continue
     volumes:
       - ./data:/data
       - ./extra:/extra
