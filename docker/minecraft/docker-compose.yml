@@ -5,7 +5,7 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - 25565:25565
+      - 1806:25565
       - 81:8080
     environment:
       UID: 1001
@@ -44,6 +44,7 @@ services:
         no-chat-reports
         pl3xmap
         scaffolding-drops-nearby
+        villager-death-messages
       RCON_CMDS_STARTUP: |-
         /gamerule keepInventory true
         /chunky radius 1000
