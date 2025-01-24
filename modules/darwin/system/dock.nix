@@ -27,6 +27,7 @@
         "${brewAppDir}/WhatsApp.app"
         "${brewAppDir}/Slack.app"
         "${brewAppDir}/Telegram.app"
+        "${brewAppDir}/Unread.app"
       ];
     show-recents = false;
     tilesize = 35;
