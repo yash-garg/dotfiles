@@ -13,6 +13,7 @@ let
     "jetbrains-toolbox"
     "linear-linear"
     "maccy"
+    "orbstack"
     "pop"
     "raycast"
     "spotify"
