@@ -9,7 +9,7 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.paisa;
-  paisa-fhs = pkgs.buildFHSUserEnv {
+  paisa-fhs = pkgs.buildFHSEnv {
     name = "paisa";
     targetPkgs =
       pkgs: with pkgs; [

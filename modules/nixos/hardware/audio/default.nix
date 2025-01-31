@@ -50,9 +50,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    hardware.pulseaudio = disabled;
     security.rtkit = enabled;
 
+    services.pulseaudio = disabled;
     services.pipewire = enabled // {
       alsa = enabled // {
         support32Bit = true;
