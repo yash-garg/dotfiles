@@ -28,6 +28,7 @@ in
   homebrew = enabled // {
     brews = [
       "cocoapods"
+      "restic"
       "ruby"
     ];
 
@@ -57,7 +58,7 @@ in
     };
 
     onActivation = {
-      autoUpdate = true;
+      autoUpdate = false;
       cleanup = "zap";
       upgrade = true;
     };

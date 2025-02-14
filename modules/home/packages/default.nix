@@ -30,6 +30,7 @@
     nvd
     ookla-speedtest
     ripgrep
+    restic
     scc
     unzip
     whois
