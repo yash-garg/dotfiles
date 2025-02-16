@@ -28,7 +28,6 @@ in
   homebrew = enabled // {
     brews = [
       "cocoapods"
-      "restic"
       "ruby"
     ];
 

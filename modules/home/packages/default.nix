@@ -31,8 +31,10 @@
     ookla-speedtest
     ripgrep
     restic
+    ruff
     scc
     unzip
+    uv
     whois
     zip
   ];
