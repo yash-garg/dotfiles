@@ -30,7 +30,6 @@ in
   config = mkIf cfg.enable {
     wsl = enabled // {
       defaultUser = cfg.user;
-      nativeSystemd = true;
       startMenuLaunchers = true;
       usbip = enabled;
       wslConf.network.hostname = cfg.hostname;
