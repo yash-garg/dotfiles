@@ -13,7 +13,7 @@ with lib.${namespace};
   age.secrets.passwordfile-cosmos.file = snowfall.fs.get-file "secrets/cosmos/user.age";
   age.secrets.tsauthkey.file = snowfall.fs.get-file "secrets/cosmos/tailscale.age";
 
-  boot.initrd.systemd.enableTpm2 = mkForce false;
+  boot.initrd.systemd.tpm2.enable = mkForce false;
 
   dots = {
     hardware.networking = enabled // {
