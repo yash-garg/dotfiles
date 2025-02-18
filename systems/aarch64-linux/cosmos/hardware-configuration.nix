@@ -77,6 +77,7 @@ with lib.${namespace};
   };
 
   raspberry-pi-nix.board = "bcm2712";
+  raspberry-pi-nix.pin-inputs.enable = true;
 
   swapDevices = [ ];
 
