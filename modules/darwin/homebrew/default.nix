@@ -8,6 +8,7 @@ let
     "discord"
     "flutter"
     "ghostty"
+    "httpie"
     "iina"
     "imageoptim"
     "jetbrains-toolbox"
