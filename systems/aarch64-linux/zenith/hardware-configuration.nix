@@ -1,31 +1,26 @@
-{ lib, modulesPath, ... }:
 {
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+
+  lib,
+  modulesPath,
+  ...
+}:
+{
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
 
   boot = {
     initrd.availableKernelModules = [
-      "ata_piix"
-      "uhci_hcd"
-      "xen_blkfront"
+      "xhci_pci"
+      "virtio_scsi"
     ];
-    initrd.kernelModules = [ "nvme" ];
-    loader.grub = {
-      configurationLimit = 1;
-      efiSupport = true;
-      efiInstallAsRemovable = true;
-      device = "nodev";
-    };
+    initrd.kernelModules = [ ];
+    kernelModules = [ ];
+    extraModulePackages = [ ];
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B4B3-3A1E";
-    fsType = "vfat";
-  };
-
-  fileSystems."/" = {
-    device = "/dev/sda1";
-    fsType = "ext4";
-  };
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s6.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

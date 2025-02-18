@@ -12,7 +12,10 @@ let
   get-secret = name: snowfall.fs.get-file "secrets/${hostName}/${name}.age";
 in
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./disk-config.nix
+    ./hardware-configuration.nix
+  ];
 
   age.secrets = {
     passwordfile-zenith.file = get-secret "user";
@@ -21,11 +24,20 @@ in
     tsauthkey-env.file = get-secret "caddy.env";
   };
 
-  boot.tmp.cleanOnBoot = true;
-  zramSwap = enabled;
+  boot = {
+    loader = {
+      systemd-boot = enabled;
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
+    };
+    initrd.systemd = enabled;
+  };
 
   networking = {
     domain = "";
+    networkmanager = enabled;
     inherit hostName;
   };
 
@@ -36,7 +48,7 @@ in
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;
-        permitRootLogin = true;
+        permitRootLogin = false;
       };
 
       tailscale = enabled // {
@@ -58,6 +70,24 @@ in
     ignoreShellProgramCheck = true;
     extraGroups = [ "wheel" ];
   };
+
+  # Enable passwordless sudo.
+  security.sudo.extraRules = [
+    {
+      users = [ "yash" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
+  # Disable autologin.
+  services.getty.autologinUser = null;
+
+  systemd.targets.multi-user.enable = true;
 
   system.stateVersion = "24.11";
 }
