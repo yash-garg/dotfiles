@@ -57,19 +57,5 @@
           "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
         ];
       };
-
-      buildMachines = [
-        {
-          hostName = "vortex";
-          maxJobs = 2;
-          sshUser = "root";
-          system = "aarch64-linux";
-          supportedFeatures = [
-            "benchmark"
-            "big-parallel"
-            "kvm"
-          ];
-        }
-      ];
     };
 }
