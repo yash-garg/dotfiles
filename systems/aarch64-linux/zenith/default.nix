@@ -18,7 +18,13 @@ in
   ];
 
   age.secrets = {
-    passwordfile-zenith.file = get-secret "user";
+    cloudflared = {
+      file = get-secret "cloudflared.json";
+      owner = "cloudflared";
+      group = "cloudflared";
+    };
+    user-password.file = get-secret "user";
+    plausible.file = get-secret "plausible";
     tsauthkey.file = get-secret "tailscale";
   };
 
@@ -58,12 +64,31 @@ in
           "--ssh"
         ];
       };
+
+      plausible = disabled // {
+        baseUrl = "analytics.yashgarg.dev";
+        secretKeybaseFile = config.age.secrets.plausible.path;
+      };
+    };
+  };
+
+  services.cloudflared = enabled // {
+    tunnels = {
+      "cfb054a0-f0d9-4a2f-97b8-d659b1da4498" = {
+        credentialsFile = config.age.secrets.cloudflared.path;
+        ingress = {
+          "analytics.yashgarg.dev" = {
+            service = "http://localhost:8181";
+          };
+        };
+        default = "http_status:404";
+      };
     };
   };
 
   users.users.yash = {
     isNormalUser = true;
-    hashedPasswordFile = config.age.secrets.passwordfile-zenith.path;
+    hashedPasswordFile = config.age.secrets.user-password.path;
     shell = pkgs.zsh;
     ignoreShellProgramCheck = true;
     extraGroups = [ "wheel" ];
