@@ -26,8 +26,6 @@ in
   "nova/cifs.age".publicKeys = users ++ [ nova ];
   "nova/samba.age".publicKeys = users ++ [ nova ];
 
-  "zenith/caddy.env.age".publicKeys = users ++ [ zenith ];
-  "zenith/miniflux.env.age".publicKeys = users ++ [ zenith ];
   "zenith/tailscale.age".publicKeys = users ++ [ zenith ];
   "zenith/user.age".publicKeys = users ++ [ zenith ];
 }

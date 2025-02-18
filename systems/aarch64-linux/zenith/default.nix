@@ -19,9 +19,7 @@ in
 
   age.secrets = {
     passwordfile-zenith.file = get-secret "user";
-    feed-auth.file = get-secret "miniflux.env";
     tsauthkey.file = get-secret "tailscale";
-    tsauthkey-env.file = get-secret "caddy.env";
   };
 
   boot = {
