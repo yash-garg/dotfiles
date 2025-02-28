@@ -72,16 +72,29 @@ in
     };
   };
 
-  services.cloudflared = enabled // {
-    tunnels = {
-      "cfb054a0-f0d9-4a2f-97b8-d659b1da4498" = {
-        credentialsFile = config.age.secrets.cloudflared.path;
-        ingress = {
-          "analytics.yashgarg.dev" = {
-            service = "http://localhost:8181";
+  services = {
+    actual = enabled // {
+      openFirewall = true;
+      settings = {
+        hostname = "finance.yashgarg.dev";
+        port = 4000;
+      };
+    };
+
+    cloudflared = enabled // {
+      tunnels = {
+        "cfb054a0-f0d9-4a2f-97b8-d659b1da4498" = {
+          credentialsFile = config.age.secrets.cloudflared.path;
+          ingress = {
+            "analytics.yashgarg.dev" = {
+              service = "http://localhost:8181";
+            };
+            "finance.yashgarg.dev" = {
+              service = "http://localhost:4000";
+            };
           };
+          default = "http_status:404";
         };
-        default = "http_status:404";
       };
     };
   };
