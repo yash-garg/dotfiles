@@ -21,7 +21,7 @@ in
       autoEnable = false;
       homeManagerIntegration.followSystem = true;
       image = ./background.png;
-      base16Scheme = "${inputs.base16-schemes.outPath}/base16/catppuccin-mocha.yaml";
+      base16Scheme = "${inputs.base16-schemes.outPath}/base16/monokai.yaml";
       cursor = {
         package = pkgs.rose-pine-cursor;
         name = "BreezeX-RosePine-Linux";
