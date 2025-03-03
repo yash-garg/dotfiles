@@ -8,6 +8,17 @@
 with lib.${namespace};
 let
   shellPath = if config.shells.${namespace}.bash.enable then null else "${pkgs.zsh}/bin/zsh";
+  monokai-pro = pkgs.tmuxPlugins.mkTmuxPlugin {
+    pluginName = "monokai-pro";
+    rtpFilePath = "monokai.tmux";
+    version = "v0.1.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "maxpetretta";
+      repo = "tmux-monokai-pro";
+      rev = "afb5831e5267047381378c41644ed46f336be33f";
+      sha256 = "sha256-S6EVkjsWU6om4E8yO/g7EOToXIEka6ZuOAGwSjjEHbA=";
+    };
+  };
 in
 {
   programs.tmux = enabled // {
@@ -20,37 +31,26 @@ in
     shortcut = "b";
     sensibleOnTop = false;
     terminal = "tmux-256color";
-    plugins = with pkgs.tmuxPlugins; [
+    plugins = with pkgs; [
       {
-        plugin = catppuccin;
+        plugin = monokai-pro;
         extraConfig = ''
-          set -g @catppuccin_window_left_separator ""
-          set -g @catppuccin_window_right_separator " "
-          set -g @catppuccin_window_middle_separator " █"
-          set -g @catppuccin_window_number_position "right"
-
-          set -g @catppuccin_window_default_fill "number"
-          set -g @catppuccin_window_default_text "#W"
-
-          set -g @catppuccin_window_current_fill "number"
-          set -g @catppuccin_window_current_text "#W"
-
-          set -g @catppuccin_status_background "default"
-          set -g @catppuccin_status_modules_right "directory session"
-          set -g @catppuccin_status_left_separator  " "
-          set -g @catppuccin_status_right_separator ""
-          set -g @catppuccin_status_fill "icon"
-          set -g @catppuccin_status_connect_separator "no"
-
-          set -g @catppuccin_directory_text "#{pane_current_path}"
+          set -g @monokai-plugins "cpu-usage ram-usage cwd"
+          set -g @monokai-refresh-rate 10
+          set -g @monokai-show-battery false
+          set -g @monokai-show-empty-plugins false
+          set -g @monokai-show-powerline true
+          set -g @monokai-transparent-powerline-bg true
         '';
       }
-      yank
+      tmuxPlugins.yank
     ];
     extraConfig = ''
       set -ga terminal-overrides ",xterm-256color:Tc"
       set -sg escape-time 100
-      set-option -g status-position top
+      set-option -g status-position bottom
+
+      # Key Bindings
       unbind c
       unbind p
       bind n new-window

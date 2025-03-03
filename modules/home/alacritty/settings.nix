@@ -5,45 +5,6 @@
       TERM = "xterm-256color";
     };
 
-    # Colors (Aura Theme)
-    colors = lib.mkForce {
-      primary = {
-        background = "#15141b";
-        foreground = "#edecee";
-      };
-
-      cursor = {
-        cursor = "#a277ff";
-      };
-
-      selection = {
-        text = "CellForeground";
-        background = "#29263c";
-      };
-
-      normal = {
-        black = "#110f18";
-        red = "#ff6767";
-        green = "#61ffca";
-        yellow = "#ffca85";
-        blue = "#a277ff";
-        magenta = "#a277ff";
-        cyan = "#61ffca";
-        white = "#edecee";
-      };
-
-      bright = {
-        black = "#4d4d4d";
-        red = "#ff6767";
-        green = "#61ffca";
-        yellow = "#ffca85";
-        blue = "#a277ff";
-        magenta = "#a277ff";
-        cyan = "#61ffca";
-        white = "#edecee";
-      };
-    };
-
     font = lib.mkForce {
       size = 14;
 
