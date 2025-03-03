@@ -41,8 +41,8 @@ in
       server = {
         baseUrl = "https://${cfg.baseUrl}";
         disableRegistration = "invite_only";
-        port = cfg.port;
-        secretKeybaseFile = cfg.secretKeybaseFile;
+        inherit (cfg) port;
+        inherit (cfg) secretKeybaseFile;
       };
     };
   };

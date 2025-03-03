@@ -21,7 +21,7 @@ in
     cloudflared = {
       file = get-secret "cloudflared.json";
       owner = config.services.cloudflared.user;
-      group = config.services.cloudflared.group;
+      inherit (config.services.cloudflared) group;
     };
     user-password.file = get-secret "user";
     plausible.file = get-secret "plausible";

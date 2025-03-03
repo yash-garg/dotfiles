@@ -106,38 +106,6 @@
         "type": "github"
       }
     },
-    "catppuccin-starship": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1733541952,
-        "narHash": "sha256-1w0TJdQP5lb9jCrCmhPlSexf0PkAlcz8GBDEsRjPRns=",
-        "owner": "catppuccin",
-        "repo": "starship",
-        "rev": "e99ba6b210c0739af2a18094024ca0bdf4bb3225",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "starship",
-        "type": "github"
-      }
-    },
-    "catppuccin-yazi": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1740599574,
-        "narHash": "sha256-knYanLMpNyCsFm6csI5MzhyBaqE+p17BAbhNpvey5Co=",
-        "owner": "catppuccin",
-        "repo": "yazi",
-        "rev": "5d50620344a0c7b83f6b5b907457b835844831c3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "catppuccin",
-        "repo": "yazi",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1731098351,
@@ -1709,8 +1677,6 @@
       "inputs": {
         "agenix": "agenix",
         "base16-schemes": "base16-schemes",
-        "catppuccin-starship": "catppuccin-starship",
-        "catppuccin-yazi": "catppuccin-yazi",
         "darwin": "darwin_2",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",

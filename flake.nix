@@ -116,12 +116,6 @@
     base16-schemes.url = "github:tinted-theming/schemes";
     base16-schemes.flake = false;
 
-    catppuccin-starship.url = "github:catppuccin/starship";
-    catppuccin-starship.flake = false;
-
-    catppuccin-yazi.url = "github:catppuccin/yazi";
-    catppuccin-yazi.flake = false;
-
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
