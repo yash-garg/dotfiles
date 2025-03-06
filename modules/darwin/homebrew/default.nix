@@ -19,7 +19,6 @@ let
     "slack"
     "spotify"
     "visual-studio-code"
-    "zed"
   ];
   cfg = config.${namespace}.homebrew;
   hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
