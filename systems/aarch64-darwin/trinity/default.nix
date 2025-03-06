@@ -1,20 +1,42 @@
-_: {
-  dots.homebrew = {
-    additionalCasks = [
-      "arc"
-      "chatgpt"
-      "discord"
-      "steam"
-    ];
+{ config, namespace, ... }:
+let
+  username = config.${namespace}.user.name;
+in
+{
+  dots = {
+    dock.persistentApps =
+      let
+        brewAppDir = config.homebrew.caskArgs.appdir;
+        homeAppDir = "${config.users.users.${username}.home}/Applications";
+      in
+      [
+        "${brewAppDir}/ChatGPT.app"
+        "${brewAppDir}/Discord.app"
+        "${brewAppDir}/Spotify.app"
+        "${homeAppDir}/Android Studio.app"
+        "${brewAppDir}/WhatsApp.app"
+        "${brewAppDir}/Slack.app"
+        "${brewAppDir}/Telegram.app"
+        "${brewAppDir}/Unread.app"
+      ];
 
-    masApps = {
-      Amphetamine = 937984704;
-      Bitwarden = 1352778147;
-      "Prime Video" = 545519333;
-      Tailscale = 1475387142;
-      Telegram = 747648890;
-      Unread = 1363637349;
-      WhatsApp = 310633997;
+    homebrew = {
+      additionalCasks = [
+        "arc"
+        "chatgpt"
+        "discord"
+        "steam"
+      ];
+
+      masApps = {
+        Amphetamine = 937984704;
+        Bitwarden = 1352778147;
+        "Prime Video" = 545519333;
+        Tailscale = 1475387142;
+        Telegram = 747648890;
+        Unread = 1363637349;
+        WhatsApp = 310633997;
+      };
     };
   };
 

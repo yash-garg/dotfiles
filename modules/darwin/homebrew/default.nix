@@ -28,7 +28,7 @@ in
 {
   options.${namespace}.homebrew = {
     additionalCasks = mkOption {
-      type = types.listOf types.string;
+      type = types.listOf types.str;
       default = [ ];
       description = ''
         A list of additional casks to install.
