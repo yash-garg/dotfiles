@@ -14,7 +14,10 @@
 
       settings = {
         accept-flake-config = true;
-        allowed-users = [ "yash" ];
+        allowed-users = [
+          "yash"
+          "ygarg"
+        ];
         auto-optimise-store = false;
         builders-use-substitutes = true;
         experimental-features = lib.mkForce [
@@ -34,6 +37,7 @@
         trusted-users = [
           "root"
           "yash"
+          "ygarg"
         ];
         warn-dirty = false;
 

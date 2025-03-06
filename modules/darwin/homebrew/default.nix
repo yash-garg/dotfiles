@@ -1,11 +1,13 @@
-{ lib, namespace, ... }:
+{
+  lib,
+  config,
+  namespace,
+  ...
+}:
 with lib.${namespace};
 let
   casks = [
     "alt-tab"
-    "arc"
-    "chatgpt"
-    "discord"
     "flutter"
     "ghostty"
     "iina"
@@ -14,8 +16,8 @@ let
     "maccy"
     "orbstack"
     "raycast"
+    "slack"
     "spotify"
-    "steam"
     "visual-studio-code"
     "zed"
   ];
@@ -42,16 +44,7 @@ in
 
     taps = [ ];
 
-    masApps = {
-      Amphetamine = 937984704;
-      Bitwarden = 1352778147;
-      "Prime Video" = 545519333;
-      Slack = 803453959;
-      Tailscale = 1475387142;
-      Telegram = 747648890;
-      Unread = 1363637349;
-      WhatsApp = 310633997;
-    };
+    masApps = { };
 
     onActivation = {
       autoUpdate = false;
@@ -62,7 +55,7 @@ in
 
   # Since we aren't managing graphical apps with home-manager
   # on darwin, add the config files directly in xdg config
-  snowfallorg.users.yash.home.config = {
+  snowfallorg.users.${config.${namespace}.user.name}.home.config = {
     xdg.configFile = {
       "ghostty/config".source = "${hmModules}/ghostty/config";
     };

@@ -19,7 +19,7 @@ with lib.${namespace};
     };
   };
 
-  snowfallorg.users.yash.home.config = {
+  snowfallorg.users.${config.${namespace}.user.name}.home.config = {
     stylix.targets = {
       bat = enabled;
       btop = enabled;
