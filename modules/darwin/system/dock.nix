@@ -35,7 +35,6 @@ in
         [
           "${sysAppDir}/Launchpad.app"
           "${brewAppDir}/Ghostty.app"
-          "${brewAppDir}/Linear.app"
           "${brewAppDir}/Xcode.app"
           "${brewAppDir}/Visual Studio Code.app"
         ]

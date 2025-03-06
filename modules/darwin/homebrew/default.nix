@@ -13,7 +13,6 @@ let
     "ghostty"
     "iina"
     "jetbrains-toolbox"
-    "linear-linear"
     "maccy"
     "orbstack"
     "raycast"

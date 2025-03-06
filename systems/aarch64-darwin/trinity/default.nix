@@ -13,6 +13,7 @@ in
         "${brewAppDir}/ChatGPT.app"
         "${brewAppDir}/Discord.app"
         "${brewAppDir}/Spotify.app"
+        "${brewAppDir}/Arc.app"
         "${homeAppDir}/Android Studio.app"
         "${brewAppDir}/WhatsApp.app"
         "${brewAppDir}/Slack.app"
@@ -25,7 +26,6 @@ in
         "arc"
         "chatgpt"
         "discord"
-        "steam"
       ];
 
       masApps = {
@@ -42,5 +42,5 @@ in
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
-  system.stateVersion = 4;
+  system.stateVersion = 5;
 }
