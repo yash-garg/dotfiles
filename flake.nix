@@ -68,7 +68,10 @@
         srvos.nixosModules.mixins-systemd-boot
       ];
 
-      systems.hosts.trinity.modules = with inputs; [ srvos.darwinModules.desktop ];
+      systems.hosts = {
+        aurora.modules = with inputs; [ srvos.darwinModules.desktop ];
+        trinity.modules = with inputs; [ srvos.darwinModules.desktop ];
+      };
 
       homes.modules = with inputs; [
         nix-index-database.hmModules.nix-index
