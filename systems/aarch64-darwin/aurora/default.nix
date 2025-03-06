@@ -3,6 +3,7 @@ let
   username = config.${namespace}.user.name;
 in
 {
+  dots.user.name = "ygarg";
   dots.dock.persistentApps =
     let
       brewAppDir = config.homebrew.caskArgs.appdir;
