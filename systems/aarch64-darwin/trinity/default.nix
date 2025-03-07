@@ -25,7 +25,6 @@ in
       additionalCasks = [
         "arc"
         "chatgpt"
-        "cursor"
         "discord"
       ];
 
