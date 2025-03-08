@@ -1,26 +1,26 @@
-theme = CutiePro
-background = #181818
-foreground = #d5d0c9
-selection-background = #363636
-selection-foreground = #d5d0c9
-cursor-color = #efc4cd
-cursor-text = #181818
-palette = 0=#000000
-palette = 1=#f56e7f
-palette = 2=#bec975
-palette = 3=#f58669
-palette = 4=#42d9c5
-palette = 5=#d286b7
-palette = 6=#37cb8a
-palette = 7=#d5c3c3
-palette = 8=#88847f
-palette = 9=#e5a1a3
-palette = 10=#e8d6a7
-palette = 11=#f1bb79
-palette = 12=#80c5de
-palette = 13=#b294bb
-palette = 14=#9dccbb
-palette = 15=#ffffff
+theme = Monokai Soda
+background = #1a1a1a
+foreground = #c4c5b5
+selection-background = #343434
+selection-foreground = #c4c5b5
+cursor-color = #f6f7ec
+cursor-text = #c4c5b5
+palette = 0=#1a1a1a
+palette = 1=#f4005f
+palette = 2=#98e024
+palette = 3=#fa8419
+palette = 4=#9d65ff
+palette = 5=#f4005f
+palette = 6=#58d1eb
+palette = 7=#c4c5b5
+palette = 8=#625e4c
+palette = 9=#f4005f
+palette = 10=#98e024
+palette = 11=#e0d561
+palette = 12=#9d65ff
+palette = 13=#f4005f
+palette = 14=#58d1eb
+palette = 15=#f6f6ef
 
 font-family = CaskaydiaCove Nerd Font Mono
 font-style = SemiBold
@@ -31,11 +31,11 @@ font-size = 17
 cursor-style = block
 cursor-style-blink = true
 mouse-hide-while-typing = true
-background-opacity = 0.95
-background-blur-radius = 20
+background-opacity = 0.98
+background-blur-radius = 30
 window-height = 35
 window-width = 120
 shell-integration = zsh
 shell-integration-features = no-cursor
 macos-titlebar-style = transparent
-window-padding-x = 10, 5
+window-padding-x = 10

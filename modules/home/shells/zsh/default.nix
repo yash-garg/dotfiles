@@ -32,6 +32,7 @@ in
       atuin.enableZshIntegration = true;
       eza.enableZshIntegration = true;
       fzf.enableZshIntegration = true;
+      ghostty.enableZshIntegration = profiles.ghostty.enable;
       kitty.shellIntegration.enableZshIntegration = profiles.kitty.enable;
       nix-index.enableZshIntegration = true;
       oh-my-posh.enableZshIntegration = profiles.oh-my-posh.enable;

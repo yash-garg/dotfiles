@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 {
-  programs.firefox.profiles.yash.extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+  programs.firefox.profiles.yash.extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
     betterttv
     bitwarden
     darkreader

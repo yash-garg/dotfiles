@@ -31,6 +31,7 @@ in
       atuin.enableBashIntegration = true;
       eza.enableBashIntegration = true;
       fzf.enableBashIntegration = true;
+      ghostty.enableBashIntegration = profiles.ghostty.enable;
       kitty.shellIntegration.enableBashIntegration = profiles.kitty.enable;
       nix-index.enableBashIntegration = true;
       oh-my-posh.enableBashIntegration = profiles.oh-my-posh.enable;

@@ -16,7 +16,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.ghostty ];
+    programs.ghostty = enabled // {
+      package = pkgs.ghostty;
+    };
 
     xdg.configFile."ghostty/config".source = ./config;
   };
