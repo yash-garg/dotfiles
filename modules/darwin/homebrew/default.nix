@@ -19,7 +19,7 @@ let
     "slack"
     "spotify"
     "visual-studio-code"
-  ];
+  ] ++ cfg.additionalCasks;
   cfg = config.${namespace}.homebrew;
   hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
 in
@@ -40,35 +40,38 @@ in
         A map of macOS App Store apps to install.
       '';
     };
+
+    taps = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        A list of additional taps to add.
+      '';
+    };
   };
 
   config = {
     homebrew = enabled // {
+      inherit (cfg) masApps;
+
       brews = [
         "cocoapods"
         "ruby"
       ];
 
-      casks =
-        map (cask: {
-          name = cask;
-          greedy = true;
-        }) casks
-        ++ map (cask: {
-          name = cask;
-          greedy = true;
-        }) cfg.additionalCasks;
-
       caskArgs.appdir = "/Applications";
+
+      casks = map (cask: {
+        name = cask;
+        greedy = true;
+      }) casks;
 
       global = {
         autoUpdate = true;
         brewfile = true;
       };
 
-      taps = [ ];
-
-      inherit (cfg) masApps;
+      inherit (cfg) taps;
 
       onActivation = {
         autoUpdate = false;

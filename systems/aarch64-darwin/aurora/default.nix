@@ -1,23 +1,12 @@
 { config, namespace, ... }:
-let
-  username = config.${namespace}.user.name;
-in
 {
   dots = {
-    dock.persistentApps =
-      let
-        brewAppDir = config.homebrew.caskArgs.appdir;
-        homeAppDir = "${config.users.users.${username}.home}/Applications";
-      in
-      [
-        "${brewAppDir}/Spotify.app"
-        "${brewAppDir}/Linear.app"
-        "${homeAppDir}/Android Studio.app"
-        "${brewAppDir}/Google Chrome.app"
-        "${brewAppDir}/OrbStack.app"
-        "${brewAppDir}/Slack.app"
-        "${brewAppDir}/zoom.us.app"
-      ];
+    dock.persistentApps = [
+      "Linear"
+      "Google Chrome"
+      "OrbStack"
+      "zoom.us"
+    ];
 
     homebrew.additionalCasks = [
       "linear-linear"

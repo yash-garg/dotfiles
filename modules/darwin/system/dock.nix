@@ -8,10 +8,20 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.dock;
+  brewAppDir = config.homebrew.caskArgs.appdir;
+  dockApps = [
+    "Ghostty"
+    "Xcode"
+    "Visual Studio Code"
+    "Spotify"
+    "Android Studio"
+    "Slack"
+  ] ++ cfg.persistentApps;
 in
 {
   options.${namespace}.dock = {
     persistentApps = mkOption {
+      default = [ ];
       type = types.listOf types.str;
       description = ''
         A list of applications to appear in the persistent dock.
@@ -27,20 +37,12 @@ in
       mineffect = "scale";
       minimize-to-application = false;
       orientation = "bottom";
-      persistent-apps =
-        let
-          brewAppDir = config.homebrew.caskArgs.appdir;
-          sysAppDir = "/System/Applications";
-        in
-        [
-          "${sysAppDir}/Launchpad.app"
-          "${brewAppDir}/Ghostty.app"
-          "${brewAppDir}/Xcode.app"
-          "${brewAppDir}/Visual Studio Code.app"
-        ]
-        ++ cfg.persistentApps;
       show-recents = false;
       tilesize = 35;
+
+      persistent-apps = [
+        "/System/Applications/Launchpad.app"
+      ] ++ map (app: "${brewAppDir}/${app}.app") dockApps;
 
       # Disable all hot corners
       wvous-tl-corner = 1;
