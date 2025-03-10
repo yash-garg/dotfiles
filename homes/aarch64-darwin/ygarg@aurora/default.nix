@@ -1,17 +1,12 @@
 {
   pkgs,
   lib,
-  config,
 
   namespace,
   ...
 }:
 with lib.${namespace};
 {
-  dots.user = enabled // {
-    inherit (config.snowfallorg.user) name;
-  };
-
   profiles.${namespace} = {
     atuin = enabled;
     neovim = enabled;

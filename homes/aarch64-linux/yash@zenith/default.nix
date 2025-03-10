@@ -1,10 +1,6 @@
 { lib, namespace, ... }:
 with lib.${namespace};
 {
-  snowfallorg.user = enabled // {
-    name = "yash";
-  };
-
   profiles.${namespace} = {
     neovim = enabled;
     oh-my-posh = enabled;

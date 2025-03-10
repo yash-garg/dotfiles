@@ -7,16 +7,11 @@
 let
   inherit (lib) types mkIf;
   inherit (lib.${namespace}) mkOpt;
-
   cfg = config.${namespace}.user;
 in
 {
   options.${namespace}.user = {
     name = mkOpt types.str "yash" "The user account.";
-
-    fullName = mkOpt types.str "Yash Garg" "The full name of the user.";
-    email = mkOpt types.str "me@yashgarg.dev" "The email of the user.";
-
     uid = mkOpt (types.nullOr types.int) 350 "The uid for the user account.";
   };
 

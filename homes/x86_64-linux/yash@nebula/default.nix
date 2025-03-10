@@ -1,10 +1,6 @@
 { lib, namespace, ... }:
 with lib.${namespace};
 {
-  snowfallorg.user = enabled // {
-    name = "yash";
-  };
-
   profiles.${namespace} = {
     atuin = enabled;
     keychain = enabled;
