@@ -1,5 +1,4 @@
-_:
-{
+_: {
   dots = {
     dock.persistentApps = [
       "ChatGPT"
@@ -7,7 +6,6 @@ _:
       "Arc"
       "WhatsApp"
       "Telegram"
-      "Unread"
     ];
 
     homebrew = {
@@ -15,6 +13,7 @@ _:
         "arc"
         "chatgpt"
         "discord"
+        "transmission"
       ];
 
       masApps = {
