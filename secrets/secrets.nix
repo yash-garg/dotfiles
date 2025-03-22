@@ -27,6 +27,7 @@ in
   "nova/samba.age".publicKeys = users ++ [ nova ];
 
   "zenith/cloudflared.json.age".publicKeys = users ++ [ zenith ];
+  "zenith/cloudflared-cert.pem.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];
   "zenith/tailscale.age".publicKeys = users ++ [ zenith ];
   "zenith/user.age".publicKeys = users ++ [ zenith ];

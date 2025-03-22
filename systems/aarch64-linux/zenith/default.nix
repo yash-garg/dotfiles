@@ -18,11 +18,8 @@ in
   ];
 
   age.secrets = {
-    cloudflared = {
-      file = get-secret "cloudflared.json";
-      owner = config.services.cloudflared.user;
-      inherit (config.services.cloudflared) group;
-    };
+    cloudflared.file = get-secret "cloudflared.json";
+    cloudflared-cert.file = get-secret "cloudflared-cert.pem";
     user-password.file = get-secret "user";
     plausible.file = get-secret "plausible";
     tsauthkey.file = get-secret "tailscale";
@@ -75,6 +72,7 @@ in
   services.cloudflared = enabled // {
     tunnels = {
       "cfb054a0-f0d9-4a2f-97b8-d659b1da4498" = {
+        certificateFile = config.age.secrets.cloudflared-cert.path;
         credentialsFile = config.age.secrets.cloudflared.path;
         ingress = {
           "analytics.yashgarg.dev" = {
