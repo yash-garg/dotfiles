@@ -2,6 +2,7 @@ _: {
   dots = {
     dock.persistentApps = [
       "ChatGPT"
+      "Slack"
       "Discord"
       "Arc"
       "WhatsApp"

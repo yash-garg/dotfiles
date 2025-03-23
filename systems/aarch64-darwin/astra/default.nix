@@ -1,5 +1,10 @@
 _: {
   dots = {
+    dock.persistentApps = [
+      "Firefox"
+      "OrbStack"
+    ];
+
     homebrew = {
       additionalCasks = [
         "firefox@beta"

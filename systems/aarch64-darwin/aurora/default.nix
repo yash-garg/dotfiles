@@ -2,6 +2,7 @@ _: {
   dots = {
     dock.persistentApps = [
       "Linear"
+      "Slack"
       "Google Chrome"
       "OrbStack"
       "zoom.us"

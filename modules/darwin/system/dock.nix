@@ -15,7 +15,6 @@ let
     "Visual Studio Code"
     "Spotify"
     "Android Studio"
-    "Slack"
   ] ++ cfg.persistentApps;
 in
 {
