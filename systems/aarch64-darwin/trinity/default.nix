@@ -13,6 +13,7 @@ _: {
         "arc"
         "chatgpt"
         "discord"
+        "notion-calendar"
         "slack"
         "transmission"
       ];

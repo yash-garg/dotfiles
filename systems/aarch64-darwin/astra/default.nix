@@ -1,7 +1,10 @@
 _: {
   dots = {
     homebrew = {
-      additionalCasks = [ "firefox@beta" ];
+      additionalCasks = [
+        "firefox@beta"
+        "notion-calendar"
+      ];
 
       brews = [
         "gpg"
