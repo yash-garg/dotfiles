@@ -3,6 +3,6 @@
   imports = [ ../common.nix ];
 
   profiles.${namespace} = {
-    git.userEmail = "ygarg@cloudflare.com";
+    git.userEmail = "y.garg.extern@famedly.com";
   };
 }

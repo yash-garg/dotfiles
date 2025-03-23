@@ -9,6 +9,7 @@ _: {
 
     homebrew.additionalCasks = [
       "linear-linear"
+      "slack"
     ];
 
     user.name = "ygarg";

@@ -1,6 +1,5 @@
 [user]
     name = Yash-Garg
-    email = me@yashgarg.dev
     signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz
 
 [push]
@@ -114,6 +113,3 @@
 
 [fetch]
     writeCommitGraph = true
-
-[includeIf "gitdir/i:~/projects/work/"]
-    path = ~/.gitconfig-work

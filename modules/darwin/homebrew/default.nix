@@ -9,14 +9,12 @@ with lib.${namespace};
 let
   casks = [
     "alt-tab"
-    "flutter"
     "ghostty"
     "iina"
     "jetbrains-toolbox"
     "maccy"
     "orbstack"
     "raycast"
-    "slack"
     "spotify"
     "visual-studio-code"
   ] ++ cfg.additionalCasks;
@@ -30,6 +28,14 @@ in
       default = [ ];
       description = ''
         A list of additional casks to install.
+      '';
+    };
+
+    brews = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        A list of brews to install.
       '';
     };
 
@@ -57,7 +63,7 @@ in
       brews = [
         "cocoapods"
         "ruby"
-      ];
+      ] ++ cfg.brews;
 
       caskArgs.appdir = "/Applications";
 
