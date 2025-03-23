@@ -7,7 +7,7 @@
 
 [ -d "$HOME/Android/Sdk" ] && export ANDROID_HOME="$HOME/Android/Sdk"
 
-[ -d "$HOME/Android/Flutter" ] && export PATH="$HOME/Android/Flutter/bin"
+[ -d "$HOME/Android/Flutter" ] && export PATH="$HOME/Android/Flutter/bin:$PATH"
 
 for dir in "platform-tools" "cmdline-tools/latest/bin"; do
   [ -d "$ANDROID_HOME/$dir" ] && export PATH="$ANDROID_HOME/$dir:$PATH"
