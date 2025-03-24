@@ -2,12 +2,14 @@ _: {
   dots = {
     dock.persistentApps = [
       "Firefox"
+      "Google Chrome"
       "OrbStack"
     ];
 
     homebrew = {
       additionalCasks = [
         "firefox@beta"
+        "google-chrome"
         "notion-calendar"
       ];
 
