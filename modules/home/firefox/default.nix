@@ -35,12 +35,12 @@ in
           isDefault = true;
           search = {
             force = true;
-            default = "Google";
-            privateDefault = "Google";
+            default = "google";
+            privateDefault = "google";
             engines = {
-              "Bing".metaData.hidden = true;
-              "DuckDuckGo".metaData.hidden = true;
-              "Wikipedia (en)".metaData.hidden = true;
+              "bing".metaData.hidden = true;
+              "ddg".metaData.hidden = true;
+              "wikipedia".metaData.hidden = true;
 
               "Nix Packages" = {
                 urls = [

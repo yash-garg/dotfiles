@@ -26,6 +26,8 @@ in
       example = [ "--ssh" ];
     };
 
+    setNameservers = mkBoolOpt true "Set nameservers to Tailscale's DNS servers";
+
     openFirewall = mkBoolOpt true "Open firewall for Tailscale";
 
     tailnet = mkOpt types.str "turtle-lake.ts.net" "Tailscale network name";
@@ -35,7 +37,7 @@ in
     # always allow traffic from Tailscale network
     networking.firewall.trustedInterfaces = mkIf cfg.openFirewall [ "tailscale0" ];
     networking = {
-      nameservers = [
+      nameservers = mkIf cfg.setNameservers [
         "100.100.100.100"
         "8.8.8.8"
         "1.1.1.1"
