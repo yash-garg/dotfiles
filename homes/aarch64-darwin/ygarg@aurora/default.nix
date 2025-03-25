@@ -1,8 +1,11 @@
-{ namespace, ... }:
+{
+  lib,
+  namespace,
+  ...
+}:
+with lib.${namespace};
 {
   imports = [ ../common.nix ];
 
-  profiles.${namespace} = {
-    git.userEmail = "ygarg@cloudflare.com";
-  };
+  profiles.${namespace} = { };
 }

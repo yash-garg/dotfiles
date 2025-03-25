@@ -11,10 +11,12 @@ let
 in
 {
   options.profiles.${namespace}.git = {
-    userEmail = mkOption {
-      type = types.str;
-      default = "me@yashgarg.dev";
-      description = "The email address to use for git commits";
+    includes = mkOption {
+      default = [ ];
+      type = types.listOf types.path;
+      description = ''
+        A list of files to include in the git configuration.
+      '';
     };
   };
 
@@ -29,7 +31,7 @@ in
         ".vscode/"
         ".idea/"
       ];
-      includes = [ { path = snowfall.fs.get-file ".gitconfig"; } ];
+      includes = [ { path = snowfall.fs.get-file ".gitconfig"; } ] ++ cfg.includes;
       userEmail = lib.mkForce cfg.userEmail;
     };
   };

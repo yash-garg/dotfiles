@@ -12,3 +12,9 @@
 for dir in "platform-tools" "cmdline-tools/latest/bin"; do
   [ -d "$ANDROID_HOME/$dir" ] && export PATH="$ANDROID_HOME/$dir:$PATH"
 done
+
+if command -v gpgconf >/dev/null 2>&1; then
+  export GPG_TTY=$(tty)
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  gpgconf --launch gpg-agent
+fi
