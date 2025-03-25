@@ -1,4 +1,21 @@
-_: {
+{
+  lib,
+  config,
+  namespace,
+  ...
+}:
+with lib;
+with lib.${namespace};
+let
+  username = config.${namespace}.user.name;
+in
+{
+  age.secrets.gitconfig = {
+    file = snowfall.fs.get-file "secrets/.gitconfig-freelance.age";
+    mode = "0500";
+    owner = username;
+  };
+
   dots = {
     dock.persistentApps = [
       "Firefox"
@@ -18,6 +35,12 @@ _: {
         Bitwarden = 1352778147;
       };
     };
+  };
+
+  snowfallorg.users.${username}.home.config = {
+    programs.git.includes = mkAfter [
+      { inherit (config.age.secrets.gitconfig) path; }
+    ];
   };
 
   system.stateVersion = 5;

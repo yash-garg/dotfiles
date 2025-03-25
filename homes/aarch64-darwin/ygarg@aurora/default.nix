@@ -1,11 +1,3 @@
-{
-  lib,
-  namespace,
-  ...
-}:
-with lib.${namespace};
-{
+_: {
   imports = [ ../common.nix ];
-
-  profiles.${namespace} = { };
 }
