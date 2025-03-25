@@ -25,19 +25,18 @@ in
       };
     };
 
-    services.gpg-agent = {
-      enable = pkgs.stdenv.isLinux;
+    services.gpg-agent = enabled // {
       enableScDaemon = true;
       enableSshSupport = true;
-      pinentryPackage = pkgs.pinentry-gnome3;
+      pinentryPackage = mkMerge [
+        (mkIf pkgs.stdenv.isLinux pkgs.pinentry-gnome3)
+        (mkIf pkgs.stdenv.isDarwin pkgs.pinentry_mac)
+      ];
     };
 
-    home.file.".gnupg/gpg-agent.conf" = {
-      enable = pkgs.stdenv.isDarwin;
-      text = ''
-        pinentry-program ${getExe pkgs.pinentry_mac}
-        enable-ssh-support
-      '';
+    home.sessionVariables = {
+      GPG_TTY = "$(tty)";
+      SSH_AUTH_SOCK = "${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket";
     };
   };
 }

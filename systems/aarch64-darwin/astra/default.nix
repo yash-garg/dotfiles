@@ -38,12 +38,9 @@ in
   };
 
   snowfallorg.users.${username}.home.config = {
-    programs = {
-      git.includes = mkAfter [
-        { inherit (config.age.secrets.gitconfig) path; }
-      ];
-      ssh.matchBlocks."github.com".identityFile = mkForce null;
-    };
+    programs.git.includes = mkAfter [
+      { inherit (config.age.secrets.gitconfig) path; }
+    ];
   };
 
   system.stateVersion = 5;
