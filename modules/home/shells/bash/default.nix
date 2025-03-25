@@ -41,5 +41,7 @@ in
       zellij.enableBashIntegration = false;
       zoxide.enableBashIntegration = true;
     };
+
+    services.gpg-agent.enableBashIntegration = profiles.gpg.enable;
   };
 }

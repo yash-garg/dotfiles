@@ -42,5 +42,7 @@ in
       zellij.enableZshIntegration = false;
       zoxide.enableZshIntegration = true;
     };
+
+    services.gpg-agent.enableZshIntegration = profiles.gpg.enable;
   };
 }

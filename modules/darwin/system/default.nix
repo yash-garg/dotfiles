@@ -1,9 +1,4 @@
 _: {
-  imports = [
-    ./dock.nix
-    ./finder.nix
-  ];
-
   system = {
     defaults = {
       controlcenter = {

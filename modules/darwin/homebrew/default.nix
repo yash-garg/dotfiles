@@ -31,14 +31,6 @@ in
       '';
     };
 
-    brews = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      description = ''
-        A list of brews to install.
-      '';
-    };
-
     masApps = mkOption {
       type = types.attrsOf types.int;
       default = { };
@@ -63,7 +55,7 @@ in
       brews = [
         "cocoapods"
         "ruby"
-      ] ++ cfg.brews;
+      ];
 
       caskArgs.appdir = "/Applications";
 
