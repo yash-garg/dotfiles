@@ -17,7 +17,7 @@ with lib.${namespace};
         };
       };
       "github.com" = {
-        identityFile = "$HOME/.ssh/git-ssh";
+        identityFile = "~/.ssh/git-ssh";
         extraOptions = {
           IgnoreUnknown = "UseKeychain";
           UseKeyChain = "yes";

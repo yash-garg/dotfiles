@@ -37,6 +37,11 @@ in
     };
   };
 
+  environment.variables = {
+    GPG_TTY = "$(tty)";
+    SSH_AUTH_SOCK = "$(gpgconf --list-dirs agent-ssh-socket)";
+  };
+
   snowfallorg.users.${username}.home.config = {
     programs.git.includes = mkAfter [
       { inherit (config.age.secrets.gitconfig) path; }

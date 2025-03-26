@@ -1,4 +1,5 @@
-_: {
+{ config, ... }:
+{
   dots = {
     dock.persistentApps = [
       "ChatGPT"
@@ -30,6 +31,11 @@ _: {
       };
     };
   };
+
+  # Uncomment after https://github.com/bitwarden/clients/issues/13075#issuecomment-2708826428
+  # environment.variables = {
+  #   SSH_AUTH_SOCK = "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
+  # };
 
   system.stateVersion = 5;
 }
