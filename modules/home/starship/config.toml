@@ -1,6 +1,6 @@
 add_newline = true
 command_timeout = 10000
-palette = "monokai"
+palette = "catppuccin_mocha"
 
 [username]
 show_always = true
