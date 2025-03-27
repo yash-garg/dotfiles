@@ -6,7 +6,6 @@
       dejavu_fonts
       pkgs.${namespace}.monolisa-nerdfonts
       nerd-fonts.caskaydia-cove
-      nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans
