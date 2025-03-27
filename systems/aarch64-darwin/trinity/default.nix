@@ -1,5 +1,4 @@
-_:
-{
+_: {
   dots = {
     dock.persistentApps = [
       "ChatGPT"
@@ -14,6 +13,7 @@ _:
       additionalCasks = [
         "arc"
         "chatgpt"
+        "claude"
         "discord"
         "notion-calendar"
         "slack"
