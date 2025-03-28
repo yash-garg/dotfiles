@@ -9,7 +9,7 @@ _: {
     };
 
     finder = {
-      AppleShowAllExtensions = true;
+      AppleShowAllExtensions = false;
       AppleShowAllFiles = true;
       _FXShowPosixPathInTitle = false;
       FXDefaultSearchScope = "SCcf";

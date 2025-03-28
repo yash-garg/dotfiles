@@ -24,10 +24,12 @@ _: {
         "com.apple.mouse.tapBehavior" = 1;
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.trackpad.forceClick" = true;
-        AppleInterfaceStyleSwitchesAutomatically = true;
+        ApplePressAndHoldEnabled = false;
+        AppleInterfaceStyle = "Dark";
+        AppleInterfaceStyleSwitchesAutomatically = false;
         AppleScrollerPagingBehavior = true;
         AppleWindowTabbingMode = "always";
-        InitialKeyRepeat = 15;
+        InitialKeyRepeat = 10;
         KeyRepeat = 1;
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticDashSubstitutionEnabled = false;
