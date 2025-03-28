@@ -11,6 +11,7 @@ _: {
 
     homebrew = {
       additionalCasks = [
+        "actual"
         "arc"
         "chatgpt"
         "claude"
