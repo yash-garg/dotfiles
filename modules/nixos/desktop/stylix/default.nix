@@ -62,12 +62,8 @@ in
     snowfallorg.users.yash.home.config = {
       stylix.targets = {
         alacritty = enabled;
-        bat = enabled;
-        btop = enabled;
-        fzf = enabled;
         vesktop = enabled;
         wezterm = enabled;
-        yazi = enabled;
         zellij = enabled;
       };
     };

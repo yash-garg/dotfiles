@@ -44,7 +44,7 @@
                     "background": "transparent",
                     "foreground": "#ff94df",
                     "style": "plain",
-                    "template": " <#ffffff>on</> <#DDB15F>git(</>{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}<#DDB15F>)</> <cyan>{{ if gt .Behind 0 }}↓{{ end }}{{ if gt .Ahead 0 }}↑{{ end }}</>",
+                    "template": " <white>on</> <#DDB15F>git(</>{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}<#DDB15F>)</> <cyan>{{ if gt .Behind 0 }}↓{{ end }}{{ if gt .Ahead 0 }}↑{{ end }}</>",
                     "properties": {
                         "branch_icon": "",
                         "commit_icon": "@",
