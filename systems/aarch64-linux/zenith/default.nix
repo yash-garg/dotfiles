@@ -119,9 +119,9 @@ in
     };
     bookmarks = [
       {
-        "Development" = [
+        Development = [
           {
-            "Calendar" = [
+            Calendar = [
               {
                 icon = "si-notion";
                 href = "https://calendar.notion.so/";
@@ -129,7 +129,7 @@ in
             ];
           }
           {
-            "Github" = [
+            Github = [
               {
                 icon = "si-github";
                 href = "https://github.com/";
@@ -145,13 +145,7 @@ in
             ];
           }
           {
-            "Tailscale" = [
-              {
-                icon = "si-tailscale";
-                href = "https://login.tailscale.com/admin/machines";
-              }
-            ];
-            "Raindrop" = [
+            Raindrop = [
               {
                 icon = "si-icloud";
                 href = "https://raindrop.io/";
@@ -161,9 +155,9 @@ in
         ];
       }
       {
-        "Social" = [
+        Social = [
           {
-            "Reddit" = [
+            Reddit = [
               {
                 icon = "si-reddit";
                 href = "https://reddit.com/";
@@ -171,7 +165,7 @@ in
             ];
           }
           {
-            "LinkedIn" = [
+            LinkedIn = [
               {
                 icon = "si-linkedin";
                 href = "https://linkedin.com/";
@@ -179,7 +173,7 @@ in
             ];
           }
           {
-            "Twitter" = [
+            Twitter = [
               {
                 icon = "si-twitter";
                 href = "https://x.com/";
@@ -187,7 +181,7 @@ in
             ];
           }
           {
-            "Mastodon" = [
+            Mastodon = [
               {
                 icon = "si-mastodon";
                 href = "https://elk.zone/";
@@ -195,7 +189,7 @@ in
             ];
           }
           {
-            "Pinterest" = [
+            Pinterest = [
               {
                 icon = "si-pinterest";
                 href = "https://pinterest.com/";
@@ -205,9 +199,9 @@ in
         ];
       }
       {
-        "Entertainment" = [
+        Entertainment = [
           {
-            "Netflix" = [
+            Netflix = [
               {
                 icon = "si-netflix";
                 href = "https://netflix.com/";
@@ -215,7 +209,7 @@ in
             ];
           }
           {
-            "Spotify" = [
+            Spotify = [
               {
                 icon = "si-spotify";
                 href = "https://spotify.com/";
@@ -223,7 +217,15 @@ in
             ];
           }
           {
-            "YouTube" = [
+            "Prime Video" = [
+              {
+                icon = "si-prime";
+                href = "https://primevideo.com/";
+              }
+            ];
+          }
+          {
+            YouTube = [
               {
                 icon = "si-youtube";
                 href = "https://youtube.com/";
@@ -233,25 +235,33 @@ in
         ];
       }
     ];
-    # - https://map.yashgarg.dev
-    # - https://actual.yashgarg.dev
-    # - https://mc.yashgarg.dev
-    # - jellyfin
-    # - miniflux
-    # - qbit
-    # - h5ai
-    # - home assistant
-    # - pi hole
-    # above services we need to categorize and place
-    # use proper groups below
     services = [
       {
-        "Utility" = [
+        Utility = [
           {
-            "PiHole" = {
+            "File Browser" = {
+              icon = "filebrowser.png";
+              href = "{{HOMEPAGE_VAR_FILEBROWSER_URL}}";
+              description = "File Browser";
+            };
+          }
+          {
+            MiniFlux = {
+              icon = "miniflux.png";
+              href = "{{HOMEPAGE_VAR_MINIFLUX_URL}}";
+              description = "RSS Reader";
+              widget = {
+                type = "miniflux";
+                url = "{{HOMEPAGE_VAR_MINIFLUX_URL}}";
+                key = "{{HOMEPAGE_VAR_MINIFLUX_API_KEY}}";
+              };
+            };
+          }
+          {
+            "Pi-hole" = {
               icon = "pi-hole.png";
               href = "{{HOMEPAGE_VAR_PIHOLE_URL}}/admin/";
-              description = "Adblocker for the network";
+              description = "Network Wide Ad Blocker";
               widget = {
                 type = "pihole";
                 url = "{{HOMEPAGE_VAR_PIHOLE_URL}}";
@@ -260,19 +270,93 @@ in
               };
             };
           }
+          {
+            Tailscale = {
+              icon = "tailscale.png";
+              href = "https://login.tailscale.com/admin/machines";
+              description = "VPN";
+              widget = {
+                type = "tailscale";
+                deviceid = "{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID}}";
+                key = "{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}";
+              };
+            };
+          }
         ];
       }
       {
-        "Media" = [
+        Media = [
+          {
+            QbitTorrent = {
+              icon = "qbittorrent.png";
+              href = "{{HOMEPAGE_VAR_QBITTORRENT_URL}}";
+              description = "Torrent Client";
+              widget = {
+                type = "qbittorrent";
+                url = "{{HOMEPAGE_VAR_QBITTORRENT_URL}}";
+                username = "{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}";
+                password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
+                enableLeechProgress = true;
+              };
+            };
+          }
           {
             Jellyfin = {
               icon = "jellyfin.png";
               href = "{{HOMEPAGE_VAR_JELLYFIN_URL}}";
-              description = "Media server";
+              description = "Media Server";
               widget = {
                 type = "jellyfin";
                 url = "{{HOMEPAGE_VAR_JELLYFIN_URL}}";
                 key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
+              };
+            };
+          }
+        ];
+      }
+      {
+        Others = [
+          {
+            "Actual Budget" = {
+              icon = "actual-budget.png";
+              href = "{{HOMEPAGE_VAR_ACTUAL_BUDGET_URL}}";
+              description = "Budget Tracker";
+            };
+          }
+          {
+            Plausible = {
+              icon = "plausible.png";
+              href = "{{HOMEPAGE_VAR_PLAUSIBLE_URL}}";
+              description = "Web Analytics";
+            };
+          }
+          {
+            Kener = {
+              icon = "uptime-kuma.png";
+              href = "{{HOMEPAGE_VAR_KENER_URL}}";
+              description = "Status Page";
+            };
+          }
+          {
+            "Home Assistant" = {
+              icon = "home-assistant.png";
+              href = "{{HOMEPAGE_VAR_HOMEASSISTANT_URL}}";
+              description = "Home Automation";
+              widget = {
+                type = "homeassistant";
+                url = "{{HOMEPAGE_VAR_HOMEASSISTANT_URL}}";
+                key = "{{HOMEPAGE_VAR_HOMEASSISTANT_API_KEY}}";
+              };
+            };
+          }
+          {
+            Minecraft = {
+              icon = "minecraft.png";
+              href = "https://map.yashgarg.dev/";
+              description = "Minecraft Server";
+              widget = {
+                type = "minecraft";
+                url = "{{HOMEPAGE_VAR_MINECRAFT_URL}}";
               };
             };
           }
