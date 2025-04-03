@@ -111,6 +111,9 @@ in
     environmentFile = config.age.secrets.homepage.path;
     listenPort = 3000;
     openFirewall = true;
+    customCSS = ''
+      #revalidate { display: none; }
+    '';
     settings = {
       title = "Yash's Homelab";
       description = "A collection of services running on my homelab.";
@@ -148,7 +151,7 @@ in
             Raindrop = [
               {
                 icon = "si-icloud";
-                href = "https://raindrop.io/";
+                href = "https://app.raindrop.io/";
               }
             ];
           }
@@ -287,7 +290,7 @@ in
       {
         Media = [
           {
-            QbitTorrent = {
+            qBitTorrent = {
               icon = "qbittorrent.png";
               href = "{{HOMEPAGE_VAR_QBITTORRENT_URL}}";
               description = "Torrent Client";
@@ -369,9 +372,26 @@ in
           cpu = true;
           memory = true;
           disk = "/";
-          cputemp = true;
-          uptime = true;
+          cputemp = false;
+          uptime = false;
           expanded = true;
+        };
+      }
+      {
+        openmeteo = {
+          label = "Weather";
+          latitude = "20.5937";
+          longitude = "-78.9629";
+          timezone = "Asia/Kolkata";
+          units = "metric";
+          cache = 5;
+          format.maximumFractionDigits = 1;
+        };
+      }
+      {
+        search = {
+          provider = "google";
+          target = "_blank";
         };
       }
     ];
