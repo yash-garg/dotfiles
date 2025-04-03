@@ -18,8 +18,7 @@ in
   ];
 
   age.secrets = {
-    cloudflared.file = get-secret "cloudflared.json";
-    cloudflared-cert.file = get-secret "cloudflared-cert.pem";
+    cloudflared.file = get-secret "cloudflared";
     user-password.file = get-secret "user";
     plausible.file = get-secret "plausible";
     tsauthkey.file = get-secret "tailscale";
@@ -67,21 +66,8 @@ in
         secretKeybaseFile = config.age.secrets.plausible.path;
       };
     };
-  };
 
-  services.cloudflared = enabled // {
-    tunnels = {
-      "cfb054a0-f0d9-4a2f-97b8-d659b1da4498" = {
-        certificateFile = config.age.secrets.cloudflared-cert.path;
-        credentialsFile = config.age.secrets.cloudflared.path;
-        ingress = {
-          "analytics.yashgarg.dev" = {
-            service = "http://localhost:8181";
-          };
-        };
-        default = "http_status:404";
-      };
-    };
+    virtualisation = enabled;
   };
 
   users.users.yash = {
@@ -104,6 +90,20 @@ in
       ];
     }
   ];
+
+  virtualisation.oci-containers.containers.cloudflared-tunnel = {
+    image = "cloudflare/cloudflared:latest";
+    cmd = [
+      "tunnel"
+      "--no-autoupdate"
+      "run"
+    ];
+    extraOptions = [
+      "--network"
+      "host"
+    ];
+    environmentFiles = [ config.age.secrets.cloudflared.path ];
+  };
 
   # Disable autologin.
   services.getty.autologinUser = null;
