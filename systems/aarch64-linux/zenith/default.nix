@@ -71,19 +71,27 @@ in
     virtualisation = enabled;
   };
 
-  services.caddy = {
-    enable = true;
+  services.caddy = enabled // {
     enableReload = false;
     environmentFile = config.age.secrets.tsauthkey-env.path;
     package = pkgs.${namespace}.caddy-tailscale;
+    logFormat = ''
+      output file /var/log/caddy/caddy_main.log {
+        roll_size 100MiB
+        roll_keep 5
+        roll_keep_for 100d
+      }
+      format json
+      level INFO
+    '';
     virtualHosts = {
-      "https://dash.turtle-lake.ts.net" = {
+      "https://homepage.turtle-lake.ts.net" = {
         extraConfig = ''
           bind tailscale/homepage
           reverse_proxy :3000
         '';
       };
-      "https://analytics.turtle-lake.ts.net" = {
+      "https://plausible.turtle-lake.ts.net" = {
         extraConfig = ''
           bind tailscale/plausible
           reverse_proxy :8181

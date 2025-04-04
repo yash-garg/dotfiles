@@ -75,19 +75,18 @@ in
     ];
   };
 
-  services.caddy = {
-    enable = true;
+  services.caddy = enabled // {
     enableReload = false;
     environmentFile = config.age.secrets.tsauthkey-env.path;
     package = pkgs.${namespace}.caddy-tailscale;
     virtualHosts = {
       "https://qbit.turtle-lake.ts.net" = {
         extraConfig = ''
-          bind tailscale/qbittorrent
+          bind tailscale/qbit
           reverse_proxy :3000
         '';
       };
-      "https://jf.turtle-lake.ts.net" = {
+      "https://jellyfin.turtle-lake.ts.net" = {
         extraConfig = ''
           bind tailscale/jellyfin
           reverse_proxy :8096
