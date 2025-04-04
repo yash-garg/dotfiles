@@ -2,6 +2,8 @@
 
 with lib;
 rec {
+  getSecret = name: hostName: snowfall.fs.get-file "secrets/${hostName}/${name}.age";
+
   ## Create a NixOS module option.
   ##
   ## ```nix

@@ -9,7 +9,6 @@ with lib;
 with lib.${namespace};
 let
   hostName = "zenith";
-  get-secret = name: snowfall.fs.get-file "secrets/${hostName}/${name}.age";
 in
 {
   imports = [
@@ -18,11 +17,12 @@ in
   ];
 
   age.secrets = {
-    cloudflared.file = get-secret "cloudflared";
-    homepage.file = get-secret "homepage.env";
-    user-password.file = get-secret "user";
-    plausible.file = get-secret "plausible";
-    tsauthkey.file = get-secret "tailscale";
+    cloudflared.file = getSecret "cloudflared" hostName;
+    homepage.file = getSecret "homepage.env" hostName;
+    user-password.file = getSecret "user" hostName;
+    plausible.file = getSecret "plausible" hostName;
+    tsauthkey.file = getSecret "tailscale" hostName;
+    tsauthkey-env.file = getSecret "tailscale.env" hostName;
   };
 
   boot = {
@@ -69,6 +69,27 @@ in
     };
 
     virtualisation = enabled;
+  };
+
+  services.caddy = {
+    enable = true;
+    enableReload = false;
+    environmentFile = config.age.secrets.tsauthkey-env.path;
+    package = pkgs.${namespace}.caddy-tailscale;
+    virtualHosts = {
+      "https://dash.turtle-lake.ts.net" = {
+        extraConfig = ''
+          bind tailscale/homepage
+          reverse_proxy :3000
+        '';
+      };
+      "https://analytics.turtle-lake.ts.net" = {
+        extraConfig = ''
+          bind tailscale/plausible
+          reverse_proxy :8181
+        '';
+      };
+    };
   };
 
   users.users.yash = {

@@ -7,18 +7,24 @@
 }:
 with lib;
 with lib.${namespace};
+let
+  hostName = "cosmos";
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  age.secrets.passwordfile-cosmos.file = snowfall.fs.get-file "secrets/cosmos/user.age";
-  age.secrets.tsauthkey.file = snowfall.fs.get-file "secrets/cosmos/tailscale.age";
+  age.secrets = {
+    passwordfile-cosmos.file = getSecret "user" hostName;
+    tsauthkey.file = getSecret "tailscale" hostName;
+    tsauthkey-env.file = getSecret "tailscale.env" hostName;
+  };
 
   boot.initrd.systemd.tpm2.enable = mkForce false;
 
   dots = {
     hardware.networking = enabled // {
+      inherit hostName;
       extra = false;
-      hostName = "cosmos";
       tcpPorts = [
         80
         90
@@ -67,6 +73,27 @@ with lib.${namespace};
       bluez
       bluez-tools
     ];
+  };
+
+  services.caddy = {
+    enable = true;
+    enableReload = false;
+    environmentFile = config.age.secrets.tsauthkey-env.path;
+    package = pkgs.${namespace}.caddy-tailscale;
+    virtualHosts = {
+      "https://qbit.turtle-lake.ts.net" = {
+        extraConfig = ''
+          bind tailscale/qbittorrent
+          reverse_proxy :3000
+        '';
+      };
+      "https://jf.turtle-lake.ts.net" = {
+        extraConfig = ''
+          bind tailscale/jellyfin
+          reverse_proxy :8096
+        '';
+      };
+    };
   };
 
   topology.self.name = "Raspberry Pi 5";
