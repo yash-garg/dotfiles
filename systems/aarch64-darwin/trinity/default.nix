@@ -14,11 +14,9 @@ _: {
         "actual"
         "arc"
         "chatgpt"
-        "claude"
         "discord"
         "notion-calendar"
         "slack"
-        "transmission"
       ];
 
       masApps = {
