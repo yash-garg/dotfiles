@@ -11,7 +11,6 @@ with lib.${namespace};
     addKeysToAgent = "yes";
     package = pkgs.openssh_hpn;
     serverAliveInterval = 60;
-    startAgent = true;
     matchBlocks = {
       "*" = {
         sendEnv = [ "COLORTERM" ];
