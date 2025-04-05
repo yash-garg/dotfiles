@@ -16,4 +16,6 @@ window-width = 120
 shell-integration = zsh
 shell-integration-features = no-cursor
 macos-titlebar-style = transparent
+macos-icon = blueprint
+macos-icon-frame = chrome
 window-padding-x = 10
