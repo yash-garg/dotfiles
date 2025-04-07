@@ -17,14 +17,12 @@ with lib.${namespace};
         setEnv = {
           TERM = "xterm-256color";
         };
-      };
-      "github.com" = {
-        identityFile = "~/.ssh/git-ssh";
         extraOptions = mkIf pkgs.stdenv.isDarwin {
           IgnoreUnknown = "UseKeychain";
-          UseKeyChain = "yes";
+          UseKeychain = "yes";
         };
       };
+      "github.com".identityFile = "~/.ssh/git-ssh";
     };
   };
 }
