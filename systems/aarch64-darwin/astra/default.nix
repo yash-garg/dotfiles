@@ -26,6 +26,7 @@ in
     homebrew = {
       additionalCasks = [
         "chromedriver"
+        "cursor"
         "firefox@beta"
         "google-chrome"
         "notion-calendar"
