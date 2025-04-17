@@ -17,6 +17,7 @@ _: {
         "discord"
         "notion-calendar"
         "slack"
+        "webp"
       ];
 
       masApps = {
