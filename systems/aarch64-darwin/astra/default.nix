@@ -21,6 +21,7 @@ in
       "Firefox"
       "Google Chrome"
       "OrbStack"
+      "Telegram"
     ];
 
     homebrew = {
@@ -29,12 +30,12 @@ in
         "cursor"
         "firefox@beta"
         "google-chrome"
-        "notion-calendar"
       ];
 
       masApps = {
         Amphetamine = 937984704;
         Bitwarden = 1352778147;
+        Telegram = 747648890;
       };
     };
   };
