@@ -16,6 +16,7 @@ _: {
         "chatgpt"
         "discord"
         "notion-calendar"
+        "obsidian"
         "slack"
         "webp"
       ];
