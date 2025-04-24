@@ -5,15 +5,15 @@
     "bg+" = "-1";
     fg = "-1";
     "fg+" = "-1";
-    hl = "16";
-    "hl+" = "17";
-    info = "21";
-    prompt = "2";
-    pointer = "-1";
-    marker = "21";
-    spinner = "21";
-    header = "1";
-    border = "4";
+    hl = "red";
+    "hl+" = "red";
+    info = "blue";
+    prompt = "green";
+    pointer = "cyan";
+    marker = "blue";
+    spinner = "blue";
+    header = "green";
+    border = "blue";
     scrollbar = "dim";
   };
 }

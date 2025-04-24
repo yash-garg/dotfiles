@@ -15,10 +15,10 @@ _: {
         "arc"
         "chatgpt"
         "discord"
+        "flutter"
         "notion-calendar"
         "obsidian"
         "slack"
-        "webp"
       ];
 
       masApps = {

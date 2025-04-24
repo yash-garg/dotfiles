@@ -55,6 +55,7 @@ in
       brews = [
         "cocoapods"
         "ruby"
+        "webp"
       ];
 
       caskArgs.appdir = "/Applications";
