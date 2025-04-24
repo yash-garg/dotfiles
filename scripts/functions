@@ -8,7 +8,7 @@ function v() {
     fi
 }
 
-function lg() {
+function glog() {
     count=$1
 
     if [ -z "$count" ]; then
