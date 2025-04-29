@@ -1,8 +1,11 @@
 {
+  lib,
   config,
   namespace,
   ...
 }:
+with lib;
+with lib.${namespace};
 let
   inherit (config.${namespace}.services.authelia) domain;
 in
@@ -33,21 +36,32 @@ in
     ];
   };
 
-  authentication_backend = {
-    password_reset.disable = true;
-    refresh_interval = "5m";
-    file = {
-      inherit (config.age.secrets.usersFile) path;
-      password = {
-        algorithm = "argon2id";
-        iterations = 1;
-        key_length = 32;
-        salt_length = 16;
-        memory = 1024;
-        parallelism = 8;
+  authentication_backend =
+    let
+      lldapEnabled = config.${namespace}.services.lldap.enable;
+    in
+    {
+      password_reset.disable = true;
+      refresh_interval = "5m";
+      file = mkIf (!lldapEnabled) {
+        inherit (config.age.secrets.usersFile) path;
+        password = {
+          algorithm = "argon2id";
+          iterations = 1;
+          key_length = 32;
+          salt_length = 16;
+          memory = 1024;
+          parallelism = 8;
+        };
+      };
+      ldap = mkIf lldapEnabled {
+        address = "ldap://localhost:3890";
+        base_dn = "dc=yashgarg,dc=dev";
+        users_filter = "(&({username_attribute}={input})(objectClass=person))";
+        groups_filter = "(member={dn})";
+        user = "uid=admin,ou=people,dc=yashgarg,dc=dev";
       };
     };
-  };
 
   log = {
     level = "debug";
@@ -70,6 +84,13 @@ in
     ban_time = "5m";
   };
 
+  storage.postgres = {
+    address = "unix:///run/postgresql";
+    database = "authelia-main";
+    username = "authelia-main";
+    password = "authelia-main";
+  };
+
   server = {
     disable_healthcheck = true;
     endpoints.authz.forward-auth.implementation = "ForwardAuth";
@@ -82,8 +103,6 @@ in
       default_redirection_url = "https://${domain}/";
     }
   ];
-
-  storage.local.path = "/var/lib/authelia-main/authelia.sqlite";
 
   telemetry.metrics = {
     enabled = true;

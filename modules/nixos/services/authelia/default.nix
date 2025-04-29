@@ -42,6 +42,9 @@ in
         notifierSettings = secretAttrs // {
           file = getSecret "notifier.yml" hostPath;
         };
+        ldapPassword = secretAttrs // {
+          file = getSecret "ldap" hostPath;
+        };
       };
 
     services.caddy.virtualHosts."auth.${cfg.domain}" = {
@@ -52,17 +55,54 @@ in
 
     services.authelia = {
       instances.main = enabled // {
+        environmentVariables = {
+          AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.age.secrets.ldapPassword.path;
+        };
         secrets = {
           jwtSecretFile = config.age.secrets.jwtSecret.path;
           sessionSecretFile = config.age.secrets.sessionSecret.path;
           storageEncryptionKeyFile = config.age.secrets.storageEncryptionKey.path;
         };
         settings = import ./settings.nix {
+          inherit lib;
           inherit config;
           inherit namespace;
         };
         settingsFiles = [ config.age.secrets.notifierSettings.path ];
       };
     };
+
+    services.postgresql = enabled // {
+      ensureDatabases = [
+        "authelia-main"
+        "lldap"
+      ];
+      ensureUsers = [
+        {
+          name = "root";
+          ensureClauses.superuser = true;
+        }
+        {
+          name = "authelia-main";
+          ensureDBOwnership = true;
+        }
+        {
+          name = "lldap";
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+
+    systemd.services.authelia-main =
+      let
+        dependencies = [
+          "lldap.service"
+          "postgresql.service"
+        ];
+      in
+      {
+        after = dependencies;
+        requires = dependencies;
+      };
   };
 }

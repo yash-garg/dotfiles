@@ -43,6 +43,12 @@ in
   "zenith/authelia/storage.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/users.yml.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/notifier.yml.age".publicKeys = users ++ [ zenith ];
+  "zenith/authelia/ldap.age".publicKeys = users ++ [ zenith ];
+
+  "zenith/lldap/jwt.age".publicKeys = users ++ [ zenith ];
+  "zenith/lldap/user.age".publicKeys = users ++ [ zenith ];
+  "zenith/lldap/key-seed.age".publicKeys = users ++ [ zenith ];
+
   "zenith/homepage.env.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];
   "zenith/tailscale.age".publicKeys = users ++ [ zenith ];

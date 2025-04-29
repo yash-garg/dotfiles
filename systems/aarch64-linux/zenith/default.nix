@@ -51,6 +51,8 @@ in
     services = {
       authelia = enabled;
 
+      lldap = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;
