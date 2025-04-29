@@ -15,11 +15,18 @@ in
 
   access_control = {
     default_policy = "deny";
+    networks = [
+      {
+        name = "local";
+        networks = [
+          "127.0.0.0/8"
+        ];
+      }
+    ];
     rules = [
       {
         domain = "auth.${domain}";
-        policy = "two_factor";
-        networks = "127.0.0.1";
+        policy = "bypass";
       }
     ];
   };
@@ -135,7 +142,7 @@ in
     enable_passkey_login = true;
     display_name = "Authelia";
     attestation_conveyance_preference = "direct";
-    selection_criteria.user_verification = "required";
+    selection_criteria.user_verification = "preferred";
     timeout = "60s";
   };
 }
