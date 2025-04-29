@@ -46,6 +46,8 @@ in
     server = enabled;
 
     services = {
+      authelia = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;
@@ -71,113 +73,115 @@ in
     virtualisation = enabled;
   };
 
-  services.caddy = enabled // {
-    enableReload = false;
-    environmentFile = config.age.secrets.tsauthkey-env.path;
-    package = pkgs.${namespace}.caddy-tailscale;
-    logFormat = ''
-      output file /var/log/caddy/caddy_main.log {
-        roll_size 100MiB
-        roll_keep 5
-        roll_keep_for 100d
-      }
-      format json
-      level INFO
-    '';
-    virtualHosts = {
-      "https://plausible.${tailnet}" = {
-        extraConfig = ''
-          bind tailscale/plausible
-          reverse_proxy :8181
-        '';
+  services = {
+    caddy = enabled // {
+      enableReload = false;
+      environmentFile = config.age.secrets.tsauthkey-env.path;
+      package = pkgs.${namespace}.caddy-tailscale;
+      logFormat = ''
+        output file /var/log/caddy/caddy_main.log {
+          roll_size 100MiB
+          roll_keep 5
+          roll_keep_for 100d
+        }
+        format json
+        level INFO
+      '';
+      virtualHosts = {
+        "https://plausible.${tailnet}" = {
+          extraConfig = ''
+            bind tailscale/plausible
+            reverse_proxy :8181
+          '';
+        };
       };
     };
-  };
 
-  services.gatus = enabled // {
-    settings = {
-      web.port = 3333;
-      connectivity.checker = {
-        target = "1.1.1.1:53";
-        interval = "60s";
+    gatus = enabled // {
+      settings = {
+        web.port = 3333;
+        connectivity.checker = {
+          target = "1.1.1.1:53";
+          interval = "60s";
+        };
+        ui = {
+          title = "Homelab Status | Yash Garg";
+          description = "Monitoring for My Services";
+          header = "Yash's Homelab Status";
+          link = "https://app.yashgarg.dev";
+          dark-mode = true;
+        };
+        endpoints =
+          let
+            monitorPoints = [
+              {
+                name = "Actual Budget";
+                url = "http://vortex.${tailnet}:5006";
+              }
+              {
+                name = "Cadvisor";
+                url = "http://nova.turtle-lake.ts.net";
+              }
+              {
+                name = "Grafana";
+                url = "http://nova.${tailnet}:3000";
+              }
+              {
+                name = "Jellyfin";
+                url = "http://nova.${tailnet}:8096";
+              }
+              {
+                name = "Miniflux";
+                url = "http://nova.${tailnet}:5600";
+              }
+              {
+                name = "Minecraft Map";
+                url = "http://vortex.${tailnet}:81";
+              }
+              {
+                name = "Prometheus";
+                url = "http://nova.${tailnet}:9090";
+              }
+              {
+                name = "Plausible Analytics";
+                url = "https://plausible.${tailnet}";
+              }
+              {
+                name = "Prowlarr";
+                url = "http://nova.${tailnet}:9696";
+              }
+              {
+                name = "Radarr";
+                url = "http://nova.${tailnet}:7878";
+              }
+              {
+                name = "Sonarr";
+                url = "http://nova.${tailnet}:8989";
+              }
+              {
+                name = "qBittorrent";
+                url = "http://nova.${tailnet}:8080";
+              }
+              {
+                name = "unRAID";
+                url = "http://nova.${tailnet}";
+              }
+            ];
+          in
+          map (endpoint: {
+            inherit (endpoint) name url;
+            ui = {
+              hide-conditions = true;
+              hide-hostname = true;
+              hide-url = true;
+            };
+            interval = "10m";
+            conditions = [
+              "[STATUS] == 200"
+              "[RESPONSE_TIME] < 500"
+            ];
+          }) monitorPoints;
       };
-      ui = {
-        title = "Homelab Status | Yash Garg";
-        description = "Monitoring for My Services";
-        header = "Yash's Homelab Status";
-        link = "https://app.yashgarg.dev";
-        dark-mode = true;
-      };
-      endpoints =
-        let
-          monitorPoints = [
-            {
-              name = "Actual Budget";
-              url = "http://vortex.${tailnet}:5006";
-            }
-            {
-              name = "Cadvisor";
-              url = "http://nova.turtle-lake.ts.net";
-            }
-            {
-              name = "Grafana";
-              url = "http://nova.${tailnet}:3000";
-            }
-            {
-              name = "Jellyfin";
-              url = "http://nova.${tailnet}:8096";
-            }
-            {
-              name = "Miniflux";
-              url = "http://nova.${tailnet}:5600";
-            }
-            {
-              name = "Minecraft Map";
-              url = "http://vortex.${tailnet}:81";
-            }
-            {
-              name = "Prometheus";
-              url = "http://nova.${tailnet}:9090";
-            }
-            {
-              name = "Plausible Analytics";
-              url = "https://plausible.${tailnet}";
-            }
-            {
-              name = "Prowlarr";
-              url = "http://nova.${tailnet}:9696";
-            }
-            {
-              name = "Radarr";
-              url = "http://nova.${tailnet}:7878";
-            }
-            {
-              name = "Sonarr";
-              url = "http://nova.${tailnet}:8989";
-            }
-            {
-              name = "qBittorrent";
-              url = "http://nova.${tailnet}:8080";
-            }
-            {
-              name = "unRAID";
-              url = "http://nova.${tailnet}";
-            }
-          ];
-        in
-        map (endpoint: {
-          inherit (endpoint) name url;
-          ui = {
-            hide-conditions = true;
-            hide-hostname = true;
-            hide-url = true;
-          };
-          interval = "10m";
-          conditions = [
-            "[STATUS] == 200"
-            "[RESPONSE_TIME] < 500"
-          ];
-        }) monitorPoints;
     };
   };
 

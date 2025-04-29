@@ -38,6 +38,9 @@ in
   "nova/cifs.age".publicKeys = users ++ [ nova ];
   "nova/samba.age".publicKeys = users ++ [ nova ];
 
+  "zenith/authelia/jwt.age".publicKeys = users ++ [ zenith ];
+  "zenith/authelia/session.age".publicKeys = users ++ [ zenith ];
+  "zenith/authelia/storage.age".publicKeys = users ++ [ zenith ];
   "zenith/cloudflared.age".publicKeys = users ++ [ zenith ];
   "zenith/homepage.env.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];
