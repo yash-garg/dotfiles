@@ -39,16 +39,16 @@ in
         usersFile = secretAttrs // {
           file = getSecret "users.yml" hostPath;
         };
-        oidcIssuerPrivateKey = secretAttrs // {
-          file = getSecret "oidc" hostPath;
-        };
-        oidcHmacSecretKey = secretAttrs // {
-          file = getSecret "hmac" hostPath;
-        };
         notifierSettings = secretAttrs // {
           file = getSecret "notifier.yml" hostPath;
         };
       };
+
+    services.caddy.virtualHosts."auth.${cfg.domain}" = {
+      extraConfig = ''
+        reverse_proxy :9091
+      '';
+    };
 
     services.authelia = {
       instances.main = enabled // {
@@ -56,8 +56,6 @@ in
           jwtSecretFile = config.age.secrets.jwtSecret.path;
           sessionSecretFile = config.age.secrets.sessionSecret.path;
           storageEncryptionKeyFile = config.age.secrets.storageEncryptionKey.path;
-          oidcIssuerPrivateKeyFile = config.age.secrets.oidcIssuerPrivateKey.path;
-          oidcHmacSecretFile = config.age.secrets.oidcHmacSecretKey.path;
         };
         settings = import ./settings.nix {
           inherit config;

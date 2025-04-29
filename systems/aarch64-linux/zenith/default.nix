@@ -8,6 +8,7 @@
 with lib;
 with lib.${namespace};
 let
+  domain = "yashgarg.dev";
   hostName = "zenith";
   inherit (config.${namespace}.services.tailscale) tailnet;
 in
@@ -18,11 +19,9 @@ in
   ];
 
   age.secrets = {
-    cloudflared.file = getSecret "cloudflared" hostName;
     user-password.file = getSecret "user" hostName;
     plausible.file = getSecret "plausible" hostName;
     tsauthkey.file = getSecret "tailscale" hostName;
-    tsauthkey-env.file = getSecret "tailscale.env" hostName;
   };
 
   boot = {
@@ -38,6 +37,10 @@ in
 
   networking = {
     domain = "";
+    firewall.allowedTCPPorts = [
+      80
+      443
+    ];
     networkmanager = enabled;
     inherit hostName;
   };
@@ -65,7 +68,7 @@ in
       };
 
       plausible = enabled // {
-        baseUrl = "analytics.yashgarg.dev";
+        baseUrl = domain;
         secretKeybaseFile = config.age.secrets.plausible.path;
       };
     };
@@ -75,9 +78,9 @@ in
 
   services = {
     caddy = enabled // {
+      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
+      email = "spam@${domain}";
       enableReload = false;
-      environmentFile = config.age.secrets.tsauthkey-env.path;
-      package = pkgs.${namespace}.caddy-tailscale;
       logFormat = ''
         output file /var/log/caddy/caddy_main.log {
           roll_size 100MiB
@@ -87,11 +90,84 @@ in
         format json
         level INFO
       '';
+      extraConfig = ''
+        (auth) {
+          forward_auth :9091 {
+            uri /api/authz/forward-auth
+            copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+          }
+        }
+      '';
       virtualHosts = {
-        "https://plausible.${tailnet}" = {
+        "status.${domain}" = {
           extraConfig = ''
-            bind tailscale/plausible
-            reverse_proxy :8181
+            reverse_proxy :3333
+          '';
+        };
+        "unraid.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31
+          '';
+        };
+        "qbit.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:8080
+          '';
+        };
+        "stats.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:3000
+          '';
+        };
+        "radarr.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:7878
+          '';
+        };
+        "prometheus.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:9090
+          '';
+        };
+        "cadvisor.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:8081
+          '';
+        };
+        "stream.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:8096
+          '';
+        };
+        "prowlarr.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:9696
+          '';
+        };
+        "sonarr.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:8989
+          '';
+        };
+        "rss.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.78.157.31:5600
+          '';
+        };
+        "map.${domain}" = {
+          extraConfig = ''
+            import auth
+            reverse_proxy 100.92.154.106:81
           '';
         };
       };
@@ -205,20 +281,6 @@ in
       ];
     }
   ];
-
-  virtualisation.oci-containers.containers.cloudflared-tunnel = {
-    image = "cloudflare/cloudflared:latest";
-    cmd = [
-      "tunnel"
-      "--no-autoupdate"
-      "run"
-    ];
-    extraOptions = [
-      "--network"
-      "host"
-    ];
-    environmentFiles = [ config.age.secrets.cloudflared.path ];
-  };
 
   # Disable autologin.
   services.getty.autologinUser = null;

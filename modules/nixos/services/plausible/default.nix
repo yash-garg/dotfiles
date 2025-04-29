@@ -15,7 +15,7 @@ in
 
     baseUrl = mkOption {
       type = types.str;
-      default = "plausible.yashgarg.dev";
+      default = "yashgarg.dev";
       description = "Base URL for the plausible server";
     };
 
@@ -37,9 +37,15 @@ in
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
+    services.caddy.virtualHosts."analytics.${cfg.baseUrl}" = {
+      extraConfig = ''
+        reverse_proxy :${toString cfg.port}
+      '';
+    };
+
     services.plausible = enabled // {
       server = {
-        baseUrl = "https://${cfg.baseUrl}";
+        baseUrl = "https://analytics.${cfg.baseUrl}";
         disableRegistration = "invite_only";
         inherit (cfg) port;
         inherit (cfg) secretKeybaseFile;
