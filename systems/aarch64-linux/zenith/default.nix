@@ -9,7 +9,7 @@ with lib;
 with lib.${namespace};
 let
   hostName = "zenith";
-  tailnet = config.${namespace}.services.tailscale.tailnet;
+  inherit (config.${namespace}.services.tailscale) tailnet;
 in
 {
   imports = [

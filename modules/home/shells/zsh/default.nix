@@ -26,7 +26,7 @@ in
           path = "$HOME/.zsh_history";
           ignoreDups = true;
         };
-        initExtra = "source $HOME/.shell-init";
+        initContent = "source $HOME/.shell-init";
       };
 
       atuin.enableZshIntegration = true;
