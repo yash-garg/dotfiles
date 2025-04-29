@@ -9,6 +9,7 @@ with lib;
 with lib.${namespace};
 let
   hostName = "zenith";
+  tailnet = config.${namespace}.services.tailscale.tailnet;
 in
 {
   imports = [
@@ -84,7 +85,7 @@ in
       level INFO
     '';
     virtualHosts = {
-      "https://plausible.turtle-lake.ts.net" = {
+      "https://plausible.${tailnet}" = {
         extraConfig = ''
           bind tailscale/plausible
           reverse_proxy :8181
@@ -100,36 +101,43 @@ in
         target = "1.1.1.1:53";
         interval = "60s";
       };
+      ui = {
+        title = "Homelab Status | Yash Garg";
+        description = "Monitoring for My Services";
+        header = "Yash's Homelab Status";
+        link = "https://app.yashgarg.dev";
+        dark-mode = true;
+      };
       endpoints =
         let
           monitorPoints = [
             {
               name = "Actual Budget";
-              url = "https://vortex.${tailnet}:5006";
+              url = "http://vortex.${tailnet}:5006";
             }
             {
               name = "Cadvisor";
-              url = "https://nova.turtle-lake.ts.net";
+              url = "http://nova.turtle-lake.ts.net";
             }
             {
               name = "Grafana";
-              url = "https://nova.${tailnet}:3000";
+              url = "http://nova.${tailnet}:3000";
             }
             {
               name = "Jellyfin";
-              url = "https://nova.${tailnet}:8096";
+              url = "http://nova.${tailnet}:8096";
             }
             {
               name = "Miniflux";
-              url = "https://nova.${tailnet}:5600";
+              url = "http://nova.${tailnet}:5600";
             }
             {
               name = "Minecraft Map";
-              url = "https://vortex.${tailnet}:81";
+              url = "http://vortex.${tailnet}:81";
             }
             {
               name = "Prometheus";
-              url = "https://nova.${tailnet}:9090";
+              url = "http://nova.${tailnet}:9090";
             }
             {
               name = "Plausible Analytics";
@@ -137,33 +145,37 @@ in
             }
             {
               name = "Prowlarr";
-              url = "https://nova.${tailnet}:9696";
+              url = "http://nova.${tailnet}:9696";
             }
             {
               name = "Radarr";
-              url = "https://nova.${tailnet}:7878";
+              url = "http://nova.${tailnet}:7878";
             }
             {
               name = "Sonarr";
-              url = "https://nova.${tailnet}:8989";
+              url = "http://nova.${tailnet}:8989";
             }
             {
               name = "qBittorrent";
-              url = "https://nova.${tailnet}:8080";
+              url = "http://nova.${tailnet}:8080";
             }
             {
               name = "unRAID";
-              url = "https://nova.${tailnet}";
+              url = "http://nova.${tailnet}";
             }
           ];
-          tailnet = config.services.tailscale.tailnet;
         in
         map (endpoint: {
           inherit (endpoint) name url;
+          ui = {
+            hide-conditions = true;
+            hide-hostname = true;
+            hide-url = true;
+          };
           interval = "10m";
           conditions = [
             "[STATUS] == 200"
-            "[RESPONSE_TIME] < 300"
+            "[RESPONSE_TIME] < 500"
           ];
         }) monitorPoints;
     };
