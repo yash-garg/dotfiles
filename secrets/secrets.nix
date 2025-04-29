@@ -42,13 +42,9 @@ in
   "zenith/authelia/session.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/storage.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/users.yml.age".publicKeys = users ++ [ zenith ];
-  "zenith/authelia/oidc.age".publicKeys = users ++ [ zenith ];
-  "zenith/authelia/hmac.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/notifier.yml.age".publicKeys = users ++ [ zenith ];
-  "zenith/cloudflared.age".publicKeys = users ++ [ zenith ];
   "zenith/homepage.env.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];
   "zenith/tailscale.age".publicKeys = users ++ [ zenith ];
-  "zenith/tailscale.env.age".publicKeys = users ++ [ zenith ];
   "zenith/user.age".publicKeys = users ++ [ zenith ];
 }
