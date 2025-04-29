@@ -61,8 +61,18 @@ in
         allowed_origins = [ "https://auth.${domain}" ];
         allowed_origins_from_client_redirect_uris = false;
       };
+      claims_policies.default = {
+        id_token = [
+          "email"
+          "email_verified"
+          "alt_emails"
+          "preferred_username"
+          "name"
+        ];
+      };
       clients = [
         {
+          claims_policy = "default";
           client_id = "cloudflare";
           client_name = "Cloudflare Access";
           client_secret = "$pbkdf2-sha512$310000$GNNb7iBfxmGChaMxO00vqw$HfymqwZWXPowLE5VXoW2Rx5eSfB7XBscVvscrf05qdlvrNwFL/AcuAmHgIsytJCI7Hevmu.guT6ytxr.VIKcrA";
