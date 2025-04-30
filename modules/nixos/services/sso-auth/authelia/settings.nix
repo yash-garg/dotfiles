@@ -12,7 +12,6 @@ in
 {
   default_2fa_method = "webauthn";
   theme = "auto";
-  totp.disable = true;
 
   access_control = {
     default_policy = "deny";
@@ -231,6 +230,12 @@ in
 
   telemetry.metrics = {
     enabled = true;
+  };
+
+  totp = {
+    disable = false;
+    issuer = domain;
+    disable_reuse_security_policy = true;
   };
 
   webauthn = {
