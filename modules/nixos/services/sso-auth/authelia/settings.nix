@@ -132,58 +132,6 @@ in
           userinfo_signed_response_alg = "RS256";
           token_endpoint_auth_method = "client_secret_basic";
         }
-        {
-          client_id = "grafana";
-          client_name = "Grafana";
-          client_secret = "$pbkdf2-sha512$310000$avIhgGOKa1i1cjQZaegTAA$ZYvcE.mAZqB8QKseSOa4WSLCh3gxiihEvtwm4r.gDSlUQSNXyZJSDR7E7r9DkiY3BTbdKt2uPu5I.46DWV08fg";
-          public = false;
-          authorization_policy = "one_factor";
-          redirect_uris = [
-            "https://stats.${domain}/login/generic_oauth"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "groups"
-            "email"
-          ];
-          userinfo_signed_response_alg = "RS256";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
-          client_id = "jellyfin";
-          client_name = "Jellyfin";
-          client_secret = "$pbkdf2-sha512$310000$3a9Qo1iPAWS7i/G4saXS2A$GQTsqTDSsgAxUILPWBYIpEom/0WqfcBKLhqtBOVihXnhpos7clLxx3/1cVw8z1z0SJQjPye73Bb9eq9UzSLIcA";
-          public = false;
-          authorization_policy = "one_factor";
-          redirect_uris = [
-            "https://stream.${domain}/sso/OID/redirect/authelia"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "groups"
-          ];
-          userinfo_signed_response_alg = "RS256";
-          token_endpoint_auth_method = "client_secret_post";
-        }
-        {
-          client_id = "miniflux";
-          client_name = "Miniflux";
-          client_secret = "$pbkdf2-sha512$310000$qUp2IK0gQNQcIEzMsYItbQ$dT317RlfVGOVcsUmWQ4vPdr3mf677ehi2oGRTdHQ6TLqkCYErpqf5ulk.gSngl9zkJrVGLL./quNAKZ1YGIzaA";
-          public = false;
-          authorization_policy = "one_factor";
-          redirect_uris = [
-            "https://rss.${domain}/oauth2/oidc/callback"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-          ];
-          userinfo_signed_response_alg = "RS256";
-          token_endpoint_auth_method = "client_secret_post";
-        }
       ];
     };
   };
