@@ -48,13 +48,70 @@ in
   dots = {
     server = enabled;
 
+    sso = enabled;
+
     services = {
+      gatus = enabled // {
+        monitorPoints = [
+          {
+            name = "Actual Budget";
+            url = "http://vortex.${tailnet}:5006";
+          }
+          {
+            name = "Cadvisor";
+            url = "http://nova.turtle-lake.ts.net";
+          }
+          {
+            name = "Grafana";
+            url = "http://nova.${tailnet}:3000";
+          }
+          {
+            name = "Jellyfin";
+            url = "http://nova.${tailnet}:8096";
+          }
+          {
+            name = "Miniflux";
+            url = "http://nova.${tailnet}:5600";
+          }
+          {
+            name = "Minecraft Map";
+            url = "http://vortex.${tailnet}:81";
+          }
+          {
+            name = "Prometheus";
+            url = "http://nova.${tailnet}:9090";
+          }
+          {
+            name = "Plausible Analytics";
+            url = "http://localhost:8181";
+          }
+          {
+            name = "Prowlarr";
+            url = "http://nova.${tailnet}:9696";
+          }
+          {
+            name = "Radarr";
+            url = "http://nova.${tailnet}:7878";
+          }
+          {
+            name = "Sonarr";
+            url = "http://nova.${tailnet}:8989";
+          }
+          {
+            name = "qBittorrent";
+            url = "http://nova.${tailnet}:8080";
+          }
+          {
+            name = "unRAID";
+            url = "http://nova.${tailnet}";
+          }
+        ];
+      };
+
       plausible = enabled // {
         baseUrl = domain;
         secretKeybaseFile = config.age.secrets.plausible.path;
       };
-
-      sso = enabled;
 
       ssh = enabled // {
         addRootKeys = true;
@@ -72,191 +129,100 @@ in
         ];
       };
     };
-
-    virtualisation = enabled;
   };
 
-  services = {
-    caddy = enabled // {
-      acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-      email = "spam@${domain}";
-      enableReload = false;
-      logFormat = ''
-        output file /var/log/caddy/caddy_main.log {
-          roll_size 100MiB
-          roll_keep 5
-          roll_keep_for 100d
+  services.caddy = enabled // {
+    acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
+    email = "spam@${domain}";
+    enableReload = false;
+    logFormat = ''
+      output file /var/log/caddy/caddy_main.log {
+        roll_size 100MiB
+        roll_keep 5
+        roll_keep_for 100d
+      }
+      format json
+      level INFO
+    '';
+    extraConfig = ''
+      (auth) {
+        forward_auth :9091 {
+          uri /api/authz/forward-auth
+          copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
         }
-        format json
-        level INFO
-      '';
-      extraConfig = ''
-        (auth) {
-          forward_auth :9091 {
-            uri /api/authz/forward-auth
-            copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
-          }
-        }
-      '';
-      virtualHosts = {
-        "status.${domain}" = {
-          extraConfig = ''
-            reverse_proxy :3333
-          '';
-        };
-        "unraid.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31
-          '';
-        };
-        "qbit.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:8080
-          '';
-        };
-        "stats.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:3000
-          '';
-        };
-        "radarr.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:7878
-          '';
-        };
-        "prometheus.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:9090
-          '';
-        };
-        "cadvisor.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:8081
-          '';
-        };
-        "stream.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:8096
-          '';
-        };
-        "prowlarr.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:9696
-          '';
-        };
-        "sonarr.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:8989
-          '';
-        };
-        "rss.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.78.157.31:5600
-          '';
-        };
-        "map.${domain}" = {
-          extraConfig = ''
-            import auth
-            reverse_proxy 100.92.154.106:81
-          '';
-        };
+      }
+    '';
+    virtualHosts = {
+      "status.${domain}" = {
+        extraConfig = ''
+          reverse_proxy :3333
+        '';
       };
-    };
-
-    gatus = enabled // {
-      settings = {
-        web.port = 3333;
-        connectivity.checker = {
-          target = "1.1.1.1:53";
-          interval = "60s";
-        };
-        ui = {
-          title = "Homelab Status | Yash Garg";
-          description = "Monitoring for My Services";
-          header = "Yash's Homelab Status";
-          link = "https://app.yashgarg.dev";
-          dark-mode = true;
-        };
-        endpoints =
-          let
-            monitorPoints = [
-              {
-                name = "Actual Budget";
-                url = "http://vortex.${tailnet}:5006";
-              }
-              {
-                name = "Cadvisor";
-                url = "http://nova.turtle-lake.ts.net";
-              }
-              {
-                name = "Grafana";
-                url = "http://nova.${tailnet}:3000";
-              }
-              {
-                name = "Jellyfin";
-                url = "http://nova.${tailnet}:8096";
-              }
-              {
-                name = "Miniflux";
-                url = "http://nova.${tailnet}:5600";
-              }
-              {
-                name = "Minecraft Map";
-                url = "http://vortex.${tailnet}:81";
-              }
-              {
-                name = "Prometheus";
-                url = "http://nova.${tailnet}:9090";
-              }
-              {
-                name = "Plausible Analytics";
-                url = "http://localhost:8181";
-              }
-              {
-                name = "Prowlarr";
-                url = "http://nova.${tailnet}:9696";
-              }
-              {
-                name = "Radarr";
-                url = "http://nova.${tailnet}:7878";
-              }
-              {
-                name = "Sonarr";
-                url = "http://nova.${tailnet}:8989";
-              }
-              {
-                name = "qBittorrent";
-                url = "http://nova.${tailnet}:8080";
-              }
-              {
-                name = "unRAID";
-                url = "http://nova.${tailnet}";
-              }
-            ];
-          in
-          map (endpoint: {
-            inherit (endpoint) name url;
-            ui = {
-              hide-conditions = true;
-              hide-hostname = true;
-              hide-url = true;
-            };
-            interval = "10m";
-            conditions = [
-              "[STATUS] == 200"
-              "[RESPONSE_TIME] < 500"
-            ];
-          }) monitorPoints;
+      "unraid.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31
+        '';
+      };
+      "qbit.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:8080
+        '';
+      };
+      "stats.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:3000
+        '';
+      };
+      "radarr.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:7878
+        '';
+      };
+      "prometheus.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:9090
+        '';
+      };
+      "cadvisor.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:8081
+        '';
+      };
+      "stream.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:8096
+        '';
+      };
+      "prowlarr.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:9696
+        '';
+      };
+      "sonarr.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:8989
+        '';
+      };
+      "rss.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:5600
+        '';
+      };
+      "map.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.92.154.106:81
+        '';
       };
     };
   };

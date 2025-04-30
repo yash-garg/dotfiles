@@ -63,22 +63,6 @@ in
       };
     };
 
-  identity_providers.oidc = {
-    cors = {
-      endpoints = [ "token" ];
-      allowed_origins_from_client_redirect_uris = true;
-    };
-    authorization_policies.default = {
-      default_policy = "one_factor";
-      rules = [
-        {
-          policy = "deny";
-          subject = "group:lldap_strict_readonly";
-        }
-      ];
-    };
-  };
-
   identity_providers = {
     oidc = {
       enable_client_debug_messages = false;
@@ -98,7 +82,7 @@ in
           "userinfo"
         ];
         allowed_origins = [ "https://auth.${domain}" ];
-        allowed_origins_from_client_redirect_uris = false;
+        allowed_origins_from_client_redirect_uris = true;
       };
       claims_policies.default = {
         id_token = [

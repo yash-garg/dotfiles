@@ -1,0 +1,68 @@
+{
+  config,
+  lib,
+  namespace,
+  ...
+}:
+with lib;
+with lib.${namespace};
+let
+  cfg = config.${namespace}.services.gatus;
+in
+{
+  options.${namespace}.services.gatus = {
+    enable = mkEnableOption "Gatus Uptime Monitor";
+    domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
+    port = mkOpt types.int 3333 "Port for Gatus";
+    monitorPoints = mkOption {
+      type =
+        with types;
+        listOf (submodule {
+          options = {
+            name = mkOption {
+              type = str;
+              description = "Display name of the monitored service";
+            };
+            url = mkOption {
+              type = str;
+              description = "URL of the monitored service";
+            };
+          };
+        });
+      default = [ ];
+      description = "List of services to monitor, each with a name and URL.";
+    };
+  };
+
+  config = mkIf cfg.enable {
+    services.gatus = enabled // {
+      settings = {
+        web.port = cfg.port;
+        connectivity.checker = {
+          target = "1.1.1.1:53";
+          interval = "60s";
+        };
+        ui = {
+          title = "Homelab Status | Yash Garg";
+          description = "Monitoring for My Services";
+          header = "Yash's Homelab Status";
+          link = "https://status.${cfg.domain}";
+          dark-mode = true;
+        };
+        endpoints = map (endpoint: {
+          inherit (endpoint) name url;
+          ui = {
+            hide-conditions = true;
+            hide-hostname = true;
+            hide-url = true;
+          };
+          interval = "10m";
+          conditions = [
+            "[STATUS] == 200"
+            "[RESPONSE_TIME] < 500"
+          ];
+        }) cfg.monitorPoints;
+      };
+    };
+  };
+}
