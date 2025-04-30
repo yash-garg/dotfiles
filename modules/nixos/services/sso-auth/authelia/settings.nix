@@ -121,6 +121,7 @@ in
           authorization_policy = "one_factor";
           redirect_uris = [
             "https://actual.${domain}/openid/callback"
+            "https://budget.${domain}/openid/callback"
           ];
           scopes = [
             "openid"

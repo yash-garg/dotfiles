@@ -161,7 +161,21 @@ in
       "unraid.${domain}" = {
         extraConfig = ''
           import auth
-          reverse_proxy 100.78.157.31
+          reverse_proxy https://100.78.157.31 {
+            transport http {
+              tls_insecure_skip_verify
+            }
+          }
+        '';
+      };
+      "budget.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy https://100.78.157.31:5006 {
+            transport http {
+              tls_insecure_skip_verify
+            }
+          }
         '';
       };
       "qbit.${domain}" = {
