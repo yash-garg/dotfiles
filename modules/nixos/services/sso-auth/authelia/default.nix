@@ -39,6 +39,12 @@ in
         usersFile = secretAttrs // {
           file = getSecret "users.yml" hostPath;
         };
+        oidcIssuerPrivateKey = secretAttrs // {
+          file = getSecret "oidc" hostPath;
+        };
+        oidcHmacSecretKey = secretAttrs // {
+          file = getSecret "hmac" hostPath;
+        };
         notifierSettings = secretAttrs // {
           file = getSecret "notifier.yml" hostPath;
         };
@@ -62,6 +68,8 @@ in
           jwtSecretFile = config.age.secrets.jwtSecret.path;
           sessionSecretFile = config.age.secrets.sessionSecret.path;
           storageEncryptionKeyFile = config.age.secrets.storageEncryptionKey.path;
+          oidcIssuerPrivateKeyFile = config.age.secrets.oidcIssuerPrivateKey.path;
+          oidcHmacSecretFile = config.age.secrets.oidcHmacSecretKey.path;
         };
         settings = import ./settings.nix {
           inherit lib;
@@ -71,38 +79,5 @@ in
         settingsFiles = [ config.age.secrets.notifierSettings.path ];
       };
     };
-
-    services.postgresql = enabled // {
-      ensureDatabases = [
-        "authelia-main"
-        "lldap"
-      ];
-      ensureUsers = [
-        {
-          name = "root";
-          ensureClauses.superuser = true;
-        }
-        {
-          name = "authelia-main";
-          ensureDBOwnership = true;
-        }
-        {
-          name = "lldap";
-          ensureDBOwnership = true;
-        }
-      ];
-    };
-
-    systemd.services.authelia-main =
-      let
-        dependencies = [
-          "lldap.service"
-          "postgresql.service"
-        ];
-      in
-      {
-        after = dependencies;
-        requires = dependencies;
-      };
   };
 }

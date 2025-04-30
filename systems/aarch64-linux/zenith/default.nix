@@ -49,9 +49,12 @@ in
     server = enabled;
 
     services = {
-      authelia = enabled;
+      plausible = enabled // {
+        baseUrl = domain;
+        secretKeybaseFile = config.age.secrets.plausible.path;
+      };
 
-      lldap = enabled;
+      sso = enabled;
 
       ssh = enabled // {
         addRootKeys = true;
@@ -67,11 +70,6 @@ in
           "--advertise-routes=192.168.0.0/24,192.168.1.0/24"
           "--ssh"
         ];
-      };
-
-      plausible = enabled // {
-        baseUrl = domain;
-        secretKeybaseFile = config.age.secrets.plausible.path;
       };
     };
 
@@ -222,7 +220,7 @@ in
               }
               {
                 name = "Plausible Analytics";
-                url = "https://plausible.${tailnet}";
+                url = "http://localhost:8181";
               }
               {
                 name = "Prowlarr";

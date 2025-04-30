@@ -43,6 +43,8 @@ in
   "zenith/authelia/storage.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/users.yml.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/notifier.yml.age".publicKeys = users ++ [ zenith ];
+  "zenith/authelia/oidc.age".publicKeys = users ++ [ zenith ];
+  "zenith/authelia/hmac.age".publicKeys = users ++ [ zenith ];
   "zenith/authelia/ldap.age".publicKeys = users ++ [ zenith ];
 
   "zenith/lldap/jwt.age".publicKeys = users ++ [ zenith ];
