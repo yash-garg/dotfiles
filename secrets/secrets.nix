@@ -24,10 +24,6 @@ in
     cosmos
     zenith
   ];
-  "cosmos/tailscale.env.age".publicKeys = users ++ [
-    cosmos
-    zenith
-  ];
   "cosmos/user.age".publicKeys = users ++ [
     cosmos
     zenith

@@ -16,7 +16,6 @@ in
   age.secrets = {
     passwordfile-cosmos.file = getSecret "user" hostName;
     tsauthkey.file = getSecret "tailscale" hostName;
-    tsauthkey-env.file = getSecret "tailscale.env" hostName;
   };
 
   boot.initrd.systemd.tpm2.enable = mkForce false;
@@ -34,8 +33,6 @@ in
 
     services = {
       avahi = enabled;
-
-      qbittorrent = enabled;
 
       samba = enabled // {
         shares = {
@@ -59,11 +56,7 @@ in
           "--ssh"
         ];
       };
-
-      jellyfin = enabled;
     };
-
-    virtualisation = enabled;
   };
 
   environment = {
@@ -73,26 +66,6 @@ in
       bluez
       bluez-tools
     ];
-  };
-
-  services.caddy = enabled // {
-    enableReload = false;
-    environmentFile = config.age.secrets.tsauthkey-env.path;
-    package = pkgs.${namespace}.caddy-tailscale;
-    virtualHosts = {
-      "https://qbit.turtle-lake.ts.net" = {
-        extraConfig = ''
-          bind tailscale/qbit
-          reverse_proxy :3000
-        '';
-      };
-      "https://jellyfin.turtle-lake.ts.net" = {
-        extraConfig = ''
-          bind tailscale/jellyfin
-          reverse_proxy :8096
-        '';
-      };
-    };
   };
 
   topology.self.name = "Raspberry Pi 5";
@@ -107,15 +80,6 @@ in
         "docker"
         "wheel"
       ];
-    };
-  };
-
-  virtualisation.oci-containers.containers = {
-    h5ai = {
-      image = "awesometic/h5ai:latest";
-      ports = [ "80:80" ];
-      volumes = [ "/mnt:/h5ai" ];
-      autoStart = true;
     };
   };
 
