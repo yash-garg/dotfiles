@@ -23,10 +23,7 @@ with lib.${namespace};
       tailscale = enabled // {
         authKeyFile = config.age.secrets.tsauthkey.path;
         setNameservers = false;
-        extraOptions = [
-          "--accept-risk=lose-ssh"
-          "--ssh"
-        ];
+        ssh = true;
       };
     };
   };

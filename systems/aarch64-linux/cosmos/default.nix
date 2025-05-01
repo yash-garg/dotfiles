@@ -49,12 +49,14 @@ in
 
       tailscale = enabled // {
         authKeyFile = config.age.secrets.tsauthkey.path;
-        extraOptions = [
-          "--accept-risk=lose-ssh"
-          "--advertise-exit-node"
-          "--advertise-routes=192.168.0.0/24,192.168.1.0/24"
-          "--ssh"
-        ];
+        exitNode = true;
+        ssh = true;
+        subnetRouting = enabled // {
+          routes = [
+            "10.0.0.0/24"
+            "10.0.1.0/24"
+          ];
+        };
       };
     };
   };
