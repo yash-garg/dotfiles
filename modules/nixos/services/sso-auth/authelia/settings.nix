@@ -26,11 +26,11 @@ in
     rules = [
       {
         domain = "auth.${domain}";
-        policy = "one_factor";
+        policy = "two_factor";
       }
       {
         domain = "*.${domain}";
-        policy = "two_factor";
+        policy = "one_factor";
       }
     ];
   };
