@@ -119,6 +119,9 @@ in
           client_secret = "$pbkdf2-sha512$310000$iWomIaFYWHHBwj3ILVzL.Q$l9rRfes89uaXIGQnSZqtlLsAa8zMkjHWvUL39mnjHXBq.bokav5Z.dc3.mcUZxkW.5M64InDQZ5eg/81HWlETA";
           public = false;
           authorization_policy = "one_factor";
+          grant_types = [
+            "authorization_code"
+          ];
           redirect_uris = [
             "https://actual.${domain}/openid/callback"
             "https://budget.${domain}/openid/callback"
@@ -129,7 +132,7 @@ in
             "groups"
             "email"
           ];
-          userinfo_signed_response_alg = "RS256";
+          userinfo_signed_response_alg = "none";
           token_endpoint_auth_method = "client_secret_basic";
         }
       ];
