@@ -49,11 +49,19 @@ in
         };
       };
 
-      caddy.virtualHosts."users.${cfg.domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy :${toString config.services.lldap.settings.http_port}
-        '';
+      traefik.dynamicConfigOptions.http = {
+        routers.lldap = {
+          rule = "Host(`users.${cfg.domain}`)";
+          entryPoints = [ "websecure" ];
+          service = "lldap";
+          middlewares = [ "auth" ];
+          tls.certResolver = "letsencrypt";
+        };
+        services.lldap.loadBalancer = {
+          servers = [
+            { url = "http://localhost:${toString config.services.lldap.settings.http_port}"; }
+          ];
+        };
       };
     };
 

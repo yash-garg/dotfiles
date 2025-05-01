@@ -37,18 +37,26 @@ in
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
-    services.caddy.virtualHosts."analytics.${cfg.baseUrl}" = {
-      extraConfig = ''
-        reverse_proxy :${toString cfg.port}
-      '';
-    };
+    services = {
+      plausible = enabled // {
+        server = {
+          baseUrl = "https://analytics.${cfg.baseUrl}";
+          disableRegistration = "invite_only";
+          inherit (cfg) port;
+          inherit (cfg) secretKeybaseFile;
+        };
+      };
 
-    services.plausible = enabled // {
-      server = {
-        baseUrl = "https://analytics.${cfg.baseUrl}";
-        disableRegistration = "invite_only";
-        inherit (cfg) port;
-        inherit (cfg) secretKeybaseFile;
+      traefik.dynamicConfigOptions.http = {
+        routers.plausible = {
+          rule = "Host(`analytics.${cfg.baseUrl}`)";
+          entryPoints = [ "websecure" ];
+          service = "plausible";
+          tls.certResolver = "letsencrypt";
+        };
+        services.plausible.loadBalancer = {
+          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
+        };
       };
     };
   };

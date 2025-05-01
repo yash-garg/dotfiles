@@ -16,6 +16,7 @@ in
   imports = [
     ./disk-config.nix
     ./hardware-configuration.nix
+    ./traefik.nix
   ];
 
   age.secrets = {
@@ -140,116 +141,6 @@ in
     };
 
     virtualisation = enabled;
-  };
-
-  services.caddy = enabled // {
-    acmeCA = "https://acme-v02.api.letsencrypt.org/directory";
-    email = "spam@${domain}";
-    enableReload = false;
-    logFormat = ''
-      output file /var/log/caddy/caddy_main.log {
-        roll_size 100MiB
-        roll_keep 5
-        roll_keep_for 100d
-      }
-      format json
-      level INFO
-    '';
-    extraConfig = ''
-      (auth) {
-        forward_auth :9091 {
-          uri /api/authz/forward-auth
-          copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
-        }
-      }
-    '';
-    virtualHosts = {
-      "status.${domain}" = {
-        extraConfig = ''
-          reverse_proxy :3333
-        '';
-      };
-      "unraid.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy https://100.78.157.31 {
-            transport http {
-              tls_insecure_skip_verify
-            }
-          }
-        '';
-      };
-      "budget.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy https://100.78.157.31:5006 {
-            transport http {
-              tls_insecure_skip_verify
-            }
-          }
-        '';
-      };
-      "qbit.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:8080
-        '';
-      };
-      "stats.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:3000
-        '';
-      };
-      "radarr.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:7878
-        '';
-      };
-      "prometheus.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:9090
-        '';
-      };
-      "cadvisor.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:8081
-        '';
-      };
-      "stream.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:8096
-        '';
-      };
-      "prowlarr.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:9696
-        '';
-      };
-      "sonarr.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:8989
-        '';
-      };
-      "rss.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:5600
-        '';
-      };
-      "map.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.92.154.106:81
-        '';
-      };
-    };
   };
 
   users.users.yash = {

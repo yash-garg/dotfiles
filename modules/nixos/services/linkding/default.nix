@@ -47,12 +47,16 @@ in
       };
     };
 
-    services.caddy.virtualHosts = mkIf cfg.proxy.enable {
-      "links.${cfg.proxy.domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 127.0.0.1:${toString cfg.port}
-        '';
+    services.traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
+      routers.linkding = {
+        rule = "Host(`links.${cfg.proxy.domain}`)";
+        entryPoints = [ "websecure" ];
+        service = "linkding";
+        middlewares = [ "auth" ];
+        tls.certResolver = "letsencrypt";
+      };
+      services.linkding.loadBalancer = {
+        servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
       };
     };
   };

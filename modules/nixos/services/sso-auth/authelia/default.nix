@@ -53,30 +53,38 @@ in
         };
       };
 
-    services.caddy.virtualHosts."auth.${cfg.domain}" = {
-      extraConfig = ''
-        reverse_proxy :9091
-      '';
-    };
+    services = {
+      authelia = {
+        instances.main = enabled // {
+          environmentVariables = {
+            AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.age.secrets.ldapPassword.path;
+          };
+          secrets = {
+            jwtSecretFile = config.age.secrets.jwtSecret.path;
+            sessionSecretFile = config.age.secrets.sessionSecret.path;
+            storageEncryptionKeyFile = config.age.secrets.storageEncryptionKey.path;
+            oidcIssuerPrivateKeyFile = config.age.secrets.oidcIssuerPrivateKey.path;
+            oidcHmacSecretFile = config.age.secrets.oidcHmacSecretKey.path;
+          };
+          settings = import ./settings.nix {
+            inherit lib;
+            inherit config;
+            inherit namespace;
+          };
+          settingsFiles = [ config.age.secrets.notifierSettings.path ];
+        };
+      };
 
-    services.authelia = {
-      instances.main = enabled // {
-        environmentVariables = {
-          AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.age.secrets.ldapPassword.path;
+      traefik.dynamicConfigOptions.http = {
+        routers.authelia = {
+          rule = "Host(`auth.${cfg.domain}`)";
+          entryPoints = [ "websecure" ];
+          service = "authelia";
+          tls.certResolver = "letsencrypt";
         };
-        secrets = {
-          jwtSecretFile = config.age.secrets.jwtSecret.path;
-          sessionSecretFile = config.age.secrets.sessionSecret.path;
-          storageEncryptionKeyFile = config.age.secrets.storageEncryptionKey.path;
-          oidcIssuerPrivateKeyFile = config.age.secrets.oidcIssuerPrivateKey.path;
-          oidcHmacSecretFile = config.age.secrets.oidcHmacSecretKey.path;
+        services.authelia.loadBalancer = {
+          servers = [ { url = "http://localhost:9091"; } ];
         };
-        settings = import ./settings.nix {
-          inherit lib;
-          inherit config;
-          inherit namespace;
-        };
-        settingsFiles = [ config.age.secrets.notifierSettings.path ];
       };
     };
   };

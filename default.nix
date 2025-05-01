@@ -23,7 +23,6 @@ let
   callPackage = pkg: pkgs.callPackage pkg;
 in
 {
-  caddy-tailscale = callPackage ./packages/caddy-tailscale { };
   monolisa-nerdfonts = callPackage ./packages/monolisa-nerdfonts { };
   mpv-scripts = callPackage ./packages/mpv-scripts { };
 }

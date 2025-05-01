@@ -35,33 +35,47 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.gatus = enabled // {
-      settings = {
-        web.port = cfg.port;
-        connectivity.checker = {
-          target = "1.1.1.1:53";
-          interval = "60s";
-        };
-        ui = {
-          title = "Homelab Status | Yash Garg";
-          description = "Monitoring for My Services";
-          header = "Yash's Homelab Status";
-          link = "https://status.${cfg.domain}";
-          dark-mode = true;
-        };
-        endpoints = map (endpoint: {
-          inherit (endpoint) name url;
-          ui = {
-            hide-conditions = true;
-            hide-hostname = true;
-            hide-url = true;
+    services = {
+      gatus = enabled // {
+        settings = {
+          web.port = cfg.port;
+          connectivity.checker = {
+            target = "1.1.1.1:53";
+            interval = "60s";
           };
-          interval = "10m";
-          conditions = [
-            "[STATUS] == 200"
-            "[RESPONSE_TIME] < 500"
-          ];
-        }) cfg.monitorPoints;
+          ui = {
+            title = "Homelab Status | Yash Garg";
+            description = "Monitoring for My Services";
+            header = "Yash's Homelab Status";
+            link = "https://status.${cfg.domain}";
+            dark-mode = true;
+          };
+          endpoints = map (endpoint: {
+            inherit (endpoint) name url;
+            ui = {
+              hide-conditions = true;
+              hide-hostname = true;
+              hide-url = true;
+            };
+            interval = "10m";
+            conditions = [
+              "[STATUS] == 200"
+              "[RESPONSE_TIME] < 500"
+            ];
+          }) cfg.monitorPoints;
+        };
+      };
+
+      traefik.dynamicConfigOptions.http = {
+        routers.gatus = {
+          rule = "Host(`status.${cfg.domain}`)";
+          entryPoints = [ "websecure" ];
+          service = "gatus";
+          tls.certResolver = "letsencrypt";
+        };
+        services.gatus.loadBalancer = {
+          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
+        };
       };
     };
   };
