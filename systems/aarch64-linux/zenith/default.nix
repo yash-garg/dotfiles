@@ -192,6 +192,12 @@ in
           reverse_proxy 100.78.157.31:3000
         '';
       };
+      "links.${domain}" = {
+        extraConfig = ''
+          import auth
+          reverse_proxy 100.78.157.31:9091
+        '';
+      };
       "radarr.${domain}" = {
         extraConfig = ''
           import auth
