@@ -108,6 +108,13 @@ in
         ];
       };
 
+      linkding = enabled // {
+        port = 9095;
+        proxy = enabled // {
+          inherit domain;
+        };
+      };
+
       plausible = enabled // {
         baseUrl = domain;
         secretKeybaseFile = config.age.secrets.plausible.path;
@@ -131,6 +138,8 @@ in
         };
       };
     };
+
+    virtualisation = enabled;
   };
 
   services.caddy = enabled // {
@@ -190,12 +199,6 @@ in
         extraConfig = ''
           import auth
           reverse_proxy 100.78.157.31:3000
-        '';
-      };
-      "links.${domain}" = {
-        extraConfig = ''
-          import auth
-          reverse_proxy 100.78.157.31:9091
         '';
       };
       "radarr.${domain}" = {
