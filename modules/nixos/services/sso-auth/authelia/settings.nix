@@ -96,7 +96,7 @@ in
         {
           client_id = "cloudflare";
           client_name = "Cloudflare Access";
-          client_secret = "$pbkdf2-sha512$310000$GNNb7iBfxmGChaMxO00vqw$HfymqwZWXPowLE5VXoW2Rx5eSfB7XBscVvscrf05qdlvrNwFL/AcuAmHgIsytJCI7Hevmu.guT6ytxr.VIKcrA";
+          client_secret = "$pbkdf2-sha512$310000$avIhgGOKa1i1cjQZaegTAA$ZYvcE.mAZqB8QKseSOa4WSLCh3gxiihEvtwm4r.gDSlUQSNXyZJSDR7E7r9DkiY3BTbdKt2uPu5I.46DWV08fg";
           public = false;
           authorization_policy = "two_factor";
           claims_policy = "default";
