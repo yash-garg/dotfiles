@@ -11,6 +11,7 @@ services:
       UID: 1001
       GID: 1001
       SEED: "-5584399987456711267"
+      VERSION: "1.21.4"
       EULA: "TRUE"
       TYPE: FABRIC
       MEMORY: 16G
