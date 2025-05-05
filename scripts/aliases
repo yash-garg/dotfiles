@@ -29,6 +29,7 @@ if type git &>/dev/null; then
     alias pull='git pull'
     alias commit='git commit -m'
     alias rst='git reset; git restore .'
+    alias branch='git switch -c -m'
 fi
 
 if type nvim &>/dev/null; then

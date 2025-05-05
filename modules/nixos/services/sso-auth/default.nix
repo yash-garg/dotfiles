@@ -12,12 +12,17 @@ in
 {
   options.${namespace}.sso = {
     enable = mkEnableOption "Enable SSO Auth for Services";
+    domain = mkOpt types.str "ipx.ovh" "Base domain for SSO Auth";
   };
 
   config = mkIf cfg.enable {
     dots.services = {
-      authelia = enabled;
-      lldap = enabled;
+      authelia = enabled // {
+        inherit (cfg) domain;
+      };
+      lldap = enabled // {
+        inherit (cfg) domain;
+      };
     };
 
     services.postgresql = enabled // {

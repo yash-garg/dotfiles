@@ -7,7 +7,7 @@
 with lib;
 with lib.${namespace};
 let
-  domain = "yashgarg.dev";
+  domain = "ipx.ovh";
 in
 {
   age.secrets.cf-tokens = {

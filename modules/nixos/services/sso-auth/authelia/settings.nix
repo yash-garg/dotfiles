@@ -8,6 +8,7 @@ with lib;
 with lib.${namespace};
 let
   inherit (config.${namespace}.services.authelia) domain;
+  base_dn = "dc=${concatStringsSep ",dc=" (splitString "." domain)}";
 in
 {
   default_2fa_method = "webauthn";
@@ -54,11 +55,11 @@ in
         };
       };
       ldap = mkIf lldapEnabled {
+        inherit base_dn;
         address = "ldap://localhost:3890";
-        base_dn = "dc=yashgarg,dc=dev";
         users_filter = "(&({username_attribute}={input})(objectClass=person))";
         groups_filter = "(member={dn})";
-        user = "uid=admin,ou=people,dc=yashgarg,dc=dev";
+        user = "uid=admin,ou=people,${base_dn}";
       };
     };
 

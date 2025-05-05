@@ -49,10 +49,13 @@ in
   dots = {
     server = enabled;
 
-    sso = enabled;
+    sso = enabled // {
+      domain = "ipx.ovh";
+    };
 
     services = {
       gatus = enabled // {
+        inherit domain;
         monitorPoints = [
           {
             name = "Actual Budget";
@@ -112,7 +115,7 @@ in
       linkding = enabled // {
         port = 9095;
         proxy = enabled // {
-          inherit domain;
+          domain = "ipx.ovh";
         };
       };
 
