@@ -67,6 +67,7 @@ in
             "budget"
             "cadvisor"
             "cam"
+            "image"
             "map"
             "prometheus"
             "prowlarr"
@@ -114,6 +115,7 @@ in
         };
         cadvisor.loadBalancer.servers = [ { url = "http://100.78.157.31:8081"; } ];
         cam.loadBalancer.servers = [ { url = "http://100.78.157.31:1984"; } ];
+        image.loadBalancer.servers = [ { url = "http://100.78.157.31:3474"; } ];
         map.loadBalancer.servers = [ { url = "http://100.92.154.106:81"; } ];
         prometheus.loadBalancer.servers = [ { url = "http://100.78.157.31:9090"; } ];
         prowlarr.loadBalancer.servers = [ { url = "http://100.78.157.31:9696"; } ];
