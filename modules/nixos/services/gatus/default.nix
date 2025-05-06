@@ -23,6 +23,11 @@ in
               type = str;
               description = "Display name of the monitored service";
             };
+            group = mkOption {
+              type = str;
+              default = "internal";
+              description = "Group name for the monitored service";
+            };
             url = mkOption {
               type = str;
               description = "URL of the monitored service";
@@ -51,7 +56,7 @@ in
             dark-mode = true;
           };
           endpoints = map (endpoint: {
-            inherit (endpoint) name url;
+            inherit (endpoint) name group url;
             ui = {
               hide-conditions = true;
               hide-hostname = true;

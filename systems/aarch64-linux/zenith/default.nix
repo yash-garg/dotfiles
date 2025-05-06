@@ -59,6 +59,7 @@ in
         monitorPoints = [
           {
             name = "Actual Budget";
+            group = "external";
             url = "http://vortex.${tailnet}:5006";
           }
           {
@@ -78,6 +79,11 @@ in
             url = "http://nova.${tailnet}:8096";
           }
           {
+            name = "Linkding";
+            group = "external";
+            url = "http://localhost:9095";
+          }
+          {
             name = "Mazanoke";
             url = "http://nova.${tailnet}:3474";
           }
@@ -87,11 +93,8 @@ in
           }
           {
             name = "Minecraft Map";
+            group = "external";
             url = "http://vortex.${tailnet}:81";
-          }
-          {
-            name = "NVR";
-            url = "http://nova.${tailnet}:1984";
           }
           {
             name = "Prometheus";
@@ -99,6 +102,7 @@ in
           }
           {
             name = "Plausible Analytics";
+            group = "external";
             url = "http://localhost:8181";
           }
           {
