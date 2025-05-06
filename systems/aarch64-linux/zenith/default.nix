@@ -70,8 +70,16 @@ in
             url = "http://nova.${tailnet}:3000";
           }
           {
+            name = "Home Assistant";
+            url = "http://homeassistant.${tailnet}:8123";
+          }
+          {
             name = "Jellyfin";
             url = "http://nova.${tailnet}:8096";
+          }
+          {
+            name = "Mazanoke";
+            url = "http://nova.${tailnet}:3474";
           }
           {
             name = "Miniflux";
@@ -80,6 +88,10 @@ in
           {
             name = "Minecraft Map";
             url = "http://vortex.${tailnet}:81";
+          }
+          {
+            name = "NVR";
+            url = "http://nova.${tailnet}:1984";
           }
           {
             name = "Prometheus";
