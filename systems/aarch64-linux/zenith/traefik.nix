@@ -66,6 +66,7 @@ in
           [
             "budget"
             "cadvisor"
+            "dns"
             "home"
             "image"
             "map"
@@ -114,6 +115,7 @@ in
           serversTransport = "insecure";
         };
         cadvisor.loadBalancer.servers = [ { url = "http://100.78.157.31:8081"; } ];
+        dns.loadBalancer.servers = [ { url = "http://100.93.246.1"; } ];
         home.loadBalancer.servers = [ { url = "http://100.65.53.36:8123"; } ];
         image.loadBalancer.servers = [ { url = "http://100.78.157.31:3474"; } ];
         map.loadBalancer.servers = [ { url = "http://100.92.154.106:81"; } ];
