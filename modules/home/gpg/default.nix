@@ -28,7 +28,7 @@ in
     services.gpg-agent = enabled // {
       enableScDaemon = true;
       enableSshSupport = true;
-      pinentryPackage = mkMerge [
+      pinentry.package = mkMerge [
         (mkIf pkgs.stdenv.isLinux pkgs.pinentry-gnome3)
         (mkIf pkgs.stdenv.isDarwin pkgs.pinentry_mac)
       ];

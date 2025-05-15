@@ -34,5 +34,7 @@ in
         };
       };
     };
+
+    system.primaryUser = cfg.name;
   };
 }

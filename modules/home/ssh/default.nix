@@ -11,6 +11,7 @@ with lib.${namespace};
     addKeysToAgent = "yes";
     package = pkgs.openssh_hpn;
     serverAliveInterval = 60;
+    includes = [ "~/.ssh/work" ];
     matchBlocks = {
       "*" = {
         sendEnv = [ "COLORTERM" ];

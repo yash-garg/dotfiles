@@ -8,7 +8,6 @@ with lib;
 with lib.${namespace};
 let
   casks = [
-    "alt-tab"
     "ghostty"
     "iina"
     "jetbrains-toolbox"
@@ -31,6 +30,14 @@ in
       '';
     };
 
+    brews = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        A list of additional brews to install.
+      '';
+    };
+
     masApps = mkOption {
       type = types.attrsOf types.int;
       default = { };
@@ -50,13 +57,13 @@ in
 
   config = {
     homebrew = enabled // {
-      inherit (cfg) masApps;
+      inherit (cfg) masApps taps;
 
       brews = [
         "cocoapods"
         "ruby"
         "webp"
-      ];
+      ] ++ cfg.brews;
 
       caskArgs.appdir = "/Applications";
 
@@ -70,11 +77,9 @@ in
         brewfile = true;
       };
 
-      inherit (cfg) taps;
-
       onActivation = {
         autoUpdate = false;
-        cleanup = "zap";
+        cleanup = "none";
         upgrade = true;
       };
     };

@@ -20,15 +20,25 @@ in
     dock.persistentApps = [
       "Linear"
       "Slack"
-      "Google Chrome"
+      "Arc"
       "OrbStack"
       "zoom.us"
     ];
 
-    homebrew.additionalCasks = [
-      "linear-linear"
-      "slack"
-    ];
+    homebrew = {
+      additionalCasks = [
+        "arc"
+        "linear-linear"
+        "obsidian"
+        "slack"
+        "temurin@21"
+        "windsurf"
+        "yubico-yubikey-manager"
+        "zoom"
+      ];
+
+      brews = [ "cloudflared" ];
+    };
 
     user.name = "ygarg";
   };
