@@ -74,6 +74,7 @@ in
             "prowlarr"
             "qbit"
             "radarr"
+            "read"
             "rss"
             "sonarr"
             "stats"
@@ -122,6 +123,7 @@ in
         prometheus.loadBalancer.servers = [ { url = "http://100.78.157.31:9090"; } ];
         prowlarr.loadBalancer.servers = [ { url = "http://100.78.157.31:9696"; } ];
         qbit.loadBalancer.servers = [ { url = "http://100.78.157.31:8080"; } ];
+        read.loadBalancer.servers = [ { url = "http://100.78.157.31:5000"; } ];
         radarr.loadBalancer.servers = [ { url = "http://100.78.157.31:7878"; } ];
         rss.loadBalancer.servers = [ { url = "http://100.78.157.31:5600"; } ];
         sonarr.loadBalancer.servers = [ { url = "http://100.78.157.31:8989"; } ];
