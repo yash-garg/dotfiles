@@ -9,13 +9,6 @@ with lib.${namespace};
 let
   cfg = config.${namespace}.dock;
   brewAppDir = config.homebrew.caskArgs.appdir;
-  dockApps = [
-    "Ghostty"
-    "Xcode"
-    "Visual Studio Code"
-    "Spotify"
-    "Android Studio"
-  ] ++ cfg.persistentApps;
 in
 {
   options.${namespace}.dock = {
@@ -41,7 +34,7 @@ in
 
       persistent-apps = [
         "/System/Applications/Launchpad.app"
-      ] ++ map (app: "${brewAppDir}/${app}.app") dockApps;
+      ] ++ map (app: "${brewAppDir}/${app}.app") cfg.persistentApps;
 
       # Disable all hot corners
       wvous-tl-corner = 1;

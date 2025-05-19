@@ -1,6 +1,11 @@
 _: {
   dots = {
     dock.persistentApps = [
+      "Ghostty"
+      "Xcode"
+      "Visual Studio Code"
+      "Spotify"
+      "Android Studio"
       "ChatGPT"
       "Slack"
       "Discord"
@@ -31,10 +36,6 @@ _: {
         WhatsApp = 310633997;
       };
     };
-  };
-
-  environment.variables = {
-    # SSH_AUTH_SOCK = "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
   };
 
   system.stateVersion = 5;

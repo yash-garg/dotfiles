@@ -18,6 +18,11 @@ in
 
   dots = {
     dock.persistentApps = [
+      "Ghostty"
+      "Xcode"
+      "Windsurf"
+      "Spotify"
+      "Android Studio"
       "Linear"
       "Slack"
       "Arc"

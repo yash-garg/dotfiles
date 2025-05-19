@@ -1042,11 +1042,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1747540577,
-        "narHash": "sha256-n8ui9IXeH6D7rISUy1O3grGhPLPoZI3+XJVdosoLr/E=",
+        "lastModified": 1747679000,
+        "narHash": "sha256-nX6zCX2IjhA11D69MWsN9lQb0XQCf0uf8bcVwOtIHaE=",
         "owner": "yash-garg",
         "repo": "neovim",
-        "rev": "75b3c6fd396763c4d073e8cc1697cde50959313a",
+        "rev": "36a886597f95520a8051b0fa689adeeca8e35376",
         "type": "github"
       },
       "original": {

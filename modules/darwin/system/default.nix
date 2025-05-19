@@ -25,8 +25,8 @@ _: {
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.trackpad.forceClick" = true;
         ApplePressAndHoldEnabled = false;
-        AppleInterfaceStyle = "Dark";
-        AppleInterfaceStyleSwitchesAutomatically = false;
+        AppleInterfaceStyle = null;
+        AppleInterfaceStyleSwitchesAutomatically = true;
         AppleScrollerPagingBehavior = true;
         AppleWindowTabbingMode = "always";
         InitialKeyRepeat = 10;
