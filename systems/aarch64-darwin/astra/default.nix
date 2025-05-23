@@ -38,7 +38,6 @@ in
         "discord"
         "flutter"
         "google-chrome"
-        "hiddenbar"
         "notion-calendar"
         "obsidian"
       ];

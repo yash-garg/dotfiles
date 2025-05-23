@@ -67,6 +67,10 @@ in
             url = "http://nova.turtle-lake.ts.net";
           }
           {
+            name = "Calibre";
+            url = "http://nova.${tailnet}:8091";
+          }
+          {
             name = "Grafana";
             url = "http://nova.${tailnet}:3000";
           }
@@ -77,6 +81,10 @@ in
           {
             name = "Jellyfin";
             url = "http://nova.${tailnet}:8096";
+          }
+          {
+            name = "Kavita";
+            url = "http://nova.${tailnet}:5000";
           }
           {
             name = "Linkding";
@@ -112,6 +120,10 @@ in
           {
             name = "Radarr";
             url = "http://nova.${tailnet}:7878";
+          }
+          {
+            name = "Readarr";
+            url = "http://nova.${tailnet}:8787";
           }
           {
             name = "Sonarr";
