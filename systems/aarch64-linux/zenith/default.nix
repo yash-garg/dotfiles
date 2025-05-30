@@ -71,10 +71,6 @@ in
             url = "http://nova.turtle-lake.ts.net";
           }
           {
-            name = "Calibre";
-            url = "http://nova.${tailnet}:8091";
-          }
-          {
             name = "Grafana";
             url = "http://nova.${tailnet}:3000";
           }

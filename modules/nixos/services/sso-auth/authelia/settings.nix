@@ -136,6 +136,25 @@ in
           userinfo_signed_response_alg = "none";
           token_endpoint_auth_method = "client_secret_basic";
         }
+        {
+          client_id = "immich";
+          client_name = "Immich";
+          client_secret = "$pbkdf2-sha512$310000$we2.VRlN/pvtnZoUt0.kpw$qRAAKL..H4GnzEzMiMH.MPoXLy0IB3BslhB2.0gTVK99cuAyQEOsNNQ052huyqgpwdpTHVfaU68CmUzC.gnLGg";
+          public = false;
+          authorization_policy = "one_factor";
+          redirect_uris = [
+            "https://photos.${domain}/auth/login"
+            "https://photos.${domain}/user-settings"
+            "app.immich:///oauth-callback"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_post";
+        }
       ];
     };
   };
