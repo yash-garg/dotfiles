@@ -70,7 +70,6 @@ in
             "home"
             "image"
             "map"
-            "photos"
             "prometheus"
             "prowlarr"
             "qbit"
@@ -92,6 +91,15 @@ in
               service = "api@internal";
               tls.certResolver = "letsencrypt";
               middlewares = [ "auth" ];
+            };
+          }
+          {
+            name = "photos";
+            value = {
+              rule = "Host(`photos.${domain}`)";
+              entryPoints = [ "websecure" ];
+              service = "photos";
+              tls.certResolver = "letsencrypt";
             };
           }
         ]
