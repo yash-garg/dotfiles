@@ -63,6 +63,10 @@ in
             url = "http://vortex.${tailnet}:5006";
           }
           {
+            name = "Adguard";
+            url = "http://adguard.${tailnet}";
+          }
+          {
             name = "Cadvisor";
             url = "http://nova.turtle-lake.ts.net";
           }
@@ -77,6 +81,10 @@ in
           {
             name = "Home Assistant";
             url = "http://homeassistant.${tailnet}:8123";
+          }
+          {
+            name = "Immich";
+            url = "http://nova.${tailnet}:8086";
           }
           {
             name = "Jellyfin";

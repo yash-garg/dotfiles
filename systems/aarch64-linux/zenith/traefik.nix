@@ -70,10 +70,12 @@ in
             "home"
             "image"
             "map"
+            "photos"
             "prometheus"
             "prowlarr"
             "qbit"
             "radarr"
+            "readarr"
             "read"
             "rss"
             "sonarr"
@@ -110,30 +112,36 @@ in
         insecureSkipVerify = true;
       };
 
-      services = {
-        budget.loadBalancer = {
-          servers = [ { url = "https://100.78.157.31:5006"; } ];
-          serversTransport = "insecure";
+      services =
+        let
+          oracle-ip = "100.78.157.31";
+        in
+        {
+          budget.loadBalancer = {
+            servers = [ { url = "https://${oracle-ip}:5006"; } ];
+            serversTransport = "insecure";
+          };
+          cadvisor.loadBalancer.servers = [ { url = "http://${oracle-ip}:8081"; } ];
+          dns.loadBalancer.servers = [ { url = "http://100.93.246.1"; } ];
+          home.loadBalancer.servers = [ { url = "http://100.65.53.36:8123"; } ];
+          image.loadBalancer.servers = [ { url = "http://${oracle-ip}:3474"; } ];
+          map.loadBalancer.servers = [ { url = "http://100.92.154.106:81"; } ];
+          photos.loadBalancer.servers = [ { url = "http://${oracle-ip}:8086"; } ];
+          prometheus.loadBalancer.servers = [ { url = "http://${oracle-ip}:9090"; } ];
+          prowlarr.loadBalancer.servers = [ { url = "http://${oracle-ip}:9696"; } ];
+          qbit.loadBalancer.servers = [ { url = "http://${oracle-ip}:8080"; } ];
+          read.loadBalancer.servers = [ { url = "http://${oracle-ip}:5000"; } ];
+          readarr.loadBalancer.servers = [ { url = "http://${oracle-ip}:8787"; } ];
+          radarr.loadBalancer.servers = [ { url = "http://${oracle-ip}:7878"; } ];
+          rss.loadBalancer.servers = [ { url = "http://${oracle-ip}:5600"; } ];
+          sonarr.loadBalancer.servers = [ { url = "http://${oracle-ip}:8989"; } ];
+          stats.loadBalancer.servers = [ { url = "http://${oracle-ip}:3000"; } ];
+          stream.loadBalancer.servers = [ { url = "http://${oracle-ip}:8096"; } ];
+          unraid.loadBalancer = {
+            servers = [ { url = "https://${oracle-ip}"; } ];
+            serversTransport = "insecure";
+          };
         };
-        cadvisor.loadBalancer.servers = [ { url = "http://100.78.157.31:8081"; } ];
-        dns.loadBalancer.servers = [ { url = "http://100.93.246.1"; } ];
-        home.loadBalancer.servers = [ { url = "http://100.65.53.36:8123"; } ];
-        image.loadBalancer.servers = [ { url = "http://100.78.157.31:3474"; } ];
-        map.loadBalancer.servers = [ { url = "http://100.92.154.106:81"; } ];
-        prometheus.loadBalancer.servers = [ { url = "http://100.78.157.31:9090"; } ];
-        prowlarr.loadBalancer.servers = [ { url = "http://100.78.157.31:9696"; } ];
-        qbit.loadBalancer.servers = [ { url = "http://100.78.157.31:8080"; } ];
-        read.loadBalancer.servers = [ { url = "http://100.78.157.31:5000"; } ];
-        radarr.loadBalancer.servers = [ { url = "http://100.78.157.31:7878"; } ];
-        rss.loadBalancer.servers = [ { url = "http://100.78.157.31:5600"; } ];
-        sonarr.loadBalancer.servers = [ { url = "http://100.78.157.31:8989"; } ];
-        stats.loadBalancer.servers = [ { url = "http://100.78.157.31:3000"; } ];
-        stream.loadBalancer.servers = [ { url = "http://100.78.157.31:8096"; } ];
-        unraid.loadBalancer = {
-          servers = [ { url = "https://100.78.157.31"; } ];
-          serversTransport = "insecure";
-        };
-      };
     };
   };
 }
