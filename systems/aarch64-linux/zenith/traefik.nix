@@ -171,7 +171,7 @@ in
 
         jellyfin-redirect.redirectRegex = {
           permanent = true;
-          regex = "^/.*$";
+          regex = "^https://stream.${domain}/?$";
           replacement = "https://stream.${domain}/sso/OID/start/authelia";
         };
       };
