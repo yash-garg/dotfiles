@@ -17,7 +17,9 @@ let
       entryPoints = [ "websecure" ];
       service = name;
       tls.certResolver = "letsencrypt";
-      middlewares = mkIf (services.${name}.useAuth or true) [ "auth" ];
+      middlewares =
+        (if services.${name}.useAuth or true then [ "auth" ] else [ ])
+        ++ (services.${name}.middlewares or [ ]);
     };
   };
 
@@ -27,6 +29,7 @@ let
       url,
       useInsecure ? false,
       useAuth ? true,
+      middlewares ? [ ],
     }:
     {
       inherit name;
@@ -77,7 +80,11 @@ let
 
     stats.url = "http://${nova}:3000";
 
-    stream.url = "http://${nova}:8096";
+    stream = {
+      url = "http://${nova}:8096";
+      useAuth = false;
+      middlewares = [ "jellyfin-redirect" ];
+    };
 
     unraid = {
       url = "https://${nova}";
@@ -150,15 +157,23 @@ in
       inherit routers;
       services = serviceConfigs;
 
-      middlewares.auth.forwardAuth = {
-        address = "http://localhost:9091/api/authz/forward-auth";
-        trustForwardHeader = true;
-        authResponseHeaders = [
-          "Remote-User"
-          "Remote-Groups"
-          "Remote-Email"
-          "Remote-Name"
-        ];
+      middlewares = {
+        auth.forwardAuth = {
+          address = "http://localhost:9091/api/authz/forward-auth";
+          trustForwardHeader = true;
+          authResponseHeaders = [
+            "Remote-User"
+            "Remote-Groups"
+            "Remote-Email"
+            "Remote-Name"
+          ];
+        };
+
+        jellyfin-redirect.redirectRegex = {
+          permanent = true;
+          regex = "^/.*$";
+          replacement = "https://stream.${domain}/sso/OID/start/authelia";
+        };
       };
 
       serversTransports.insecure = {
