@@ -9,6 +9,7 @@ with lib;
 with lib.${namespace};
 let
   domain = "yashgarg.dev";
+  homeDomain = "ipx.ovh";
   hostName = "zenith";
   inherit (config.${namespace}.services.tailscale) tailnet;
 in
@@ -16,10 +17,13 @@ in
   imports = [
     ./disk-config.nix
     ./hardware-configuration.nix
-    ./traefik.nix
   ];
 
   age.secrets = {
+    cf-tokens = {
+      file = getSecret "cf.env" hostName;
+      owner = config.services.traefik.group;
+    };
     user-password.file = getSecret "user" hostName;
     plausible.file = getSecret "plausible" hostName;
     tsauthkey.file = getSecret "tailscale" hostName;
@@ -50,7 +54,7 @@ in
     server = enabled;
 
     sso = enabled // {
-      domain = "ipx.ovh";
+      domain = homeDomain;
     };
 
     services = {
@@ -147,7 +151,7 @@ in
       linkding = enabled // {
         port = 9095;
         proxy = enabled // {
-          domain = "ipx.ovh";
+          domain = homeDomain;
         };
       };
 
@@ -172,6 +176,64 @@ in
             "192.168.1.0/24"
           ];
         };
+      };
+
+      traefik = enabled // {
+        domain = homeDomain;
+        services =
+          let
+            nova = "100.78.157.31";
+          in
+          {
+            budget = {
+              url = "https://${nova}:5006";
+              useInsecure = true;
+            };
+
+            cadvisor.url = "http://${nova}:8081";
+
+            dns.url = "http://100.93.246.1";
+
+            home.url = "http://100.65.53.36:8123";
+
+            image.url = "http://${nova}:3474";
+
+            map.url = "http://100.92.154.106:81";
+
+            photos = {
+              url = "http://${nova}:8086";
+              useAuth = false;
+            };
+
+            prometheus.url = "http://${nova}:9090";
+
+            prowlarr.url = "http://${nova}:9696";
+
+            qbit.url = "http://${nova}:8080";
+
+            read.url = "http://${nova}:5000";
+
+            readarr.url = "http://${nova}:8787";
+
+            radarr.url = "http://${nova}:7878";
+
+            rss.url = "http://${nova}:5600";
+
+            sonarr.url = "http://${nova}:8989";
+
+            stats.url = "http://${nova}:3000";
+
+            stream = {
+              url = "http://${nova}:8096";
+              useAuth = false;
+              middlewares = [ "jellyfin-redirect" ];
+            };
+
+            unraid = {
+              url = "https://${nova}";
+              useInsecure = true;
+            };
+          };
       };
     };
 
