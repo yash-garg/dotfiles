@@ -138,6 +138,11 @@ in
             url = "http://nova.${tailnet}:8989";
           }
           {
+            name = "Stirling PDF";
+            group = "external";
+            url = "http://nova.${tailnet}:8087";
+          }
+          {
             name = "qBittorrent";
             url = "http://nova.${tailnet}:8080";
           }
@@ -199,6 +204,11 @@ in
             image.url = "http://${nova}:3474";
 
             map.url = "http://100.92.154.106:81";
+
+            pdf = {
+              url = "http://${nova}:8087";
+              useAuth = false;
+            };
 
             photos = {
               url = "http://${nova}:8086";
