@@ -17,8 +17,7 @@ let
       service = name;
       tls.certResolver = "letsencrypt";
       middlewares =
-        [ "crowdsec" ]
-        ++ (cfg.services.${name}.middlewares or [ ])
+        (cfg.services.${name}.middlewares or [ ])
         ++ optional (cfg.services.${name}.useAuth or true) "auth";
     };
   };
@@ -85,7 +84,10 @@ in
 
         entryPoints = {
           web.address = ":80";
-          websecure.address = ":443";
+          websecure = {
+            address = ":443";
+            http.middlewares = [ "crowdsec" ];
+          };
         };
 
         experimental.plugins.crowdsec-bouncer-traefik-plugin = mkIf cfg.crowdsecEnabled {
