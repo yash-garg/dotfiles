@@ -144,8 +144,6 @@
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
     ghostty.url = "github:ghostty-org/ghostty";
-    ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
-    ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs";
     ghostty.inputs.flake-compat.follows = "flake-compat";
     ghostty.inputs.zig.follows = "zig";
 

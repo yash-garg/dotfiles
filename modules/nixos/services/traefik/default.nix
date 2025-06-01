@@ -44,8 +44,6 @@ in
   options.${namespace}.services.traefik = {
     enable = mkEnableOption "Setup traefik reverse proxy";
 
-    crowdsecEnabled = mkBoolOpt false "Whether to enable CrowdSec protection";
-
     domain = mkOpt types.str "ipx.ovh" "Base domain for all services";
 
     services = mkOption {
@@ -84,15 +82,7 @@ in
 
         entryPoints = {
           web.address = ":80";
-          websecure = {
-            address = ":443";
-            http.middlewares = [ "crowdsec" ];
-          };
-        };
-
-        experimental.plugins.crowdsec-bouncer-traefik-plugin = mkIf cfg.crowdsecEnabled {
-          moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
-          version = "v1.4.2";
+          websecure.address = ":443";
         };
 
         global = {
@@ -139,11 +129,10 @@ in
             ];
           };
 
-          crowdsec.plugin.crowdsec-bouncer-traefik-plugin = mkIf cfg.crowdsecEnabled {
-            Enabled = true;
-            CrowdsecMode = "stream";
-            CrowdsecLapiScheme = "http";
-            CrowdsecLapiHost = "127.0.0.1:8080";
+          jellyfin-redirect.redirectRegex = {
+            permanent = true;
+            regex = "^https://stream.${cfg.domain}/?$";
+            replacement = "https://stream.${cfg.domain}/sso/OID/start/authelia";
           };
         };
 
