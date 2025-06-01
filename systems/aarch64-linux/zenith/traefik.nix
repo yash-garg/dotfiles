@@ -17,9 +17,11 @@ let
       entryPoints = [ "websecure" ];
       service = name;
       tls.certResolver = "letsencrypt";
-      middlewares =
-        (if services.${name}.useAuth or true then [ "auth" ] else [ ])
-        ++ (services.${name}.middlewares or [ ]);
+      middlewares = (
+        [ "crowdsec" ]
+        ++ (services.${name}.middlewares or [ ])
+        ++ optional (services.${name}.useAuth or true) "auth"
+      );
     };
   };
 
@@ -142,13 +144,18 @@ in
         websecure.address = ":443";
       };
 
+      experimental.plugins.crowdsec-bouncer-traefik-plugin = {
+        moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
+        version = "v1.4.2";
+      };
+
       global = {
         checkNewVersion = false;
         sendAnonymousUsage = false;
       };
 
       log = {
-        level = "INFO";
+        level = "WARN";
         format = "json";
       };
     };
@@ -167,6 +174,13 @@ in
             "Remote-Email"
             "Remote-Name"
           ];
+        };
+
+        crowdsec.plugin.crowdsec-bouncer-traefik-plugin = {
+          Enabled = false;
+          CrowdsecMode = "stream";
+          CrowdsecLapiScheme = "http";
+          CrowdsecLapiHost = "127.0.0.1:8080";
         };
 
         jellyfin-redirect.redirectRegex = {
