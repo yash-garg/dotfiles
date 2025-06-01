@@ -125,7 +125,6 @@ in
               "authorization_code"
             ];
             redirect_uris = [
-              "https://actual.${domain}/openid/callback"
               "https://budget.${domain}/openid/callback"
             ];
             scopes = [

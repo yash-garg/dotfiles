@@ -191,8 +191,8 @@ in
           in
           {
             budget = {
-              url = "https://${nova}:5006";
-              useInsecure = true;
+              url = "http://100.92.154.106:5006";
+              useAuth = false;
             };
 
             cadvisor.url = "http://${nova}:8081";
