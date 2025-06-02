@@ -17,6 +17,8 @@ in
 
   config = mkIf cfg.enable {
     services = {
+      desktopManager.gnome = enabled;
+
       # Enable automatic login for the user.
       displayManager.autoLogin = enabled // {
         user = "yash";
@@ -31,7 +33,6 @@ in
         displayManager.gdm = enabled // {
           wayland = true;
         };
-        desktopManager.gnome = enabled;
         excludePackages = [ pkgs.xterm ];
       };
     };

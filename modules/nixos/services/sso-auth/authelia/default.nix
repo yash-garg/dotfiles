@@ -10,8 +10,6 @@ let
   cfg = config.${namespace}.services.authelia;
 in
 {
-  imports = [ ./settings.nix ];
-
   options.${namespace}.services.authelia = {
     enable = mkEnableOption "Enable Authelia OIDC";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Authelia";
@@ -68,6 +66,7 @@ in
             oidcIssuerPrivateKeyFile = config.age.secrets.oidcIssuerPrivateKey.path;
             oidcHmacSecretFile = config.age.secrets.oidcHmacSecretKey.path;
           };
+          settings = import ./settings.nix { inherit lib config namespace; };
           settingsFiles = [ config.age.secrets.notifierSettings.path ];
         };
       };
