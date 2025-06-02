@@ -37,6 +37,7 @@
         with inputs;
         [
           nix-index-database.darwinModules.nix-index
+          srvos.darwinModules.desktop
           srvos.darwinModules.mixins-trusted-nix-caches
           stylix.darwinModules.stylix
         ]
@@ -67,11 +68,6 @@
         srvos.nixosModules.desktop
         srvos.nixosModules.mixins-systemd-boot
       ];
-
-      systems.hosts = {
-        aurora.modules = with inputs; [ srvos.darwinModules.desktop ];
-        trinity.modules = with inputs; [ srvos.darwinModules.desktop ];
-      };
 
       homes.modules = with inputs; [
         nix-index-database.hmModules.nix-index
