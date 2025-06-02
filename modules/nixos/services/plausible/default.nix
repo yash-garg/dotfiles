@@ -39,11 +39,11 @@ in
 
     services = {
       plausible = enabled // {
+        database.postgres.setup = true;
         server = {
           baseUrl = "https://analytics.${cfg.baseUrl}";
           disableRegistration = "invite_only";
-          inherit (cfg) port;
-          inherit (cfg) secretKeybaseFile;
+          inherit (cfg) port secretKeybaseFile;
         };
       };
 
