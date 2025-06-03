@@ -5,8 +5,11 @@
 }:
 with lib;
 with lib.${namespace};
+let
+  settings = builtins.readFile ./config.toml;
+in
 {
   programs.jujutsu = enabled // {
-    settings = { };
+    settings = builtins.fromTOML settings;
   };
 }

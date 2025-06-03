@@ -7,8 +7,8 @@
     cachix
     charm-freeze
     curl
-    delta
     deploy-rs
+    difftastic
     dnscontrol
     dogdns
     du-dust

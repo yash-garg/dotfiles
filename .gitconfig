@@ -31,16 +31,10 @@
     editor = nano
     autocrlf = false
     # sshcommand = C:/Windows/System32/OpenSSH/ssh.exe
-    pager = delta
     compression = 9
 
-[color "diff"]
-    meta = blue
-    old = red
-    new = green
-
-[interactive]
-    diffFilter = delta --color-only
+[diff]
+    external = difft
 
 [commit]
     gpgsign = true
@@ -70,28 +64,6 @@
 [rerere]
     enabled = true
 
-[delta]
-    features = line-numbers decorations
-    navigate = false
-    syntax-theme = none
-    light = false
-    line-numbers = true
-    plus-style = green bold
-    plus-emph-style = green bold normal
-    minus-style = red bold
-    minus-emph-style = red bold normal
-
-[delta "decorations"]
-    file-style = bold yellow ul
-    file-decoration-style = none
-    hunk-header-decoration-style = white box
-
-[delta "line-numbers"]
-    line-numbers-left-format = "{nm:>4}:"
-    line-numbers-right-format = "{np:<4} "
-    line-numbers-minus-style = red bold
-    line-numbers-plus-style = green bold
-
 [diff]
     algorithm = histogram
     submodule = log
@@ -108,9 +80,6 @@
 
 [credential]
     helper = manager
-
-[safe]
-    directory = *
 
 [fetch]
     writeCommitGraph = true

@@ -1,0 +1,45 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Yash Garg"
+email = "me@yashgarg.dev"
+
+[ui]
+color = "always"
+conflict-marker-style = "git"
+default-command = "log"
+editor = "nvim"
+pager = ":builtin"
+
+[ui.diff]
+tool = "difft"
+
+[ui.streampager]
+interface = "full-screen-clear-output"
+show-ruler = false
+wrapping = "none"
+
+[aliases]
+c = ["git", "clone"]
+g = ["git"]
+
+[git]
+sign-on-push = true
+write-change-id-header = true
+
+[merge-tools.difft]
+command = "difft"
+diff-args = ["--color=always", "$left", "$right"]
+diff-expected-exit-codes = [0, 1]
+
+# only for windows
+[revset-aliases]
+HEAD = "@"
+
+[signing]
+behavior = "force"
+backend = "ssh"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz"
+
+[snapshot]
+auto-update-stale = true
