@@ -40,6 +40,7 @@ in
         "google-chrome"
         "notion-calendar"
         "obsidian"
+        "steam"
       ];
 
       masApps = {
@@ -66,7 +67,6 @@ in
         inherit (config.age.secrets.gitconfig) path;
       }
     ];
-
   };
 
   system.stateVersion = 5;

@@ -34,7 +34,7 @@
     compression = 9
 
 [diff]
-    external = difft
+    external = difft --display inline
 
 [commit]
     gpgsign = true
