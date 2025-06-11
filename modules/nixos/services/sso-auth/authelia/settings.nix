@@ -137,6 +137,21 @@ in
           token_endpoint_auth_method = "client_secret_basic";
         }
         {
+          client_id = "tailscale";
+          client_name = "Tailscale";
+          client_secret = "$pbkdf2-sha512$310000$oQVBGFNKM9uiscpWlEMzmw$9qZf/57tlwlmZX.Ni2tlkQH7h3LJRiCTw7D5uJGG8HVApcd1m/1GUTnd01F/os9jpW7wqH0mvabyuXMmz5MDzQ";
+          redirect_uris = [
+            "https://login.tailscale.com/a/oauth_response"
+          ];
+          scopes = [
+            "openid"
+            "email"
+            "profile"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
           client_id = "immich";
           client_name = "Immich";
           client_secret = "$pbkdf2-sha512$310000$we2.VRlN/pvtnZoUt0.kpw$qRAAKL..H4GnzEzMiMH.MPoXLy0IB3BslhB2.0gTVK99cuAyQEOsNNQ052huyqgpwdpTHVfaU68CmUzC.gnLGg";
