@@ -1,160 +1,46 @@
-add_newline = true
-command_timeout = 10000
-palette = "catppuccin_mocha"
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$python\
+$character"""
 
-[username]
-show_always = true
-format = "[$user]($style)"
+[directory]
+style = "blue"
 
-[nix_shell]
-symbol = "nix"
-format = "via [$symbol-$state]($style) "
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
+
+[git_branch]
+format = "[$branch]($style)"
+style = "bright-black"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
 [cmd_duration]
-min_time = 0
-
-[hostname]
-disabled = false
-ssh_only = false
-format = ' at [$hostname](bold red) in '
-
-[gradle]
-format = "via [gradle-$version]($style) "
-
-[aws]
-disabled = true
-
-[azure]
-disabled = true
-
-[battery]
-disabled = true
-
-[buf]
-disabled = true
-
-[bun]
-disabled = true
-
-[cobol]
-disabled = true
-
-[conda]
-disabled = true
-
-[crystal]
-disabled = true
-
-[daml]
-disabled = true
-
-[deno]
-disabled = true
-
-[docker_context]
-disabled = true
-
-[dotnet]
-disabled = true
-
-[elm]
-disabled = true
-
-[erlang]
-disabled = true
-
-[fennel]
-disabled = true
-
-[gcloud]
-disabled = true
-
-[haskell]
-disabled = true
-
-[haxe]
-disabled = true
-
-[helm]
-disabled = true
-
-[java]
-disabled = true
-
-[julia]
-disabled = true
-
-[kotlin]
-disabled = true
-
-[kubernetes]
-disabled = true
-
-[lua]
-disabled = true
-
-[meson]
-disabled = true
-
-[nim]
-disabled = true
-
-[nodejs]
-disabled = true
-
-[ocaml]
-disabled = true
-
-[opa]
-disabled = true
-
-[openstack]
-disabled = true
-
-[perl]
-disabled = true
-
-[php]
-disabled = true
-
-[pulumi]
-disabled = true
-
-[purescript]
-disabled = true
+format = "[$duration]($style) "
+style = "yellow"
 
 [python]
-disabled = true
-
-[rlang]
-disabled = true
-
-[raku]
-disabled = true
-
-[red]
-disabled = true
-
-[ruby]
-disabled = true
-
-[scala]
-disabled = true
-
-[spack]
-disabled = true
-
-[swift]
-disabled = true
-
-[terraform]
-disabled = true
-
-[vagrant]
-disabled = true
-
-[vlang]
-disabled = true
-
-[zig]
-disabled = true
+format = "[$virtualenv]($style) "
+style = "bright-black"

@@ -9,7 +9,7 @@ with lib.${namespace};
   profiles.${namespace} = {
     atuin = enabled;
     neovim = enabled;
-    oh-my-posh = enabled;
+    starship = enabled;
   };
 
   shells.${namespace}.zsh = enabled;
