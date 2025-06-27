@@ -20,13 +20,13 @@ in
     dock.persistentApps = [
       "Ghostty"
       "Xcode"
-      "Windsurf"
       "Spotify"
       "Android Studio"
       "Linear"
       "Slack"
       "Arc"
       "OrbStack"
+      "Zed"
       "zoom.us"
     ];
 
@@ -34,11 +34,10 @@ in
       additionalCasks = [
         "arc"
         "linear-linear"
-        "obsidian"
         "slack"
         "temurin@21"
-        "windsurf"
         "yubico-yubikey-manager"
+        "zed"
         "zoom"
       ];
 
