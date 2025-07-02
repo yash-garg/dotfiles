@@ -113,6 +113,10 @@ in
             url = "http://vortex.${tailnet}:81";
           }
           {
+            name = "Paperless";
+            url = "http://nova.${tailnet}:8010";
+          }
+          {
             name = "Prometheus";
             url = "http://nova.${tailnet}:9090";
           }
@@ -204,6 +208,11 @@ in
             image.url = "http://${nova}:3474";
 
             map.url = "http://100.92.154.106:81";
+
+            paperless = {
+              url = "http://${nova}:8010";
+              useAuth = false;
+            };
 
             pdf = {
               url = "http://${nova}:8087";

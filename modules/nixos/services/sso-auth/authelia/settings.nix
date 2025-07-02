@@ -187,6 +187,24 @@ in
           userinfo_signed_response_alg = "none";
           token_endpoint_auth_method = "client_secret_post";
         }
+        {
+          client_id = "paperless";
+          client_name = "Paperless";
+          client_secret = "$pbkdf2-sha512$310000$L2POBBIm7MhKxfGUwCXZNg$hqRUxAB4wBa3jMePdFMIG6jFOYdstgMiowwzc11RaOJMyj4eBr74ZJY1jClATbCx51oTO.JRz1TGgtzcrOegnQ";
+          public = false;
+          authorization_policy = "one_factor";
+          redirect_uris = [
+            "https://paperless.${domain}/accounts/oidc/authelia/login/callback/"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
       ];
     };
   };
