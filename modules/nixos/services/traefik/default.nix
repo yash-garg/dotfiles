@@ -81,8 +81,22 @@ in
         };
 
         entryPoints = {
-          web.address = ":80";
-          websecure.address = ":443";
+          web = {
+            address = ":80";
+            transport.respondingTimeouts = {
+              readTimeout = 600;
+              writeTimeout = 600;
+              idleTimeout = 600;
+            };
+          };
+          websecure = {
+            address = ":443";
+            transport.respondingTimeouts = {
+              readTimeout = 600;
+              writeTimeout = 600;
+              idleTimeout = 600;
+            };
+          };
         };
 
         global = {
