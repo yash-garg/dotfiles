@@ -24,6 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check docker compose services
-        uses: hoverkraft-tech/compose-action@v2.2.0
+        uses: hoverkraft-tech/compose-action@v2.3.0
         with:
           compose-file: "./docker/docker-compose.yml"
