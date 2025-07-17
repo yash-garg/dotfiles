@@ -6,25 +6,25 @@
     };
 
     font = lib.mkForce {
-      size = 14;
+      size = 17;
 
       normal = {
-        family = "CaskaydiaCove Nerd Font Mono";
+        family = "IosevkaTerm Nerd Font Mono";
         style = "Regular";
       };
 
       bold = {
-        family = "CaskaydiaCove Nerd Font Mono";
+        family = "IosevkaTerm Nerd Font Mono";
         style = "Bold";
       };
 
       bold_italic = {
-        family = "CaskaydiaCove Nerd Font Mono";
+        family = "IosevkaTerm Nerd Font Mono";
         style = "Bold Italic";
       };
 
       italic = {
-        family = "CaskaydiaCove Nerd Font Mono";
+        family = "IosevkaTerm Nerd Font Mono";
         style = "Italic";
       };
     };

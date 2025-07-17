@@ -5,7 +5,7 @@ local font_name
 if utils.is_windows() then
     font_name = "CaskaydiaMono Nerd Font Mono"
 else
-    font_name = "CaskaydiaCove Nerd Font Mono"
+    font_name = "IosevkaTerm Nerd Font Mono"
 end
 
 local harfbuzz_features = { "ss02", "ss19", "ss20" }

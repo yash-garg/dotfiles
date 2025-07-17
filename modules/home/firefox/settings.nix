@@ -35,7 +35,7 @@ _: {
     "extensions.formautofill.heuristics.enabled" = false;
 
     "datareporting.healthreport.service.enabled" = false;
-    "font.name.monospace.x-western" = "JetBrainsMono Nerd Font Mono";
+    "font.name.monospace.x-western" = "IosevkaTerm Nerd Font Mono";
     "reader.parse-on-load.enabled" = false;
     "svg.context-properties.content.enabled" = true;
     "toolkit.legacyUserProfileCustomizations.stylesheets" = true;

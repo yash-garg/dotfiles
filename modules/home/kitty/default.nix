@@ -20,9 +20,9 @@ in
   config = mkIf cfg.enable {
     programs.kitty = enabled // {
       font = mkForce {
-        name = "CaskaydiaCove Nerd Font Mono";
-        package = pkgs.nerd-fonts.caskaydia-cove;
-        size = 14;
+        name = "IosevkaTerm Nerd Font Mono";
+        package = pkgs.nerd-fonts.iosevka-term;
+        size = 17;
       };
 
       keybindings = {
