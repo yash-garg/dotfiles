@@ -1,13 +1,15 @@
 theme = dark:catppuccin-mocha,light:catppuccin-latte
 
 font-family = IosevkaTerm Nerd Font Mono
-font-style = SemiBold
+font-style = Medium
 font-style-bold = Bold
 font-feature = calt
 font-size = 17
+font-thicken = true
 
 cursor-style = block
 cursor-style-blink = true
+link-url = true
 mouse-hide-while-typing = true
 background-opacity = 0.99
 background-blur-radius = 30
