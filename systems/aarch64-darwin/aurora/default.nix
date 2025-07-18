@@ -33,6 +33,7 @@ in
     homebrew = {
       additionalCasks = [
         "arc"
+        "flutter"
         "linear-linear"
         "slack"
         "temurin@21"
