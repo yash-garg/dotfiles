@@ -24,6 +24,7 @@ _: {
         "notion-calendar"
         "obsidian"
         "slack"
+        "visual-studio-code"
       ];
 
       masApps = {

@@ -15,7 +15,6 @@ let
     "orbstack"
     "raycast"
     "spotify"
-    "visual-studio-code"
   ] ++ cfg.additionalCasks;
   cfg = config.${namespace}.homebrew;
   hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
