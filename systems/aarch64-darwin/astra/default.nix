@@ -31,6 +31,7 @@ in
 
     homebrew = {
       additionalCasks = [
+        "actual"
         "arc"
         "chatgpt"
         "chromedriver"
