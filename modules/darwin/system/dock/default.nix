@@ -34,7 +34,8 @@ in
 
       persistent-apps = [
         "/System/Applications/Launchpad.app"
-      ] ++ map (app: "${brewAppDir}/${app}.app") cfg.persistentApps;
+      ]
+      ++ map (app: "${brewAppDir}/${app}.app") cfg.persistentApps;
 
       # Disable all hot corners
       wvous-tl-corner = 1;

@@ -301,23 +301,22 @@ in
     systemd.services."getty@tty1" = disabled;
     systemd.services."autovt@tty1" = disabled;
 
-    users.users.yash.packages =
-      [
-        pkgs.gnome-screenshot
-        pkgs.gnome-tweaks
-      ]
-      ++ (with pkgs.gnomeExtensions; [
-        advanced-alttab-window-switcher
-        appindicator
-        arcmenu
-        brightness-control-using-ddcutil
-        clipboard-indicator
-        dash-to-dock
-        media-controls
-        tiling-shell
-        transparent-top-bar
-        user-themes
-      ]);
+    users.users.yash.packages = [
+      pkgs.gnome-screenshot
+      pkgs.gnome-tweaks
+    ]
+    ++ (with pkgs.gnomeExtensions; [
+      advanced-alttab-window-switcher
+      appindicator
+      arcmenu
+      brightness-control-using-ddcutil
+      clipboard-indicator
+      dash-to-dock
+      media-controls
+      tiling-shell
+      transparent-top-bar
+      user-themes
+    ]);
 
     environment = {
       gnome.excludePackages =

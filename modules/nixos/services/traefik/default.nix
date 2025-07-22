@@ -17,8 +17,7 @@ let
       service = name;
       tls.certResolver = "letsencrypt";
       middlewares =
-        (cfg.services.${name}.middlewares or [ ])
-        ++ optional (cfg.services.${name}.useAuth or true) "auth";
+        (cfg.services.${name}.middlewares or [ ]) ++ optional (cfg.services.${name}.useAuth or true) "auth";
     };
   };
 

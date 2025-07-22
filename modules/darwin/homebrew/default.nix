@@ -15,7 +15,8 @@ let
     "orbstack"
     "raycast"
     "spotify"
-  ] ++ cfg.additionalCasks;
+  ]
+  ++ cfg.additionalCasks;
   cfg = config.${namespace}.homebrew;
   hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
 in
@@ -62,7 +63,8 @@ in
         "cocoapods"
         "ruby"
         "webp"
-      ] ++ cfg.brews;
+      ]
+      ++ cfg.brews;
 
       caskArgs.appdir = "/Applications";
 
