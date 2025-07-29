@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
 
-function v() {
-    file=$(fzf --preview 'bat --color=always --style=numbers {}')
-
-    if [ -n "$file" ]; then
-        ${VISUAL:-${EDITOR:-nano}} $file
-    fi
+_fzf_git_stashes() {
+    _fzf_git_check || return
+    git stash list | _fzf_git_fzf \
+        --border-label '🥡 Stashes ' \
+        --header 'CTRL-X (drop stash)' \
+        --bind 'ctrl-x:reload(git stash drop -q {1}; git stash list)' \
+        -d: --preview "git stash show --color=$(__fzf_git_color .) {1} | $(__fzf_git_pager)" "$@" |
+    cut -d: -f1
 }
 
-function glog() {
-    count=$1
-
-    if [ -z "$count" ]; then
-        count=10
-    fi
-
-    git log --oneline --decorate --graph --all -n $count
+cmb() {
+    git log --graph --color=always \
+        --format="%C(auto)%h%d %s %C(#6e6e6e)%C(bold)%cr" "$@" |
+        fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+            --bind "ctrl-m:execute:
+            (grep -o '[a-f0-9]\{7\}' | head -1 |
+            xargs -I % sh -c 'git show -w --color=always % | less -R') << 'FZF-EOF'
+            {}
+    FZF-EOF"
 }
 
-function gdiff() {
+gdiff() {
     sha=$1
 
     if [ -z "$sha" ]; then
@@ -28,17 +31,16 @@ function gdiff() {
     git diff -w $sha
 }
 
-function cmb() {
-    if [ -d .git ]; then
-        git log --graph --color=always \
-            --format="%C(auto)%h%d %s %C(#6e6e6e)%C(bold)%cr" "$@" |
-            fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-                --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show -w --color=always % | less -R') << 'FZF-EOF'
-                {}
-        FZF-EOF"
-    else
-        echo "not a git directory"
+gs() {
+  local stash
+  stash=$(_fzf_git_stashes)
+  [ -n "$stash" ] && git stash pop "$stash"
+}
+
+v() {
+    file=$(fzf --preview 'bat --color=always --style=numbers {}')
+
+    if [ -n "$file" ]; then
+        ${VISUAL:-${EDITOR:-nano}} $file
     fi
 }

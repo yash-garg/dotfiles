@@ -20,16 +20,15 @@ if type lazygit &>/dev/null; then
 fi
 
 if type git &>/dev/null; then
-    alias gcp='git cherry-pick'
-    alias amend='git commit --amend'
     alias add='git add --all'
-    alias st='git status'
-    alias push='git push'
-    alias fpush='git push --force-with-lease'
-    alias pull='git pull'
+    alias amend='git commit --amend'
     alias commit='git commit -m'
-    alias rst='git reset; git restore .'
-    alias branch='git switch -c -m'
+    alias fpush='git push --force-with-lease'
+    alias gco='_fzf_git_each_ref --no-multi | xargs git checkout'
+    alias gswt='_fzf_git_worktrees --no-multi | xargs cd'
+    alias pull='git pull'
+    alias push='git push'
+    alias st='git status'
 fi
 
 if type nvim &>/dev/null; then

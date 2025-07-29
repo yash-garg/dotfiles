@@ -2,6 +2,7 @@
   config,
   lib,
   namespace,
+  pkgs,
   ...
 }:
 with lib;
@@ -25,7 +26,10 @@ in
           "ignorespace"
           "erasedups"
         ];
-        initExtra = "source $HOME/.shell-init";
+        initExtra = ''
+          source "${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh"
+          source $HOME/.shell-init
+        '';
       };
 
       atuin.enableBashIntegration = true;

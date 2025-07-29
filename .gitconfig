@@ -3,12 +3,14 @@
     email = me@yashgarg.dev
     signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz
 
-[push]
-    autoSetupRemote = true
-    default = current
+[core]
+    editor = nano
+    autocrlf = false
+    compression = 9
+    # sshcommand = C:/Windows/System32/OpenSSH/ssh.exe
 
-[branch]
-    sort = -committerdate
+[init]
+    defaultBranch = develop
 
 [color]
     ui = true
@@ -18,23 +20,14 @@
 
 [alias]
     c = clone
-    diff = diff -w
-    cpa = cherry-pick --abort
-    cpc = cherry-pick --continue
-    su = submodule update --init --recursive
-    undo = reset --soft HEAD^
-    sw = "!git switch $(git branch | fzf | tr -d '*[:space:]')"
-    staash = stash --all
+    cp = cherry-pick
     fix = commit --fixup
-
-[core]
-    editor = nano
-    autocrlf = false
-    # sshcommand = C:/Windows/System32/OpenSSH/ssh.exe
-    compression = 9
-
-[diff]
-    external = difft --display inline
+    kang = commit --amend --reset-author
+    loa = log --oneline --author='Yash Garg'
+    loc = log --oneline --committer='Yash Garg'
+    suicide = reset --hard
+    undo = reset --soft HEAD^
+    wt = worktree
 
 [commit]
     gpgsign = true
@@ -42,32 +35,43 @@
 [format]
     signoff = true
 
-[url "git@github.com:"]
-    insteadOf = https://github.com/
-    insteadOf = git://github.com/
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    allowedSignersFile = allowed_signers
+
+[push]
+    autoSetupRemote = true
+    default = current
+
+[branch]
+    sort = -committerdate
 
 [pull]
     rebase = true
 
-[gpg]
-    format = ssh
-
-[tag]
-    gpgsign = true
-
-[init]
-    defaultBranch = develop
-
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
+    log = true
 
-[rerere]
-    enabled = true
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
 
 [diff]
     algorithm = histogram
     submodule = log
     colorMoved = default
+    external = difft --display inline
+
+[fetch]
+	all = true
+	fsckobjects = true
+	prune = true
+	pruneTags = true
+    writeCommitGraph = true
 
 [submodule]
     recurse = true
@@ -75,11 +79,16 @@
 [status]
     submoduleSummary = true
 
-[gpg "ssh"]
-    allowedSignersFile = allowed_signers
+[rerere]
+    autoupdate = true
+    enabled = true
+
+[log]
+    date = "iso"
 
 [credential]
     helper = manager
 
-[fetch]
-    writeCommitGraph = true
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+    insteadOf = git://github.com/

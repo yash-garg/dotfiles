@@ -2,6 +2,7 @@
   config,
   lib,
   namespace,
+  pkgs,
   ...
 }:
 with lib;
@@ -26,7 +27,10 @@ in
           path = "$HOME/.zsh_history";
           ignoreDups = true;
         };
-        initContent = "source $HOME/.shell-init";
+        initContent = ''
+          source "${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh"
+          source $HOME/.shell-init
+        '';
       };
 
       atuin.enableZshIntegration = true;
