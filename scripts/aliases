@@ -7,8 +7,8 @@ if type bat &>/dev/null; then
     alias cat='bat'
 fi
 
-if type dust &>/dev/null; then
-    alias du='dust'
+if type diskus &>/dev/null; then
+    alias du='diskus'
 fi
 
 if type fastfetch &>/dev/null; then

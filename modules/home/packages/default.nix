@@ -3,23 +3,19 @@
   home.packages = with pkgs; [
     age
     agenix
-    asciinema
     cachix
-    charm-freeze
     curl
     deploy-rs
     difftastic
+    diskus
     dnscontrol
-    dogdns
-    du-dust
-    erdtree
     fd
     httpie
     hyperfine
-    ijq
     just
     jq
     mediainfo
+    mtr
     nixfmt-rfc-style
     nix-inspect
     nixos-generators
