@@ -14,7 +14,6 @@
     du-dust
     erdtree
     fd
-    gh
     httpie
     hyperfine
     ijq

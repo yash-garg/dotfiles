@@ -4,7 +4,6 @@
     signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz
 
 [core]
-    editor = nano
     autocrlf = false
     compression = 9
     # sshcommand = C:/Windows/System32/OpenSSH/ssh.exe
