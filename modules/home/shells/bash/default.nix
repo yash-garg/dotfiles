@@ -21,7 +21,6 @@ in
       bash = enabled // {
         enableCompletion = true;
         historySize = 10000;
-        historyFile = "$HOME/.bash_history";
         historyControl = [
           "ignorespace"
           "erasedups"

@@ -24,7 +24,6 @@ in
         syntaxHighlighting = enabled;
         history = {
           size = 10000;
-          path = "$HOME/.zsh_history";
           ignoreDups = true;
         };
         initContent = ''
