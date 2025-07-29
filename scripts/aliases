@@ -25,6 +25,7 @@ if type git &>/dev/null; then
     alias commit='git commit -m'
     alias fpush='git push --force-with-lease'
     alias gco='_fzf_git_each_ref --no-multi | xargs git checkout'
+    alias gsw='_fzf_git_branches | xargs git switch'
     alias gswt='_fzf_git_worktrees --no-multi | xargs cd'
     alias pull='git pull'
     alias push='git push'
