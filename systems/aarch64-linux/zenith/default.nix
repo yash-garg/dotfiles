@@ -189,6 +189,7 @@ in
 
       traefik = enabled // {
         domain = homeDomain;
+        environmentFiles = [ config.age.secrets.cf-tokens.path ];
         services =
           let
             nova = "100.78.157.31";

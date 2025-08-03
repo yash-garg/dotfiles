@@ -45,6 +45,8 @@ in
 
     domain = mkOpt types.str "ipx.ovh" "Base domain for all services";
 
+    environmentFiles = mkOpt (types.listOf types.str) [ ] "Environment files to load";
+
     services = mkOption {
       type = types.attrsOf (
         types.submodule {
@@ -63,6 +65,8 @@ in
 
   config = mkIf cfg.enable {
     services.traefik = enabled // {
+      inherit (cfg) environmentFiles;
+
       staticConfigOptions = {
         api = {
           dashboard = true;
