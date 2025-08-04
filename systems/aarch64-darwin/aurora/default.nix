@@ -36,7 +36,7 @@ in
         "flutter"
         "linear-linear"
         "slack"
-        "temurin@21"
+        "openjdk@21"
         "yubico-yubikey-manager"
         "zed"
         "zoom"

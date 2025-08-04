@@ -62,6 +62,7 @@ in
       brews = [
         "cocoapods"
         "ruby"
+        "spr"
         "webp"
       ]
       ++ cfg.brews;
@@ -73,6 +74,8 @@ in
         greedy = true;
       }) casks;
 
+      greedyCasks = false;
+
       global = {
         autoUpdate = true;
         brewfile = true;
@@ -80,7 +83,8 @@ in
 
       onActivation = {
         autoUpdate = false;
-        cleanup = "none";
+        cleanup = "zap";
+        extraFlags = [ "--verbose" ];
         upgrade = true;
       };
     };
