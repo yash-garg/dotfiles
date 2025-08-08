@@ -20,6 +20,9 @@ buildGoModule rec {
     "-s"
     "-w"
     "-X main.version=${version}"
+    "-X main.commit=${src.rev}"
+    "-X main.date=1970-01-01T00:00:00Z"
+    "-X main.builtBy=nixpkgs"
   ];
 
   postInstall = ''
