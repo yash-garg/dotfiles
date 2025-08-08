@@ -15,6 +15,8 @@ with lib.${namespace};
       ".DS_Store"
       ".vscode/"
       ".idea/"
+      "kls_database.db"
+      ".spr.yml"
     ];
 
     includes = [

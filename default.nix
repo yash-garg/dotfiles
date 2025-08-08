@@ -23,6 +23,7 @@ let
   callPackage = pkg: pkgs.callPackage pkg;
 in
 {
+  git-spr = callPackage ./packages/git-spr { };
   monolisa-nerdfonts = callPackage ./packages/monolisa-nerdfonts { };
   mpv-scripts = callPackage ./packages/mpv-scripts { };
 }

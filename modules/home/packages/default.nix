@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, namespace, ... }:
 {
   home.packages = with pkgs; [
     age
@@ -23,6 +23,7 @@
     nurl
     nvd
     ookla-speedtest
+    pkgs.${namespace}.git-spr
     ripgrep
     restic
     ruff

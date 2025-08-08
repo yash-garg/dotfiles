@@ -62,7 +62,6 @@ in
       brews = [
         "cocoapods"
         "ruby"
-        "spr"
         "webp"
       ]
       ++ cfg.brews;
