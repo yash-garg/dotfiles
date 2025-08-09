@@ -188,6 +188,23 @@ in
           token_endpoint_auth_method = "client_secret_post";
         }
         {
+          client_id = "miniflux";
+          client_name = "Miniflux";
+          client_secret = "$pbkdf2-sha512$310000$ixsi8LqA7zxNPLXbpjqSAQ$1GQ.NssJ/QKvD7qCgwxsT7PFpD4ZxilDDq17.GSqFbcqueNGJy.2Jv8xYszFjumkE7pLNTbG0Lg6bR2clzTXvw";
+          public = false;
+          authorization_policy = "one_factor";
+          redirect_uris = [
+            "https://rss.${domain}/oauth2/oidc/callback"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
           client_id = "paperless";
           client_name = "Paperless";
           client_secret = "$pbkdf2-sha512$310000$L2POBBIm7MhKxfGUwCXZNg$hqRUxAB4wBa3jMePdFMIG6jFOYdstgMiowwzc11RaOJMyj4eBr74ZJY1jClATbCx51oTO.JRz1TGgtzcrOegnQ";

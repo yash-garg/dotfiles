@@ -239,7 +239,10 @@ in
 
             radarr.url = "http://${nova}:7878";
 
-            rss.url = "http://${nova}:5600";
+            rss = {
+              url = "http://${nova}:5600";
+              useAuth = false;
+            };
 
             sonarr.url = "http://${nova}:8989";
 
