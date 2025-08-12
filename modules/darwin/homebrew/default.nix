@@ -45,24 +45,20 @@ in
         A map of macOS App Store apps to install.
       '';
     };
-
-    taps = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      description = ''
-        A list of additional taps to add.
-      '';
-    };
   };
 
   config = {
     homebrew = enabled // {
-      inherit (cfg) masApps taps;
+      inherit (cfg) masApps;
 
       brews = [
         "cocoapods"
         "ruby"
         "webp"
+        {
+          name = "JakeWharton/repo/diffuse";
+          args = [ "ignore-dependencies" ];
+        }
       ]
       ++ cfg.brews;
 

@@ -36,13 +36,15 @@ in
         "flutter"
         "linear-linear"
         "slack"
-        "openjdk@21"
         "yubico-yubikey-manager"
         "zed"
         "zoom"
       ];
 
-      brews = [ "cloudflared" ];
+      brews = [
+        "cloudflared"
+        "openjdk@21"
+      ];
     };
 
     user.name = "ygarg";
