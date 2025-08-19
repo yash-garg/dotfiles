@@ -188,6 +188,23 @@ in
           token_endpoint_auth_method = "client_secret_post";
         }
         {
+          client_id = "linkding";
+          client_name = "Linkding";
+          client_secret = "$pbkdf2-sha512$310000$jXF45KQfnCDkLgwYlPFUSg$KKe9Gno3dHq8uZkyD9ItqU4mVXkhkk2zfdHTsqpbWcp8oxkxZ5nAgwqgj.wpnTW.NkXs66zFdSdSFT3t2b04gA";
+          public = false;
+          authorization_policy = "one_factor";
+          redirect_uris = [
+            "https://links.${domain}/oidc/callback/"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_post";
+        }
+        {
           client_id = "miniflux";
           client_name = "Miniflux";
           client_secret = "$pbkdf2-sha512$310000$ixsi8LqA7zxNPLXbpjqSAQ$1GQ.NssJ/QKvD7qCgwxsT7PFpD4ZxilDDq17.GSqFbcqueNGJy.2Jv8xYszFjumkE7pLNTbG0Lg6bR2clzTXvw";

@@ -49,6 +49,7 @@ in
 
   "zenith/cf.env.age".publicKeys = users ++ [ zenith ];
   "zenith/homepage.env.age".publicKeys = users ++ [ zenith ];
+  "zenith/linkding.env.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];
   "zenith/tailscale.age".publicKeys = users ++ [ zenith ];
   "zenith/user.age".publicKeys = users ++ [ zenith ];

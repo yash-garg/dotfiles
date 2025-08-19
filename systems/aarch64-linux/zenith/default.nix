@@ -158,6 +158,7 @@ in
       };
 
       linkding = enabled // {
+        database = enabled;
         port = 9095;
         proxy = enabled // {
           domain = homeDomain;
