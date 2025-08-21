@@ -37,6 +37,7 @@ in
         "linear-linear"
         "slack"
         "yubico-yubikey-manager"
+        "windsurf@next"
         "zed"
         "zoom"
       ];
@@ -44,6 +45,8 @@ in
       brews = [
         "cloudflared"
         "openjdk@21"
+        "swiftformat"
+        "xcode-build-server"
       ];
     };
 
