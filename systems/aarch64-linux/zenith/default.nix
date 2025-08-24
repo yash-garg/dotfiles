@@ -58,6 +58,10 @@ in
     };
 
     services = {
+      actual-budget = enabled // {
+        domain = homeDomain;
+      };
+
       gatus = enabled // {
         inherit domain;
         monitorPoints = [

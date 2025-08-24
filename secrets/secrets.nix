@@ -48,6 +48,7 @@ in
   "zenith/lldap/key-seed.age".publicKeys = users ++ [ zenith ];
 
   "zenith/cf.env.age".publicKeys = users ++ [ zenith ];
+  "zenith/actual.env.age".publicKeys = users ++ [ zenith ];
   "zenith/homepage.env.age".publicKeys = users ++ [ zenith ];
   "zenith/linkding.env.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];

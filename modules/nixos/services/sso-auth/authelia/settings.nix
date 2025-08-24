@@ -126,6 +126,7 @@ in
           ];
           redirect_uris = [
             "https://budget.${domain}/openid/callback"
+            "https://money.${domain}/openid/callback"
           ];
           scopes = [
             "openid"
