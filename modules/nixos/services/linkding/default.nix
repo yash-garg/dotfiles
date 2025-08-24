@@ -69,7 +69,6 @@ in
     virtualisation.oci-containers.containers.linkding = {
       image = "sissbruecker/linkding:latest";
       autoStart = true;
-
       ports = [ "${toString cfg.port}:9090" ];
       volumes = [
         "/var/lib/linkding:/app/data"
@@ -82,8 +81,7 @@ in
         LD_DB_ENGINE = "postgres";
         LD_DB_HOST = "/run/postgresql/";
         LD_DB_USER = cfg.database.user;
-        LD_DB_PASSWORD = cfg.database.name;
-        LD_ENABLE_AUTH_PROXY = "True";
+        LD_ENABLE_AUTH_PROXY = "False";
         LD_AUTH_PROXY_USERNAME_HEADER = "HTTP_REMOTE_USER";
         LD_AUTH_PROXY_LOGOUT_URL = "https://auth.${cfg.proxy.domain}/logout";
         LD_ENABLE_OIDC = "True";
