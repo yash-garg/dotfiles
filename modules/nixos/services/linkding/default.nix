@@ -54,17 +54,10 @@ in
       linkding-env.file = getSecret "linkding.env" cfg.host;
     };
 
-    services.postgresql = enabled // {
-      ensureDatabases = [ cfg.database.name ];
-      ensureUsers = [
-        {
-          name = cfg.database.user;
-          ensureDBOwnership = true;
-        }
-      ];
+    systemd.services.linkding = {
+      after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
     };
-
-    systemd.services.linkding.after = [ "postgresql.service" ];
 
     virtualisation.oci-containers.containers.linkding = {
       image = "sissbruecker/linkding:latest";

@@ -25,42 +25,21 @@ in
       };
     };
 
-    services.postgresql = enabled // {
-      ensureDatabases = [
-        "authelia-main"
-        "lldap"
-      ];
-      ensureUsers = [
-        {
-          name = "root";
-          ensureClauses.superuser = true;
-        }
-        {
-          name = "authelia-main";
-          ensureDBOwnership = true;
-        }
-        {
-          name = "lldap";
-          ensureDBOwnership = true;
-        }
-      ];
-      authentication = mkOverride 10 ''
-        local all  all                 trust
-        host  all  all  127.0.0.1/32   trust
-        host  all  all  ::1/128        trust
-      '';
-    };
-
-    systemd.services.authelia-main =
-      let
-        dependencies = [
+    systemd.services = {
+      authelia-main = {
+        after = [
           "lldap.service"
           "postgresql.service"
         ];
-      in
-      {
-        after = dependencies;
-        requires = dependencies;
+        requires = [
+          "lldap.service"
+          "postgresql.service"
+        ];
       };
+      lldap = {
+        after = [ "postgresql.service" ];
+        requires = [ "postgresql.service" ];
+      };
+    };
   };
 }
