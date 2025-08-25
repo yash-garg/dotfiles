@@ -174,6 +174,10 @@ in
         secretKeybaseFile = config.age.secrets.plausible.path;
       };
 
+      restic = enabled // {
+        host = hostName;
+      };
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;

@@ -53,7 +53,7 @@ in
 
     postgresqlBackup = enabled // {
       backupAll = true;
-      compression = "zstd";
+      compression = "none";
       startAt = "*-*-* 00:00:00";
     };
   };
