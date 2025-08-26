@@ -54,7 +54,10 @@ in
       actual-budget = mkIf srv.actual.enable (
         defaults
         // {
-          paths = [ srv.actual.settings.dataDir ];
+          paths = [
+            srv.actual.settings.serverFiles
+            srv.actual.settings.userFiles
+          ];
           repository = "s3:${r2_url}/actual-budget";
         }
       );
