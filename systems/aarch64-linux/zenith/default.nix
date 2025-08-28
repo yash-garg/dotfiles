@@ -68,7 +68,7 @@ in
           {
             name = "Actual Budget";
             group = "external";
-            url = "http://vortex.${tailnet}:5006";
+            url = "http://localhost:3000";
           }
           {
             name = "Adguard";
@@ -204,11 +204,6 @@ in
             nova = "100.78.157.31";
           in
           {
-            budget = {
-              url = "http://100.92.154.106:5006";
-              useAuth = false;
-            };
-
             cadvisor.url = "http://${nova}:8081";
 
             dns.url = "http://100.93.246.1";

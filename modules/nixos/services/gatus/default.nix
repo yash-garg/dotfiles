@@ -13,6 +13,7 @@ in
   options.${namespace}.services.gatus = {
     enable = mkEnableOption "Gatus Uptime Monitor";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
+    host = mkOpt types.str "zenith" "Host name of the system";
     port = mkOpt types.int 3333 "Port for Gatus";
     monitorPoints = mkOption {
       type =
@@ -40,9 +41,24 @@ in
   };
 
   config = mkIf cfg.enable {
+    age.secrets = {
+      gatus-url.file = getSecret "gatus-ntfy" cfg.host;
+    };
+
     services = {
       gatus = enabled // {
+        environmentFile = config.age.secrets.gatus-url.path;
         settings = {
+          alerting.ntfy = {
+            topic = "$GATUS_TOPIC";
+            click = "https://status.${cfg.domain}";
+            default-alert = {
+              description = "Gatus health check";
+              send-on-resolved = true;
+              failure-threshold = 5;
+              success-threshold = 2;
+            };
+          };
           web.port = cfg.port;
           connectivity.checker = {
             target = "1.1.1.1:53";
