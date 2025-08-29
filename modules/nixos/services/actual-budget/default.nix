@@ -22,11 +22,6 @@ in
       type = types.str;
       default = "zenith";
     };
-
-    port = mkOption {
-      type = types.int;
-      default = 3000;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -38,7 +33,7 @@ in
       actual = enabled // {
         openFirewall = true;
         settings = {
-          inherit (cfg) port;
+          port = ports.actual-budget;
           allowedLoginMethods = [ "openid" ];
           enforceOpenId = true;
           loginMethod = "openid";
@@ -58,9 +53,8 @@ in
           service = "actual";
           tls.certResolver = "letsencrypt";
         };
-
         services.actual.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
+          servers = [ { url = "http://localhost:${toString ports.actual-budget}"; } ];
         };
       };
     };

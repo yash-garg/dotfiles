@@ -43,6 +43,7 @@ in
           LLDAP_KEY_SEED_FILE = config.age.secrets.keySeed.path;
         };
         settings = {
+          http_port = ports.lldap;
           ldap_base_dn = "dc=${concatStringsSep ",dc=" (splitString "." cfg.domain)}";
           ldap_user_email = "alt@${cfg.domain}";
           database_url = "postgresql://lldap@localhost/lldap?host=/run/postgresql";

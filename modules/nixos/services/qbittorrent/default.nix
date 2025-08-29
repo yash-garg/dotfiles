@@ -36,20 +36,14 @@ in
     };
 
     openFirewall = mkBoolOpt true "Open the firewall for qbittorrent";
-
-    port = mkOption {
-      type = types.int;
-      default = 3000;
-      description = "The port for the webui";
-    };
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = [ pkgs.qbittorrent-nox ];
 
     networking.firewall = mkIf cfg.openFirewall {
-      allowedTCPPorts = [ cfg.port ];
-      allowedUDPPorts = [ cfg.port ];
+      allowedTCPPorts = [ ports.qbittorrent ];
+      allowedUDPPorts = [ ports.qbittorrent ];
     };
 
     systemd.services.qbittorrent = {
@@ -61,7 +55,7 @@ in
         ExecStart = ''
           ${pkgs.qbittorrent-nox}/bin/qbittorrent-nox \
             --profile=${configDir} \
-            --webui-port=${toString cfg.port}
+            --webui-port=${toString ports.qbittorrent}
         '';
         Restart = "on-success";
         User = cfg.user;

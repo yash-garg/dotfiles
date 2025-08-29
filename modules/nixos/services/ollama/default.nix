@@ -18,7 +18,7 @@ in
     services.ollama = enabled // {
       loadModels = [ "dolphin-mistral" ];
       openFirewall = true;
-      port = 11434;
+      port = ports.ollama;
     };
   };
 }

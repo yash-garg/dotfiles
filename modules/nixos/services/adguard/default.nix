@@ -12,12 +12,6 @@ in
 {
   options.${namespace}.services.adguard = {
     enable = mkEnableOption "Adguard Home Server";
-
-    port = mkOption {
-      type = types.int;
-      default = 4000;
-      description = "The port to serve HTTP on";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -27,13 +21,13 @@ in
     };
 
     services.adguardhome = enabled // {
-      inherit (cfg) port;
       host = "127.0.0.1";
+      port = ports.adguard;
       mutableSettings = true;
       openFirewall = true;
       settings = {
         http = {
-          address = "127.0.0.1:${toString cfg.port}";
+          address = "127.0.0.1:${toString ports.adguard}";
         };
       };
     };

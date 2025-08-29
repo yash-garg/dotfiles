@@ -33,12 +33,6 @@ in
       description = "The host name for the secrets";
     };
 
-    port = mkOption {
-      type = types.int;
-      default = 9090;
-      description = "Port on which the linkding will listen";
-    };
-
     proxy = {
       enable = mkEnableOption "Enable the linkding service";
       domain = mkOption {
@@ -62,7 +56,7 @@ in
     virtualisation.oci-containers.containers.linkding = {
       image = "sissbruecker/linkding:latest";
       autoStart = true;
-      ports = [ "${toString cfg.port}:9090" ];
+      ports = [ "${toString ports.linkding}:9090" ];
       volumes = [
         "/var/lib/linkding:/app/data"
         "/run/postgresql:/run/postgresql/"
@@ -93,7 +87,7 @@ in
         tls.certResolver = "letsencrypt";
       };
       services.linkding.loadBalancer = {
-        servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
+        servers = [ { url = "http://localhost:${toString ports.linkding}"; } ];
       };
     };
   };

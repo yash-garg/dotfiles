@@ -26,16 +26,10 @@ in
     };
 
     openFirewall = mkBoolOpt true "Open firewall for Plausible";
-
-    port = mkOption {
-      type = types.int;
-      default = 8181;
-      description = "Port on which the plausible server will listen";
-    };
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
+    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ ports.plausible ];
 
     services = {
       plausible = enabled // {
@@ -43,7 +37,8 @@ in
         server = {
           baseUrl = "https://analytics.${cfg.baseUrl}";
           disableRegistration = "invite_only";
-          inherit (cfg) port secretKeybaseFile;
+          port = ports.plausible;
+          inherit (cfg) secretKeybaseFile;
         };
       };
 
@@ -55,7 +50,7 @@ in
           tls.certResolver = "letsencrypt";
         };
         services.plausible.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
+          servers = [ { url = "http://localhost:${toString ports.plausible}"; } ];
         };
       };
     };

@@ -14,7 +14,6 @@ in
     enable = mkEnableOption "Gatus Uptime Monitor";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
     host = mkOpt types.str "zenith" "Host name of the system";
-    port = mkOpt types.int 3333 "Port for Gatus";
     monitorPoints = mkOption {
       type =
         with types;
@@ -59,7 +58,7 @@ in
               success-threshold = 2;
             };
           };
-          web.port = cfg.port;
+          web.port = ports.gatus;
           connectivity.checker = {
             target = "1.1.1.1:53";
             interval = "60s";
@@ -94,8 +93,9 @@ in
           service = "gatus";
           tls.certResolver = "letsencrypt";
         };
+
         services.gatus.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
+          servers = [ { url = "http://localhost:${toString ports.gatus}"; } ];
         };
       };
     };
