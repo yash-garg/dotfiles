@@ -20,6 +20,7 @@
 [alias]
     c = clone
     cp = cherry-pick
+    dc = diff --cached
     fix = commit --fixup
     kang = commit --amend --reset-author
     loa = log --oneline --author='Yash Garg'
