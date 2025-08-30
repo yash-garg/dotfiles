@@ -46,10 +46,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets.cifs-creds.file = snowfall.fs.get-file "secrets/${cfg.cifsHost}/cifs.age";
+    sops.secrets.cifs-env = {
+      sopsFile = snowfall.fs.get-file "secrets/cifs.env";
+      format = "dotenv";
+    };
 
-    environment.etc."nixos/smb-secrets".source = config.age.secrets.cifs-creds.path;
-    environment.etc."nixos/smb-secrets".mode = "0600";
+    environment.etc."nixos/smb-secrets" = {
+      source = config.sops.secrets.cifs-env.path;
+      mode = "0600";
+    };
+
     environment.systemPackages = [ pkgs.cifs-utils ];
 
     fileSystems = listToAttrs (

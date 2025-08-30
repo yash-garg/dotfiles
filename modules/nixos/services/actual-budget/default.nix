@@ -25,8 +25,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets = {
-      actual-env.file = getSecret "actual.env" cfg.host;
+    sops.secrets.actual-env = {
+      sopsFile = snowfall.fs.get-file "secrets/actual.env";
+      format = "dotenv";
     };
 
     services = {
@@ -39,7 +40,6 @@ in
           loginMethod = "openid";
           openId = {
             discoveryURL = "https://auth.${cfg.domain}";
-            client_id = "actual-budget";
             server_hostname = "https://money.${cfg.domain}";
             authMethod = "openid";
           };
@@ -60,7 +60,7 @@ in
     };
 
     systemd.services.actual.serviceConfig.EnvironmentFile = [
-      config.age.secrets.actual-env.path
+      config.sops.secrets.actual-env.path
     ];
   };
 }

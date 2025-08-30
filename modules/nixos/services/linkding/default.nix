@@ -44,8 +44,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets = {
-      linkding-env.file = getSecret "linkding.env" cfg.host;
+    sops.secrets.linkding-env = {
+      sopsFile = snowfall.fs.get-file "secrets/linkding.env";
+      format = "dotenv";
     };
 
     systemd.services.linkding = {
@@ -61,7 +62,7 @@ in
         "/var/lib/linkding:/app/data"
         "/run/postgresql:/run/postgresql/"
       ];
-      environmentFiles = [ config.age.secrets.linkding-env.path ];
+      environmentFiles = [ config.sops.secrets.linkding-env.path ];
       environment = {
         LD_CSRF_TRUSTED_ORIGINS = "https://links.${cfg.proxy.domain}";
         LD_DB_DATABASE = cfg.database.name;

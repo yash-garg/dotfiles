@@ -8,8 +8,6 @@ with lib.${namespace};
 {
   imports = [ ./hardware-configuration.nix ];
 
-  age.secrets.samba-passwd.file = lib.snowfall.fs.get-file "secrets/nova/samba.age";
-
   dots = {
     desktop = enabled // {
       extraPackages = [ ];

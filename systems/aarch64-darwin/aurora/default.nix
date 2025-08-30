@@ -10,8 +10,9 @@ let
   username = config.${namespace}.user.name;
 in
 {
-  age.secrets.gitconfig = {
-    file = snowfall.fs.get-file "secrets/.gitconfig-work.age";
+  sops.secrets.gitconfig = {
+    sopsFile = snowfall.fs.get-file "secrets/.gitconfig-work";
+    format = "binary";
     mode = "0500";
     owner = username;
   };
@@ -55,7 +56,7 @@ in
 
   snowfallorg.users.${username}.home.config = {
     programs.git.includes = mkAfter [
-      { inherit (config.age.secrets.gitconfig) path; }
+      { inherit (config.sops.secrets.gitconfig) path; }
     ];
   };
 

@@ -19,14 +19,22 @@ in
     ./hardware-configuration.nix
   ];
 
-  age.secrets = {
+  sops.secrets = {
     cf-tokens = {
-      file = getSecret "cf.env" hostName;
+      sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
+      format = "dotenv";
       owner = config.services.traefik.group;
     };
-    user-password.file = getSecret "user" hostName;
-    plausible.file = getSecret "plausible" hostName;
-    tsauthkey.file = getSecret "tailscale" hostName;
+
+    user-password = {
+      sopsFile = snowfall.fs.get-file "secrets/users.yaml";
+      key = hostName;
+      neededForUsers = true;
+    };
+
+    server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
+
+    plausible-secret.sopsFile = snowfall.fs.get-file "secrets/plausible.yaml";
   };
 
   boot = {
@@ -170,7 +178,7 @@ in
 
       plausible = enabled // {
         baseUrl = domain;
-        secretKeybaseFile = config.age.secrets.plausible.path;
+        secretKeybaseFile = config.sops.secrets.plausible-secret.path;
       };
 
       restic = enabled // {
@@ -184,7 +192,7 @@ in
       };
 
       tailscale = enabled // {
-        authKeyFile = config.age.secrets.tsauthkey.path;
+        authKeyFile = config.sops.secrets.server-tsauthkey.path;
         exitNode = true;
         ssh = true;
         subnetRouting = enabled // {
@@ -197,7 +205,7 @@ in
 
       traefik = enabled // {
         domain = homeDomain;
-        environmentFiles = [ config.age.secrets.cf-tokens.path ];
+        environmentFiles = [ config.sops.secrets.cf-tokens.path ];
         services =
           let
             nova = "100.78.157.31";
@@ -270,7 +278,7 @@ in
 
   users.users.yash = {
     isNormalUser = true;
-    hashedPasswordFile = config.age.secrets.user-password.path;
+    hashedPasswordFile = config.sops.secrets.user-password.path;
     shell = pkgs.zsh;
     ignoreShellProgramCheck = true;
     extraGroups = [ "wheel" ];

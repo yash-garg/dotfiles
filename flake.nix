@@ -4,10 +4,7 @@
   outputs =
     inputs:
     let
-      commonModules = with inputs; [
-        agenix.nixosModules.default
-        nix-topology.nixosModules.default
-      ];
+      commonModules = [ inputs.nix-topology.nixosModules.default ];
       lib = inputs.snowfall-lib.mkLib {
         inherit inputs;
         src = ./.;
@@ -111,9 +108,6 @@
     };
 
   inputs = {
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
-
     base16-schemes.url = "github:tinted-theming/schemes";
     base16-schemes.flake = false;
 

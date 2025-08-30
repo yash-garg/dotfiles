@@ -40,13 +40,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets = {
-      gatus-url.file = getSecret "gatus-ntfy" cfg.host;
+    sops.secrets.gatus-env = {
+      sopsFile = snowfall.fs.get-file "secrets/gatus.env";
+      format = "dotenv";
     };
 
     services = {
       gatus = enabled // {
-        environmentFile = config.age.secrets.gatus-url.path;
+        environmentFile = config.sops.secrets.gatus-env.path;
         settings = {
           alerting.ntfy = {
             topic = "$GATUS_TOPIC";

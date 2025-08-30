@@ -8,7 +8,7 @@
 with lib;
 with lib.${namespace};
 {
-  age.secrets.tsauthkey.file = snowfall.fs.get-file "secrets/nebula/tailscale.age";
+  sops.secrets.server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
 
   dots = {
     server = enabled;
@@ -21,7 +21,7 @@ with lib.${namespace};
       ssh = enabled;
 
       tailscale = enabled // {
-        authKeyFile = config.age.secrets.tsauthkey.path;
+        authKeyFile = config.sops.secrets.server-tsauthkey.path;
         setNameservers = false;
         ssh = true;
       };

@@ -2,7 +2,6 @@
 {
   home.packages = with pkgs; [
     age
-    agenix
     cachix
     curl
     deploy-rs
