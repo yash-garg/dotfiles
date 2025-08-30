@@ -17,35 +17,22 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets = {
-      jwtPrivate = {
-        file = getSecret "jwt" "${cfg.host}/lldap";
-        owner = "lldap";
-        mode = "0600";
-      };
-      userPassword = {
-        file = getSecret "user" "${cfg.host}/lldap";
-        owner = "lldap";
-        mode = "0600";
-      };
-      keySeed = {
-        file = getSecret "key-seed" "${cfg.host}/lldap";
-        owner = "lldap";
-        mode = "0600";
-      };
+    sops.secrets.lldap-env = {
+      sopsFile = snowfall.fs.get-file "secrets/lldap.env";
+      format = "dotenv";
+      owner = config.users.users.lldap.name;
+      group = config.users.groups.lldap.name;
+      mode = "0600";
     };
 
     services = {
       lldap = enabled // {
-        environment = {
-          LLDAP_JWT_SECRET_FILE = config.age.secrets.jwtPrivate.path;
-          LLDAP_LDAP_USER_PASS_FILE = config.age.secrets.userPassword.path;
-          LLDAP_KEY_SEED_FILE = config.age.secrets.keySeed.path;
-        };
+        environmentFile = config.sops.secrets.lldap-env.path;
         settings = {
           http_port = ports.lldap;
           ldap_base_dn = "dc=${concatStringsSep ",dc=" (splitString "." cfg.domain)}";
           ldap_user_email = "alt@${cfg.domain}";
+          ldap_user_pass = "$LLDAP_USER_PASSWORD";
           database_url = "postgresql://lldap@localhost/lldap?host=/run/postgresql";
         };
       };

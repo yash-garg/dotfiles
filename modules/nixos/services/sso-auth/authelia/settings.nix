@@ -11,7 +11,6 @@ let
   base_dn = "dc=${concatStringsSep ",dc=" (splitString "." domain)}";
 in
 {
-
   default_2fa_method = "webauthn";
   theme = "auto";
 
@@ -45,7 +44,7 @@ in
       password_reset.disable = true;
       refresh_interval = "5m";
       file = mkIf (!lldapEnabled) {
-        inherit (config.age.secrets.usersFile) path;
+        inherit (config.sops.secrets.user-settings) path;
         password = {
           algorithm = "argon2id";
           iterations = 1;

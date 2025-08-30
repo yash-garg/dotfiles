@@ -1,0 +1,12 @@
+keys:
+  - &personal age1nn5xascw770dyjnga00ptpy3nuxuhunygajkekdaa7sjfx74msss63crpw
+  - &astra age1mchyxdcsrxqly8esmfa8d3urgq99kae25e6kn606v6dt6r7z7v7q8ezly5
+  - &aurora age1yq2ksala2xds5jd626yqqt84uyuzetmknpyyemn7nuvgv4jdmy3s95ewwa
+  - &zenith age17qlc0x0mltj3l2dqwag3dtf5jxzvftvmfkl5a386y3fsxdh49pgqrdqd7z
+creation_rules:
+  - key_groups:
+      - age:
+          - *personal
+          - *astra
+          - *aurora
+          - *zenith

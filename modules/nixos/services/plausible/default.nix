@@ -22,7 +22,7 @@ in
     secretKeybaseFile = mkOption {
       type = types.path;
       default = null;
-      description = "Path to a file containing a Tailscale authkey that this device can use to authenticate itself";
+      description = "Path to a file containing the secret key for the plausible server";
     };
 
     openFirewall = mkBoolOpt true "Open firewall for Plausible";

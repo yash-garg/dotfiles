@@ -17,39 +17,26 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets =
+    sops.secrets =
       let
-        hostPath = "${cfg.host}/authelia";
         secretAttrs = {
+          sopsFile = snowfall.fs.get-file "secrets/authelia.yaml";
           owner = config.services.authelia.instances.main.user;
           inherit (config.services.authelia.instances.main) group;
           mode = "0600";
         };
       in
       {
-        jwtSecret = secretAttrs // {
-          file = getSecret "jwt" hostPath;
-        };
-        sessionSecret = secretAttrs // {
-          file = getSecret "session" hostPath;
-        };
-        storageEncryptionKey = secretAttrs // {
-          file = getSecret "storage" hostPath;
-        };
-        usersFile = secretAttrs // {
-          file = getSecret "users.yml" hostPath;
-        };
-        oidcIssuerPrivateKey = secretAttrs // {
-          file = getSecret "oidc" hostPath;
-        };
-        oidcHmacSecretKey = secretAttrs // {
-          file = getSecret "hmac" hostPath;
-        };
-        notifierSettings = secretAttrs // {
-          file = getSecret "notifier.yml" hostPath;
-        };
-        ldapPassword = secretAttrs // {
-          file = getSecret "ldap" hostPath;
+        jwt-secret = secretAttrs;
+        session-secret = secretAttrs;
+        storage-secret = secretAttrs;
+        hmac-secret = secretAttrs;
+        ldap-secret = secretAttrs;
+        notifier-settings = secretAttrs;
+        user-settings = secretAttrs;
+        oidc-key = secretAttrs // {
+          sopsFile = snowfall.fs.get-file "secrets/oidc.key";
+          format = "binary";
         };
       };
 
@@ -57,17 +44,17 @@ in
       authelia = {
         instances.main = enabled // {
           environmentVariables = {
-            AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.age.secrets.ldapPassword.path;
+            AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.sops.secrets.ldap-secret.path;
           };
           secrets = {
-            jwtSecretFile = config.age.secrets.jwtSecret.path;
-            sessionSecretFile = config.age.secrets.sessionSecret.path;
-            storageEncryptionKeyFile = config.age.secrets.storageEncryptionKey.path;
-            oidcIssuerPrivateKeyFile = config.age.secrets.oidcIssuerPrivateKey.path;
-            oidcHmacSecretFile = config.age.secrets.oidcHmacSecretKey.path;
+            jwtSecretFile = config.sops.secrets.jwt-secret.path;
+            sessionSecretFile = config.sops.secrets.session-secret.path;
+            storageEncryptionKeyFile = config.sops.secrets.storage-secret.path;
+            oidcIssuerPrivateKeyFile = config.sops.secrets.oidc-key.path;
+            oidcHmacSecretFile = config.sops.secrets.hmac-secret.path;
           };
           settings = import ./settings.nix { inherit lib config namespace; };
-          settingsFiles = [ config.age.secrets.notifierSettings.path ];
+          settingsFiles = [ config.sops.secrets.notifier-settings.path ];
         };
       };
 

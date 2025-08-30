@@ -13,9 +13,14 @@ in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  age.secrets = {
-    passwordfile-cosmos.file = getSecret "user" hostName;
-    tsauthkey.file = getSecret "tailscale" hostName;
+  sops.secrets = {
+    user-password = {
+      sopsFile = snowfall.fs.get-file "secrets/users.yaml";
+      key = hostName;
+      neededForUsers = true;
+    };
+
+    server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
   };
 
   boot.initrd.systemd.tpm2.enable = mkForce false;
@@ -48,7 +53,7 @@ in
       };
 
       tailscale = enabled // {
-        authKeyFile = config.age.secrets.tsauthkey.path;
+        authKeyFile = config.sops.secrets.server-tsauthkey.path;
         exitNode = true;
         ssh = true;
         subnetRouting = enabled // {
@@ -76,7 +81,7 @@ in
     mutableUsers = false;
     users.yash = {
       isNormalUser = true;
-      hashedPasswordFile = config.age.secrets.passwordfile-cosmos.path;
+      hashedPasswordFile = config.sops.secrets.user-password.path;
       ignoreShellProgramCheck = true;
       extraGroups = [
         "docker"

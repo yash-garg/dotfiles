@@ -13,7 +13,7 @@ let
   r2_url = "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com";
   defaults = {
     initialize = true;
-    environmentFile = config.age.secrets.restic-env.path;
+    environmentFile = config.sops.secrets.restic-env.path;
     exclude = [
       ".cache"
       ".git"
@@ -71,7 +71,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets.restic-env.file = getSecret "restic.env" cfg.host;
+    sops.secrets.restic-env = {
+      sopsFile = snowfall.fs.get-file "secrets/restic.env";
+      format = "dotenv";
+    };
 
     services.restic.backups = {
       actual-budget = mkIf srv.actual.enable (
