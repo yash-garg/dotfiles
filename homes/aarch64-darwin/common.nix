@@ -16,7 +16,6 @@ with lib.${namespace};
 
   home.packages = with pkgs; [
     apktool
-    nh-darwin
     nix-output-monitor
     scrcpy
   ];

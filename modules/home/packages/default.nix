@@ -28,6 +28,7 @@
     restic
     ruff
     scc
+    sops
     unzip
     uv
     whois

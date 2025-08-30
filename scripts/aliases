@@ -73,10 +73,6 @@ if type zellij &>/dev/null; then
     alias zkill='zellij ka && zellij da'
 fi
 
-if type nh_darwin &>/dev/null; then
-    alias nh='nh_darwin'
-fi
-
 if type just &>/dev/null; then
     alias j='just'
 fi

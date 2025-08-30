@@ -190,6 +190,7 @@
       },
       "original": {
         "owner": "LnL7",
+        "ref": "master",
         "repo": "nix-darwin",
         "type": "github"
       }
@@ -980,26 +981,6 @@
         "type": "github"
       }
     },
-    "nh_darwin": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1746970529,
-        "narHash": "sha256-wGvgdmfouiM3jdIdnRRgA8qySJra0DLcenwk2geM2Xc=",
-        "owner": "ToyVo",
-        "repo": "nh_darwin",
-        "rev": "bf935c422a372edcd51e9c9e3dca9474dd1c6f97",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ToyVo",
-        "repo": "nh_darwin",
-        "type": "github"
-      }
-    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -1484,7 +1465,6 @@
         "lanzaboote": "lanzaboote",
         "lix": "lix",
         "neovim": "neovim",
-        "nh_darwin": "nh_darwin",
         "nix-index-database": "nix-index-database",
         "nix-topology": "nix-topology",
         "nixified-ai": "nixified-ai",
