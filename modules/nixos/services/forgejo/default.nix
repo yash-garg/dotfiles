@@ -64,7 +64,12 @@ in
             ROOT_URL = "https://git.${cfg.domain}/";
             HTTP_PORT = ports.forgejo;
           };
-          service.DISABLE_REGISTRATION = true;
+          service = {
+            DISABLE_REGISTRATION = true;
+            ALLOW_ONLY_EXTERNAL_REGISTRATION = true;
+            ENABLE_INTERNAL_SIGNIN = false;
+            DEFAULT_KEEP_EMAIL_PRIVATE = true;
+          };
           session = {
             COOKIE_NAME = "i_dont_like_gitea";
             COOKIE_SECURE = true;
