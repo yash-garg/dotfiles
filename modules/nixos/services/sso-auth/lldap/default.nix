@@ -28,6 +28,7 @@ in
     services = {
       lldap = enabled // {
         environmentFile = config.sops.secrets.lldap-env.path;
+        silenceForceUserPassResetWarning = true;
         settings = {
           http_port = ports.lldap;
           ldap_base_dn = "dc=${concatStringsSep ",dc=" (splitString "." cfg.domain)}";

@@ -95,26 +95,6 @@ in
       };
       clients = [
         {
-          client_id = "cloudflare";
-          client_name = "Cloudflare Access";
-          client_secret = "$pbkdf2-sha512$310000$0OVYTmffbZnm5QLF/aPQIA$AaOM/qZFPwy.f4sQSQW.NOsm302CovCx3osVs/C8bfTEOt1tpbsf.lSZqBCY97JBG5PAr/IuIJg2RS2rz/PT7g";
-          public = false;
-          authorization_policy = "two_factor";
-          claims_policy = "default";
-          consent_mode = "pre-configured";
-          pre_configured_consent_duration = "6M";
-          redirect_uris = [
-            "https://yashg.cloudflareaccess.com/cdn-cgi/access/callback"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-          ];
-          userinfo_signed_response_alg = "RS256";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
           client_id = "actual-budget";
           client_name = "Actual Budget";
           client_secret = "$pbkdf2-sha512$310000$iWomIaFYWHHBwj3ILVzL.Q$l9rRfes89uaXIGQnSZqtlLsAa8zMkjHWvUL39mnjHXBq.bokav5Z.dc3.mcUZxkW.5M64InDQZ5eg/81HWlETA";
@@ -137,16 +117,42 @@ in
           token_endpoint_auth_method = "client_secret_basic";
         }
         {
-          client_id = "tailscale";
-          client_name = "Tailscale";
-          client_secret = "$pbkdf2-sha512$310000$oQVBGFNKM9uiscpWlEMzmw$9qZf/57tlwlmZX.Ni2tlkQH7h3LJRiCTw7D5uJGG8HVApcd1m/1GUTnd01F/os9jpW7wqH0mvabyuXMmz5MDzQ";
+          client_id = "cloudflare";
+          client_name = "Cloudflare Access";
+          client_secret = "$pbkdf2-sha512$310000$0OVYTmffbZnm5QLF/aPQIA$AaOM/qZFPwy.f4sQSQW.NOsm302CovCx3osVs/C8bfTEOt1tpbsf.lSZqBCY97JBG5PAr/IuIJg2RS2rz/PT7g";
+          public = false;
+          authorization_policy = "two_factor";
+          claims_policy = "default";
+          consent_mode = "pre-configured";
+          pre_configured_consent_duration = "6M";
           redirect_uris = [
-            "https://login.tailscale.com/a/oauth_response"
+            "https://yashg.cloudflareaccess.com/cdn-cgi/access/callback"
           ];
           scopes = [
             "openid"
-            "email"
             "profile"
+            "email"
+          ];
+          userinfo_signed_response_alg = "RS256";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
+          client_id = "forgejo";
+          client_name = "Forgejo";
+          client_secret = "$pbkdf2-sha512$310000$jZCkAHO4SX26j3DUiyRpfw$kbL7tPjDrbLK4YtFt7kLLKl2LfWoWghrp8bJFCfmKGCgKa2RXUiu1B2C/Tx19Xfn38J7z/ToB0ckgvp15CY99A";
+          public = false;
+          authorization_policy = "one_factor";
+          grant_types = [
+            "authorization_code"
+          ];
+          redirect_uris = [
+            "https://git.${domain}/user/oauth2/authelia/callback"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
           ];
           userinfo_signed_response_alg = "none";
           token_endpoint_auth_method = "client_secret_basic";
@@ -239,12 +245,27 @@ in
           userinfo_signed_response_alg = "none";
           token_endpoint_auth_method = "client_secret_basic";
         }
+        {
+          client_id = "tailscale";
+          client_name = "Tailscale";
+          client_secret = "$pbkdf2-sha512$310000$oQVBGFNKM9uiscpWlEMzmw$9qZf/57tlwlmZX.Ni2tlkQH7h3LJRiCTw7D5uJGG8HVApcd1m/1GUTnd01F/os9jpW7wqH0mvabyuXMmz5MDzQ";
+          redirect_uris = [
+            "https://login.tailscale.com/a/oauth_response"
+          ];
+          scopes = [
+            "openid"
+            "email"
+            "profile"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
       ];
     };
   };
 
   log = {
-    level = "debug";
+    level = "info";
     format = "json";
     file_path = "/tmp/authelia.log";
     keep_stdout = true;

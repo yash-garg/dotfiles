@@ -70,6 +70,10 @@ in
         domain = homeDomain;
       };
 
+      forgejo = enabled // {
+        domain = homeDomain;
+      };
+
       gatus = enabled // {
         inherit domain;
         monitorPoints = [
@@ -85,6 +89,10 @@ in
           {
             name = "Cadvisor";
             url = "http://nova.turtle-lake.ts.net";
+          }
+          {
+            name = "Forgejo";
+            url = "http://localhost:9012";
           }
           {
             name = "Grafana";

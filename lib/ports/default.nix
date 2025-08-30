@@ -2,7 +2,7 @@
   ports = {
     actual-budget = 3000;
     adguard = 4000;
-    gitea = 9000;
+    forgejo = 9012;
     gatus = 3333;
     linkding = 9095;
     lldap = 17170;
