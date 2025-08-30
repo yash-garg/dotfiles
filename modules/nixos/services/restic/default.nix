@@ -13,7 +13,6 @@ let
   r2_url = "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com";
   defaults = {
     initialize = true;
-    passwordFile = config.age.secrets.restic-password.path;
     environmentFile = config.age.secrets.restic-env.path;
     exclude = [
       ".cache"
@@ -72,10 +71,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    age.secrets = {
-      restic-password.file = getSecret "restic-password" cfg.host;
-      restic-env.file = getSecret "restic.env" cfg.host;
-    };
+    age.secrets.restic-env.file = getSecret "restic.env" cfg.host;
 
     services.restic.backups = {
       actual-budget = mkIf srv.actual.enable (

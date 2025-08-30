@@ -1,13 +1,9 @@
 let
   main = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz";
-  alt = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGT/WxAzpXRNz4AInl2lvZtegbKW0mZxzJjmMcAy1iOx";
   work = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFoj8ysWSPSV8T93j0YUtKhaaR71yoJQS553Yd1KqQLT";
-  freelance = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINa4RyjHhuaFIwkeP9kWIyAPjfdPyam4LY6WdCO5JIKN";
+  freelance = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBn2zXYYNh4kRL5zPP3lRxhPM+SxB6wNMAaxFapUYMw2";
 
-  users = [
-    main
-    alt
-  ];
+  users = [ main ];
 
   aurora = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5zDrFQlu00xY1AqRlYStqSdd8yFRVhylxY1iwtbkaV";
   astra = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBsXHN40eJNizwBCx98q/o4YYrQl+FBSgJWwdlNIjCfF";
@@ -17,8 +13,14 @@ let
   zenith = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIhKUwhBQoaUsCkDQ8rFIIOmSuNi9fgQXRq2PK14JJoa";
 in
 {
-  ".gitconfig-work.age".publicKeys = users ++ [ work ] ++ [ aurora ];
-  ".gitconfig-freelance.age".publicKeys = users ++ [ freelance ] ++ [ astra ];
+  ".gitconfig-work.age".publicKeys = users ++ [
+    work
+    aurora
+  ];
+  ".gitconfig-freelance.age".publicKeys = users ++ [
+    freelance
+    astra
+  ];
 
   "cosmos/tailscale.age".publicKeys = users ++ [
     cosmos
@@ -53,7 +55,6 @@ in
   "zenith/homepage.env.age".publicKeys = users ++ [ zenith ];
   "zenith/linkding.env.age".publicKeys = users ++ [ zenith ];
   "zenith/restic.env.age".publicKeys = users ++ [ zenith ];
-  "zenith/restic-password.age".publicKeys = users ++ [ zenith ];
   "zenith/plausible.age".publicKeys = users ++ [ zenith ];
   "zenith/tailscale.age".publicKeys = users ++ [ zenith ];
   "zenith/user.age".publicKeys = users ++ [ zenith ];
