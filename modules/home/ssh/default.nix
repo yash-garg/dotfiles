@@ -8,12 +8,13 @@ with lib;
 with lib.${namespace};
 {
   programs.ssh = enabled // {
-    addKeysToAgent = "yes";
+    enableDefaultConfig = false;
     package = pkgs.openssh_hpn;
-    serverAliveInterval = 60;
     includes = [ "~/.ssh/work" ];
     matchBlocks = {
       "*" = {
+        addKeysToAgent = "yes";
+        serverAliveInterval = 60;
         sendEnv = [ "COLORTERM" ];
         setEnv = {
           TERM = "xterm-256color";

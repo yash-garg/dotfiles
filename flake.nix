@@ -37,6 +37,7 @@
         with inputs;
         [
           nix-index-database.darwinModules.nix-index
+          sops-nix.darwinModules.sops
           srvos.darwinModules.desktop
           srvos.darwinModules.mixins-trusted-nix-caches
           stylix.darwinModules.stylix
@@ -53,6 +54,7 @@
           nixos-cosmic.nixosModules.default
           nixos-generators.nixosModules.all-formats
           nixos-wsl.nixosModules.default
+          sops-nix.nixosModules.sops
           srvos.nixosModules.mixins-trusted-nix-caches
           stylix.nixosModules.stylix
         ]
@@ -85,7 +87,7 @@
         formatter = (treefmtModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
 
         packages = {
-          # minimal-iso = inputs.self.install-isoConfigurations.minimal;
+          minimal-iso = inputs.self.install-isoConfigurations.minimal;
         };
 
         topology = import inputs.nix-topology {
@@ -151,7 +153,7 @@
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.2";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
-    lix.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
+    lix.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.3-2.tar.gz";
     lix.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim.url = "github:yash-garg/neovim";
@@ -199,15 +201,16 @@
     snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
     snowfall-lib.inputs.flake-utils-plus.follows = "flake-utils-plus";
 
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
 
-    stylix.url = "github:danth/stylix/f121a142abde1b6aa9738e4c21a330c0ddd4eb70";
-    stylix.inputs.flake-compat.follows = "flake-compat";
-    stylix.inputs.home-manager.follows = "home-manager";
+    stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
