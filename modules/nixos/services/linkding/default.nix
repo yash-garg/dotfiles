@@ -49,7 +49,7 @@ in
       format = "dotenv";
     };
 
-    systemd.services.linkding = {
+    systemd.services.docker-linkding = {
       after = [ "postgresql.service" ];
       requires = [ "postgresql.service" ];
     };
