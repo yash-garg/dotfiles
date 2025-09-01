@@ -54,7 +54,6 @@ in
     postgresqlBackup = enabled // {
       backupAll = true;
       compression = "none";
-      pgdumpOptions = "-c";
       startAt = "*-*-* 00:00:00";
     };
   };
