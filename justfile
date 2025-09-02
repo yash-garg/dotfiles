@@ -40,3 +40,6 @@ check flake:
     else
         nom build .#nixosConfigurations.{{ flake }}.config.system.build.toplevel
     fi
+
+update-keys:
+    fd . secrets -t f -x sops updatekeys -y {}
