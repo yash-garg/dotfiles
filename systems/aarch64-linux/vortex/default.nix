@@ -51,6 +51,8 @@ in
     server = enabled;
 
     services = {
+      minecraft-server = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;

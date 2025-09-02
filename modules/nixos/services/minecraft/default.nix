@@ -22,7 +22,10 @@ in
 
   config = mkIf cfg.enable {
     networking.firewall = {
-      allowedTCPPorts = [ ports.minecraft ];
+      allowedTCPPorts = [
+        ports.minecraft
+        ports.pl3xmap
+      ];
       allowedUDPPorts = [ ports.minecraft ];
     };
 
@@ -86,7 +89,7 @@ in
       };
       ports = [
         "${toString ports.minecraft}:25565"
-        "81:8080"
+        "${toString ports.pl3xmap}:8080"
       ];
       log-driver = "journald";
       volumes = [ "${config.users.users.yash.home}/minecraft-data:/data:rw" ];

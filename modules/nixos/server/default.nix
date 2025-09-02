@@ -22,6 +22,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    dots.virtualisation = enabled;
+
     users.users.yash.packages = with pkgs; [
       nh
     ];

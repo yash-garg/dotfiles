@@ -280,8 +280,6 @@ in
           };
       };
     };
-
-    virtualisation = enabled;
   };
 
   users.users.yash = {

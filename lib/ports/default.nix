@@ -6,9 +6,10 @@
     gatus = 3333;
     linkding = 9095;
     lldap = 17170;
-    minecraft = 1806;
+    minecraft = 25565;
     ollama = 11434;
     plausible = 8181;
+    pl3xmap = 81;
     qbittorrent = 3001;
   };
 }
