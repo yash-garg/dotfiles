@@ -6,6 +6,7 @@
     gatus = 3333;
     linkding = 9095;
     lldap = 17170;
+    minecraft = 1806;
     ollama = 11434;
     plausible = 8181;
     qbittorrent = 3001;

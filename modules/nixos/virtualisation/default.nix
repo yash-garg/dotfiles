@@ -17,6 +17,7 @@ in
   config = mkIf cfg.enable {
     virtualisation = {
       docker = enabled // {
+        autoPrune = enabled;
         rootless = enabled // {
           setSocketVariable = true;
         };
