@@ -227,7 +227,7 @@ in
 
             image.url = "http://${nova}:3474";
 
-            map.url = "http://100.92.154.106:81";
+            map.url = "http://100.65.244.114:81";
 
             paperless = {
               url = "http://${nova}:8010";
