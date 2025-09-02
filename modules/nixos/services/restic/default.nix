@@ -89,6 +89,20 @@ in
         }
       );
 
+      minecraft =
+        let
+          mcCfg = config.${namespace}.services.minecraft-server;
+        in
+        mkIf mcCfg.enable (
+          defaults
+          // {
+            backupCleanupCommand = post-hook "minecraft";
+            paths = [ mcCfg.dataDir ];
+            repository = "s3:${r2_url}/minecraft";
+            timerConfig.OnCalendar = "weekly";
+          }
+        );
+
       postgresql = mkIf srv.postgresql.enable (
         defaults
         // {

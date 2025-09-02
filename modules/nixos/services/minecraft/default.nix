@@ -13,6 +13,9 @@ in
   options.${namespace}.services.minecraft-server = {
     enable = mkEnableOption "Minecraft Server";
 
+    dataDir =
+      mkOpt types.str "${config.users.users.yash.home}/minecraft-data"
+        "Minecraft server data directory";
     difficulty = mkOpt types.str "NORMAL" "Minecraft server difficulty";
     memory = mkOpt types.str "16G" "Minecraft server memory";
     motd = mkOpt types.str "§l§cPixel Paradise§r" "Minecraft server MOTD";
@@ -92,7 +95,7 @@ in
         "${toString ports.pl3xmap}:8080"
       ];
       log-driver = "journald";
-      volumes = [ "${config.users.users.yash.home}/minecraft-data:/data:rw" ];
+      volumes = [ "${cfg.dataDir}:/data:rw" ];
     };
   };
 }
