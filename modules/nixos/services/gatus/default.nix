@@ -8,35 +8,15 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.gatus;
+  endpoints = builtins.fromJSON (builtins.readFile cfg.configFile);
 in
 {
   options.${namespace}.services.gatus = {
     enable = mkEnableOption "Gatus Uptime Monitor";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
-    host = mkOpt types.str "zenith" "Host name of the system";
-    monitorPoints = mkOption {
-      type =
-        with types;
-        listOf (submodule {
-          options = {
-            name = mkOption {
-              type = str;
-              description = "Display name of the monitored service";
-            };
-            group = mkOption {
-              type = str;
-              default = "internal";
-              description = "Group name for the monitored service";
-            };
-            url = mkOption {
-              type = str;
-              description = "URL of the monitored service";
-            };
-          };
-        });
-      default = [ ];
-      description = "List of services to monitor, each with a name and URL.";
-    };
+    configFile =
+      mkOpt (types.nullOr types.path) null
+        "Path to custom endpoints configuration file (JSON format)";
   };
 
   config = mkIf cfg.enable {
@@ -48,7 +28,7 @@ in
     services = {
       gatus = enabled // {
         environmentFile = config.sops.secrets.gatus-env.path;
-        settings = {
+        settings = recursiveUpdate endpoints {
           alerting.ntfy = {
             topic = "$GATUS_TOPIC";
             click = "https://status.${cfg.domain}";
@@ -71,19 +51,6 @@ in
             link = "https://status.${cfg.domain}";
             dark-mode = true;
           };
-          endpoints = map (endpoint: {
-            inherit (endpoint) name group url;
-            ui = {
-              hide-conditions = true;
-              hide-hostname = true;
-              hide-url = true;
-            };
-            interval = "10m";
-            conditions = [
-              "[STATUS] == 200"
-              "[RESPONSE_TIME] < 500"
-            ];
-          }) cfg.monitorPoints;
         };
       };
 

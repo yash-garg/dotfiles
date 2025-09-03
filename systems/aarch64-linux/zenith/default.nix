@@ -11,7 +11,6 @@ let
   domain = "yashgarg.dev";
   homeDomain = "ipx.ovh";
   hostName = "zenith";
-  inherit (config.${namespace}.services.tailscale) tailnet;
 in
 {
   imports = [
@@ -76,105 +75,7 @@ in
 
       gatus = enabled // {
         inherit domain;
-        monitorPoints = [
-          {
-            name = "Actual Budget";
-            group = "external";
-            url = "http://localhost:3000";
-          }
-          {
-            name = "Adguard";
-            url = "http://adguard.${tailnet}";
-          }
-          {
-            name = "Cadvisor";
-            url = "http://nova.turtle-lake.ts.net";
-          }
-          {
-            name = "Forgejo";
-            url = "http://localhost:9012";
-          }
-          {
-            name = "Grafana";
-            url = "http://nova.${tailnet}:3000";
-          }
-          {
-            name = "Home Assistant";
-            url = "http://homeassistant.${tailnet}:8123";
-          }
-          {
-            name = "Immich";
-            url = "http://nova.${tailnet}:8086";
-          }
-          {
-            name = "Jellyfin";
-            url = "http://nova.${tailnet}:8096";
-          }
-          {
-            name = "Kavita";
-            url = "http://nova.${tailnet}:5000";
-          }
-          {
-            name = "Linkding";
-            group = "external";
-            url = "http://localhost:9095";
-          }
-          {
-            name = "Mazanoke";
-            url = "http://nova.${tailnet}:3474";
-          }
-          {
-            name = "Miniflux";
-            url = "http://nova.${tailnet}:5600";
-          }
-          {
-            name = "Minecraft Map";
-            group = "external";
-            url = "http://vortex.${tailnet}:81";
-          }
-          {
-            name = "Paperless";
-            url = "http://nova.${tailnet}:8010";
-          }
-          {
-            name = "Prometheus";
-            url = "http://nova.${tailnet}:9090";
-          }
-          {
-            name = "Plausible Analytics";
-            group = "external";
-            url = "http://localhost:8181";
-          }
-          {
-            name = "Prowlarr";
-            url = "http://nova.${tailnet}:9696";
-          }
-          {
-            name = "Radarr";
-            url = "http://nova.${tailnet}:7878";
-          }
-          {
-            name = "Readarr";
-            url = "http://nova.${tailnet}:8787";
-          }
-          {
-            name = "Sonarr";
-            url = "http://nova.${tailnet}:8989";
-          }
-          {
-            name = "Stirling PDF";
-            group = "external";
-            url = "http://nova.${tailnet}:8087";
-          }
-          {
-            name = "qBittorrent";
-            url = "http://nova.${tailnet}:8080";
-          }
-          {
-            name = "unRAID";
-            url = "http://nova.${tailnet}";
-          }
-        ];
+        configFile = ./gatus.json;
       };
 
       linkding = enabled // {
