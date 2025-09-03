@@ -13,15 +13,16 @@ in
   options.${namespace}.services.lldap = {
     enable = mkEnableOption "Enable lldap user directory";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for lldap";
-    host = mkOpt types.str "zenith" "Host for lldap";
+    user = mkOpt types.str "lldap" "The user which lldap will run on";
+    group = mkOpt types.str "lldap" "The group of the user which lldap will run on";
   };
 
   config = mkIf cfg.enable {
     sops.secrets.lldap-env = {
       sopsFile = snowfall.fs.get-file "secrets/lldap.env";
       format = "dotenv";
-      owner = config.users.users.lldap.name;
-      group = config.users.groups.lldap.name;
+      owner = cfg.user;
+      group = cfg.group;
       mode = "0600";
     };
 
@@ -54,12 +55,15 @@ in
       };
     };
 
-    users = {
-      users.lldap = {
-        group = "lldap";
+    users.users = mkIf (cfg.user == "lldap") {
+      lldap = {
+        inherit (cfg) group;
         isSystemUser = true;
       };
-      groups.lldap = { };
+    };
+
+    users.groups = mkIf (cfg.group == "lldap") {
+      lldap = { };
     };
   };
 }
