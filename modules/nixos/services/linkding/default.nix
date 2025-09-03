@@ -80,15 +80,27 @@ in
       };
     };
 
-    services.traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
-      routers.linkding = {
-        rule = "Host(`links.${cfg.proxy.domain}`)";
-        entryPoints = [ "websecure" ];
-        service = "linkding";
-        tls.certResolver = "letsencrypt";
+    services = {
+      postgresql = {
+        ensureDatabases = [ cfg.database.name ];
+        ensureUsers = [
+          {
+            name = cfg.database.user;
+            ensureDBOwnership = true;
+          }
+        ];
       };
-      services.linkding.loadBalancer = {
-        servers = [ { url = "http://localhost:${toString ports.linkding}"; } ];
+
+      traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
+        routers.linkding = {
+          rule = "Host(`links.${cfg.proxy.domain}`)";
+          entryPoints = [ "websecure" ];
+          service = "linkding";
+          tls.certResolver = "letsencrypt";
+        };
+        services.linkding.loadBalancer = {
+          servers = [ { url = "http://localhost:${toString ports.linkding}"; } ];
+        };
       };
     };
   };

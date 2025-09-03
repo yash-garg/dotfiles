@@ -25,6 +25,23 @@ in
       };
     };
 
+    services.postgresql = {
+      ensureDatabases = [
+        "authelia-main"
+        "lldap"
+      ];
+      ensureUsers = [
+        {
+          name = "authelia-main";
+          ensureDBOwnership = true;
+        }
+        {
+          name = "lldap";
+          ensureDBOwnership = true;
+        }
+      ];
+    };
+
     systemd.services = {
       authelia-main = {
         after = [
