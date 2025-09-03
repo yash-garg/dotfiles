@@ -90,6 +90,8 @@ in
         secretKeybaseFile = config.sops.secrets.plausible-secret.path;
       };
 
+      postgres = enabled;
+
       restic = enabled;
 
       ssh = enabled // {
