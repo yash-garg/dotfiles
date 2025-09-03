@@ -53,6 +53,8 @@ in
     services = {
       minecraft-server = enabled;
 
+      restic = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;

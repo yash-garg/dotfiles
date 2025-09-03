@@ -90,9 +90,7 @@ in
         secretKeybaseFile = config.sops.secrets.plausible-secret.path;
       };
 
-      restic = enabled // {
-        host = hostName;
-      };
+      restic = enabled;
 
       ssh = enabled // {
         addRootKeys = true;

@@ -63,11 +63,6 @@ in
 {
   options.${namespace}.services.restic = {
     enable = mkEnableOption "Enable restic backup";
-
-    host = mkOption {
-      type = types.str;
-      description = "Host name of the system";
-    };
   };
 
   config = mkIf cfg.enable {
