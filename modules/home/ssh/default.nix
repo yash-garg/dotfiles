@@ -10,7 +10,10 @@ with lib.${namespace};
   programs.ssh = enabled // {
     enableDefaultConfig = false;
     package = pkgs.openssh_hpn;
-    includes = [ "~/.ssh/work" ];
+    includes = [
+      "~/.ssh/work"
+      "~/.orbstack/ssh/config"
+    ];
     matchBlocks = {
       "*" = {
         addKeysToAgent = "yes";
