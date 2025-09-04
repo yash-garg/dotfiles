@@ -59,7 +59,7 @@ with lib.${namespace};
   # Extra certificates from OrbStack.
   security.pki.certificates = [
     ''
-            -----BEGIN CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
       MIICCzCCAbKgAwIBAgIQduCEvPb0YJI6uqaTc8oXLDAKBggqhkjOPQQDAjBmMR0w
       GwYDVQQKExRPcmJTdGFjayBEZXZlbG9wbWVudDEeMBwGA1UECwwVQ29udGFpbmVy
       cyAmIFNlcnZpY2VzMSUwIwYDVQQDExxPcmJTdGFjayBEZXZlbG9wbWVudCBSb290
@@ -126,7 +126,6 @@ with lib.${namespace};
       RAzNOFYz3UTWnDAKBggqhkjOPQQDAgNHADBEAiA67eieknWem0yVQMKtTh8g5w+D
       +5Q/XqzCmtWuIzC84wIgVFUeGtZqz4hoNOzvZzF6twiKhcjSSGa4h0LOVr3VRv4=
       -----END CERTIFICATE-----
-
     ''
   ];
 
