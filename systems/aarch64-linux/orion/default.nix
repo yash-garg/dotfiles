@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   namespace,
   modulesPath,
@@ -29,6 +30,10 @@ in
     dhcpcd.enable = false;
     useDHCP = false;
     useHostResolvConf = false;
+  };
+
+  programs.nix-ld = enabled // {
+    package = pkgs.nix-ld-rs;
   };
 
   systemd.network = enabled // {
