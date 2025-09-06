@@ -84,13 +84,19 @@ in
         allowed_origins = [ "https://auth.${domain}" ];
         allowed_origins_from_client_redirect_uris = true;
       };
-      claims_policies.default = {
-        id_token = [
+      claims_policies = {
+        default.id_token = [
           "email"
           "email_verified"
           "alt_emails"
           "preferred_username"
           "name"
+        ];
+        grafana.id_token = [
+          "email"
+          "name"
+          "groups"
+          "preferred_username"
         ];
       };
       clients = [
@@ -147,6 +153,28 @@ in
           ];
           redirect_uris = [
             "https://git.${domain}/user/oauth2/authelia/callback"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
+          client_id = "grafana";
+          client_name = "Grafana";
+          client_secret = "$pbkdf2-sha512$310000$nWiTXHRVFg.0p0DFs0Fr9Q$ZkDnbKytBDwzW7JAdmreKAFnsdk93k5Y91WqefgppXayVU6xVtGokDj2/qoyzqbBgP2FhX0Jg7Vf4ADOWdIuWA";
+          public = false;
+          authorization_policy = "one_factor";
+          claims_policy = "grafana";
+          grant_types = [
+            "authorization_code"
+          ];
+          redirect_uris = [
+            "https://stats.${domain}/login/generic_oauth"
           ];
           scopes = [
             "openid"
