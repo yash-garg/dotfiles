@@ -9,6 +9,7 @@
     minecraft = 25565;
     miniflux = 5600;
     ollama = 11434;
+    paperless-ngx = 8010;
     plausible = 8181;
     pl3xmap = 81;
     qbittorrent = 3001;
