@@ -7,6 +7,7 @@
     linkding = 9095;
     lldap = 17170;
     minecraft = 25565;
+    miniflux = 5600;
     ollama = 11434;
     plausible = 8181;
     pl3xmap = 81;

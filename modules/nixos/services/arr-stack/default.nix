@@ -52,7 +52,7 @@ in
 
     systemd.tmpfiles.rules =
       let
-        home = config.users.users.${cfg.user}.home;
+        inherit (config.users.users.${cfg.user}) home;
       in
       [
         "d ${home} 0775 ${cfg.user} ${cfg.group} -"

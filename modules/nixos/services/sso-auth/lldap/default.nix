@@ -22,7 +22,7 @@ in
       sopsFile = snowfall.fs.get-file "secrets/lldap.env";
       format = "dotenv";
       owner = cfg.user;
-      group = cfg.group;
+      inherit (cfg) group;
       mode = "0600";
     };
 
