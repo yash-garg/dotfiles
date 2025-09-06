@@ -1,0 +1,26 @@
+{
+    "Nix Service Module": {
+        "prefix": "nixs",
+        "body": [
+            "{",
+            "  config,",
+            "  lib,",
+            "  namespace,",
+            "  ...",
+            "}:",
+            "with lib;",
+            "with lib.${namespace};",
+            "let",
+            "  cfg = config.${namespace}.services.${1:name};",
+            "in",
+            "{",
+            "  options.${namespace}.services.${1:name} = {",
+            "    enable = mkEnableOption \"Enable ${1:name} service\";",
+            "  };",
+            "",
+            "  config = mkIf cfg.enable { };",
+            "}"
+        ],
+        "description": "Boilerplate for a NixOS service module"
+    }
+}

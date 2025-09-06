@@ -13,7 +13,6 @@ with lib.${namespace};
       "*.jks"
       ".direnv/"
       ".DS_Store"
-      ".vscode/"
       ".idea/"
       "kls_database.db"
       ".spr.yml"
