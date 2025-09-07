@@ -20,7 +20,7 @@ in
     memory = mkOpt types.str "16G" "Minecraft server memory";
     motd = mkOpt types.str "§l§cPixel Paradise§r" "Minecraft server MOTD";
     seed = mkOpt types.str "-5584399987456711267" "Minecraft server seed";
-    version = mkOpt types.str "1.21.4" "Minecraft server version";
+    version = mkOpt types.str "1.21.8" "Minecraft server version";
   };
 
   config = mkIf cfg.enable {
@@ -66,9 +66,9 @@ in
           beautified-chat-server
           c2me-fabric
           chunky
+          disconnect-packet-fix
           fabric-api
           ferrite-core
-          krypton
           leaves-us-in-peace
           lithium
           netherportalfix
