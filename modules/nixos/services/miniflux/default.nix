@@ -34,6 +34,7 @@ in
           LISTEN_ADDR = "localhost:${toString ports.miniflux}";
           LOG_DATE_TIME = 1;
           LOG_FORMAT = "json";
+          METRICS_COLLECTOR = 1;
           DISABLE_LOCAL_AUTH = 1;
           OAUTH2_USER_CREATION = 1;
           OAUTH2_PROVIDER = "oidc";
@@ -42,6 +43,13 @@ in
           OAUTH2_OIDC_CLIENT_ID = "Authelia";
         };
       };
+
+      prometheus.scrapeConfigs = mkIf (config.services.miniflux.config.METRICS_COLLECTOR or 0 == 1) [
+        {
+          job_name = "miniflux";
+          static_configs = [ { targets = [ config.services.miniflux.config.LISTEN_ADDR ]; } ];
+        }
+      ];
 
       traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
         routers.miniflux = {

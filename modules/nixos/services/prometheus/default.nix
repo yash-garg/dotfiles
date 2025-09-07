@@ -54,6 +54,15 @@ in
               };
             }
             {
+              name = "Miniflux";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "miniflux-grafana-dashboard.json";
+                url = "https://raw.githubusercontent.com/miniflux/v2/e8f5c2446c9acfb89f0bf67176ce4c32e3ca9618/contrib/grafana/dashboard.json";
+                hash = "sha256-U7Hp3eXXEnfPvJMhUkQkvtUrZw0nG3oa4bQ+gRcVmoE=";
+              };
+            }
+            {
               name = "NVIDIA SMI Metrics";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {
