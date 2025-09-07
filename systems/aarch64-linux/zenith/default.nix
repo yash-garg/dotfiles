@@ -24,15 +24,12 @@ in
       format = "dotenv";
       owner = config.services.traefik.group;
     };
-
     user-password = {
       sopsFile = snowfall.fs.get-file "secrets/users.yaml";
-      key = hostName;
+      key = config.networking.hostName;
       neededForUsers = true;
     };
-
     server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
-
     plausible-secret.sopsFile = snowfall.fs.get-file "secrets/plausible.yaml";
   };
 
@@ -49,12 +46,12 @@ in
 
   networking = {
     domain = "";
+    hostName = "zenith";
     firewall.allowedTCPPorts = [
       80
       443
     ];
     networkmanager = enabled;
-    inherit hostName;
   };
 
   dots = {
@@ -123,61 +120,45 @@ in
         environmentFiles = [ config.sops.secrets.cf-tokens.path ];
         services =
           let
-            nova = "100.78.157.31";
+            tailnet = config.${namespace}.services.tailscale.tailnet;
+            nova = "nova.${tailnet}";
+            vortex = "vortex.${tailnet}";
           in
           {
             cadvisor.url = "http://${nova}:8081";
-
-            dns.url = "http://100.93.246.1";
-
-            home.url = "http://100.65.53.36:8123";
-
+            dns.url = "http://adguard.${tailnet}";
+            home.url = "http://homeassistant.${tailnet}:8123";
             image.url = "http://${nova}:3474";
-
-            map.url = "http://100.65.244.114:81";
-
+            map.url = "http://${vortex}:81";
             paperless = {
               url = "http://${nova}:8010";
               useAuth = false;
             };
-
             pdf = {
               url = "http://${nova}:8087";
               useAuth = false;
             };
-
             photos = {
               url = "http://${nova}:8086";
               useAuth = false;
             };
-
             prometheus.url = "http://${nova}:9090";
-
             prowlarr.url = "http://${nova}:9696";
-
             qbit.url = "http://${nova}:8080";
-
             read.url = "http://${nova}:5000";
-
             readarr.url = "http://${nova}:8787";
-
             restic.url = "http://${nova}:9898";
-
             radarr.url = "http://${nova}:7878";
-
             rss = {
               url = "http://${nova}:5600";
               useAuth = false;
             };
-
             sonarr.url = "http://${nova}:8989";
-
             stream = {
               url = "http://${nova}:8096";
               useAuth = false;
               middlewares = [ "jellyfin-redirect" ];
             };
-
             unraid = {
               url = "https://${nova}";
               useInsecure = true;

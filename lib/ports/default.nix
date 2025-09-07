@@ -3,7 +3,7 @@
     actual-budget = 3000;
     adguard = 4000;
     alertmanager = 9093;
-    alertmanager-ntfy = 9094;
+    alertmanager-ntfy = 9081;
     exporters = {
       node = 9100;
       systemd = 9101;
