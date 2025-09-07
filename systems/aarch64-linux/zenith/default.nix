@@ -60,10 +60,6 @@ in
   dots = {
     server = enabled;
 
-    sso = enabled // {
-      domain = homeDomain;
-    };
-
     services = {
       actual-budget = enabled // {
         domain = homeDomain;
@@ -98,6 +94,10 @@ in
         addRootKeys = true;
         passwordAuth = false;
         permitRootLogin = false;
+      };
+
+      sso = enabled // {
+        domain = homeDomain;
       };
 
       tailscale = enabled // {

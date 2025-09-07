@@ -23,6 +23,7 @@
     nvd
     ookla-speedtest
     pkgs.${namespace}.git-spr
+    ripe-atlas-tools
     ripgrep
     restic
     ruff

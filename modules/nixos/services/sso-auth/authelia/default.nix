@@ -41,21 +41,19 @@ in
       };
 
     services = {
-      authelia = {
-        instances.main = enabled // {
-          environmentVariables = {
-            AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.sops.secrets.ldap-secret.path;
-          };
-          secrets = {
-            jwtSecretFile = config.sops.secrets.jwt-secret.path;
-            sessionSecretFile = config.sops.secrets.session-secret.path;
-            storageEncryptionKeyFile = config.sops.secrets.storage-secret.path;
-            oidcIssuerPrivateKeyFile = config.sops.secrets.oidc-key.path;
-            oidcHmacSecretFile = config.sops.secrets.hmac-secret.path;
-          };
-          settings = import ./settings.nix { inherit lib config namespace; };
-          settingsFiles = [ config.sops.secrets.notifier-settings.path ];
+      authelia.instances.main = enabled // {
+        environmentVariables = {
+          AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.sops.secrets.ldap-secret.path;
         };
+        secrets = {
+          jwtSecretFile = config.sops.secrets.jwt-secret.path;
+          sessionSecretFile = config.sops.secrets.session-secret.path;
+          storageEncryptionKeyFile = config.sops.secrets.storage-secret.path;
+          oidcIssuerPrivateKeyFile = config.sops.secrets.oidc-key.path;
+          oidcHmacSecretFile = config.sops.secrets.hmac-secret.path;
+        };
+        settings = import ./settings.nix { inherit lib config namespace; };
+        settingsFiles = [ config.sops.secrets.notifier-settings.path ];
       };
 
       traefik.dynamicConfigOptions.http = {

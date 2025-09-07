@@ -7,10 +7,10 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.sso;
+  cfg = config.${namespace}.services.sso;
 in
 {
-  options.${namespace}.sso = {
+  options.${namespace}.services.sso = {
     enable = mkEnableOption "Enable SSO Auth for Services";
     domain = mkOpt types.str "ipx.ovh" "Base domain for SSO Auth";
   };
