@@ -15,8 +15,8 @@ in
     enable = mkEnableOption "Prometheus: Monitoring and Alerting System";
     grafana = {
       enable = mkEnableOption "Enable grafana";
+      domain = mkOpt types.str "ipx.ovh" "Domain name for prometheus";
     };
-    domain = mkOpt types.str "ipx.ovh" "Domain name for prometheus";
     port = mkOpt types.int ports.prometheus "Port for the prometheus server";
   };
 
@@ -88,6 +88,7 @@ in
                 orgId = 1;
               }
             ];
+
             datasources = [
               {
                 name = "Prometheus (${config.networking.hostName})";
@@ -101,6 +102,12 @@ in
                 access = "proxy";
                 url = "http://100.78.157.31:9090";
               }
+              {
+                name = "Prometheus (vortex)";
+                type = "prometheus";
+                access = "proxy";
+                url = "http://100.65.244.114:${toString config.services.prometheus.port}";
+              }
             ];
           };
         };
@@ -112,9 +119,9 @@ in
             icon = "signin";
             scopes = "openid,email,profile,groups";
             empty_scopes = false;
-            auth_url = "https://auth.${cfg.domain}/api/oidc/authorization";
-            token_url = "https://auth.${cfg.domain}/api/oidc/token";
-            api_url = "https://auth.${cfg.domain}/api/oidc/userinfo";
+            auth_url = "https://auth.${cfg.grafana.domain}/api/oidc/authorization";
+            token_url = "https://auth.${cfg.grafana.domain}/api/oidc/token";
+            api_url = "https://auth.${cfg.grafana.domain}/api/oidc/userinfo";
             login_attribute_path = "preferred_username";
             groups_attribute_path = "groups";
             name_attribute_path = "name";
@@ -124,8 +131,8 @@ in
           };
           analytics.feedback_links_enabled = false;
           server = {
-            inherit (cfg) domain;
-            root_url = "https://grafana.${cfg.domain}";
+            inherit (cfg.grafana) domain;
+            root_url = "https://grafana.${cfg.grafana.domain}";
             http_addr = "127.0.0.1";
             http_port = ports.grafana;
           };
@@ -167,7 +174,7 @@ in
 
       traefik.dynamicConfigOptions.http = mkIf cfg.grafana.enable {
         routers.grafana = {
-          rule = "Host(`grafana.${cfg.domain}`)";
+          rule = "Host(`grafana.${cfg.grafana.domain}`)";
           entryPoints = [ "websecure" ];
           service = "grafana";
           tls.certResolver = "letsencrypt";

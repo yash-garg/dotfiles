@@ -89,8 +89,9 @@ in
       postgres = enabled;
 
       prometheus = enabled // {
-        grafana = enabled;
-        domain = homeDomain;
+        grafana = enabled // {
+          domain = homeDomain;
+        };
       };
 
       restic = enabled;

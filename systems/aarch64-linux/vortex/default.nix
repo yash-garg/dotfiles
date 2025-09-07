@@ -53,6 +53,8 @@ in
     services = {
       minecraft-server = enabled;
 
+      prometheus = enabled;
+
       restic = enabled;
 
       ssh = enabled // {

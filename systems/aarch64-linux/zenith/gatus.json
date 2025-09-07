@@ -59,7 +59,7 @@
         },
         {
             "name": "Grafana",
-            "url": "http://nova.turtle-lake.ts.net:3000",
+            "url": "http://localhost:9092",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,
