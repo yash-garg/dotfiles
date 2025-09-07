@@ -35,6 +35,20 @@ in
         compression = "none";
         startAt = "*-*-* 00:00:00";
       };
+
+      prometheus = {
+        exporters.postgres = {
+          enable = true;
+          port = ports.exporters.postgres;
+          runAsLocalSuperUser = true;
+        };
+        scrapeConfigs = [
+          {
+            job_name = "postgres_exporter";
+            static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.postgres}" ]; } ];
+          }
+        ];
+      };
     };
   };
 }

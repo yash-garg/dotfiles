@@ -2,8 +2,15 @@
   ports = {
     actual-budget = 3000;
     adguard = 4000;
+    alertmanager = 9001;
+    exporters = {
+      node = 9100;
+      systemd = 9101;
+      postgres = 9102;
+    };
     forgejo = 9012;
     gatus = 3333;
+    grafana = 9002;
     linkding = 9095;
     lldap = 17170;
     minecraft = 25565;
@@ -12,6 +19,7 @@
     paperless-ngx = 8010;
     plausible = 8181;
     pl3xmap = 81;
+    prometheus = 9092;
     qbittorrent = 3001;
     radarr = 7878;
     readarr = 8787;

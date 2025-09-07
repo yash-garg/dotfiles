@@ -88,6 +88,11 @@ in
 
       postgres = enabled;
 
+      prometheus = enabled // {
+        grafana = enabled;
+        domain = homeDomain;
+      };
+
       restic = enabled;
 
       ssh = enabled // {

@@ -174,6 +174,7 @@ in
             "authorization_code"
           ];
           redirect_uris = [
+            "https://grafana.${domain}/login/generic_oauth"
             "https://stats.${domain}/login/generic_oauth"
           ];
           scopes = [
