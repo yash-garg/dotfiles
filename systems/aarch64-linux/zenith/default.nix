@@ -171,8 +171,6 @@ in
 
             sonarr.url = "http://${nova}:8989";
 
-            stats.url = "http://${nova}:3000";
-
             stream = {
               url = "http://${nova}:8096";
               useAuth = false;

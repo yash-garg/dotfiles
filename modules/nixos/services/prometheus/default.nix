@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   namespace,
   ...
 }:
@@ -33,21 +34,75 @@ in
       grafana = mkIf cfg.grafana.enable {
         inherit (cfg.grafana) enable;
         provision = enabled // {
-          dashboards.settings.providers = [ ];
-          datasources.settings.datasources = [
+          dashboards.settings.providers = [
             {
-              name = "Prometheus (${config.networking.hostName})";
-              type = "prometheus";
-              access = "proxy";
-              url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+              name = "Cadvisor Exporter";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "cadvisor-exporter-1-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/14282/revisions/1/download";
+                hash = "sha256-dqhaC4r4rXHCJpASt5y3EZXW00g5fhkQM+MgNcgX1c0=";
+              };
             }
             {
-              name = "Prometheus (Unraid)";
-              type = "prometheus";
-              access = "proxy";
-              url = "http://100.78.157.31:9090";
+              name = "Node Exporter Full";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "node-exporter-full-41-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/1860/revisions/41/download";
+                hash = "sha256-EywgxEayjwNIGDvSmA/S56Ld49qrTSbIYFpeEXBJlTs=";
+              };
+            }
+            {
+              name = "NVIDIA SMI Metrics";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "nvidia-smi-metrics-1-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/12357/revisions/1/download";
+                hash = "sha256-zOnzgrhKVecZ2OJpOWKrPUoI6f6G6V9wRowu09svKLw=";
+              };
+            }
+            {
+              name = "PostgresSQL Database";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "postgres-database-8-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/9628/revisions/8/download";
+                hash = "sha256-UhusNAZbyt7fJV/DhFUK4FKOmnTpG0R15YO2r+nDnMc=";
+              };
+            }
+            {
+              name = "Systemd Exporter";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "systemd-exporter-3-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/23844/revisions/3/download";
+                hash = "sha256-/wpWvsZS4i8vkxQI/6qhsiwv1cDVWQBk31ZDFFxu8H4=";
+              };
             }
           ];
+          datasources.settings = {
+            deleteDatasources = [
+              {
+                name = "Prometheus (Unraid)";
+                orgId = 1;
+              }
+            ];
+            datasources = [
+              {
+                name = "Prometheus (${config.networking.hostName})";
+                type = "prometheus";
+                access = "proxy";
+                url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+              }
+              {
+                name = "Prometheus (nova)";
+                type = "prometheus";
+                access = "proxy";
+                url = "http://100.78.157.31:9090";
+              }
+            ];
+          };
         };
         settings = {
           auth.disable_login_form = true;
