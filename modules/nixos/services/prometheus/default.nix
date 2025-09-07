@@ -22,6 +22,12 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets = mkMerge [
+      {
+        alertmanager-ntfy = {
+          sopsFile = lib.snowfall.fs.get-file "secrets/alertmanager.yaml";
+          key = "ntfy-settings";
+        };
+      }
       (mkIf cfg.grafana.enable {
         grafana-env = {
           sopsFile = lib.snowfall.fs.get-file "secrets/grafana.env";
@@ -97,7 +103,6 @@ in
                 orgId = 1;
               }
             ];
-
             datasources = [
               {
                 name = "Prometheus (${config.networking.hostName})";
@@ -151,6 +156,38 @@ in
       prometheus = enabled // {
         inherit (cfg) port;
         extraFlags = [ "--web.enable-admin-api" ];
+        alertmanager = enabled // {
+          port = ports.alertmanager;
+          configuration = {
+            route.receiver = "ntfy";
+            receivers = [
+              {
+                name = "ntfy";
+                webhook_configs = [
+                  { url = "http://127.0.0.1:${toString ports.alertmanager-ntfy}/hook"; }
+                ];
+              }
+            ];
+          };
+        };
+        alertmanagers = [
+          {
+            scheme = "http";
+            static_configs = [
+              { targets = [ "127.0.0.1:${toString config.services.prometheus.alertmanager.port}" ]; }
+            ];
+          }
+        ];
+        alertmanager-ntfy = enabled // {
+          extraConfigFiles = [ config.sops.secrets.alertmanager-ntfy.path ];
+          settings = {
+            http.addr = "127.0.0.1:${toString ports.alertmanager-ntfy}";
+            ntfy = {
+              baseurl = "https://ntfy.sh";
+              notification.topic = "";
+            };
+          };
+        };
         exporters = {
           node = enabled // {
             enabledCollectors = [ "systemd" ];
@@ -164,6 +201,10 @@ in
           {
             job_name = config.networking.hostName;
             static_configs = [
+              {
+                targets = [ "127.0.0.1:${toString config.services.prometheus.alertmanager.port}" ];
+                labels.alias = "alertmanager";
+              }
               {
                 targets = [ "127.0.0.1:${toString config.services.prometheus.port}" ];
                 labels.alias = "prometheus";
