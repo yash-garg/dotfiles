@@ -8,6 +8,9 @@
       node = 9100;
       systemd = 9101;
       postgres = 9102;
+      radarr = 9103;
+      readarr = 9104;
+      sonarr = 9105;
     };
     forgejo = 9012;
     gatus = 3333;

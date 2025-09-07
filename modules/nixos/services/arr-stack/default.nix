@@ -17,15 +17,27 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets = {
+      radarr-key = {
+        sopsFile = snowfall.fs.get-file "secrets/arr-stack.env";
+        format = "dotenv";
+        key = "radarr_key";
+      };
+      readarr-key = {
+        sopsFile = snowfall.fs.get-file "secrets/arr-stack.env";
+        format = "dotenv";
+        key = "readarr_key";
+      };
+      sonarr-key = {
+        sopsFile = snowfall.fs.get-file "secrets/arr-stack.env";
+        format = "dotenv";
+        key = "sonarr_key";
+      };
+    };
+
     dots.services.qbittorrent = enabled // {
       inherit (cfg) group;
     };
-
-    networking.firewall.allowedTCPPorts = [
-      ports.radarr
-      ports.readarr
-      ports.sonarr
-    ];
 
     services =
       let
@@ -35,6 +47,37 @@ in
         };
       in
       {
+        prometheus = {
+          exporters = {
+            exportarr-radarr = enabled // {
+              port = ports.exporters.radarr;
+              apiKeyFile = config.sops.secrets.radarr-key.path;
+            };
+            exportarr-readarr = enabled // {
+              port = ports.exporters.readarr;
+              apiKeyFile = config.sops.secrets.readarr-key.path;
+            };
+            exportarr-sonarr = enabled // {
+              port = ports.exporters.sonarr;
+              apiKeyFile = config.sops.secrets.sonarr-key.path;
+            };
+          };
+          scrapeConfigs = [
+            {
+              job_name = "radarr_exporter";
+              static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.radarr}" ]; } ];
+            }
+            {
+              job_name = "readarr_exporter";
+              static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.readarr}" ]; } ];
+            }
+            {
+              job_name = "sonarr_exporter";
+              static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.sonarr}" ]; } ];
+            }
+          ];
+        };
+
         radarr = defaults // {
           settings.server.port = ports.radarr;
         };
