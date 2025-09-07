@@ -65,7 +65,7 @@ in
             name_attribute_path = "name";
             use_pkce = true;
             auto_login = false;
-            skip_org_role_sync = true;
+            role_attribute_path = "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'";
           };
           analytics.feedback_links_enabled = false;
           server = {
