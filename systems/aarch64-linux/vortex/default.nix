@@ -55,7 +55,6 @@ in
 
       monitoring = enabled // {
         alloy = enabled;
-        grafana = enabled;
         loki = enabled;
         prometheus = enabled;
       };
