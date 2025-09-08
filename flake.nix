@@ -4,7 +4,6 @@
   outputs =
     inputs:
     let
-      commonModules = [ inputs.nix-topology.nixosModules.default ];
       lib = inputs.snowfall-lib.mkLib {
         inherit inputs;
         src = ./.;
@@ -30,43 +29,56 @@
 
       deploy = lib.mkDeploy { inherit (inputs) self; };
 
-      systems.modules.darwin =
-        with inputs;
-        [
-          nix-index-database.darwinModules.nix-index
-          sops-nix.darwinModules.sops
-          srvos.darwinModules.desktop
-          srvos.darwinModules.mixins-trusted-nix-caches
-          stylix.darwinModules.stylix
-        ]
-        ++ commonModules;
+      systems = with inputs; {
+        modules = {
+          darwin = [
+            nix-index-database.darwinModules.nix-index
+            nix-topology.nixosModules.default
+            sops-nix.darwinModules.sops
+            srvos.darwinModules.desktop
+            srvos.darwinModules.mixins-trusted-nix-caches
+            stylix.darwinModules.stylix
+          ];
 
-      systems.modules.nixos =
-        with inputs;
-        [
-          disko.nixosModules.disko
-          impermanence.nixosModules.impermanence
-          lanzaboote.nixosModules.lanzaboote
-          nix-index-database.nixosModules.nix-index
-          nixos-cosmic.nixosModules.default
-          nixos-generators.nixosModules.all-formats
-          nixos-wsl.nixosModules.default
-          sops-nix.nixosModules.sops
-          srvos.nixosModules.mixins-trusted-nix-caches
-          stylix.nixosModules.stylix
-        ]
-        ++ commonModules;
+          nixos = [
+            disko.nixosModules.disko
+            impermanence.nixosModules.impermanence
+            lanzaboote.nixosModules.lanzaboote
+            nix-index-database.nixosModules.nix-index
+            nix-topology.nixosModules.default
+            nixos-cosmic.nixosModules.default
+            nixos-generators.nixosModules.all-formats
+            nixos-wsl.nixosModules.default
+            sops-nix.nixosModules.sops
+            srvos.nixosModules.mixins-trusted-nix-caches
+            stylix.nixosModules.stylix
+          ];
+        };
 
-      systems.hosts.cosmos.modules = with inputs; [
-        raspberry-pi-nix.nixosModules.raspberry-pi
-        srvos.nixosModules.mixins-mdns
-        vscode-server.nixosModules.default
-      ];
-
-      systems.hosts.nova.modules = with inputs; [
-        srvos.nixosModules.desktop
-        srvos.nixosModules.mixins-systemd-boot
-      ];
+        hosts = {
+          cosmos.modules = [
+            raspberry-pi-nix.nixosModules.raspberry-pi
+            srvos.nixosModules.mixins-mdns
+            vscode-server.nixosModules.default
+          ];
+          nova.modules = [
+            srvos.nixosModules.desktop
+            srvos.nixosModules.mixins-systemd-boot
+          ];
+          orion.modules = [
+            srvos.nixosModules.mixins-telegraf
+            srvos.nixosModules.roles-prometheus
+          ];
+          vortex.modules = [
+            srvos.nixosModules.mixins-telegraf
+            srvos.nixosModules.roles-prometheus
+          ];
+          zenith.modules = [
+            srvos.nixosModules.mixins-telegraf
+            srvos.nixosModules.roles-prometheus
+          ];
+        };
+      };
 
       homes.modules = with inputs; [
         nix-index-database.homeModules.nix-index
