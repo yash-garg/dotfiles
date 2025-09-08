@@ -124,18 +124,18 @@ in
               }
             ];
             datasources = [
-              (mkIf cfg.loki.enable {
-                name = "Loki (${config.networking.hostName})";
-                type = "loki";
-                access = "proxy";
-                url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
-              })
               {
                 name = "Prometheus (${config.networking.hostName})";
                 type = "prometheus";
                 access = "proxy";
                 url = "http://127.0.0.1:${toString config.services.prometheus.port}";
               }
+              (mkIf cfg.loki.enable {
+                name = "Loki (${config.networking.hostName})";
+                type = "loki";
+                access = "proxy";
+                url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
+              })
               {
                 name = "Prometheus (nova)";
                 type = "prometheus";
@@ -147,6 +147,12 @@ in
                 type = "prometheus";
                 access = "proxy";
                 url = "http://100.65.244.114:${toString config.services.prometheus.port}";
+              }
+              {
+                name = "Loki (vortex)";
+                type = "loki";
+                access = "proxy";
+                url = "http://100.65.244.114:${toString config.services.loki.configuration.server.http_listen_port}";
               }
             ];
           };
