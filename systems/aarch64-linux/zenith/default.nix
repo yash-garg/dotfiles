@@ -78,18 +78,20 @@ in
         };
       };
 
+      monitoring = enabled // {
+        domain = homeDomain;
+        alloy = enabled;
+        grafana = enabled;
+        loki = enabled;
+        prometheus = enabled;
+      };
+
       plausible = enabled // {
         baseUrl = domain;
         secretKeybaseFile = config.sops.secrets.plausible-secret.path;
       };
 
       postgres = enabled;
-
-      prometheus = enabled // {
-        grafana = enabled // {
-          domain = homeDomain;
-        };
-      };
 
       restic = enabled;
 
@@ -120,7 +122,7 @@ in
         environmentFiles = [ config.sops.secrets.cf-tokens.path ];
         services =
           let
-            tailnet = config.${namespace}.services.tailscale.tailnet;
+            inherit (config.${namespace}.services.tailscale) tailnet;
             nova = "nova.${tailnet}";
             vortex = "vortex.${tailnet}";
           in

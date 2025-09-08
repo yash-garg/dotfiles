@@ -53,7 +53,12 @@ in
     services = {
       minecraft-server = enabled;
 
-      prometheus = enabled;
+      monitoring = enabled // {
+        alloy = enabled;
+        grafana = enabled;
+        loki = enabled;
+        prometheus = enabled;
+      };
 
       restic = enabled;
 

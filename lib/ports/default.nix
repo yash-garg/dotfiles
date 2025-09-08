@@ -4,6 +4,7 @@
     adguard = 4000;
     alertmanager = 9093;
     alertmanager-ntfy = 9081;
+    alloy = 12346;
     exporters = {
       node = 9100;
       systemd = 9101;
@@ -17,6 +18,7 @@
     grafana = 9002;
     linkding = 9095;
     lldap = 17170;
+    loki = 3100;
     minecraft = 25565;
     miniflux = 5600;
     ollama = 11434;

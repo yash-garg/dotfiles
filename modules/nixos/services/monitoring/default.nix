@@ -8,16 +8,28 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.prometheus;
+  cfg = config.${namespace}.services.monitoring;
 in
 {
-  options.${namespace}.services.prometheus = {
-    enable = mkEnableOption "Prometheus: Monitoring and Alerting System";
+  options.${namespace}.services.monitoring = {
+    enable = mkEnableOption "Monitoring and Alerting System";
+    domain = mkOpt types.str "ipx.ovh" "Domain name for monitoring";
+    alloy = {
+      enable = mkEnableOption "Enable alloy";
+      port = mkOpt types.int ports.alloy "Port for the alloy server";
+    };
     grafana = {
       enable = mkEnableOption "Enable grafana";
-      domain = mkOpt types.str "ipx.ovh" "Domain name for prometheus";
+      port = mkOpt types.int ports.grafana "Port for the grafana server";
     };
-    port = mkOpt types.int ports.prometheus "Port for the prometheus server";
+    loki = {
+      enable = mkEnableOption "Enable loki";
+      port = mkOpt types.int ports.loki "Port for the loki server";
+    };
+    prometheus = {
+      enable = mkEnableOption "Enable prometheus";
+      port = mkOpt types.int ports.prometheus "Port for the prometheus server";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -37,6 +49,14 @@ in
     ];
 
     services = {
+      alloy = mkIf cfg.alloy.enable {
+        inherit (cfg.alloy) enable;
+        extraFlags = [
+          "--server.http.listen-addr=0.0.0.0:${toString cfg.alloy.port}"
+          "--disable-reporting"
+        ];
+      };
+
       grafana = mkIf cfg.grafana.enable {
         inherit (cfg.grafana) enable;
         provision = enabled // {
@@ -104,6 +124,12 @@ in
               }
             ];
             datasources = [
+              (mkIf cfg.loki.enable {
+                name = "Loki (${config.networking.hostName})";
+                type = "loki";
+                access = "proxy";
+                url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
+              })
               {
                 name = "Prometheus (${config.networking.hostName})";
                 type = "prometheus";
@@ -125,36 +151,98 @@ in
             ];
           };
         };
-        settings = {
-          auth.disable_login_form = true;
-          "auth.generic_oauth" = {
-            enabled = true;
-            name = "Authelia";
-            icon = "signin";
-            scopes = "openid,email,profile,groups";
-            empty_scopes = false;
-            auth_url = "https://auth.${cfg.grafana.domain}/api/oidc/authorization";
-            token_url = "https://auth.${cfg.grafana.domain}/api/oidc/token";
-            api_url = "https://auth.${cfg.grafana.domain}/api/oidc/userinfo";
-            login_attribute_path = "preferred_username";
-            groups_attribute_path = "groups";
-            name_attribute_path = "name";
-            use_pkce = true;
-            auto_login = false;
-            role_attribute_path = "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'";
+        settings =
+          let
+            ssoEnabled = config.${namespace}.services.sso.enable;
+          in
+          {
+            auth.disable_login_form = ssoEnabled;
+            "auth.generic_oauth" = {
+              enabled = ssoEnabled;
+              name = "Authelia";
+              icon = "signin";
+              scopes = "openid,email,profile,groups";
+              empty_scopes = false;
+              auth_url = "https://auth.${cfg.domain}/api/oidc/authorization";
+              token_url = "https://auth.${cfg.domain}/api/oidc/token";
+              api_url = "https://auth.${cfg.domain}/api/oidc/userinfo";
+              login_attribute_path = "preferred_username";
+              groups_attribute_path = "groups";
+              name_attribute_path = "name";
+              use_pkce = true;
+              auto_login = false;
+              role_attribute_path = "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'";
+            };
+            analytics.feedback_links_enabled = false;
+            server = {
+              inherit (cfg) domain;
+              root_url = "https://grafana.${cfg.domain}";
+              http_addr = "127.0.0.1";
+              http_port = cfg.grafana.port;
+            };
           };
-          analytics.feedback_links_enabled = false;
-          server = {
-            inherit (cfg.grafana) domain;
-            root_url = "https://grafana.${cfg.grafana.domain}";
-            http_addr = "127.0.0.1";
-            http_port = ports.grafana;
+      };
+
+      loki = mkIf cfg.loki.enable {
+        inherit (cfg.loki) enable;
+        configuration =
+          let
+            inherit (config.services.loki) dataDir;
+          in
+          {
+            analytics.reporting_enabled = false;
+            auth_enabled = false;
+            server = {
+              http_listen_port = cfg.loki.port;
+              grpc_listen_port = 0;
+              log_level = "warn";
+            };
+            common = {
+              replication_factor = 1;
+              path_prefix = dataDir;
+              ring = {
+                instance_addr = "127.0.0.1";
+                kvstore.store = "inmemory";
+              };
+            };
+            ingester = {
+              lifecycler = {
+                address = "127.0.0.1";
+                ring = {
+                  kvstore.store = "inmemory";
+                  replication_factor = 1;
+                };
+                final_sleep = "0s";
+              };
+              chunk_idle_period = "5m";
+              chunk_retain_period = "30s";
+            };
+            limits_config = {
+              reject_old_samples = true;
+              reject_old_samples_max_age = "168h";
+            };
+            query_scheduler.max_outstanding_requests_per_tenant = 2048;
+            ruler.alertmanager_url = "http://127.0.0.1:${toString config.services.prometheus.alertmanager.port}";
+            storage_config.filesystem.directory = "${dataDir}/chunks";
+            schema_config = {
+              configs = [
+                {
+                  from = "2024-04-01";
+                  store = "tsdb";
+                  object_store = "filesystem";
+                  schema = "v13";
+                  index = {
+                    prefix = "index_";
+                    period = "24h";
+                  };
+                }
+              ];
+            };
           };
-        };
       };
 
       prometheus = enabled // {
-        inherit (cfg) port;
+        inherit (cfg.prometheus) enable port;
         extraFlags = [ "--web.enable-admin-api" ];
         alertmanager = enabled // {
           port = ports.alertmanager;
@@ -224,15 +312,27 @@ in
 
       traefik.dynamicConfigOptions.http = mkIf cfg.grafana.enable {
         routers.grafana = {
-          rule = "Host(`grafana.${cfg.grafana.domain}`)";
+          rule = "Host(`grafana.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
           service = "grafana";
           tls.certResolver = "letsencrypt";
         };
 
         services.grafana.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.grafana}"; } ];
+          servers = [ { url = "http://localhost:${toString cfg.grafana.port}"; } ];
         };
+      };
+    };
+
+    environment.etc."alloy/config.alloy" = mkIf cfg.alloy.enable {
+      source = ./config.alloy;
+    };
+
+    systemd.services.alloy = mkIf cfg.alloy.enable {
+      serviceConfig = {
+        User = "root";
+        Group = "root";
+        DynamicUser = mkForce false;
       };
     };
 

@@ -21,7 +21,12 @@ in
   dots = {
     server = enabled;
     services = {
-      prometheus = enabled;
+      monitoring = enabled // {
+        alloy = enabled;
+        grafana = enabled;
+        loki = enabled;
+        prometheus = enabled;
+      };
       ssh = disabled;
     };
   };
