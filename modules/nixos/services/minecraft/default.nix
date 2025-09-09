@@ -19,22 +19,54 @@ in
     difficulty = mkOpt types.str "NORMAL" "Minecraft server difficulty";
     memory = mkOpt types.str "16G" "Minecraft server memory";
     motd = mkOpt types.str "§l§cPixel Paradise§r" "Minecraft server MOTD";
+    port = mkOpt types.int ports.minecraft "Minecraft server port";
     seed = mkOpt types.str "-5584399987456711267" "Minecraft server seed";
     version = mkOpt types.str "1.21.8" "Minecraft server version";
+    proxy = {
+      enable = mkEnableOption "Enable traefik proxy for Minecraft";
+      domain = mkOpt types.str "ipx.ovh" "The domain name for the minecraft service";
+    };
   };
 
   config = mkIf cfg.enable {
     networking.firewall = {
       allowedTCPPorts = [
-        ports.minecraft
+        cfg.port
         ports.pl3xmap
       ];
-      allowedUDPPorts = [ ports.minecraft ];
+      allowedUDPPorts = [ cfg.port ];
     };
 
     sops.secrets.minecraft-env = {
       sopsFile = snowfall.fs.get-file "secrets/minecraft.env";
       format = "dotenv";
+    };
+
+    services.traefik.dynamicConfigOptions = mkIf cfg.proxy.enable {
+      http = {
+        routers.pl3xmap = {
+          rule = "Host(`map.${cfg.proxy.domain}`)";
+          entryPoints = [ "websecure" ];
+          service = "pl3xmap";
+        };
+        services.pl3xmap.loadBalancer = {
+          servers = [
+            { url = "http://localhost:${toString ports.pl3xmap}"; }
+          ];
+        };
+      };
+      tcp = {
+        routers.minecraft = {
+          rule = "HostSNI(`*`)";
+          entryPoints = [ "minecraft" ];
+          service = "minecraft";
+        };
+        services.minecraft.loadBalancer = {
+          servers = [
+            { url = "http://localhost:${toString cfg.port}"; }
+          ];
+        };
+      };
     };
 
     virtualisation.oci-containers.containers.minecraft-server = {
@@ -91,7 +123,7 @@ in
         '';
       };
       ports = [
-        "${toString ports.minecraft}:25565"
+        "${toString cfg.port}:25565"
         "${toString ports.pl3xmap}:8080"
       ];
       log-driver = "journald";

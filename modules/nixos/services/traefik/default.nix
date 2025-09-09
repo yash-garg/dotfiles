@@ -84,6 +84,7 @@ in
         };
 
         entryPoints = {
+          minecraft.address = ":25565";
           web = {
             address = ":80";
             transport.respondingTimeouts = {
