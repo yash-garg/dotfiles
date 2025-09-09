@@ -26,7 +26,10 @@
     plausible = 8181;
     pl3xmap = 81;
     prometheus = 9092;
-    qbittorrent = 3001;
+    qbittorrent = {
+      torrenting = 9300;
+      webui = 3001;
+    };
     radarr = 7878;
     readarr = 8787;
     sonarr = 8989;

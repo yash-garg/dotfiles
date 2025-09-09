@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   namespace,
   ...
 }:
@@ -33,10 +34,6 @@ in
         format = "dotenv";
         key = "sonarr_key";
       };
-    };
-
-    dots.services.qbittorrent = enabled // {
-      inherit (cfg) group;
     };
 
     services =
@@ -76,6 +73,36 @@ in
               static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.sonarr}" ]; } ];
             }
           ];
+        };
+
+        qbittorrent = enabled // {
+          inherit (cfg) user group;
+          openFirewall = true;
+          torrentingPort = ports.qbittorrent.torrenting;
+          webuiPort = ports.qbittorrent.webui;
+          serverConfig = {
+            BitTorrent.Session = {
+              AddTorrentStopped = true;
+              GlobalMaxInactiveSeedingMinutes = 60;
+              GlobalMaxRatio = -1;
+              GlobalMaxSeedingMinutes = 60;
+              GlobalUPSpeedLimit = 100;
+              ShareLimitAction = "Stop";
+            };
+            LegalNotice.Accepted = true;
+            Preferences = {
+              WebUI = {
+                AlternativeUIEnabled = true;
+                AuthSubnetWhitelist = "100.0.0.0/10, 127.0.0.0/8";
+                AuthSubnetWhitelistEnabled = true;
+                Password_PBKDF2 = "@ByteArray(vVAbbSGAmkemV9cSj95beg==:dcK684mnx6yHbTTOJ8yK0YjRSrARSNTPTy7AjOioIA+ixOU6IxVUUR5FHDmJQJO+nJElxCsV2X2WB96/rYqdmg==)";
+                RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
+                TrustedReverseProxiesList = "127.0.0.1";
+                Username = "yash";
+              };
+              General.Locale = "en";
+            };
+          };
         };
 
         radarr = defaults // {
