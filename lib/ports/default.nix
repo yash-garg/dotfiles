@@ -6,6 +6,7 @@
     alertmanager-ntfy = 9081;
     alloy = 12346;
     exporters = {
+      minecraft = 25585;
       node = 9100;
       systemd = 9101;
       postgres = 9102;

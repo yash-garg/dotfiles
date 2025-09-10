@@ -42,29 +42,38 @@ in
       format = "dotenv";
     };
 
-    services.traefik.dynamicConfigOptions = mkIf cfg.proxy.enable {
-      http = {
-        routers.pl3xmap = {
-          rule = "Host(`map.${cfg.proxy.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "pl3xmap";
+    services = {
+      prometheus.scrapeConfigs = [
+        {
+          job_name = "minecraft";
+          static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.minecraft}" ]; } ];
+        }
+      ];
+
+      traefik.dynamicConfigOptions = mkIf cfg.proxy.enable {
+        http = {
+          routers.pl3xmap = {
+            rule = "Host(`map.${cfg.proxy.domain}`)";
+            entryPoints = [ "websecure" ];
+            service = "pl3xmap";
+          };
+          services.pl3xmap.loadBalancer = {
+            servers = [
+              { url = "http://localhost:${toString ports.pl3xmap}"; }
+            ];
+          };
         };
-        services.pl3xmap.loadBalancer = {
-          servers = [
-            { url = "http://localhost:${toString ports.pl3xmap}"; }
-          ];
-        };
-      };
-      tcp = {
-        routers.minecraft = {
-          rule = "HostSNI(`*`)";
-          entryPoints = [ "minecraft" ];
-          service = "minecraft";
-        };
-        services.minecraft.loadBalancer = {
-          servers = [
-            { url = "http://localhost:${toString cfg.port}"; }
-          ];
+        tcp = {
+          routers.minecraft = {
+            rule = "HostSNI(`*`)";
+            entryPoints = [ "minecraft" ];
+            service = "minecraft";
+          };
+          services.minecraft.loadBalancer = {
+            servers = [
+              { url = "http://localhost:${toString cfg.port}"; }
+            ];
+          };
         };
       };
     };
@@ -100,12 +109,14 @@ in
           chunky
           disconnect-packet-fix
           fabric-api
+          fabricexporter
           ferrite-core
           leaves-us-in-peace
           lithium
           netherportalfix
           no-chat-reports
           pl3xmap
+          spark
           scaffolding-drops-nearby
           villager-death-messages
         '';
@@ -124,6 +135,7 @@ in
       };
       ports = [
         "${toString cfg.port}:25565"
+        "${toString ports.exporters.minecraft}:25585"
         "${toString ports.pl3xmap}:8080"
       ];
       log-driver = "journald";
