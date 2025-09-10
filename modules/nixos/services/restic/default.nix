@@ -84,6 +84,19 @@ in
         }
       );
 
+      immich =
+        let
+          immichCfg = config.${namespace}.services.immich;
+        in
+        mkIf immichCfg.enable (
+          defaults
+          // {
+            backupCleanupCommand = post-hook "immich";
+            paths = [ "${immichCfg.mediaLocation}" ];
+            repository = "s3:${r2_url}/immich-backup";
+          }
+        );
+
       minecraft =
         let
           mcCfg = config.${namespace}.services.minecraft-server;

@@ -6,6 +6,7 @@
     alertmanager-ntfy = 9081;
     alloy = 12346;
     exporters = {
+      immich = 2284;
       minecraft = 25585;
       node = 9100;
       systemd = 9101;
@@ -17,6 +18,7 @@
     forgejo = 9012;
     gatus = 3333;
     grafana = 9002;
+    immich = 8086;
     linkding = 9095;
     lldap = 17170;
     loki = 3100;
