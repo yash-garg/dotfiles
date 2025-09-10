@@ -89,6 +89,15 @@ in
               };
             }
             {
+              name = "Minecraft (Fabric)";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "minecraft-fabric-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/14492/revisions/4/download";
+                hash = "sha256-vdJGG9BZaTawR5b88qgWcjVI/LlrEycPiKrqeQB/V30=";
+              };
+            }
+            {
               name = "NVIDIA SMI Metrics";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {
