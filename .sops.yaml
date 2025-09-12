@@ -3,6 +3,7 @@ keys:
   - &astra age1mchyxdcsrxqly8esmfa8d3urgq99kae25e6kn606v6dt6r7z7v7q8ezly5
   - &aurora age1yq2ksala2xds5jd626yqqt84uyuzetmknpyyemn7nuvgv4jdmy3s95ewwa
   - &orion age1shggmz7tt4uc0jucrn42gnu5mtwd7rmumw70k4xw0xj7wmps3yxqarmy97
+  - &quasar age1406ysxk30mwkpdnts88qdengk9en0nw7l0sah2g97zldush5admqgtlgex
   - &vortex age1xp8ekv8t7fuqgm8uet6sr9a308pgj6wpry4jwcr904rz8s8vyffs424xph
   - &zenith age17qlc0x0mltj3l2dqwag3dtf5jxzvftvmfkl5a386y3fsxdh49pgqrdqd7z
 creation_rules:
@@ -13,4 +14,5 @@ creation_rules:
           - *aurora
           - *orion
           - *vortex
+          - *quasar
           - *zenith
