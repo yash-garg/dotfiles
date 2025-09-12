@@ -2,7 +2,7 @@
 with lib.${namespace};
 {
   profiles.${namespace} = {
-    neovim = enabled;
+    neovim = disabled;
     oh-my-posh = enabled;
   };
 
