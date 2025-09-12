@@ -58,14 +58,17 @@ in
     };
   };
 
-  users.users.yash = {
-    isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets.user-password.path;
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    ignoreShellProgramCheck = true;
+  users = {
+    mutableUsers = false;
+    users.yash = {
+      isNormalUser = true;
+      hashedPasswordFile = config.sops.secrets.user-password.path;
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
+      ignoreShellProgramCheck = true;
+    };
   };
 
   # Enable passwordless sudo.
