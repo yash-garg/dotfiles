@@ -20,6 +20,16 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  fileSystems."/mnt/unraid" = {
+    device = "shares";
+    fsType = "9p";
+    options = [
+      "trans=virtio"
+      "rw"
+      "cache=loose"
+    ];
+  };
+
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
