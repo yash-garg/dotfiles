@@ -43,6 +43,12 @@ in
       "/mnt/data" = defaultOpts // {
         device = "${unraid}:/mnt/user/data";
       };
+      "/mnt/media/samsung" = defaultOpts // {
+        device = "${unraid}:/mnt/disks/Samsung_External";
+      };
+      "/mnt/media/wd" = defaultOpts // {
+        device = "${unraid}:/mnt/disks/WD_External";
+      };
     };
 
   networking.useDHCP = lib.mkDefault true;
