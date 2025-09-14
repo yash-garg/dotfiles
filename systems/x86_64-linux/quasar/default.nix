@@ -8,7 +8,6 @@ with lib;
 with lib.${namespace};
 let
   hostName = "quasar";
-  unraidShare = "/mnt/unraid";
 in
 {
   imports = [
@@ -35,6 +34,14 @@ in
     server = enabled;
 
     services = {
+      arr-stack = enabled // {
+        mediaDirs = [
+          "/mnt/data/media"
+          "/mnt/media/samsung"
+          "/mnt/media/wd"
+        ];
+      };
+
       miniflux = enabled;
 
       paperless = enabled // {

@@ -13,29 +13,12 @@ in
 {
   options.${namespace}.services.arr-stack = {
     enable = mkEnableOption "Enable the full media automation stack";
+    mediaDirs = mkOpt (types.listOf types.str) [ ] "The media directories to use for the services";
     user = mkOpt types.str "media" "The user to run the services as";
     group = mkOpt types.str "media" "The group to run the services as";
   };
 
   config = mkIf cfg.enable {
-    sops.secrets = {
-      radarr-key = {
-        sopsFile = snowfall.fs.get-file "secrets/arr-stack.env";
-        format = "dotenv";
-        key = "radarr_key";
-      };
-      readarr-key = {
-        sopsFile = snowfall.fs.get-file "secrets/arr-stack.env";
-        format = "dotenv";
-        key = "readarr_key";
-      };
-      sonarr-key = {
-        sopsFile = snowfall.fs.get-file "secrets/arr-stack.env";
-        format = "dotenv";
-        key = "sonarr_key";
-      };
-    };
-
     services =
       let
         defaults = enabled // {
@@ -44,40 +27,8 @@ in
         };
       in
       {
-        prometheus = {
-          exporters = {
-            exportarr-radarr = disabled // {
-              port = ports.exporters.radarr;
-              apiKeyFile = config.sops.secrets.radarr-key.path;
-            };
-            exportarr-readarr = disabled // {
-              port = ports.exporters.readarr;
-              apiKeyFile = config.sops.secrets.readarr-key.path;
-            };
-            exportarr-sonarr = disabled // {
-              port = ports.exporters.sonarr;
-              apiKeyFile = config.sops.secrets.sonarr-key.path;
-            };
-          };
-          scrapeConfigs = [
-            {
-              job_name = "radarr_exporter";
-              static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.radarr}" ]; } ];
-            }
-            {
-              job_name = "readarr_exporter";
-              static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.readarr}" ]; } ];
-            }
-            {
-              job_name = "sonarr_exporter";
-              static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.sonarr}" ]; } ];
-            }
-          ];
-        };
-
-        qbittorrent = enabled // {
-          inherit (cfg) user group;
-          openFirewall = true;
+        qbittorrent = defaults // {
+          inherit (cfg) user;
           torrentingPort = ports.qbittorrent.torrenting;
           webuiPort = ports.qbittorrent.webui;
           serverConfig = {
@@ -105,12 +56,13 @@ in
           };
         };
 
-        radarr = defaults // {
-          settings.server.port = ports.radarr;
+        prowlarr = enabled // {
+          openFirewall = true;
+          settings.server.port = ports.prowlarr;
         };
 
-        readarr = defaults // {
-          settings.server.port = ports.readarr;
+        radarr = defaults // {
+          settings.server.port = ports.radarr;
         };
 
         sonarr = defaults // {
@@ -120,15 +72,11 @@ in
         jellyfin = defaults;
       };
 
-    systemd.tmpfiles.rules =
-      let
-        inherit (config.users.users.${cfg.user}) home;
-      in
-      [
-        "d ${home} 0775 ${cfg.user} ${cfg.group} -"
-        "d ${home}/downloads 0775 ${cfg.user} ${cfg.group} -"
-        "d ${home}/downloads/.incomplete 0775 ${cfg.user} ${cfg.group} -"
-      ];
+    systemd.tmpfiles.rules = lib.concatMap (dir: [
+      "d ${dir} 0775 ${cfg.user} ${cfg.group} -"
+      "d ${dir}/movies 0775 ${cfg.user} ${cfg.group} -"
+      "d ${dir}/tv 0775 ${cfg.user} ${cfg.group} -"
+    ]) cfg.mediaDirs;
 
     # Dedicated user for torrent/media automation
     users.users = mkIf (cfg.user == "media") {
@@ -139,9 +87,6 @@ in
           "wheel"
           "tty"
         ];
-        home = "/home/media";
-        homeMode = "0775";
-        createHome = true;
         description = "Media automation user";
       };
     };
@@ -152,7 +97,7 @@ in
         members = [
           "qbittorrent"
           "radarr"
-          "readarr"
+          "prowlarr"
           "sonarr"
           "jellyfin"
         ];
