@@ -46,15 +46,15 @@ in
       {
         prometheus = {
           exporters = {
-            exportarr-radarr = enabled // {
+            exportarr-radarr = disabled // {
               port = ports.exporters.radarr;
               apiKeyFile = config.sops.secrets.radarr-key.path;
             };
-            exportarr-readarr = enabled // {
+            exportarr-readarr = disabled // {
               port = ports.exporters.readarr;
               apiKeyFile = config.sops.secrets.readarr-key.path;
             };
-            exportarr-sonarr = enabled // {
+            exportarr-sonarr = disabled // {
               port = ports.exporters.sonarr;
               apiKeyFile = config.sops.secrets.sonarr-key.path;
             };
