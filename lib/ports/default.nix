@@ -19,6 +19,7 @@
     gatus = 3333;
     grafana = 9002;
     immich = 8086;
+    jellyfin = 8096;
     linkding = 9095;
     lldap = 17170;
     loki = 3100;

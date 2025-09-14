@@ -131,34 +131,31 @@ in
             cadvisor.url = "http://${nova}:8081";
             dns.url = "http://adguard.${tailnet}";
             home.url = "http://homeassistant.${tailnet}:8123";
-            image.url = "http://${nova}:3474";
             map.url = "http://${vortex}:81";
             paperless = {
-              url = "http://${quasar}:8010";
+              url = "http://${quasar}:${toString ports.paperless-ngx}";
               useAuth = false;
             };
             pdf = {
-              url = "http://${quasar}:8087";
+              url = "http://${quasar}:${toString ports.stirling-pdf}";
               useAuth = false;
             };
             photos = {
-              url = "http://${nova}:8086";
+              url = "http://${nova}:${toString ports.immich}";
               useAuth = false;
             };
             prometheus.url = "http://${nova}:9090";
-            prowlarr.url = "http://${nova}:9696";
-            qbit.url = "http://${nova}:8080";
-            read.url = "http://${nova}:5000";
-            readarr.url = "http://${nova}:8787";
+            prowlarr.url = "http://${quasar}:${toString ports.prowlarr}";
+            qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             restic.url = "http://${nova}:9898";
-            radarr.url = "http://${nova}:7878";
+            radarr.url = "http://${quasar}:${toString ports.radarr}";
             rss = {
-              url = "http://${quasar}:5600";
+              url = "http://${quasar}:${toString ports.miniflux}";
               useAuth = false;
             };
-            sonarr.url = "http://${nova}:8989";
+            sonarr.url = "http://${quasar}:${toString ports.sonarr}";
             stream = {
-              url = "http://${nova}:8096";
+              url = "http://${nova}:${toString ports.jellyfin}";
               useAuth = false;
               middlewares = [ "jellyfin-redirect" ];
             };
