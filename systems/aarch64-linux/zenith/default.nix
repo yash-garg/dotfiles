@@ -153,7 +153,7 @@ in
             restic.url = "http://${nova}:9898";
             radarr.url = "http://${nova}:7878";
             rss = {
-              url = "http://${nova}:5600";
+              url = "http://${quasar}:5600";
               useAuth = false;
             };
             sonarr.url = "http://${nova}:8989";

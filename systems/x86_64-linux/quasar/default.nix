@@ -34,6 +34,8 @@ in
     server = enabled;
 
     services = {
+      miniflux = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;

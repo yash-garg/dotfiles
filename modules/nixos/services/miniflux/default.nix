@@ -31,16 +31,17 @@ in
         config = {
           BASE_URL = "https://rss.${cfg.proxy.domain}/";
           HTTPS = 1;
-          LISTEN_ADDR = "localhost:${toString ports.miniflux}";
+          LISTEN_ADDR = "0.0.0.0:${toString ports.miniflux}";
           LOG_DATE_TIME = 1;
           LOG_FORMAT = "json";
+          METRICS_ALLOWED_NETWORKS = "0.0.0.0/0";
           METRICS_COLLECTOR = 1;
           DISABLE_LOCAL_AUTH = 1;
           OAUTH2_USER_CREATION = 1;
           OAUTH2_PROVIDER = "oidc";
+          OAUTH2_OIDC_PROVIDER_NAME = "Authelia";
           OAUTH2_REDIRECT_URL = "https://rss.${cfg.proxy.domain}/oauth2/oidc/callback";
           OAUTH2_OIDC_DISCOVERY_ENDPOINT = "https://auth.${cfg.proxy.domain}";
-          OAUTH2_OIDC_CLIENT_ID = "Authelia";
         };
       };
 
