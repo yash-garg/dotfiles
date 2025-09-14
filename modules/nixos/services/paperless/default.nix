@@ -43,6 +43,7 @@ in
         environmentFile = config.sops.secrets.paperless-env.path;
         port = ports.paperless-ngx;
         settings = {
+          PAPERLESS_FILENAME_FORMAT = "{{ created }}-{{ correspondent }}-{{ title }}";
           PAPERLESS_OCR_LANGUAGE = "eng";
           PAPERLESS_TIME_ZONE = "Asia/Kolkata";
           PAPERLESS_DISABLE_REGULAR_LOGIN = true;

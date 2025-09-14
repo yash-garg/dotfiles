@@ -3,6 +3,9 @@
   modulesPath,
   ...
 }:
+let
+  unraid = "10.0.0.253";
+in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -19,6 +22,18 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  fileSystems."/mnt/documents" = {
+    device = "${unraid}:/mnt/user/documents";
+    fsType = "nfs";
+    options = [
+      "rw"
+      "hard"
+      "intr"
+      "vers=4"
+      "proto=tcp"
+    ];
+  };
 
   fileSystems."/mnt/unraid" = {
     device = "shares";

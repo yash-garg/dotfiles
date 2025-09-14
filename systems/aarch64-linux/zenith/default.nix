@@ -134,7 +134,7 @@ in
             image.url = "http://${nova}:3474";
             map.url = "http://${vortex}:81";
             paperless = {
-              url = "http://${nova}:8010";
+              url = "http://${quasar}:8010";
               useAuth = false;
             };
             pdf = {

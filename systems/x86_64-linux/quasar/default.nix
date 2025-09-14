@@ -38,7 +38,7 @@ in
       miniflux = enabled;
 
       paperless = enabled // {
-        mediaDir = "${unraidShare}/user/documents/";
+        mediaDir = "/mnt/documents/";
       };
 
       ssh = enabled // {

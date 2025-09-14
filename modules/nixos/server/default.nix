@@ -25,6 +25,7 @@ in
     dots.virtualisation = enabled;
 
     users.users.yash.packages = with pkgs; [
+      nfs-utils
       nh
     ];
   };
