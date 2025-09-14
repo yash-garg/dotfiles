@@ -159,7 +159,7 @@
         },
         {
             "name": "Paperless",
-            "url": "http://nova.turtle-lake.ts.net:8010",
+            "url": "http://quasar.turtle-lake.ts.net:8010",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,
@@ -259,7 +259,7 @@
         },
         {
             "name": "qBittorrent",
-            "url": "http://quasar.turtle-lake.ts.net:8080",
+            "url": "http://quasar.turtle-lake.ts.net:3001",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,
