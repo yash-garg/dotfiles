@@ -44,6 +44,12 @@ in
 
       miniflux = enabled;
 
+      monitoring = enabled // {
+        alloy = enabled;
+        loki = enabled;
+        prometheus = enabled;
+      };
+
       paperless = enabled // {
         mediaDir = "/mnt/documents/";
       };
