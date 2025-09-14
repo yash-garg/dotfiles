@@ -114,37 +114,9 @@
             ]
         },
         {
-            "name": "Kavita",
-            "url": "http://nova.turtle-lake.ts.net:5000",
-            "ui": {
-                "hide-conditions": true,
-                "hide-hostname": true,
-                "hide-url": true
-            },
-            "interval": "10m",
-            "conditions": [
-                "[STATUS] == 200",
-                "[RESPONSE_TIME] < 1000"
-            ]
-        },
-        {
             "name": "Linkding",
             "group": "external",
             "url": "http://localhost:9095",
-            "ui": {
-                "hide-conditions": true,
-                "hide-hostname": true,
-                "hide-url": true
-            },
-            "interval": "10m",
-            "conditions": [
-                "[STATUS] == 200",
-                "[RESPONSE_TIME] < 1000"
-            ]
-        },
-        {
-            "name": "Mazanoke",
-            "url": "http://nova.turtle-lake.ts.net:3474",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,
@@ -245,20 +217,6 @@
         {
             "name": "Radarr",
             "url": "http://nova.turtle-lake.ts.net:7878",
-            "ui": {
-                "hide-conditions": true,
-                "hide-hostname": true,
-                "hide-url": true
-            },
-            "interval": "10m",
-            "conditions": [
-                "[STATUS] == 200",
-                "[RESPONSE_TIME] < 1000"
-            ]
-        },
-        {
-            "name": "Readarr",
-            "url": "http://nova.turtle-lake.ts.net:8787",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,
