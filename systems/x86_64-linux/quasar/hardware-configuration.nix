@@ -23,27 +23,27 @@ in
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/mnt/documents" = {
-    device = "${unraid}:/mnt/user/documents";
-    fsType = "nfs";
-    options = [
-      "rw"
-      "hard"
-      "intr"
-      "vers=4"
-      "proto=tcp"
-    ];
-  };
-
-  fileSystems."/mnt/unraid" = {
-    device = "shares";
-    fsType = "9p";
-    options = [
-      "trans=virtio"
-      "rw"
-      "cache=loose"
-    ];
-  };
+  fileSystems =
+    let
+      defaultOpts = {
+        fsType = "nfs";
+        options = [
+          "rw"
+          "hard"
+          "intr"
+          "vers=4"
+          "proto=tcp"
+        ];
+      };
+    in
+    {
+      "/mnt/documents" = defaultOpts // {
+        device = "${unraid}:/mnt/user/documents";
+      };
+      "/mnt/data" = defaultOpts // {
+        device = "${unraid}:/mnt/user/data";
+      };
+    };
 
   networking.useDHCP = lib.mkDefault true;
 
