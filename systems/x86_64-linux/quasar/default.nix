@@ -40,6 +40,8 @@ in
         permitRootLogin = true;
       };
 
+      stirling-pdf = enabled;
+
       tailscale = enabled // {
         authKeyFile = config.sops.secrets.server-tsauthkey.path;
         exitNode = true;

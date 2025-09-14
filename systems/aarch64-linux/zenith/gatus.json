@@ -287,7 +287,7 @@
         {
             "name": "Stirling PDF",
             "group": "external",
-            "url": "http://nova.turtle-lake.ts.net:8087",
+            "url": "http://quasar.turtle-lake.ts.net:8087",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,

@@ -124,6 +124,7 @@ in
           let
             inherit (config.${namespace}.services.tailscale) tailnet;
             nova = "nova.${tailnet}";
+            quasar = "quasar.${tailnet}";
             vortex = "vortex.${tailnet}";
           in
           {
@@ -137,7 +138,7 @@ in
               useAuth = false;
             };
             pdf = {
-              url = "http://${nova}:8087";
+              url = "http://${quasar}:8087";
               useAuth = false;
             };
             photos = {

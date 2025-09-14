@@ -36,5 +36,6 @@
     radarr = 7878;
     readarr = 8787;
     sonarr = 8989;
+    stirling-pdf = 8087;
   };
 }
