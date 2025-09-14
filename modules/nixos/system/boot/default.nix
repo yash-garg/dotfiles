@@ -13,7 +13,7 @@ in
 {
   options.${namespace}.system.boot = with types; {
     enable = mkBoolOpt false "Whether or not to enable booting";
-
+    timeout = mkOpt types.int 60 "Timeout for the bootloader";
     secure = {
       enable = mkBoolOpt false "Enable Secure Boot";
       pkiBundle = mkOption {
@@ -46,7 +46,7 @@ in
         };
 
         systemd-boot.enable = mkForce (!cfg.secure.enable);
-        timeout = mkDefault 60;
+        timeout = mkDefault cfg.timeout;
       };
     };
   };

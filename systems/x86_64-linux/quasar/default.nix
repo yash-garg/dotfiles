@@ -64,6 +64,7 @@ in
 
     system.boot = enabled // {
       secure = disabled;
+      timeout = 1;
     };
   };
 
