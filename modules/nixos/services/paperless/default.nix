@@ -12,10 +12,14 @@ in
 {
   options.${namespace}.services.paperless = {
     enable = mkEnableOption "Paperless: Document Management System";
+    dataDir = mkOpt types.str "/var/lib/paperless" "The data directory for paperless";
+    mediaDir = mkOpt types.str "/var/lib/paperless/storage" "The media directory for paperless";
     proxy = {
       enable = mkEnableOption "Enable traefik proxy for Paperless";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the paperless service";
     };
+    user = mkOpt types.str "paperless" "The user for paperless";
+    group = mkOpt types.str "paperless" "The group for paperless";
   };
 
   config = mkIf cfg.enable {
@@ -27,7 +31,14 @@ in
 
     services = {
       paperless = enabled // {
-        configureTika = true;
+        inherit (cfg)
+          dataDir
+          mediaDir
+          user
+          ;
+        address = "0.0.0.0";
+        configureTika = false;
+        consumptionDirIsPublic = true;
         database.createLocally = true;
         environmentFile = config.sops.secrets.paperless-env.path;
         port = ports.paperless-ngx;
@@ -54,5 +65,10 @@ in
         };
       };
     };
+
+    systemd.tmpfiles.rules = [
+      "d ${cfg.dataDir} 0775 ${cfg.user} ${cfg.group} -"
+      "d ${cfg.mediaDir} 0775 ${cfg.user} ${cfg.group} -"
+    ];
   };
 }

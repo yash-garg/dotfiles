@@ -8,6 +8,7 @@ with lib;
 with lib.${namespace};
 let
   hostName = "quasar";
+  unraidShare = "/mnt/unraid";
 in
 {
   imports = [
@@ -35,6 +36,10 @@ in
 
     services = {
       miniflux = enabled;
+
+      paperless = enabled // {
+        mediaDir = "${unraidShare}/user/documents/";
+      };
 
       ssh = enabled // {
         addRootKeys = true;
