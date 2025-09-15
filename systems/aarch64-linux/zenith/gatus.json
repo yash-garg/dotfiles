@@ -101,7 +101,7 @@
         },
         {
             "name": "Jellyfin",
-            "url": "http://nova.turtle-lake.ts.net:8096",
+            "url": "http://quasar.turtle-lake.ts.net:8096",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,

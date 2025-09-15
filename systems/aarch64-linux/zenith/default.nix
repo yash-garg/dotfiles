@@ -155,7 +155,7 @@ in
             };
             sonarr.url = "http://${quasar}:${toString ports.sonarr}";
             stream = {
-              url = "http://${nova}:${toString ports.jellyfin}";
+              url = "http://${quasar}:${toString ports.jellyfin}";
               useAuth = false;
               middlewares = [ "jellyfin-redirect" ];
             };
