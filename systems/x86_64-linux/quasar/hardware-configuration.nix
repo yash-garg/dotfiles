@@ -13,11 +13,12 @@ in
 
   boot.initrd.availableKernelModules = [
     "ata_piix"
-    "virtio_pci"
-    "uhci_hcd"
     "ehci_pci"
     "sr_mod"
+    "uhci_hcd"
+    "virtio_balloon"
     "virtio_blk"
+    "virtio_pci"
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
