@@ -14,6 +14,7 @@ in
   options.${namespace}.services.immich = {
     enable = mkEnableOption "Enable Immich: Photo Management System";
     domain = mkOpt types.str "ipx.ovh" "The domain name for the immich service";
+    mediaDir = mkOpt types.str "/var/lib/immich" "The directory for the immich media";
     port = mkOpt types.int ports.immich "Port for the immich service";
   };
 
@@ -58,6 +59,7 @@ in
         };
         openFirewall = true;
         machine-learning = enabled;
+        mediaLocation = cfg.mediaDir;
         redis = enabled;
         settings = {
           backup.database.enabled = false;

@@ -42,6 +42,10 @@ in
         ];
       };
 
+      immich = enabled // {
+        mediaDir = "/mnt/data/media/photos";
+      };
+
       miniflux = enabled;
 
       monitoring = enabled // {
