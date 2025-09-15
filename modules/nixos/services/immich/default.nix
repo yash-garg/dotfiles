@@ -45,7 +45,11 @@ in
         inherit (cfg) port;
         # GPU access for machine learning
         accelerationDevices = [ "/dev/dri/renderD128" ];
-        database = enabled;
+        database = enabled // {
+          createDB = true;
+          enableVectorChord = true;
+          enableVectors = true;
+        };
         environment = {
           IMMICH_API_METRICS_PORT = toString ports.exporters.immich;
           IMMICH_CONFIG_FILE = mkForce config.sops.templates."immich-config.json".path;
