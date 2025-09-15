@@ -61,7 +61,7 @@ in
         openFirewall = true;
         machine-learning = enabled // {
           environment = {
-            IMMICH_HOST = mkForce "0.0.0.0";
+            HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
           };
         };
         mediaLocation = cfg.mediaDir;
