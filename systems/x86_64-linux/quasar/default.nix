@@ -43,7 +43,7 @@ in
       };
 
       immich = enabled // {
-        mediaDir = "/mnt/data/media/photos";
+        mediaDir = "/mnt/data/photos";
       };
 
       miniflux = enabled;

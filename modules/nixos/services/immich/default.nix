@@ -54,15 +54,24 @@ in
         environment = {
           IMMICH_API_METRICS_PORT = toString ports.exporters.immich;
           IMMICH_CONFIG_FILE = mkForce config.sops.templates."immich-config.json".path;
+          IMMICH_HOST = mkForce "0.0.0.0";
           IMMICH_IGNORE_MOUNT_CHECK_ERRORS = "true";
           IMMICH_TELEMETRY_INCLUDE = "all";
         };
         openFirewall = true;
-        machine-learning = enabled;
+        machine-learning = enabled // {
+          environment = {
+            IMMICH_HOST = mkForce "0.0.0.0";
+          };
+        };
         mediaLocation = cfg.mediaDir;
         redis = enabled;
         settings = {
           backup.database.enabled = false;
+          job = {
+            faceDetection.concurrency = 10;
+            thumbnailGeneration.concurrency = 50;
+          };
           newVersionCheck.enabled = false;
           oauth = {
             autoLaunch = true;
@@ -101,6 +110,15 @@ in
         };
       };
     };
+
+    systemd.tmpfiles.rules =
+      let
+        user = config.services.immich.user;
+        group = config.services.immich.group;
+      in
+      [
+        "d ${cfg.mediaDir} 0775 ${user} ${group} -"
+      ];
 
     users.users.immich.extraGroups = [
       "video"
