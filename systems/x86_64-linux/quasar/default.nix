@@ -86,23 +86,6 @@ in
     };
   };
 
-  hardware =
-    let
-      driverPkg = config.boot.kernelPackages.nvidiaPackages.latest;
-    in
-    {
-      graphics = enabled // {
-        package = driverPkg;
-      };
-      nvidia = {
-        nvidiaPersistenced = true;
-        nvidiaSettings = false;
-        open = true;
-        package = driverPkg;
-      };
-    };
-  services.xserver.videoDrivers = [ "nvidia" ];
-
   # Enable passwordless sudo.
   security.sudo.extraRules = [
     {
@@ -115,26 +98,6 @@ in
       ];
     }
   ];
-
-  systemd.services.configure-gpu = {
-    description = "Configure GPU power settings";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${
-        pkgs.writeShellApplication {
-          name = "configure-gpu";
-          text = ''
-            # Enable persistence mode to keep the GPU initialized.
-            nvidia-smi --persistence-mode=1
-
-            # Limit power draw by default.
-            nvidia-smi --power-limit=200
-          '';
-        }
-      }/bin/configure-gpu";
-    };
-  };
 
   systemd.targets.multi-user.enable = true;
 

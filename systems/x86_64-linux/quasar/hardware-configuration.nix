@@ -1,9 +1,11 @@
 {
+  config,
   lib,
   modulesPath,
   ...
 }:
 let
+  driverPkg = config.boot.kernelPackages.nvidiaPackages.latest;
   unraid = "10.0.0.253";
 in
 {
@@ -51,6 +53,21 @@ in
         device = "${unraid}:/mnt/disks/WD_External";
       };
     };
+
+  hardware = {
+    graphics = {
+      enable = true;
+      package = driverPkg;
+    };
+    nvidia = {
+      nvidiaPersistenced = true;
+      nvidiaSettings = false;
+      open = true;
+      package = driverPkg;
+    };
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   networking.useDHCP = lib.mkDefault true;
 
