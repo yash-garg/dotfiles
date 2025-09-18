@@ -15,10 +15,12 @@ in
     enable = mkEnableOption "Enable Immich: Photo Management System";
     domain = mkOpt types.str "ipx.ovh" "The domain name for the immich service";
     mediaDir = mkOpt types.str "/var/lib/immich" "The directory for the immich media";
-    port = mkOpt types.int ports.immich "Port for the immich service";
+    port = mkOpt types.int ports.immich.webui "Port for the immich service";
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ ports.immich.machine-learning ];
+
     sops.secrets =
       let
         defaultAttrs = {
@@ -61,6 +63,8 @@ in
         openFirewall = true;
         machine-learning = enabled // {
           environment = {
+            IMMICH_HOST = mkForce "0.0.0.0";
+            IMMICH_PORT = toString ports.immich.machine-learning;
             HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
           };
         };
