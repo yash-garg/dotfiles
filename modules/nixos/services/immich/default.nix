@@ -117,8 +117,8 @@ in
 
     systemd.tmpfiles.rules =
       let
-        user = config.services.immich.user;
-        group = config.services.immich.group;
+        inherit (config.services.immich) user;
+        inherit (config.services.immich) group;
       in
       [
         "d ${cfg.mediaDir} 0775 ${user} ${group} -"

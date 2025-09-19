@@ -10,7 +10,6 @@ with lib.${namespace};
 let
   domain = "yashgarg.dev";
   homeDomain = "ipx.ovh";
-  hostName = "zenith";
 in
 {
   imports = [

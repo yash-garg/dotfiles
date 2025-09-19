@@ -42,7 +42,7 @@ in
       openFirewall = true;
 
       settings = mapAttrs (
-        name: value:
+        _name: value:
         {
           inherit (value) path comment;
 
