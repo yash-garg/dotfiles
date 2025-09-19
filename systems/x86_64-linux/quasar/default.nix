@@ -58,6 +58,8 @@ in
         mediaDir = "/mnt/documents/";
       };
 
+      postgres = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;
