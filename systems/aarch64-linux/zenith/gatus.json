@@ -173,7 +173,7 @@
         },
         {
             "name": "Prometheus",
-            "url": "http://nova.turtle-lake.ts.net:9090",
+            "url": "http://quasar.turtle-lake.ts.net:9092",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,

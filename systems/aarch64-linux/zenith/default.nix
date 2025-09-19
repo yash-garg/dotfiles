@@ -144,7 +144,7 @@ in
               url = "http://${nova}:${toString ports.immich.webui}";
               useAuth = false;
             };
-            prometheus.url = "http://${nova}:9090";
+            prometheus.url = "http://${quasar}:${toString ports.prometheus}";
             prowlarr.url = "http://${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             restic.url = "http://${nova}:9898";
