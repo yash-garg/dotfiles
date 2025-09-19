@@ -30,6 +30,10 @@ in
             name = "root";
             ensureClauses.superuser = true;
           }
+          {
+            name = "yash";
+            ensureClauses.superuser = true;
+          }
         ];
       };
 
