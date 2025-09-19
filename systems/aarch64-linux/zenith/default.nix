@@ -141,7 +141,7 @@ in
               useAuth = false;
             };
             photos = {
-              url = "http://${nova}:${toString ports.immich}";
+              url = "http://${nova}:${toString ports.immich.webui}";
               useAuth = false;
             };
             prometheus.url = "http://${nova}:9090";

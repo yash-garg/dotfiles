@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   namespace,
   ...
 }:
@@ -17,6 +18,8 @@ in
   config = mkIf cfg.enable {
     services = {
       postgresql = enabled // {
+        enableTCPIP = true;
+        package = pkgs.postgresql_17;
         authentication = mkOverride 10 ''
           local all  all                 trust
           host  all  all  127.0.0.1/32   trust
