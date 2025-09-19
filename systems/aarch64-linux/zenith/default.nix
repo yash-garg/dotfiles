@@ -140,7 +140,7 @@ in
               useAuth = false;
             };
             photos = {
-              url = "http://${nova}:${toString ports.immich.webui}";
+              url = "http://${quasar}:${toString ports.immich.webui}";
               useAuth = false;
             };
             prometheus.url = "http://${quasar}:${toString ports.prometheus}";

@@ -87,7 +87,7 @@
         },
         {
             "name": "Immich",
-            "url": "http://nova.turtle-lake.ts.net:8086",
+            "url": "http://quasar.turtle-lake.ts.net:8086",
             "ui": {
                 "hide-conditions": true,
                 "hide-hostname": true,
