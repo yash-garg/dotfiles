@@ -13,13 +13,14 @@ in
 {
   options.${namespace}.services.postgres = {
     enable = mkEnableOption "Enable postgresql service";
+    package = mkOpt types.package pkgs.postgresql_17 "The package to use for postgresql";
   };
 
   config = mkIf cfg.enable {
     services = {
       postgresql = enabled // {
+        inherit (cfg) package;
         enableTCPIP = true;
-        package = pkgs.postgresql_17;
         authentication = mkOverride 10 ''
           local all  all                 trust
           host  all  all  127.0.0.1/32   trust

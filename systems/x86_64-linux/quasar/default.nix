@@ -43,7 +43,7 @@ in
       };
 
       immich = enabled // {
-        mediaDir = "/mnt/data/photos";
+        mediaDir = "/mnt/data/media/photos";
       };
 
       miniflux = enabled;
@@ -58,7 +58,9 @@ in
         mediaDir = "/mnt/documents/";
       };
 
-      postgres = enabled;
+      postgres = enabled // {
+        package = pkgs.postgresql_16;
+      };
 
       ssh = enabled // {
         addRootKeys = true;
