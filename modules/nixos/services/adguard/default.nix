@@ -8,10 +8,15 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.adguard;
+  mkFilter = name: {
+    enabled = true;
+    url = "https://adguardteam.github.io/HostlistsRegistry/assets/${name}";
+  };
 in
 {
   options.${namespace}.services.adguard = {
     enable = mkEnableOption "Adguard Home Server";
+    port = mkOpt types.int ports.adguard "Port to listen on";
   };
 
   config = mkIf cfg.enable {
@@ -21,14 +26,45 @@ in
     };
 
     services.adguardhome = enabled // {
-      host = "127.0.0.1";
-      port = ports.adguard;
-      mutableSettings = true;
+      inherit (cfg) port;
+      host = "0.0.0.0";
       openFirewall = true;
       settings = {
-        http = {
-          address = "127.0.0.1:${toString ports.adguard}";
+        dns = {
+          bind_hosts = [ "0.0.0.0" ];
+          bootstrap_dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+            "2606:4700:4700::1111"
+            "2606:4700:4700::1001"
+          ];
+          upstream_dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+            "100.100.100.100"
+          ];
         };
+        filtering = {
+          filtering_enabled = true;
+          parental_enabled = false;
+          protection_enabled = true;
+          safe_search.enabled = false;
+          rewrites = [
+            {
+              domain = "*.orb.lab";
+              answer = "10.0.0.3";
+            }
+          ];
+        };
+        filters = map mkFilter [
+          "filter_1.txt" # AdGuard DNS filter
+          "filter_2.txt" # AdAway Default Blocklist
+          "filter_3.txt" # Peter Lowe's Blocklist
+          "filter_27.txt" # OISD Blocklist Big
+          "filter_33.txt" # Steven Black's List
+          "filter_59.txt" # AdGuard DNS Popup Hosts filter
+        ];
+        http.address = "0.0.0.0:${toString cfg.port}";
       };
     };
   };
