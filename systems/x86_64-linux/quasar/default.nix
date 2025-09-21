@@ -99,6 +99,16 @@ in
     };
   };
 
+  networking.interfaces.ens12 = {
+    useDHCP = true;
+    ipv4.addresses = [
+      {
+        address = "10.0.0.4";
+        prefixLength = 24;
+      }
+    ];
+  };
+
   # Enable passwordless sudo.
   security.sudo.extraRules = [
     {

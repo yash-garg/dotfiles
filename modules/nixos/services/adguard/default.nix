@@ -21,20 +21,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking = {
-      firewall = {
-        allowedTCPPorts = [ 53 ];
-        allowedUDPPorts = [ 53 ];
-      };
-      interfaces.ens12 = {
-        useDHCP = true;
-        ipv4.addresses = mkIf (cfg.host != "0.0.0.0") [
-          {
-            address = cfg.host;
-            prefixLength = 24;
-          }
-        ];
-      };
+    networking.firewall = {
+      allowedTCPPorts = [ 53 ];
+      allowedUDPPorts = [ 53 ];
     };
 
     services.adguardhome = enabled // {
