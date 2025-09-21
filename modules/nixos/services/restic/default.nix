@@ -22,6 +22,7 @@ let
     extraBackupArgs = [
       "--skip-if-unchanged"
       "--verbose"
+      "--json"
     ];
     progressFps = 0.1;
     pruneOpts = [
@@ -35,33 +36,24 @@ let
     };
   };
 
+  resticNotifyScript = pkgs.writeShellScript "restic-notify" ''
+    export PATH="${
+      lib.makeBinPath [
+        pkgs.bash
+        pkgs.coreutils
+        pkgs.curl
+        pkgs.systemd
+        pkgs.gnugrep
+        pkgs.gawk
+      ]
+    }:$PATH"
+
+    exec ${pkgs.bash}/bin/bash ${snowfall.fs.get-file "scripts/restic-notify"} "$@"
+  '';
+
   # Post-backup notification hook
   postHook = app: ''
-    if [ $EXIT_STATUS -ne 0 ]; then
-      ${pkgs.curl}/bin/curl -H "Content-Type: application/json" \
-        -X POST \
-        -d "{\"content\": \"❌ Backup **${app}** failed!\"}" \
-        "$DISCORD_WEBHOOK"
-
-      ${pkgs.curl}/bin/curl -H "Content-Type: text/plain" \
-        -H "X-Title: Backup ${app}" \
-        -H "X-Priority: 5" \
-        -H "X-Tags: x,warning,backup" \
-        -d "Backup ${app} failed!" \
-        "$NTFY_URL"
-    else
-      ${pkgs.curl}/bin/curl -H "Content-Type: application/json" \
-        -X POST \
-        -d "{\"content\": \"✅ Backup **${app}** successful!\"}" \
-        "$DISCORD_WEBHOOK"
-
-      ${pkgs.curl}/bin/curl -H "Content-Type: text/plain" \
-        -H "X-Title: Backup ${app}" \
-        -H "X-Priority: 3" \
-        -H "X-Tags: white_check_mark,backup" \
-        -d "Backup ${app} successful!" \
-        "$NTFY_URL"
-    fi
+    ${resticNotifyScript} "${app}" "$EXIT_STATUS"
   '';
 
   # Helper function to create backup configurations

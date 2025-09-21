@@ -112,7 +112,7 @@ in
       ];
 
       restic.backups.immich = mkIf (cfg.backup.enable && srv.restic.enable) (
-        srv.restic.mkBackup "photos" {
+        srv.restic.mkBackup "immich" {
           environmentFile = config.sops.secrets.immich-restic.path;
           exclude = [ "${cfg.mediaDir}/encoded-video" ];
           paths = [ cfg.mediaDir ];

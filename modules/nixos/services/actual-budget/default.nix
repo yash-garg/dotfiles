@@ -45,7 +45,7 @@ in
       };
 
       restic.backups.actual-budget = mkIf (cfg.backup.enable && srv.restic.enable) (
-        srv.restic.mkBackup "budget" {
+        srv.restic.mkBackup "actual-budget" {
           paths = [
             config.services.actual.settings.serverFiles
             config.services.actual.settings.userFiles
