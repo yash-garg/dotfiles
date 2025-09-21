@@ -63,6 +63,7 @@ in
 
       restic.backups.paperless-ngx = mkIf (cfg.backup.enable && srv.restic.enable) (
         srv.restic.mkBackup "paperless-ngx" {
+          environmentFile = config.sops.secrets.paperless-env.path;
           paths = [ cfg.mediaDir ];
           repository = "s3:${cfg.backup.url}/paperless-ngx";
           timerConfig.OnCalendar = "weekly";
