@@ -7,20 +7,18 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.actual-budget;
+  srv = config.${namespace}.services;
+  cfg = srv.actual-budget;
 in
 {
   options.${namespace}.services.actual-budget = {
     enable = mkEnableOption "Actual Budget Service";
-
-    domain = mkOption {
-      type = types.str;
-      default = "ipx.ovh";
-    };
-
-    host = mkOption {
-      type = types.str;
-      default = "zenith";
+    domain = mkOpt types.str "ipx.ovh" "The domain name for the actual budget service";
+    backup = {
+      enable = mkEnableOption "Enable restic backup for Actual Budget";
+      url =
+        mkOpt types.str "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com"
+          "Restic repository URL";
     };
   };
 
@@ -45,6 +43,16 @@ in
           };
         };
       };
+
+      restic.backups.actual-budget = mkIf (cfg.backup.enable && srv.restic.enable) (
+        srv.restic.mkBackup "budget" {
+          paths = [
+            config.services.actual.settings.serverFiles
+            config.services.actual.settings.userFiles
+          ];
+          repository = "s3:${cfg.backup.url}/actual-budget";
+        }
+      );
 
       traefik.dynamicConfigOptions.http = {
         routers.actual = {

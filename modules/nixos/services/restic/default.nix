@@ -10,7 +10,9 @@ with lib.${namespace};
 let
   srv = config.${namespace}.services;
   cfg = srv.restic;
-  defaults = {
+
+  # Common backup defaults
+  backupDefaults = {
     initialize = true;
     environmentFile = config.sops.secrets.restic-env.path;
     exclude = [
@@ -21,6 +23,7 @@ let
       "--skip-if-unchanged"
       "--verbose"
     ];
+    progressFps = 0.1;
     pruneOpts = [
       "--keep-daily 2"
       "--keep-weekly 1"
@@ -31,7 +34,9 @@ let
       Persistent = true;
     };
   };
-  post-hook = app: ''
+
+  # Post-backup notification hook
+  postHook = app: ''
     if [ $EXIT_STATUS -ne 0 ]; then
       ${pkgs.curl}/bin/curl -H "Content-Type: application/json" \
         -X POST \
@@ -58,13 +63,35 @@ let
         "$NTFY_URL"
     fi
   '';
+
+  # Helper function to create backup configurations
+  mkBackup =
+    name: overrides:
+    backupDefaults
+    // overrides
+    // {
+      backupCleanupCommand = postHook name;
+    };
 in
 {
   options.${namespace}.services.restic = {
     enable = mkEnableOption "Enable restic backup";
-    repoUrl =
-      mkOpt types.str "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com"
-        "The URL of the R2 bucket";
+
+    # Helper function exposed to other modules
+    mkBackup = mkOption {
+      type = types.functionTo (types.functionTo types.attrs);
+      default = mkBackup;
+      description = "Helper function to create restic backup configurations";
+      readOnly = true;
+    };
+
+    # Common backup defaults exposed to other modules
+    defaults = mkOption {
+      type = types.attrs;
+      default = backupDefaults;
+      description = "Common backup defaults";
+      readOnly = true;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -73,73 +100,7 @@ in
       format = "dotenv";
     };
 
-    services.restic.backups = {
-      actual-budget =
-        let
-          actualCfg = config.services.actual;
-        in
-        mkIf actualCfg.enable (
-          defaults
-          // {
-            backupCleanupCommand = post-hook "budget";
-            paths = [
-              actualCfg.settings.serverFiles
-              actualCfg.settings.userFiles
-            ];
-            repository = "s3:${cfg.repoUrl}/actual-budget";
-          }
-        );
-
-      immich =
-        let
-          immichCfg = srv.immich;
-        in
-        mkIf immichCfg.enable (
-          defaults
-          // {
-            backupCleanupCommand = post-hook "photos";
-            paths = [ immichCfg.mediaDir ];
-            repository = "s3:${cfg.repoUrl}/immich-backup";
-            timerConfig.OnCalendar = "weekly";
-          }
-        );
-
-      minecraft =
-        let
-          mcCfg = srv.minecraft-server;
-        in
-        mkIf mcCfg.enable (
-          defaults
-          // {
-            backupCleanupCommand = post-hook "minecraft";
-            paths = [ mcCfg.dataDir ];
-            repository = "s3:${cfg.repoUrl}/minecraft";
-            timerConfig.OnCalendar = "weekly";
-          }
-        );
-
-      paperless-ngx =
-        let
-          paperlessCfg = srv.paperless;
-        in
-        mkIf paperlessCfg.enable (
-          defaults
-          // {
-            backupCleanupCommand = post-hook "documents";
-            paths = [ paperlessCfg.mediaDir ];
-            repository = "s3:a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com/paperless-ngx";
-            timerConfig.OnCalendar = "weekly";
-          }
-        );
-
-      postgresql = mkIf config.services.postgresql.enable (
-        defaults
-        // {
-          backupCleanupCommand = post-hook "postgresql";
-          paths = [ "${config.services.postgresqlBackup.location}/all.sql" ];
-          repository = "s3:${cfg.repoUrl}/postgresql";
-        }
-      );
-    };
+    # Individual service modules will now define their own backups
+    # using the exposed mkBackup helper function
   };
 }

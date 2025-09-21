@@ -44,6 +44,7 @@ in
       };
 
       immich = enabled // {
+        backup = enabled;
         mediaDir = "/mnt/data/media/photos";
       };
 
@@ -56,6 +57,7 @@ in
       };
 
       paperless = enabled // {
+        backup = enabled;
         mediaDir = "/mnt/documents/";
       };
 

@@ -11,7 +11,7 @@ let
 in
 {
   options.${namespace}.virtualisation = with types; {
-    enable = mkBoolOpt false "Whether or not to enable virtualisation support";
+    enable = mkEnableOption "Virtualisation support";
   };
 
   config = mkIf cfg.enable {

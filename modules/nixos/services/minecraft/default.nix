@@ -7,7 +7,8 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.minecraft-server;
+  srv = config.${namespace}.services;
+  cfg = srv.minecraft-server;
 in
 {
   options.${namespace}.services.minecraft-server = {
@@ -25,6 +26,12 @@ in
     proxy = {
       enable = mkEnableOption "Enable traefik proxy for Minecraft";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the minecraft service";
+    };
+    backup = {
+      enable = mkEnableOption "Enable restic backup for Minecraft";
+      url =
+        mkOpt types.str "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com"
+          "Restic repository URL";
     };
   };
 
@@ -49,6 +56,14 @@ in
           static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.minecraft}" ]; } ];
         }
       ];
+
+      restic.backups.minecraft = mkIf (cfg.backup.enable && srv.restic.enable) (
+        srv.restic.mkBackup "minecraft" {
+          paths = [ cfg.dataDir ];
+          repository = "s3:${cfg.backup.url}/minecraft";
+          timerConfig.OnCalendar = "weekly";
+        }
+      );
 
       traefik.dynamicConfigOptions = mkIf cfg.proxy.enable {
         http = {

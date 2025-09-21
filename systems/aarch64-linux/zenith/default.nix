@@ -58,6 +58,7 @@ in
 
     services = {
       actual-budget = enabled // {
+        backup = enabled;
         domain = homeDomain;
       };
 
@@ -90,7 +91,9 @@ in
         secretKeybaseFile = config.sops.secrets.plausible-secret.path;
       };
 
-      postgres = enabled;
+      postgres = enabled // {
+        backup = enabled;
+      };
 
       restic = enabled;
 

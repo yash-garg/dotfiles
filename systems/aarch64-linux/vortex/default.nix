@@ -51,7 +51,9 @@ in
     server = enabled;
 
     services = {
-      minecraft-server = enabled;
+      minecraft-server = enabled // {
+        backup = enabled;
+      };
 
       monitoring = enabled // {
         alloy = enabled;

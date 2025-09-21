@@ -8,7 +8,8 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.immich;
+  srv = config.${namespace}.services;
+  cfg = srv.immich;
 in
 {
   options.${namespace}.services.immich = {
@@ -16,6 +17,10 @@ in
     domain = mkOpt types.str "ipx.ovh" "The domain name for the immich service";
     mediaDir = mkOpt types.str "/var/lib/immich" "The directory for the immich media";
     port = mkOpt types.int ports.immich.webui "Port for the immich service";
+    backup = {
+      enable = mkEnableOption "Enable restic backup for Immich";
+      url = mkOpt types.str "s3.eu-central-003.backblazeb2.com" "Restic repository URL";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -35,6 +40,10 @@ in
 
         immich-client-secret = defaultAttrs // {
           key = "client_secret";
+        };
+
+        immich-restic = defaultAttrs // {
+          key = "restic";
         };
       };
 
@@ -101,6 +110,16 @@ in
           static_configs = [ { targets = [ "127.0.0.1:${toString ports.exporters.immich}" ]; } ];
         }
       ];
+
+      restic.backups.immich = mkIf (cfg.backup.enable && srv.restic.enable) (
+        srv.restic.mkBackup "photos" {
+          environmentFile = config.sops.secrets.immich-restic.path;
+          exclude = [ "${cfg.mediaDir}/encoded-video" ];
+          paths = [ cfg.mediaDir ];
+          repository = "s3:${cfg.backup.url}/immich-backup-nova";
+          timerConfig.OnCalendar = "weekly";
+        }
+      );
 
       traefik.dynamicConfigOptions.http = {
         routers.immich = {

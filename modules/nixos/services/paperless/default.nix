@@ -7,7 +7,8 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.paperless;
+  srv = config.${namespace}.services;
+  cfg = srv.paperless;
 in
 {
   options.${namespace}.services.paperless = {
@@ -20,6 +21,12 @@ in
     };
     user = mkOpt types.str "paperless" "The user for paperless";
     group = mkOpt types.str "paperless" "The group for paperless";
+    backup = {
+      enable = mkEnableOption "Enable restic backup for Paperless";
+      url =
+        mkOpt types.str "a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com"
+          "Restic repository URL";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -53,6 +60,14 @@ in
           PAPERLESS_WEBHOOKS_ALLOWED_SCHEMES = "https";
         };
       };
+
+      restic.backups.paperless-ngx = mkIf (cfg.backup.enable && srv.restic.enable) (
+        srv.restic.mkBackup "documents" {
+          paths = [ cfg.mediaDir ];
+          repository = "s3:${cfg.backup.url}/paperless-ngx";
+          timerConfig.OnCalendar = "weekly";
+        }
+      );
 
       traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
         routers.paperless = {
