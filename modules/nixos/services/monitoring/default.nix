@@ -350,5 +350,13 @@ in
     systemd.services.grafana.serviceConfig = mkIf cfg.grafana.enable {
       EnvironmentFile = [ config.sops.secrets.grafana-env.path ];
     };
+
+    systemd.services.prometheus = mkIf config.${namespace}.services.chrony.enable {
+      after = [
+        "network.target"
+        "chronyd.service"
+      ];
+      requires = [ "chronyd.service" ];
+    };
   };
 }
