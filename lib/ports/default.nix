@@ -9,6 +9,7 @@
       immich = 2284;
       minecraft = 25585;
       node = 9100;
+      nvidia = 9106;
       systemd = 9101;
       postgres = 9102;
       radarr = 9103;

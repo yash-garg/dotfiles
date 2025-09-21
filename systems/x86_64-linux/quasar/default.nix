@@ -61,6 +61,8 @@ in
         prometheus = enabled;
       };
 
+      nvidia-exporter = enabled;
+
       paperless = enabled // {
         backup = enabled;
         mediaDir = "/mnt/documents/";
