@@ -35,6 +35,11 @@ in
     server = enabled;
 
     services = {
+      adguard = enabled // {
+        host = "10.0.0.4";
+        port = 80;
+      };
+
       arr-stack = enabled // {
         mediaDirs = [
           "/mnt/data/media"

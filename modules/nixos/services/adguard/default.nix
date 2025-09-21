@@ -16,7 +16,7 @@ in
 {
   options.${namespace}.services.adguard = {
     enable = mkEnableOption "Adguard Home Server";
-    host = mkOpt types.str "10.0.0.4" "IP to listen on";
+    host = mkOpt types.str "0.0.0.0" "IP to listen on";
     port = mkOpt types.int ports.adguard "Port to listen on";
   };
 
@@ -26,12 +26,15 @@ in
         allowedTCPPorts = [ 53 ];
         allowedUDPPorts = [ 53 ];
       };
-      interfaces.br0.ipv4.addresses = [
-        {
-          address = cfg.host;
-          prefixLength = 24;
-        }
-      ];
+      interfaces.ens12 = {
+        useDHCP = true;
+        ipv4.addresses = mkIf (cfg.host != "0.0.0.0") [
+          {
+            address = cfg.host;
+            prefixLength = 24;
+          }
+        ];
+      };
     };
 
     services.adguardhome = enabled // {
@@ -42,12 +45,14 @@ in
           bind_hosts = [ cfg.host ];
           enable_dnssec = true;
           bootstrap_dns = [
-            "https://dns.adguard-dns.com/dns-query"
-            "https://dns.cloudflare.com/dns-query"
-          ];
-          fallback_dns = [
             "1.1.1.1"
             "1.0.0.1"
+            "2606:4700:4700::1111"
+            "2606:4700:4700::1001"
+          ];
+          fallback_dns = [
+            "8.8.8.8"
+            "8.8.4.4"
           ];
           upstream_dns = [
             "1.1.1.1"
