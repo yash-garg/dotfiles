@@ -8,9 +8,8 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.restic;
-  srv = config.services;
-  r2_url = "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com";
+  srv = config.${namespace}.services;
+  cfg = srv.restic;
   defaults = {
     initialize = true;
     environmentFile = config.sops.secrets.restic-env.path;
@@ -63,6 +62,9 @@ in
 {
   options.${namespace}.services.restic = {
     enable = mkEnableOption "Enable restic backup";
+    repoUrl =
+      mkOpt types.str "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com"
+        "The URL of the R2 bucket";
   };
 
   config = mkIf cfg.enable {
@@ -72,51 +74,69 @@ in
     };
 
     services.restic.backups = {
-      actual-budget = mkIf srv.actual.enable (
-        defaults
-        // {
-          backupCleanupCommand = post-hook "actual-budget";
-          paths = [
-            srv.actual.settings.serverFiles
-            srv.actual.settings.userFiles
-          ];
-          repository = "s3:${r2_url}/actual-budget";
-        }
-      );
+      actual-budget =
+        let
+          actualCfg = config.services.actual;
+        in
+        mkIf actualCfg.enable (
+          defaults
+          // {
+            backupCleanupCommand = post-hook "actual-budget";
+            paths = [
+              actualCfg.settings.serverFiles
+              actualCfg.settings.userFiles
+            ];
+            repository = "s3:${cfg.repoUrl}/actual-budget";
+          }
+        );
 
       immich =
         let
-          immichCfg = config.${namespace}.services.immich;
+          immichCfg = srv.immich;
         in
         mkIf immichCfg.enable (
           defaults
           // {
             backupCleanupCommand = post-hook "immich";
-            paths = [ "${immichCfg.mediaLocation}" ];
-            repository = "s3:${r2_url}/immich-backup";
+            paths = [ immichCfg.mediaDir ];
+            repository = "s3:${cfg.repoUrl}/immich-backup";
           }
         );
 
       minecraft =
         let
-          mcCfg = config.${namespace}.services.minecraft-server;
+          mcCfg = srv.minecraft-server;
         in
         mkIf mcCfg.enable (
           defaults
           // {
             backupCleanupCommand = post-hook "minecraft";
             paths = [ mcCfg.dataDir ];
-            repository = "s3:${r2_url}/minecraft";
+            repository = "s3:${cfg.repoUrl}/minecraft";
             timerConfig.OnCalendar = "weekly";
           }
         );
 
-      postgresql = mkIf srv.postgresql.enable (
+      paperless-ngx =
+        let
+          paperlessCfg = srv.paperless;
+        in
+        mkIf paperlessCfg.enable (
+          defaults
+          // {
+            backupCleanupCommand = post-hook "documents";
+            paths = [ paperlessCfg.mediaDir ];
+            repository = "s3:a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com/paperless-ngx";
+            timerConfig.OnCalendar = "weekly";
+          }
+        );
+
+      postgresql = mkIf config.services.postgresql.enable (
         defaults
         // {
           backupCleanupCommand = post-hook "postgresql";
-          paths = [ "${srv.postgresqlBackup.location}/all.sql" ];
-          repository = "s3:${r2_url}/postgresql";
+          paths = [ "${config.services.postgresqlBackup.location}/all.sql" ];
+          repository = "s3:${cfg.repoUrl}/postgresql";
         }
       );
     };

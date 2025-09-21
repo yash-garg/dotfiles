@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   namespace,
   ...
 }:
@@ -61,6 +62,8 @@ in
       postgres = enabled // {
         package = pkgs.postgresql_16;
       };
+
+      restic = enabled;
 
       ssh = enabled // {
         addRootKeys = true;
