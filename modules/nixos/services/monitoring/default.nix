@@ -62,15 +62,6 @@ in
         provision = enabled // {
           dashboards.settings.providers = [
             {
-              name = "Cadvisor Exporter";
-              allowUiUpdates = true;
-              options.path = pkgs.fetchurl {
-                name = "cadvisor-exporter-1-grafana-dashboard.json";
-                url = "https://grafana.com/api/dashboards/14282/revisions/1/download";
-                hash = "sha256-dqhaC4r4rXHCJpASt5y3EZXW00g5fhkQM+MgNcgX1c0=";
-              };
-            }
-            {
               name = "Node Exporter Full";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {
@@ -131,6 +122,10 @@ in
                 name = "Prometheus (Unraid)";
                 orgId = 1;
               }
+              {
+                name = "Prometheus (nova)";
+                orgId = 1;
+              }
             ];
             datasources = [
               {
@@ -146,10 +141,16 @@ in
                 url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
               })
               {
-                name = "Prometheus (nova)";
+                name = "Prometheus (quasar)";
                 type = "prometheus";
                 access = "proxy";
-                url = "http://100.78.157.31:9090";
+                url = "http://100.93.8.41:${toString config.services.prometheus.port}";
+              }
+              {
+                name = "Loki (quasar)";
+                type = "loki";
+                access = "proxy";
+                url = "http://100.93.8.41:${toString config.services.loki.configuration.server.http_listen_port}";
               }
               {
                 name = "Prometheus (vortex)";
