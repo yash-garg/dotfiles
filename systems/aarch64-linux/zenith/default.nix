@@ -81,7 +81,22 @@ in
       monitoring = enabled // {
         domain = homeDomain;
         alloy = enabled;
-        grafana = enabled;
+        grafana = enabled // {
+          remoteDatasources = [
+            {
+              name = "quasar";
+              ip = "100.93.8.41";
+              prometheus = true;
+              loki = true;
+            }
+            {
+              name = "vortex";
+              ip = "100.65.244.114";
+              prometheus = true;
+              loki = true;
+            }
+          ];
+        };
         loki = enabled;
         prometheus = enabled;
       };

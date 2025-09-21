@@ -21,6 +21,16 @@ in
     grafana = {
       enable = mkEnableOption "Enable grafana";
       port = mkOpt types.int ports.grafana "Port for the grafana server";
+      remoteDatasources = mkOpt (types.listOf (
+        types.submodule {
+          options = {
+            name = mkOpt types.str "Unraid" "Name of the remote host";
+            ip = mkOpt types.str "" "IP address of the remote host";
+            prometheus = mkBoolOpt true "Enable Prometheus datasource for this host";
+            loki = mkBoolOpt true "Enable Loki datasource for this host";
+          };
+        }
+      )) [ ] "List of remote datasources to configure";
     };
     loki = {
       enable = mkEnableOption "Enable loki";
@@ -116,56 +126,41 @@ in
               };
             }
           ];
-          datasources.settings = {
-            deleteDatasources = [
-              {
-                name = "Prometheus (Unraid)";
-                orgId = 1;
-              }
-              {
-                name = "Prometheus (nova)";
-                orgId = 1;
-              }
-            ];
-            datasources = [
-              {
-                name = "Prometheus (${config.networking.hostName})";
-                type = "prometheus";
-                access = "proxy";
-                url = "http://127.0.0.1:${toString config.services.prometheus.port}";
-              }
-              (mkIf cfg.loki.enable {
+          datasources.settings.datasources =
+            let
+              localDatasources = [
+                {
+                  name = "Prometheus (${config.networking.hostName})";
+                  type = "prometheus";
+                  access = "proxy";
+                  url = "http://127.0.0.1:${toString config.services.prometheus.port}";
+                }
+              ]
+              ++ (optional cfg.loki.enable {
                 name = "Loki (${config.networking.hostName})";
                 type = "loki";
                 access = "proxy";
                 url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
-              })
-              {
-                name = "Prometheus (quasar)";
-                type = "prometheus";
-                access = "proxy";
-                url = "http://100.93.8.41:${toString config.services.prometheus.port}";
-              }
-              {
-                name = "Loki (quasar)";
-                type = "loki";
-                access = "proxy";
-                url = "http://100.93.8.41:${toString config.services.loki.configuration.server.http_listen_port}";
-              }
-              {
-                name = "Prometheus (vortex)";
-                type = "prometheus";
-                access = "proxy";
-                url = "http://100.65.244.114:${toString config.services.prometheus.port}";
-              }
-              {
-                name = "Loki (vortex)";
-                type = "loki";
-                access = "proxy";
-                url = "http://100.65.244.114:${toString config.services.loki.configuration.server.http_listen_port}";
-              }
-            ];
-          };
+              });
+              remoteDatasources = flatten (
+                map (
+                  remote:
+                  (optional remote.prometheus {
+                    name = "Prometheus (${remote.name})";
+                    type = "prometheus";
+                    access = "proxy";
+                    url = "http://${remote.ip}:${toString config.services.prometheus.port}";
+                  })
+                  ++ (optional remote.loki {
+                    name = "Loki (${remote.name})";
+                    type = "loki";
+                    access = "proxy";
+                    url = "http://${remote.ip}:${toString config.services.loki.configuration.server.http_listen_port}";
+                  })
+                ) cfg.grafana.remoteDatasources
+              );
+            in
+            localDatasources ++ remoteDatasources;
         };
         settings =
           let
