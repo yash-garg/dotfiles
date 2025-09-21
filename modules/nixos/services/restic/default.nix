@@ -81,7 +81,7 @@ in
         mkIf actualCfg.enable (
           defaults
           // {
-            backupCleanupCommand = post-hook "actual-budget";
+            backupCleanupCommand = post-hook "budget";
             paths = [
               actualCfg.settings.serverFiles
               actualCfg.settings.userFiles
@@ -97,9 +97,10 @@ in
         mkIf immichCfg.enable (
           defaults
           // {
-            backupCleanupCommand = post-hook "immich";
+            backupCleanupCommand = post-hook "photos";
             paths = [ immichCfg.mediaDir ];
             repository = "s3:${cfg.repoUrl}/immich-backup";
+            timerConfig.OnCalendar = "weekly";
           }
         );
 
