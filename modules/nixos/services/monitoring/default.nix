@@ -89,12 +89,12 @@ in
               };
             }
             {
-              name = "NVIDIA SMI Metrics";
+              name = "NVIDIA GPU Metrics";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {
-                name = "nvidia-smi-metrics-1-grafana-dashboard.json";
-                url = "https://grafana.com/api/dashboards/12357/revisions/1/download";
-                hash = "sha256-zOnzgrhKVecZ2OJpOWKrPUoI6f6G6V9wRowu09svKLw=";
+                name = "nvidia-gpu-metrics-1-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/14574/revisions/11/download";
+                hash = "sha256-0qQ+nVYZ9skOsGhpIFbTtxSkYxe7yRv6WF/56/lbgpw=";
               };
             }
             {
