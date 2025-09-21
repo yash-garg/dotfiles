@@ -16,22 +16,30 @@ in
 {
   options.${namespace}.services.adguard = {
     enable = mkEnableOption "Adguard Home Server";
+    host = mkOpt types.str "10.0.0.4" "IP to listen on";
     port = mkOpt types.int ports.adguard "Port to listen on";
   };
 
   config = mkIf cfg.enable {
-    networking.firewall = {
-      allowedTCPPorts = [ 53 ];
-      allowedUDPPorts = [ 53 ];
+    networking = {
+      firewall = {
+        allowedTCPPorts = [ 53 ];
+        allowedUDPPorts = [ 53 ];
+      };
+      interfaces.br0.ipv4.addresses = [
+        {
+          address = cfg.host;
+          prefixLength = 24;
+        }
+      ];
     };
 
     services.adguardhome = enabled // {
-      inherit (cfg) port;
-      host = "0.0.0.0";
+      inherit (cfg) port host;
       openFirewall = true;
       settings = {
         dns = {
-          bind_hosts = [ "0.0.0.0" ];
+          bind_hosts = [ cfg.host ];
           enable_dnssec = true;
           bootstrap_dns = [
             "https://dns.adguard-dns.com/dns-query"
