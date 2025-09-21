@@ -1,4 +1,6 @@
 _: {
-  time.hardwareClockInLocalTime = true;
-  time.timeZone = "Asia/Kolkata";
+  time = {
+    hardwareClockInLocalTime = false;
+    timeZone = "Asia/Kolkata";
+  };
 }
