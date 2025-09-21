@@ -22,7 +22,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    dots.virtualisation = enabled;
+    dots = {
+      services = {
+        chrony = enabled;
+      };
+
+      virtualisation = enabled;
+    };
 
     users.users.yash.packages = with pkgs; [
       nfs-utils
