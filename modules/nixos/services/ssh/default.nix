@@ -35,7 +35,7 @@ in
       inherit (cfg) package;
       settings = {
         X11Forwarding = mkDefault true;
-        PermitRootLogin = mkDefault (bool-to-yes-no cfg.permitRootLogin);
+        PermitRootLogin = mkForce (bool-to-yes-no cfg.permitRootLogin);
         PasswordAuthentication = mkDefault cfg.passwordAuth;
       };
       openFirewall = true;
