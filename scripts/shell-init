@@ -12,9 +12,9 @@
 [ -d "$HOME/Android/Flutter" ] && export PATH="$HOME/Android/Flutter/bin:$PATH"
 
 for dir in "platform-tools" "cmdline-tools/latest/bin"; do
-  [ -d "$ANDROID_HOME/$dir" ] && export PATH="$ANDROID_HOME/$dir:$PATH"
+    [ -d "$ANDROID_HOME/$dir" ] && export PATH="$ANDROID_HOME/$dir:$PATH"
 done
 
 if command -v gpgconf >/dev/null 2>&1; then
-  gpgconf --launch gpg-agent
+    gpgconf --launch gpg-agent
 fi

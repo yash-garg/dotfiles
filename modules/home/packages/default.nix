@@ -28,6 +28,7 @@
     restic
     ruff
     scc
+    shfmt
     sops
     unzip
     uv

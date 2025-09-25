@@ -7,7 +7,7 @@ _fzf_git_stashes() {
         --header 'CTRL-X (drop stash)' \
         --bind 'ctrl-x:reload(git stash drop -q {1}; git stash list)' \
         -d: --preview "git stash show --color=$(__fzf_git_color .) {1} | $(__fzf_git_pager)" "$@" |
-    cut -d: -f1
+        cut -d: -f1
 }
 
 cmb() {
@@ -32,9 +32,9 @@ gdiff() {
 }
 
 gs() {
-  local stash
-  stash=$(_fzf_git_stashes)
-  [ -n "$stash" ] && git stash pop "$stash"
+    local stash
+    stash=$(_fzf_git_stashes)
+    [ -n "$stash" ] && git stash pop "$stash"
 }
 
 v() {
@@ -44,3 +44,31 @@ v() {
         ${VISUAL:-${EDITOR:-nano}} $file
     fi
 }
+
+if type systemctl &>/dev/null && type journalctl &>/dev/null; then
+    sys() {
+        local action="${1:-status}"
+        local unit
+
+        unit=$(systemctl list-unit-files --type=service --all --no-legend |
+            awk '{print $1}' |
+            fzf --prompt="Pick a service: ")
+
+        if [[ -z "$unit" ]]; then
+            echo "No service selected."
+            return
+        fi
+
+        case "$action" in
+        status)
+            systemctl status "$unit"
+            ;;
+        logs)
+            journalctl -fu "$unit"
+            ;;
+        *)
+            echo "Usage: sys {status|logs}"
+            ;;
+        esac
+    }
+fi

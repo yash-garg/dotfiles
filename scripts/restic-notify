@@ -18,7 +18,7 @@ send_discord() {
     if ! curl -s -H "Content-Type: application/json" \
         -X POST \
         -d "{\"content\": \"$content\"}" \
-        "$DISCORD_WEBHOOK" > /dev/null; then
+        "$DISCORD_WEBHOOK" >/dev/null; then
         echo "Warning: Failed to send Discord notification" >&2
     fi
 }
@@ -39,7 +39,7 @@ send_ntfy() {
         -H "X-Priority: $priority" \
         -H "X-Tags: $tags" \
         -d "$formatted_message" \
-        "$NTFY_URL" > /dev/null; then
+        "$NTFY_URL" >/dev/null; then
         echo "Warning: Failed to send ntfy notification" >&2
     fi
 }
