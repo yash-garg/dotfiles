@@ -35,11 +35,6 @@ in
     server = enabled;
 
     services = {
-      adguard = enabled // {
-        host = "10.0.0.4";
-        port = 80;
-      };
-
       arr-stack = enabled // {
         mediaDirs = [
           "/mnt/data/media"
@@ -99,16 +94,6 @@ in
       secure = disabled;
       timeout = 1;
     };
-  };
-
-  networking.interfaces.ens12 = {
-    useDHCP = true;
-    ipv4.addresses = [
-      {
-        address = "10.0.0.4";
-        prefixLength = 24;
-      }
-    ];
   };
 
   # Enable passwordless sudo.
