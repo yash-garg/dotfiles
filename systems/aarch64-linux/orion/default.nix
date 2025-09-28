@@ -21,6 +21,7 @@ in
   dots = {
     server = enabled;
     services = {
+      jellyfin = enabled;
       ssh = disabled;
     };
   };

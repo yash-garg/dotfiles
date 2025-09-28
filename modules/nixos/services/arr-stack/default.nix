@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   namespace,
   ...
 }:
@@ -19,58 +18,35 @@ in
   };
 
   config = mkIf cfg.enable {
-    services =
+    dots.services =
       let
         defaults = enabled // {
-          inherit (cfg) group;
-          openFirewall = true;
+          inherit (cfg) user group;
         };
       in
       {
-        qbittorrent = defaults // {
-          inherit (cfg) user;
-          torrentingPort = ports.qbittorrent.torrenting;
-          webuiPort = ports.qbittorrent.webui;
-          serverConfig = {
-            BitTorrent.Session = {
-              AddTorrentStopped = true;
-              GlobalMaxInactiveSeedingMinutes = 60;
-              GlobalMaxRatio = -1;
-              GlobalMaxSeedingMinutes = 60;
-              GlobalUPSpeedLimit = 100;
-              ShareLimitAction = "Stop";
-            };
-            LegalNotice.Accepted = true;
-            Preferences = {
-              WebUI = {
-                AlternativeUIEnabled = true;
-                AuthSubnetWhitelist = "100.0.0.0/10, 127.0.0.0/8";
-                AuthSubnetWhitelistEnabled = true;
-                Password_PBKDF2 = "@ByteArray(vVAbbSGAmkemV9cSj95beg==:dcK684mnx6yHbTTOJ8yK0YjRSrARSNTPTy7AjOioIA+ixOU6IxVUUR5FHDmJQJO+nJElxCsV2X2WB96/rYqdmg==)";
-                RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
-                TrustedReverseProxiesList = "127.0.0.1";
-                Username = "yash";
-              };
-              General.Locale = "en";
-            };
-          };
-        };
-
-        prowlarr = enabled // {
-          openFirewall = true;
-          settings.server.port = ports.prowlarr;
-        };
-
-        radarr = defaults // {
-          settings.server.port = ports.radarr;
-        };
-
-        sonarr = defaults // {
-          settings.server.port = ports.sonarr;
-        };
-
         jellyfin = defaults;
+        qbittorrent = defaults;
       };
+
+    services = {
+      prowlarr = enabled // {
+        openFirewall = true;
+        settings.server.port = ports.prowlarr;
+      };
+
+      radarr = enabled // {
+        inherit (cfg) group;
+        openFirewall = true;
+        settings.server.port = ports.radarr;
+      };
+
+      sonarr = enabled // {
+        inherit (cfg) group;
+        openFirewall = true;
+        settings.server.port = ports.sonarr;
+      };
+    };
 
     systemd.tmpfiles.rules = lib.concatMap (dir: [
       "d ${dir} 0775 ${cfg.user} ${cfg.group} -"
