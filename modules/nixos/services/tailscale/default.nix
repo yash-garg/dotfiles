@@ -12,39 +12,21 @@ in
 {
   options.${namespace}.services.tailscale = {
     enable = mkEnableOption "Tailscale";
-
-    authKeyFile = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      description = "Path to a file containing a Tailscale authkey that this device can use to authenticate itself";
-    };
-
+    authKeyFile =
+      mkOpt (types.nullOr types.path) null
+        "Path to a file containing a Tailscale authkey that this device can use to authenticate itself";
     exitNode = mkBoolOpt false "Advertise this device as an exit node";
-
     # https://tailscale.com/kb/1241/tailscale-up
-    extraOptions = mkOption {
-      type = types.listOf types.str;
-      description = "List of extra flags passed to the `tailscale` invocation";
-      default = [ ];
-      example = [ "--ssh" ];
-    };
-
+    extraOptions =
+      mkOpt (types.listOf types.str) [ ]
+        "List of extra flags passed to the `tailscale` invocation";
     openFirewall = mkBoolOpt true "Open firewall for Tailscale";
-
     setNameservers = mkBoolOpt true "Set nameservers to Tailscale's DNS servers";
-
     ssh = mkBoolOpt false "Enable SSH access to this device via Tailscale";
-
     subnetRouting = {
       enable = mkEnableOption "Enable subnet routing";
-      routes = mkOption {
-        type = types.listOf types.str;
-        description = "List of subnets to advertise to Tailscale";
-        default = [ ];
-        example = [ "10.0.0.0/24" ];
-      };
+      routes = mkOpt (types.listOf types.str) [ ] "List of subnets to advertise to Tailscale";
     };
-
     tailnet = mkOpt types.str "turtle-lake.ts.net" "Tailscale network name";
   };
 

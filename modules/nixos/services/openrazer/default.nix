@@ -13,13 +13,7 @@ in
 {
   options.${namespace}.services.openrazer = {
     enable = mkEnableOption { description = "Whether to configure openrazer settings"; };
-
-    users = mkOption {
-      type = with lib.types; listOf str;
-      default = [ "yash" ];
-      description = "List of users to add to the openrazer group";
-    };
-
+    users = mkOpt (types.listOf types.str) [ "yash" ] "List of users to add to the openrazer group";
     gui = mkBoolOpt false "Whether to enable the polychromatic GUI";
   };
 

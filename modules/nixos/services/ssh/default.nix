@@ -14,19 +14,12 @@ in
 {
   options.${namespace}.services.ssh = {
     enable = mkEnableOption "Setup SSH";
-
-    keys = mkOption {
-      type = types.listOf types.str;
-      default = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz" ];
-      description = "List of SSH keys to add to the authorized_keys file";
-    };
-
     addRootKeys = mkBoolOpt false "Add the same keys to the root user";
-
+    keys = mkOpt (types.listOf types.str) [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz"
+    ] "List of SSH keys to add to the authorized_keys file";
     package = mkPackageOption pkgs "openssh" { };
-
     passwordAuth = mkBoolOpt true "Allow password authentication";
-
     permitRootLogin = mkBoolOpt false "Allow root login";
   };
 

@@ -13,18 +13,8 @@ in
 {
   options.${namespace}.system.wsl = with types; {
     enable = mkBoolOpt false "Whether or not to enable WSL support";
-
-    hostname = mkOption {
-      type = str;
-      default = "";
-      description = "The hostname of the WSL instance";
-    };
-
-    user = mkOption {
-      type = str;
-      default = "yash";
-      description = "The default user for the WSL instance";
-    };
+    hostname = mkOpt types.str "" "The hostname of the WSL instance";
+    user = mkOpt types.str "yash" "The default user for the WSL instance";
   };
 
   config = mkIf cfg.enable {

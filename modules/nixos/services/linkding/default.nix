@@ -12,34 +12,14 @@ in
 {
   options.${namespace}.services.linkding = {
     enable = mkEnableOption "Easy to use self-hosted bookmark manager";
-
     database = {
       enable = mkEnableOption "Enable the linkding database";
-      user = mkOption {
-        type = types.str;
-        default = "linkding";
-        description = "The user for the linkding database";
-      };
-      name = mkOption {
-        type = types.str;
-        default = "linkding";
-        description = "The database for the linkding database";
-      };
+      user = mkOpt types.str "linkding" "The user for the linkding database";
+      name = mkOpt types.str "linkding" "The database for the linkding database";
     };
-
-    host = mkOption {
-      type = types.str;
-      default = "zenith";
-      description = "The host name for the secrets";
-    };
-
     proxy = {
       enable = mkEnableOption "Enable the linkding service";
-      domain = mkOption {
-        type = types.str;
-        default = "yashgarg.dev";
-        description = "The domain name for the linkding service";
-      };
+      domain = mkOpt types.str "yashgarg.dev" "The domain name for the linkding service";
     };
   };
 

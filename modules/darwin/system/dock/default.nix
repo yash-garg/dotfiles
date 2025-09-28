@@ -12,13 +12,9 @@ let
 in
 {
   options.${namespace}.dock = {
-    persistentApps = mkOption {
-      default = [ ];
-      type = types.listOf types.str;
-      description = ''
-        A list of applications to appear in the persistent dock.
-      '';
-    };
+    persistentApps =
+      mkOpt (types.listOf types.str) [ ]
+        "A list of applications to appear in the persistent dock.";
   };
 
   config = {

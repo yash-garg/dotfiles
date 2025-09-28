@@ -68,22 +68,10 @@ in
 {
   options.${namespace}.services.restic = {
     enable = mkEnableOption "Enable restic backup";
-
-    # Helper function exposed to other modules
-    mkBackup = mkOption {
-      type = types.functionTo (types.functionTo types.attrs);
-      default = mkBackup;
-      description = "Helper function to create restic backup configurations";
-      readOnly = true;
-    };
-
-    # Common backup defaults exposed to other modules
-    defaults = mkOption {
-      type = types.attrs;
-      default = backupDefaults;
-      description = "Common backup defaults";
-      readOnly = true;
-    };
+    defaults = mkOpt types.attrs backupDefaults "Common backup defaults";
+    mkBackup = mkOpt (types.functionTo (
+      types.functionTo types.attrs
+    )) mkBackup "Helper function to create restic backup configurations";
   };
 
   config = mkIf cfg.enable {

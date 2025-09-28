@@ -46,21 +46,16 @@ in
     domain = mkOpt types.str "ipx.ovh" "Base domain for all services";
 
     environmentFiles = mkOpt (types.listOf types.str) [ ] "Environment files to load";
-
-    services = mkOption {
-      type = types.attrsOf (
-        types.submodule {
-          options = {
-            url = mkOpt types.str "https://${name}.${cfg.domain}" "URL of the service";
-            useAuth = mkBoolOpt true "Whether to use authentication middleware";
-            useInsecure = mkBoolOpt false "Whether to use insecure transport";
-            middlewares = mkOpt (types.listOf types.str) [ ] "Additional middlewares to apply";
-          };
-        }
-      );
-      default = { };
-      description = "Service configurations";
-    };
+    services = mkOpt (types.attrsOf (
+      types.submodule {
+        options = {
+          url = mkOpt types.str "https://${name}.${cfg.domain}" "URL of the service";
+          useAuth = mkBoolOpt true "Whether to use authentication middleware";
+          useInsecure = mkBoolOpt false "Whether to use insecure transport";
+          middlewares = mkOpt (types.listOf types.str) [ ] "Additional middlewares to apply";
+        };
+      }
+    )) { };
   };
 
   config = mkIf cfg.enable {

@@ -22,29 +22,9 @@ let
 in
 {
   options.${namespace}.homebrew = {
-    additionalCasks = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      description = ''
-        A list of additional casks to install.
-      '';
-    };
-
-    brews = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      description = ''
-        A list of additional brews to install.
-      '';
-    };
-
-    masApps = mkOption {
-      type = types.attrsOf types.int;
-      default = { };
-      description = ''
-        A map of macOS App Store apps to install.
-      '';
-    };
+    additionalCasks = mkOpt (types.listOf types.str) [ ] "A list of additional casks to install.";
+    brews = mkOpt (types.listOf types.str) [ ] "A list of additional brews to install.";
+    masApps = mkOpt (types.attrsOf types.int) { } "A map of macOS App Store apps to install.";
   };
 
   config = {

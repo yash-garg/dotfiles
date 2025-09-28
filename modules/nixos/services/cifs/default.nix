@@ -22,27 +22,14 @@ in
 {
   options.${namespace}.services.cifs = {
     enable = mkEnableOption "CIFS Shares Auto-Mounting";
-
-    cifsHost = mkOption {
-      type = types.str;
-      default = "nova";
-      description = "The key name for cifs credentials";
-    };
-
-    mounts = mkOption {
-      type = types.attrsOf (
-        types.submodule {
-          options = {
-            path = mkOption {
-              type = types.str;
-              description = "The CIFS share path in the format <hostname>/<share>.";
-            };
-          };
-        }
-      );
-      default = { };
-      description = "List of CIFS shares to be mounted.";
-    };
+    cifsHost = mkOpt types.str "nova" "The key name for cifs credentials";
+    mounts = mkOpt (types.attrsOf (
+      types.submodule {
+        options = {
+          path = mkOpt types.str null "The CIFS share path in the format <hostname>/<share>.";
+        };
+      }
+    )) { } "List of CIFS shares to be mounted.";
   };
 
   config = mkIf cfg.enable {

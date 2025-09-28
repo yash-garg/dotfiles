@@ -13,12 +13,7 @@ in
 {
   options.${namespace}.server = {
     enable = mkEnableOption "Profile for servers";
-
-    extraPackages = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      description = "Extra packages to install on servers";
-    };
+    extraPackages = mkOpt (types.listOf types.package) [ ] "Extra packages to install on servers";
   };
 
   config = mkIf cfg.enable {

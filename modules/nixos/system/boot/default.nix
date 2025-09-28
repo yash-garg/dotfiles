@@ -16,11 +16,7 @@ in
     timeout = mkOpt types.int 60 "Timeout for the bootloader";
     secure = {
       enable = mkBoolOpt false "Enable Secure Boot";
-      pkiBundle = mkOption {
-        type = str;
-        default = "/etc/secureboot";
-        description = "The path to the PKI bundle";
-      };
+      pkiBundle = mkOpt types.str "/etc/secureboot" "The path to the PKI bundle";
     };
   };
 

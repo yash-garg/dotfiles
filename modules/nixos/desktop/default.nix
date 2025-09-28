@@ -13,12 +13,9 @@ in
 {
   options.${namespace}.desktop = {
     enable = mkEnableOption "Profile for desktop machines";
-
-    extraPackages = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      description = "Extra packages to install on desktop machines";
-    };
+    extraPackages =
+      mkOpt (types.listOf types.package) [ ]
+        "Extra packages to install on desktop machines";
   };
 
   config = mkIf cfg.enable {

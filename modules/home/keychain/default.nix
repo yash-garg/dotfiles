@@ -13,12 +13,7 @@ in
 {
   options.profiles.${namespace}.keychain = {
     enable = mkEnableOption "Enable keychain integration";
-
-    authKey = mkOption {
-      type = types.str;
-      description = "Private ssh key to be added to the ssh-agent";
-      default = "$HOME/.ssh/git-ssh";
-    };
+    authKey = mkOpt types.str "$HOME/.ssh/git-ssh" "Private ssh key to be added to the ssh-agent";
   };
 
   config = mkIf cfg.enable {
