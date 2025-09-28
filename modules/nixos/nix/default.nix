@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   namespace,
@@ -12,16 +13,14 @@ with lib.${namespace};
     dev = disabled;
   };
 
+  programs.nh = enabled // {
+    clean.enable = config.${namespace}.server.enable;
+    flake = "$HOME/dotfiles";
+  };
+
   users.users.yash.packages = with pkgs; [ nix-output-monitor ];
 
   nix = mkNixConfig { inherit lib pkgs; } // {
-    gc = {
-      automatic = true;
-      dates = "daily";
-      options = "--delete-older-than 3d";
-      persistent = true;
-    };
-
     optimise.automatic = true;
   };
 }

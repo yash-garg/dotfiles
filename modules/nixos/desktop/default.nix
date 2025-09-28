@@ -64,7 +64,6 @@ in
         caligula
         ddcutil
         git-lfs
-        nh
         qemu_kvm
         sshfs
         xclip

@@ -30,9 +30,6 @@ in
       virtualisation = enabled;
     };
 
-    users.users.yash.packages = with pkgs; [
-      nfs-utils
-      nh
-    ];
+    users.users.yash.packages = with pkgs; [ nfs-utils ];
   };
 }
