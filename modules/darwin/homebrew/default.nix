@@ -8,6 +8,7 @@ with lib;
 with lib.${namespace};
 let
   casks = [
+    "caffeine"
     "ghostty"
     "iina"
     "jetbrains-toolbox"

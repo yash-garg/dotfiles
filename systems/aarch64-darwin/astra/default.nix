@@ -46,7 +46,6 @@ in
       ];
 
       masApps = {
-        Amphetamine = 937984704;
         Bitwarden = 1352778147;
         Tailscale = 1475387142;
         Telegram = 747648890;
