@@ -3,7 +3,7 @@ with lib.${namespace};
 {
   profiles.${namespace} = {
     neovim = disabled;
-    oh-my-posh = enabled;
+    starship = enabled;
   };
 
   shells.${namespace}.zsh = enabled;
