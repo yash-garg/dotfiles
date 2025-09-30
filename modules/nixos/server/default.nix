@@ -20,6 +20,7 @@ in
     dots = {
       services = {
         chrony = enabled;
+        ncps = enabled;
       };
 
       virtualisation = enabled;
