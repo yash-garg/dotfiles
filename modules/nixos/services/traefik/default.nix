@@ -42,9 +42,7 @@ in
 {
   options.${namespace}.services.traefik = {
     enable = mkEnableOption "Setup traefik reverse proxy";
-
     domain = mkOpt types.str "ipx.ovh" "Base domain for all services";
-
     environmentFiles = mkOpt (types.listOf types.str) [ ] "Environment files to load";
     services = mkOpt (types.attrsOf (
       types.submodule {
@@ -55,7 +53,7 @@ in
           middlewares = mkOpt (types.listOf types.str) [ ] "Additional middlewares to apply";
         };
       }
-    )) { };
+    )) { } "Service configurations";
   };
 
   config = mkIf cfg.enable {

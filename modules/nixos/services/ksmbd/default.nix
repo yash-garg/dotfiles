@@ -28,24 +28,10 @@ in
     user = mkOpt str "yash" "User to add to the server";
     passwordFile = mkOpt path null "Path to a file containing password for user";
     securityType = mkOpt str "user" "Samba security type";
-    shares = mkOption {
-      default = { };
-      description = ''
-        A set describing shared resources.
-        See <command>man smb.conf</command> for options.
-      '';
-      type = attrsOf (attrsOf unspecified);
-      example = literalExample ''
-        { public =
-          { path = "/srv/public";
-            "read only" = true;
-            browseable = "yes";
-            "guest ok" = "yes";
-            comment = "Public samba share.";
-          };
-        }
-      '';
-    };
+    shares = mkOpt (attrsOf (attrsOf unspecified)) { } ''
+      A set describing shared resources.
+      See <command>man smb.conf</command> for options.
+    '';
   };
 
   config = mkIf cfg.enable {
