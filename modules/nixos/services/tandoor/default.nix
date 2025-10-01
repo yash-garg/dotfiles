@@ -28,11 +28,9 @@ in
         address = "0.0.0.0";
         database.createLocally = true;
         extraConfig = {
-          ALLOWED_HOSTS = "recipes.${cfg.domain}";
-          extraConfig = {
-            ENABLE_METRICS = 1;
-            ENABLE_SIGNUP = 0;
-          };
+          ALLOWED_HOSTS = "recipes.${cfg.domain},0.0.0.0";
+          ENABLE_METRICS = 1;
+          ENABLE_SIGNUP = 0;
         };
         port = ports.tandoor;
       };

@@ -164,6 +164,7 @@ in
             prometheus.url = "http://${quasar}:${toString ports.prometheus}";
             prowlarr.url = "http://${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
+            recipes.url = "http://${quasar}:${toString ports.tandoor}";
             restic.url = "http://${nova}:9898";
             radarr.url = "http://${quasar}:${toString ports.radarr}";
             rss = {
