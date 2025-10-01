@@ -88,6 +88,8 @@ in
           ];
         };
       };
+
+      tandoor = enabled;
     };
 
     system.boot = enabled // {
