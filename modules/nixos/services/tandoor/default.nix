@@ -26,6 +26,8 @@ in
     services = {
       tandoor-recipes = enabled // {
         address = "0.0.0.0";
+        # We need to add the postgres extensions before updating the database
+        # https://docs.tandoor.dev/system/updating/
         database.createLocally = true;
         extraConfig = {
           ALLOWED_HOSTS = "recipes.${cfg.domain},0.0.0.0";

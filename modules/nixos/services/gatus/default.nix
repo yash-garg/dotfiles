@@ -8,15 +8,48 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.gatus;
-  endpoints = builtins.fromJSON (builtins.readFile cfg.configFile);
+  endpointType = types.submodule (
+    { name, ... }:
+    {
+      options = {
+        name = mkOpt types.nonEmptyStr name "Display name for the endpoint";
+        group = mkOpt types.str "" "Optional group for organizing endpoints";
+        url = mkOpt types.nonEmptyStr "" "URL to monitor";
+        interval = mkOpt types.nonEmptyStr "10m" "How often to check the endpoint";
+        extraConditions =
+          mkOpt (types.listOf types.nonEmptyStr) [ ]
+            "Additional conditions beyond the defaults";
+      };
+    }
+  );
+  endpointsConfig = {
+    endpoints = mapAttrsToList (
+      _: endpoint:
+      let
+        conditions = [
+          "[STATUS] == 200"
+          "[RESPONSE_TIME] < 1000"
+        ]
+        ++ endpoint.extraConditions;
+      in
+      {
+        inherit (endpoint) name url interval;
+        inherit conditions;
+        ui = {
+          hide-conditions = true;
+          hide-hostname = true;
+          hide-url = true;
+        };
+      }
+      // (optionalAttrs (endpoint.group != "") { inherit (endpoint) group; })
+    ) cfg.endpoints;
+  };
 in
 {
   options.${namespace}.services.gatus = {
     enable = mkEnableOption "Gatus Uptime Monitor";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
-    configFile =
-      mkOpt (types.nullOr types.path) null
-        "Path to custom endpoints configuration file (JSON format)";
+    endpoints = mkOpt (types.attrsOf endpointType) { } "Endpoints to monitor";
   };
 
   config = mkIf cfg.enable {
@@ -28,7 +61,7 @@ in
     services = {
       gatus = enabled // {
         environmentFile = config.sops.secrets.gatus-env.path;
-        settings = recursiveUpdate endpoints {
+        settings = recursiveUpdate endpointsConfig {
           alerting.ntfy = {
             topic = "$GATUS_TOPIC";
             click = "https://status.${cfg.domain}";

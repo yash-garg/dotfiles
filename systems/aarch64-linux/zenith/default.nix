@@ -56,95 +56,172 @@ in
   dots = {
     server = enabled;
 
-    services = {
-      actual-budget = enabled // {
-        backup = enabled;
-        domain = homeDomain;
-      };
-
-      forgejo = enabled // {
-        domain = homeDomain;
-      };
-
-      gatus = enabled // {
-        inherit domain;
-        configFile = ./gatus.json;
-      };
-
-      linkding = enabled // {
-        database = enabled;
-        proxy = enabled // {
+    services =
+      let
+        inherit (config.${namespace}.services.tailscale) tailnet;
+        nova = "nova.${tailnet}";
+        quasar = "quasar.${tailnet}";
+        vortex = "vortex.${tailnet}";
+      in
+      {
+        actual-budget = enabled // {
+          backup = enabled;
           domain = homeDomain;
         };
-      };
 
-      monitoring = enabled // {
-        domain = homeDomain;
-        alloy = enabled;
-        grafana = enabled // {
-          remoteDatasources = [
-            {
-              name = "quasar";
-              ip = "100.93.8.41";
-              prometheus = true;
-              loki = true;
-            }
-            {
-              name = "vortex";
-              ip = "100.65.244.114";
-              prometheus = true;
-              loki = true;
-            }
-          ];
+        forgejo = enabled // {
+          domain = homeDomain;
         };
-        loki = enabled;
-        prometheus = enabled;
-      };
 
-      plausible = enabled // {
-        baseUrl = domain;
-        secretKeybaseFile = config.sops.secrets.plausible-secret.path;
-      };
-
-      postgres = enabled // {
-        backup = enabled;
-      };
-
-      restic = enabled;
-
-      ssh = enabled // {
-        addRootKeys = true;
-        passwordAuth = false;
-        permitRootLogin = false;
-      };
-
-      sso = enabled // {
-        domain = homeDomain;
-      };
-
-      tailscale = enabled // {
-        authKeyFile = config.sops.secrets.server-tsauthkey.path;
-        exitNode = true;
-        ssh = true;
-        subnetRouting = enabled // {
-          routes = [
-            "192.168.0.0/24"
-            "192.168.1.0/24"
-          ];
+        gatus = enabled // {
+          inherit domain;
+          endpoints = {
+            actual-budget = {
+              name = "Actual Budget";
+              url = "http://localhost:${toString ports.actual-budget}";
+            };
+            forgejo = {
+              name = "Forgejo";
+              url = "http://localhost:${toString ports.forgejo}";
+            };
+            grafana = {
+              name = "Grafana";
+              url = "http://localhost:9092";
+            };
+            home-assistant = {
+              name = "Home Assistant";
+              url = "http://homeassistant.${tailnet}:8123";
+            };
+            immich = {
+              name = "Immich";
+              url = "http://${quasar}:${toString ports.immich.webui}";
+            };
+            jellyfin = {
+              name = "Jellyfin";
+              url = "http://${quasar}:${toString ports.jellyfin}";
+            };
+            linkding = {
+              name = "Linkding";
+              url = "http://localhost:${toString ports.linkding}";
+            };
+            miniflux = {
+              name = "Miniflux";
+              url = "http://${quasar}:${toString ports.miniflux}";
+            };
+            minecraft-map = {
+              name = "Minecraft Map";
+              url = "http://${vortex}:${toString ports.pl3xmap}";
+            };
+            paperless = {
+              name = "Paperless";
+              url = "http://${quasar}:${toString ports.paperless-ngx}";
+            };
+            prometheus = {
+              name = "Prometheus";
+              url = "http://${quasar}:${toString ports.prometheus}";
+            };
+            plausible = {
+              name = "Plausible";
+              url = "http://localhost:${toString ports.plausible}";
+            };
+            prowlarr = {
+              name = "Prowlarr";
+              url = "http://${quasar}:9696";
+            };
+            radarr = {
+              name = "Radarr";
+              url = "http://${quasar}:${toString ports.radarr}";
+            };
+            sonarr = {
+              name = "Sonarr";
+              url = "http://${quasar}:${toString ports.sonarr}";
+            };
+            stirling-pdf = {
+              name = "Stirling PDF";
+              url = "http://${quasar}:${toString ports.stirling-pdf}";
+            };
+            tandoor = {
+              name = "Tandoor";
+              url = "http://${quasar}:${toString ports.tandoor}";
+            };
+            qbittorrent = {
+              name = "qBittorrent";
+              url = "http://${quasar}:${toString ports.qbittorrent.webui}";
+            };
+            unraid = {
+              name = "Unraid";
+              url = "http://${nova}";
+            };
+          };
         };
-      };
 
-      traefik = enabled // {
-        domain = homeDomain;
-        environmentFiles = [ config.sops.secrets.cf-tokens.path ];
-        services =
-          let
-            inherit (config.${namespace}.services.tailscale) tailnet;
-            nova = "nova.${tailnet}";
-            quasar = "quasar.${tailnet}";
-            vortex = "vortex.${tailnet}";
-          in
-          {
+        linkding = enabled // {
+          database = enabled;
+          proxy = enabled // {
+            domain = homeDomain;
+          };
+        };
+
+        monitoring = enabled // {
+          domain = homeDomain;
+          alloy = enabled;
+          grafana = enabled // {
+            remoteDatasources = [
+              {
+                name = "quasar";
+                ip = "100.93.8.41";
+                prometheus = true;
+                loki = true;
+              }
+              {
+                name = "vortex";
+                ip = "100.65.244.114";
+                prometheus = true;
+                loki = true;
+              }
+            ];
+          };
+          loki = enabled;
+          prometheus = enabled;
+        };
+
+        plausible = enabled // {
+          baseUrl = domain;
+          secretKeybaseFile = config.sops.secrets.plausible-secret.path;
+        };
+
+        postgres = enabled // {
+          backup = enabled;
+        };
+
+        restic = enabled;
+
+        ssh = enabled // {
+          addRootKeys = true;
+          passwordAuth = false;
+          permitRootLogin = false;
+        };
+
+        sso = enabled // {
+          domain = homeDomain;
+        };
+
+        tailscale = enabled // {
+          authKeyFile = config.sops.secrets.server-tsauthkey.path;
+          exitNode = true;
+          ssh = true;
+          subnetRouting = enabled // {
+            routes = [
+              "192.168.0.0/24"
+              "192.168.1.0/24"
+            ];
+          };
+        };
+
+        traefik = enabled // {
+          domain = homeDomain;
+          environmentFiles = [ config.sops.secrets.cf-tokens.path ];
+          services = {
             cadvisor.url = "http://${nova}:8081";
             dns.url = "http://adguard.${tailnet}";
             home.url = "http://homeassistant.${tailnet}:8123";
@@ -182,8 +259,8 @@ in
               useInsecure = true;
             };
           };
+        };
       };
-    };
   };
 
   users.users.yash = {
