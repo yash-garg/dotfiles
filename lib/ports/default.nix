@@ -44,5 +44,6 @@
     readarr = 8787;
     sonarr = 8989;
     stirling-pdf = 8087;
+    tandoor = 9040;
   };
 }

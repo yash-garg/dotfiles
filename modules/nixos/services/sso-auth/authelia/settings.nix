@@ -274,6 +274,26 @@ in
           token_endpoint_auth_method = "client_secret_basic";
         }
         {
+          client_id = "tandoor";
+          client_name = "Tandoor";
+          client_secret = "$pbkdf2-sha512$310000$zyxRgO3vxU1QQI/doVsRaQ$wHW9bDWtBitWrQgRuOHi5lOVtfC44NC12mDD3JXUGtsA8JCARTsVUlUnt42KyON5RzlYO95UVr.tJlDURcS.Bw";
+          public = false;
+          authorization_policy = "one_factor";
+          grant_types = [
+            "authorization_code"
+          ];
+          redirect_uris = [
+            "https://recipes.${domain}/accounts/oidc/authelia/login/callback/"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
           client_id = "tailscale";
           client_name = "Tailscale";
           client_secret = "$pbkdf2-sha512$310000$oQVBGFNKM9uiscpWlEMzmw$9qZf/57tlwlmZX.Ni2tlkQH7h3LJRiCTw7D5uJGG8HVApcd1m/1GUTnd01F/os9jpW7wqH0mvabyuXMmz5MDzQ";
