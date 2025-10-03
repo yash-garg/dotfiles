@@ -16,6 +16,7 @@ let
     "orbstack"
     "raycast"
     "spotify"
+    "swiftformat-for-xcode"
   ]
   ++ cfg.additionalCasks;
   cfg = config.${namespace}.homebrew;
@@ -35,6 +36,7 @@ in
       brews = [
         "cocoapods"
         "ruby"
+        "swiftformat"
         "webp"
         {
           name = "JakeWharton/repo/diffuse";
