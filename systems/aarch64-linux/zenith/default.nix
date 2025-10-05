@@ -126,7 +126,7 @@ in
             };
             prowlarr = {
               name = "Prowlarr";
-              url = "http://${quasar}:9696";
+              url = "http://${quasar}:${toString ports.prowlarr}";
             };
             radarr = {
               name = "Radarr";
@@ -222,8 +222,6 @@ in
           domain = homeDomain;
           environmentFiles = [ config.sops.secrets.cf-tokens.path ];
           services = {
-            cadvisor.url = "http://${nova}:8081";
-            dns.url = "http://adguard.${tailnet}";
             home.url = "http://homeassistant.${tailnet}:8123";
             map.url = "http://${vortex}:81";
             paperless = {
