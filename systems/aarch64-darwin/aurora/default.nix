@@ -23,21 +23,17 @@ in
       "Xcode"
       "Spotify"
       "Android Studio"
-      "Linear"
       "Slack"
       "Arc"
       "OrbStack"
       "Zed"
-      "zoom.us"
     ];
 
     homebrew = {
       additionalCasks = [
         "arc"
         "flutter"
-        "linear-linear"
         "slack"
-        "yubico-yubikey-manager"
         "windsurf@next"
         "zed"
         "zoom"
