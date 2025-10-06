@@ -31,6 +31,7 @@ in
           ALLOW_PASSWORD_LOGIN = "false";
           ALLOW_SIGNUP = "false";
           API_DOCS = "false";
+          GUNICORN_CMD_ARGS = "--forwarded-allow-ips=*";
           OIDC_AUTH_ENABLED = "true";
           OIDC_SIGNUP_ENABLED = "true";
           OIDC_CONFIGURATION_URL = "https://auth.${cfg.domain}/.well-known/openid-configuration";

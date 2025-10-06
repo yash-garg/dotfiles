@@ -144,10 +144,6 @@ in
               name = "Stirling PDF";
               url = "http://${quasar}:${toString ports.stirling-pdf}";
             };
-            tandoor = {
-              name = "Tandoor";
-              url = "http://${quasar}:${toString ports.tandoor}";
-            };
             qbittorrent = {
               name = "qBittorrent";
               url = "http://${quasar}:${toString ports.qbittorrent.webui}";
@@ -247,10 +243,6 @@ in
             prometheus.url = "http://${quasar}:${toString ports.prometheus}";
             prowlarr.url = "http://${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
-            recipes = {
-              url = "http://${quasar}:${toString ports.tandoor}";
-              useAuth = false;
-            };
             restic.url = "http://${nova}:9898";
             radarr.url = "http://${quasar}:${toString ports.radarr}";
             rss = {
