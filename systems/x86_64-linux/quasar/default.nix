@@ -48,6 +48,8 @@ in
         mediaDir = "/mnt/data/media/photos";
       };
 
+      mealie = enabled;
+
       miniflux = enabled;
 
       monitoring = enabled // {
