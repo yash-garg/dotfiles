@@ -9,6 +9,7 @@ A list of all hosts currently in use by me.
 - `nebula`: Development and testing environment using WSL2 on Windows 11.
 - `nova`: Main home machine running NixOS for daily use.
 - `orion`: NixOS VM with OrbStack on MacOS.
+- `quasar`: NixOS VM with Nvidia GPU on Unraid.
 - `trinity`: MacBook Pro 14" with M3 Pro chip & 18GB RAM.
 - `vortex`: VM running Minecraft Server and Pl3xMap.
 - `zenith`: Oracle Cloud VM running NixOS for development and as a remote builder.
