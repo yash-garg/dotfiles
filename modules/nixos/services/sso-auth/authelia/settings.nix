@@ -239,6 +239,23 @@ in
           token_endpoint_auth_method = "client_secret_post";
         }
         {
+          client_id = "mealie";
+          client_name = "Mealie";
+          client_secret = "$pbkdf2-sha512$310000$2134vs5nM5P6LhYDJEGIKg$kJ4ddV127kSLE7FcVHReV/mZ9d6rjT.mntrKqoh.8WndDhoCLf3laThkNbvYnQKGu6wo3FNNuGMkmD0tNP8Xsg";
+          public = false;
+          authorization_policy = "one_factor";
+          grant_types = [ "authorization_code" ];
+          redirect_uris = [ "https://meals.${domain}/login" ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
           client_id = "miniflux";
           client_name = "Miniflux";
           client_secret = "$pbkdf2-sha512$310000$ixsi8LqA7zxNPLXbpjqSAQ$1GQ.NssJ/QKvD7qCgwxsT7PFpD4ZxilDDq17.GSqFbcqueNGJy.2Jv8xYszFjumkE7pLNTbG0Lg6bR2clzTXvw";
