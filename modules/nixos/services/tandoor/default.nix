@@ -30,7 +30,7 @@ in
         # https://docs.tandoor.dev/system/updating/
         database.createLocally = true;
         extraConfig = {
-          ALLOWED_HOSTS = "recipes.${cfg.domain},0.0.0.0";
+          ALLOWED_HOSTS = "recipes.${cfg.domain},0.0.0.0,quasar.turtle-lake.ts.net";
           ENABLE_METRICS = 1;
           ENABLE_SIGNUP = 0;
         };
