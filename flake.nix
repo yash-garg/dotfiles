@@ -42,7 +42,6 @@
 
           nixos = [
             disko.nixosModules.disko
-            impermanence.nixosModules.impermanence
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
             nix-topology.nixosModules.default
@@ -88,7 +87,6 @@
       overlays = with inputs; [
         neovim.overlays.default
         nix-topology.overlays.default
-        nixpkgs-wayland.overlay
         nur.overlays.default
       ];
 
@@ -154,13 +152,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    impermanence.url = "github:nix-community/impermanence";
-
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.2";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-
-    lix.url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.3-2.tar.gz";
-    lix.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim.url = "github:yash-garg/neovim";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
@@ -174,14 +167,7 @@
     nix-topology.inputs.devshell.follows = "devshell";
     nix-topology.inputs.flake-utils.follows = "flake-utils";
 
-    nixified-ai.url = "github:nixified-ai/flake";
-    nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
-
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
-    nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-wayland.inputs.flake-compat.follows = "flake-compat";
 
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     nixos-cosmic.inputs.nixpkgs.follows = "nixpkgs";

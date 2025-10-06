@@ -36,18 +36,12 @@ in
         };
         upstream = {
           caches = [
-            "https://cache.garnix.io"
-            "https://ai.cachix.org"
-            "https://nixpkgs-wayland.cachix.org"
             "https://yash-garg.cachix.org"
             "https://cache.nixos.org"
             "https://raspberry-pi-nix.cachix.org"
             "https://cosmic.cachix.org/"
           ];
           publicKeys = [
-            "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-            "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
-            "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
             "yash-garg.cachix.org-1:sHcKOvVej+RlINvt4XVAOE/Cnho3hnrHHRv0uq1u7Xs="
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
             "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
