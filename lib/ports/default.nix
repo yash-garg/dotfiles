@@ -27,7 +27,7 @@
     linkding = 9095;
     lldap = 17170;
     loki = 3100;
-    mealie = 9094;
+    mealie = 9084;
     minecraft = 25565;
     miniflux = 5600;
     ncps = 9022;

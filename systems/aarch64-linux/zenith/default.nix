@@ -104,6 +104,10 @@ in
               name = "Linkding";
               url = "http://localhost:${toString ports.linkding}";
             };
+            mealie = {
+              name = "Mealie";
+              url = "http://${quasar}:${toString ports.mealie}";
+            };
             miniflux = {
               name = "Miniflux";
               url = "http://${quasar}:${toString ports.miniflux}";
@@ -224,6 +228,10 @@ in
           services = {
             home.url = "http://homeassistant.${tailnet}:8123";
             map.url = "http://${vortex}:81";
+            meals = {
+              url = "http://${quasar}:${toString ports.mealie}";
+              useAuth = false;
+            };
             paperless = {
               url = "http://${quasar}:${toString ports.paperless-ngx}";
               useAuth = false;
@@ -239,7 +247,10 @@ in
             prometheus.url = "http://${quasar}:${toString ports.prometheus}";
             prowlarr.url = "http://${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
-            recipes.url = "http://${quasar}:${toString ports.tandoor}";
+            recipes = {
+              url = "http://${quasar}:${toString ports.tandoor}";
+              useAuth = false;
+            };
             restic.url = "http://${nova}:9898";
             radarr.url = "http://${quasar}:${toString ports.radarr}";
             rss = {
