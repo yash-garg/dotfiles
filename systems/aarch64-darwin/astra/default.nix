@@ -39,10 +39,8 @@ in
         "cursor"
         "discord"
         "flutter"
-        "google-chrome"
         "notion-calendar"
         "obsidian"
-        "steam"
       ];
 
       masApps = {
