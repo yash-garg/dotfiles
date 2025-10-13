@@ -6,6 +6,7 @@
   ...
 }:
 with lib;
+with lib.${namespace};
 let
   cfg = config.profiles.${namespace}.keychain;
   command = "eval `keychain --eval --agents ssh ${cfg.authKey}`";
