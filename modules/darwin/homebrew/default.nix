@@ -38,6 +38,7 @@ in
         "ruby"
         "swiftformat"
         "webp"
+        "xcbeautify"
         {
           name = "JakeWharton/repo/diffuse";
           args = [ "ignore-dependencies" ];
