@@ -6,8 +6,6 @@ _: {
       "Visual Studio Code"
       "Spotify"
       "Android Studio"
-      "ChatGPT"
-      "Slack"
       "Discord"
       "Arc"
       "WhatsApp"
@@ -23,7 +21,6 @@ _: {
         "flutter"
         "notion-calendar"
         "obsidian"
-        "slack"
         "visual-studio-code"
       ];
 
