@@ -93,10 +93,6 @@
       outputs-builder = channels: {
         formatter = (treefmtModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
 
-        packages = {
-          minimal-iso = inputs.self.install-isoConfigurations.minimal;
-        };
-
         topology = import inputs.nix-topology {
           pkgs = channels.nixpkgs;
           modules = [
