@@ -31,7 +31,6 @@ in
       theme-light = "catppuccin-latte";
     };
     extraPackages = with pkgs.bat-extras; [
-      batgrep
       batman
       batwatch
     ];
