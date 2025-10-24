@@ -67,10 +67,10 @@
     external = difft --display inline
 
 [fetch]
-	all = true
-	fsckobjects = true
-	prune = true
-	pruneTags = true
+    all = true
+    fsckobjects = true
+    prune = true
+    pruneTags = true
     writeCommitGraph = true
 
 [submodule]
@@ -92,3 +92,6 @@
 [url "git@github.com:"]
     insteadOf = https://github.com/
     insteadOf = git://github.com/
+
+[includeIf "gitdir/i:~/projects/work/"]
+    path = ~/work.gitconfig

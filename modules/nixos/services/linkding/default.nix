@@ -57,6 +57,7 @@ in
         OIDC_OP_TOKEN_ENDPOINT = "https://auth.${cfg.proxy.domain}/api/oidc/token";
         OIDC_OP_USER_ENDPOINT = "https://auth.${cfg.proxy.domain}/api/oidc/userinfo";
         OIDC_OP_JWKS_ENDPOINT = "https://auth.${cfg.proxy.domain}/jwks.json";
+        OIDC_USERNAME_CLAIM = "preferred_username";
       };
     };
 
