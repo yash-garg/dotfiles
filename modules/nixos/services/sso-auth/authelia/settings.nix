@@ -358,6 +358,7 @@ in
   };
 
   server = {
+    address = "tcp://:${toString ports.authelia}/";
     disable_healthcheck = true;
     endpoints.authz.forward-auth.implementation = "ForwardAuth";
   };

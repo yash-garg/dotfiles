@@ -5,6 +5,7 @@
     alertmanager = 9093;
     alertmanager-ntfy = 9081;
     alloy = 12346;
+    authelia = 9091;
     exporters = {
       immich = 2284;
       minecraft = 25585;

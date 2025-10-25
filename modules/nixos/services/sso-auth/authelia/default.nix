@@ -64,7 +64,7 @@ in
           tls.certResolver = "letsencrypt";
         };
         services.authelia.loadBalancer = {
-          servers = [ { url = "http://localhost:9091"; } ];
+          servers = [ { url = "http://localhost:${toString ports.authelia}"; } ];
         };
       };
     };
