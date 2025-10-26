@@ -22,7 +22,7 @@ in
     motd = mkOpt types.str "§l§cPixel Paradise§r" "Minecraft server MOTD";
     port = mkOpt types.int ports.minecraft "Minecraft server port";
     seed = mkOpt types.str "-5584399987456711267" "Minecraft server seed";
-    version = mkOpt types.str "1.21.8" "Minecraft server version";
+    version = mkOpt types.str "1.21.10" "Minecraft server version";
     proxy = {
       enable = mkEnableOption "Enable traefik proxy for Minecraft";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the minecraft service";
