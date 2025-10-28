@@ -126,6 +126,7 @@ in
           fabric-api
           fabricexporter
           ferrite-core
+          jade
           leaves-us-in-peace
           lithium
           netherportalfix
