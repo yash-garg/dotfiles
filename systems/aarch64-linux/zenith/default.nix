@@ -80,6 +80,10 @@ in
               name = "Actual Budget";
               url = "http://localhost:${toString ports.actual-budget}";
             };
+            bazarr = {
+              name = "Bazarr";
+              url = "http://${quasar}:${toString ports.bazarr}";
+            };
             forgejo = {
               name = "Forgejo";
               url = "http://localhost:${toString ports.forgejo}";
@@ -222,6 +226,7 @@ in
           domain = homeDomain;
           environmentFiles = [ config.sops.secrets.cf-tokens.path ];
           services = {
+            bazarr.url = "http://${quasar}:${toString ports.bazarr}";
             home.url = "http://homeassistant.${tailnet}:8123";
             map.url = "http://${vortex}:81";
             meals = {
