@@ -30,6 +30,12 @@ in
       };
 
     services = {
+      bazarr = enabled // {
+        inherit (cfg) group;
+        listenPort = ports.bazarr;
+        openFirewall = true;
+      };
+
       prowlarr = enabled // {
         openFirewall = true;
         settings.server.port = ports.prowlarr;
@@ -71,11 +77,12 @@ in
       media = {
         gid = null;
         members = [
+          "bazarr"
+          "jellyfin"
+          "prowlarr"
           "qbittorrent"
           "radarr"
-          "prowlarr"
           "sonarr"
-          "jellyfin"
         ];
       };
     };
