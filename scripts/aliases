@@ -15,10 +15,6 @@ if type fastfetch &>/dev/null; then
     alias fetch='fastfetch'
 fi
 
-if type lazygit &>/dev/null; then
-    alias lg='lazygit'
-fi
-
 if type git &>/dev/null; then
     alias add='git add --all'
     alias amend='git commit --amend'

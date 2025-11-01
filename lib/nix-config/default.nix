@@ -26,7 +26,6 @@
           "cgroups"
           "flakes"
           "nix-command"
-          "recursive-nix"
         ];
         flake-registry = "/etc/nix/registry.json";
         http-connections = 50;
