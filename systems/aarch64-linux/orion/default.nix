@@ -34,7 +34,7 @@ in
   };
 
   programs.nix-ld = enabled // {
-    package = pkgs.nix-ld-rs;
+    package = pkgs.nix-ld;
   };
 
   systemd.network = enabled // {

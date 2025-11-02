@@ -50,7 +50,7 @@ with lib.${namespace};
   };
 
   programs.nix-ld = enabled // {
-    package = pkgs.nix-ld-rs;
+    package = pkgs.nix-ld;
   };
 
   system.stateVersion = "24.11";

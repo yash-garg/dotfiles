@@ -41,7 +41,7 @@ in
         binfmt = false;
       };
       nix-ld = enabled // {
-        package = pkgs.nix-ld-rs;
+        package = pkgs.nix-ld;
         libraries = with pkgs; [
           icu
           openssl
