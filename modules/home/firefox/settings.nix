@@ -11,6 +11,20 @@ _: {
     "browser.toolbars.keyboard_navigation" = false;
     "browser.translations.automaticallyPopup" = false;
 
+    # Disable AI features
+    "browser.ml.enable" = false;
+    "browser.ml.chat.enabled" = false;
+    "browser.ml.chat.menu" = false;
+    "browser.ml.chat.page" = false;
+    "browser.ml.chat.page.footerBadge" = false;
+    "browser.ml.chat.page.menuBadge" = false;
+    "browser.ml.chat.shortcuts" = false;
+    "browser.ml.chat.sidebar" = false;
+    "browser.ml.pageAssist.enabled" = false;
+    "extensions.ml.enabled" = false;
+    "browser.tabs.groups.smart.enabled" = false;
+    "browser.tabs.groups.smart.userEnable" = false;
+
     # Reduce search engine noise in the urlbar's completion window
     "browser.urlbar.suggest.searches" = false;
     "browser.urlbar.shortcuts.bookmarks" = false;
