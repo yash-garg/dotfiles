@@ -22,21 +22,18 @@ in
       "Ghostty"
       "Xcode"
       "Spotify"
+      "Google Chrome"
       "Android Studio"
-      "Slack"
-      "Arc"
       "OrbStack"
-      "Zed"
+      "Windsurf - Next"
     ];
 
     homebrew = {
       additionalCasks = [
-        "arc"
         "flutter"
-        "slack"
+        "firefox"
+        "google-chrome"
         "windsurf@next"
-        "zed"
-        "zoom"
       ];
 
       brews = [
@@ -44,6 +41,7 @@ in
         "openjdk@21"
         "swiftformat"
         "xcode-build-server"
+        "xcode-kotlin"
       ];
     };
 
