@@ -1,6 +1,7 @@
 _: {
   programs.firefox.profiles.yash.settings = {
     "browser.discovery.enabled" = false;
+    "browser.fullscreen.exit_on_escape" = false;
     "browser.safebrowsing.downloads.remote.block_dangerous" = false;
     "browser.safebrowsing.downloads.remote.block_dangerous_host" = false;
     "browser.safebrowsing.downloads.remote.block_potentially_unwanted" = false;

@@ -33,6 +33,7 @@
     unzip
     uv
     whois
+    yq
     zip
   ];
 }
