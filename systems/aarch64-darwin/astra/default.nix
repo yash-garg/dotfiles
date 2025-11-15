@@ -24,7 +24,7 @@ in
       "Cursor"
       "Spotify"
       "Discord"
-      "Arc"
+      "Firefox"
       "OrbStack"
       "WhatsApp"
       "Telegram"
@@ -33,11 +33,11 @@ in
     homebrew = {
       additionalCasks = [
         "actual"
-        "arc"
         "chatgpt"
         "chromedriver"
         "cursor"
         "discord"
+        "firefox"
         "flutter"
         "notion-calendar"
         "obsidian"
