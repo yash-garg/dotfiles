@@ -144,9 +144,9 @@ in
               name = "Sonarr";
               url = "http://${quasar}:${toString ports.sonarr}";
             };
-            stirling-pdf = {
-              name = "Stirling PDF";
-              url = "http://${quasar}:${toString ports.stirling-pdf}";
+            bentopdf = {
+              name = "BentoPDF";
+              url = "http://${quasar}:${toString ports.bentopdf}";
             };
             qbittorrent = {
               name = "qBittorrent";

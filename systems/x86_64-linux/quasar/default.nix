@@ -43,6 +43,8 @@ in
         ];
       };
 
+      bentopdf = enabled;
+
       immich = enabled // {
         backup = enabled;
         mediaDir = "/mnt/data/media/photos";
@@ -76,8 +78,6 @@ in
         passwordAuth = false;
         permitRootLogin = true;
       };
-
-      stirling-pdf = enabled;
 
       tailscale = enabled // {
         authKeyFile = config.sops.secrets.server-tsauthkey.path;

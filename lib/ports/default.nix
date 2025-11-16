@@ -7,6 +7,7 @@
     alloy = 12346;
     authelia = 9091;
     bazarr = 6767;
+    bentopdf = 8088;
     exporters = {
       immich = 2284;
       minecraft = 25585;
