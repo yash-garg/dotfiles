@@ -240,7 +240,7 @@ in
               useAuth = false;
             };
             pdf = {
-              url = "http://${quasar}:${toString ports.stirling-pdf}";
+              url = "http://${quasar}:${toString ports.bentopdf}";
               useAuth = false;
             };
             photos = {
