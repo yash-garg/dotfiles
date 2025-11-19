@@ -159,6 +159,8 @@ in
           };
         };
 
+        golink = enabled;
+
         linkding = enabled // {
           database = enabled;
           proxy = enabled // {

@@ -42,6 +42,7 @@
 
           nixos = [
             disko.nixosModules.disko
+            golink.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
             nix-topology.nixosModules.default
@@ -144,6 +145,9 @@
     ghostty.url = "github:ghostty-org/ghostty";
     ghostty.inputs.flake-compat.follows = "flake-compat";
     ghostty.inputs.zig.follows = "zig";
+
+    golink.url = "github:tailscale/golink";
+    golink.inputs.nixpkgs.follows = "nixpkgs";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
