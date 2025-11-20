@@ -34,6 +34,8 @@ in
 
       brews = [
         "cocoapods"
+        "ollama"
+        "opencode"
         "ruby"
         "swiftformat"
         "webp"
