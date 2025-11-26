@@ -45,6 +45,10 @@ in
 
       bentopdf = enabled;
 
+      calibre-web = enabled // {
+        mediaDir = "/mnt/data/media/books";
+      };
+
       immich = enabled // {
         backup = enabled;
         mediaDir = "/mnt/data/media/photos";

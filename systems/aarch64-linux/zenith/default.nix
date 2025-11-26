@@ -84,6 +84,10 @@ in
               name = "Bazarr";
               url = "http://${quasar}:${toString ports.bazarr}";
             };
+            calibre-web = {
+              name = "Calibre Web";
+              url = "http://${quasar}:${toString ports.calibre}";
+            };
             forgejo = {
               name = "Forgejo";
               url = "http://localhost:${toString ports.forgejo}";
@@ -229,6 +233,7 @@ in
           environmentFiles = [ config.sops.secrets.cf-tokens.path ];
           services = {
             bazarr.url = "http://${quasar}:${toString ports.bazarr}";
+            books.url = "http://${quasar}:${toString ports.calibre}";
             home.url = "http://homeassistant.${tailnet}:8123";
             map.url = "http://${vortex}:81";
             meals = {

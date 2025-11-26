@@ -8,6 +8,7 @@
     authelia = 9091;
     bazarr = 6767;
     bentopdf = 8088;
+    calibre = 8083;
     exporters = {
       immich = 2284;
       minecraft = 25585;
