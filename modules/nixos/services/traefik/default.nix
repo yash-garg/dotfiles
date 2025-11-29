@@ -105,6 +105,12 @@ in
           level = "WARN";
           format = "json";
         };
+
+        metrics.prometheus = {
+          addEntryPointsLabels = true;
+          addRoutersLabels = true;
+          addServicesLabels = true;
+        };
       };
 
       dynamicConfigOptions.http = {
@@ -152,5 +158,12 @@ in
         };
       };
     };
+
+    services.prometheus.scrapeConfigs = [
+      {
+        job_name = "traefik";
+        static_configs = [ { targets = [ "127.0.0.1:8080" ]; } ];
+      }
+    ];
   };
 }
