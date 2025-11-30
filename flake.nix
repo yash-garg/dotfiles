@@ -41,6 +41,7 @@
           ];
 
           nixos = [
+            copyparty.nixosModules.default
             disko.nixosModules.disko
             golink.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
@@ -86,6 +87,7 @@
       ];
 
       overlays = with inputs; [
+        copyparty.overlays.default
         neovim.overlays.default
         nix-topology.overlays.default
         nur.overlays.default
@@ -120,6 +122,10 @@
 
     catppuccin-starship.url = "github:catppuccin/starship";
     catppuccin-starship.flake = false;
+
+    copyparty.url = "github:9001/copyparty";
+    copyparty.inputs.nixpkgs.follows = "nixpkgs";
+    copyparty.inputs.flake-utils.follows = "flake-utils";
 
     darwin.url = "github:LnL7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";

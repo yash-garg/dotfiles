@@ -100,6 +100,29 @@
         "type": "github"
       }
     },
+    "copyparty": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764523468,
+        "narHash": "sha256-kk6RD7Pa335fPMwFwLnKvM3WZLqG9xvkL+25dNhX3XQ=",
+        "owner": "9001",
+        "repo": "copyparty",
+        "rev": "ca6d3a5c162cd6f9e3e8af42991dc4fcf68cf6b8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "9001",
+        "repo": "copyparty",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1731098351,
@@ -1164,6 +1187,7 @@
       "inputs": {
         "base16-schemes": "base16-schemes",
         "catppuccin-starship": "catppuccin-starship",
+        "copyparty": "copyparty",
         "darwin": "darwin",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
