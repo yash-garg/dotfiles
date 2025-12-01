@@ -53,8 +53,26 @@ in
         user = "yash";
         group = "users";
         volumes = {
-          "/" = {
-            path = "/mnt";
+          "/books" = {
+            path = "/mnt/data/media/books";
+            access = {
+              r.wmda = "*";
+            };
+          };
+          "/documents" = {
+            path = "/mnt/documents/documents/originals";
+            access = {
+              r.wmda = "*";
+            };
+          };
+          "/media" = {
+            path = "/mnt/media";
+            access = {
+              r.wmda = "*";
+            };
+          };
+          "/photos" = {
+            path = "/mnt/data/media/photos";
             access = {
               r.wmda = "*";
             };
