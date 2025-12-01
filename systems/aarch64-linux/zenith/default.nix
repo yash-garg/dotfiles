@@ -88,6 +88,10 @@ in
               name = "Calibre Web";
               url = "http://${quasar}:${toString ports.calibre}";
             };
+            copyparty = {
+              name = "Copyparty";
+              url = "http://${quasar}:${toString ports.copyparty}";
+            };
             forgejo = {
               name = "Forgejo";
               url = "http://localhost:${toString ports.forgejo}";
@@ -234,6 +238,10 @@ in
           services = {
             bazarr.url = "http://${quasar}:${toString ports.bazarr}";
             books.url = "http://${quasar}:${toString ports.calibre}";
+            fs = {
+              url = "http://${quasar}:${toString ports.copyparty}";
+              useInsecure = true;
+            };
             home.url = "http://homeassistant.${tailnet}:8123";
             map.url = "http://${vortex}:81";
             meals = {

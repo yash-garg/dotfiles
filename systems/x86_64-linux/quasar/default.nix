@@ -49,6 +49,19 @@ in
         mediaDir = "/mnt/data/media/books";
       };
 
+      copyparty = enabled // {
+        user = "yash";
+        group = "users";
+        volumes = {
+          "/" = {
+            path = "/mnt";
+            access = {
+              r.wmda = "*";
+            };
+          };
+        };
+      };
+
       immich = enabled // {
         backup = enabled;
         mediaDir = "/mnt/data/media/photos";

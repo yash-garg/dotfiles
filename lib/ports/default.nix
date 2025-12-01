@@ -9,6 +9,7 @@
     bazarr = 6767;
     bentopdf = 8088;
     calibre = 8083;
+    copyparty = 9005;
     exporters = {
       immich = 2284;
       minecraft = 25585;
