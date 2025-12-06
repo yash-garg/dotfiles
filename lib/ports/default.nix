@@ -36,6 +36,7 @@
     minecraft = 25565;
     miniflux = 5600;
     ncps = 9022;
+    n8n = 5678;
     ollama = 11434;
     paperless-ngx = 8010;
     plausible = 8181;
