@@ -84,6 +84,10 @@ in
               name = "Bazarr";
               url = "http://${quasar}:${toString ports.bazarr}";
             };
+            bentopdf = {
+              name = "BentoPDF";
+              url = "http://${quasar}:${toString ports.bentopdf}";
+            };
             calibre-web = {
               name = "Calibre Web";
               url = "http://${quasar}:${toString ports.calibre}";
@@ -140,13 +144,13 @@ in
               name = "Prometheus";
               url = "http://${quasar}:${toString ports.prometheus}";
             };
-            plausible = {
-              name = "Plausible";
-              url = "http://localhost:${toString ports.plausible}";
-            };
             prowlarr = {
               name = "Prowlarr";
               url = "http://${quasar}:${toString ports.prowlarr}";
+            };
+            qbittorrent = {
+              name = "qBittorrent";
+              url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             };
             radarr = {
               name = "Radarr";
@@ -156,13 +160,9 @@ in
               name = "Sonarr";
               url = "http://${quasar}:${toString ports.sonarr}";
             };
-            bentopdf = {
-              name = "BentoPDF";
-              url = "http://${quasar}:${toString ports.bentopdf}";
-            };
-            qbittorrent = {
-              name = "qBittorrent";
-              url = "http://${quasar}:${toString ports.qbittorrent.webui}";
+            umami = {
+              name = "Umami";
+              url = "http://localhost:${toString ports.umami}";
             };
             unraid = {
               name = "Unraid";
@@ -201,11 +201,6 @@ in
           };
           loki = enabled;
           prometheus = enabled;
-        };
-
-        plausible = enabled // {
-          baseUrl = domain;
-          secretKeybaseFile = config.sops.secrets.plausible-secret.path;
         };
 
         postgres = enabled // {
@@ -285,6 +280,11 @@ in
               useInsecure = true;
             };
           };
+        };
+
+        umami = enabled // {
+          appSecretFile = config.sops.secrets.plausible-secret.path;
+          baseUrl = domain;
         };
       };
   };

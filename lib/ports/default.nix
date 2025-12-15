@@ -52,5 +52,6 @@
     sonarr = 8989;
     stirling-pdf = 8087;
     tandoor = 9040;
+    umami = 9042;
   };
 }
