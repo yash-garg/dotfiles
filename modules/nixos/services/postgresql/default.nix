@@ -14,7 +14,7 @@ in
 {
   options.${namespace}.services.postgres = {
     enable = mkEnableOption "Enable postgresql service";
-    package = mkOpt types.package pkgs.postgresql_17 "The package to use for postgresql";
+    package = mkOpt types.package pkgs.postgresql_18 "The package to use for postgresql";
     backup = {
       enable = mkEnableOption "Enable restic backup for PostgreSQL";
       url =
