@@ -37,6 +37,7 @@
     miniflux = 5600;
     ncps = 9022;
     n8n = 5678;
+    nitter = 9045;
     ollama = 11434;
     paperless-ngx = 8010;
     plausible = 8181;
@@ -49,6 +50,7 @@
     };
     radarr = 7878;
     readarr = 8787;
+    redis = 6379;
     sonarr = 8989;
     stirling-pdf = 8087;
     tandoor = 9040;
