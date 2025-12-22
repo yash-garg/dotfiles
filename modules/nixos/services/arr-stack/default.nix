@@ -38,19 +38,28 @@ in
 
       prowlarr = enabled // {
         openFirewall = true;
-        settings.server.port = ports.prowlarr;
+        settings = {
+          auth.authenticationMethod = "External";
+          server.port = ports.prowlarr;
+        };
       };
 
       radarr = enabled // {
         inherit (cfg) group;
         openFirewall = true;
-        settings.server.port = ports.radarr;
+        settings = {
+          auth.authenticationMethod = "External";
+          server.port = ports.radarr;
+        };
       };
 
       sonarr = enabled // {
         inherit (cfg) group;
         openFirewall = true;
-        settings.server.port = ports.sonarr;
+        settings = {
+          auth.authenticationMethod = "External";
+          server.port = ports.sonarr;
+        };
       };
     };
 
