@@ -81,6 +81,13 @@ in
               success-threshold = 2;
             };
           };
+          metrics = true;
+          storage = {
+            type = "postgres";
+            path = "postgresql:///gatus?host=/run/postgresql";
+            maximum-number-of-results = 1000;
+            maximum-number-of-events = 1000;
+          };
           web.port = ports.gatus;
           connectivity.checker = {
             target = "1.1.1.1:53";
@@ -95,6 +102,25 @@ in
           };
         };
       };
+
+      postgresql = {
+        ensureDatabases = [ "gatus" ];
+        ensureUsers = [
+          {
+            name = "gatus";
+            ensureDBOwnership = true;
+          }
+        ];
+      };
+
+      prometheus.scrapeConfigs = [
+        {
+          job_name = "gatus";
+          static_configs = [
+            { targets = [ "localhost:${toString ports.gatus}" ]; }
+          ];
+        }
+      ];
 
       traefik.dynamicConfigOptions.http = {
         routers.gatus = {
