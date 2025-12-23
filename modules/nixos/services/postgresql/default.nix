@@ -15,6 +15,7 @@ in
   options.${namespace}.services.postgres = {
     enable = mkEnableOption "Enable postgresql service";
     package = mkOpt types.package pkgs.postgresql_18 "The package to use for postgresql";
+    port = mkOpt types.int ports.postgres "The port for the postgresql service";
     backup = {
       enable = mkEnableOption "Enable restic backup for PostgreSQL";
       url =
@@ -43,6 +44,7 @@ in
             ensureClauses.superuser = true;
           }
         ];
+        settings.port = cfg.port;
       };
 
       postgresqlBackup = mkIf cfg.backup.enable {

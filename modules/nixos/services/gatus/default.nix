@@ -26,11 +26,20 @@ let
     endpoints = mapAttrsToList (
       _: endpoint:
       let
-        conditions = [
-          "[STATUS] == 200"
-          "[RESPONSE_TIME] < 1000"
-        ]
-        ++ endpoint.extraConditions;
+        # Determine if this is a TCP/UDP endpoint based on URL prefix
+        isTcpUdp = (hasPrefix "tcp://" endpoint.url) || (hasPrefix "udp://" endpoint.url);
+
+        # Use different default conditions for TCP/UDP vs HTTP endpoints
+        defaultConditions =
+          if isTcpUdp then
+            [ "[CONNECTED] == true" ]
+          else
+            [
+              "[STATUS] == 200"
+              "[RESPONSE_TIME] < 1000"
+            ];
+
+        conditions = defaultConditions ++ endpoint.extraConditions;
       in
       {
         inherit (endpoint) name url interval;

@@ -136,17 +136,29 @@ in
               name = "Miniflux";
               url = "http://${quasar}:${toString ports.miniflux}";
             };
+            minecraft-server = {
+              name = "Minecraft Server";
+              url = "udp://${vortex}:${toString ports.minecraft}";
+            };
             minecraft-map = {
               name = "Minecraft Map";
               url = "http://${vortex}:${toString ports.pl3xmap}";
             };
             n8n = {
-              name = "n8n";
+              name = "N8N";
               url = "http://${quasar}:${toString ports.n8n}";
             };
             paperless = {
-              name = "Paperless";
+              name = "Paperless NGX";
               url = "http://${quasar}:${toString ports.paperless-ngx}";
+            };
+            postgres-primary = {
+              name = "PostgreSQL Primary";
+              url = "tcp://localhost:${toString ports.postgres}";
+            };
+            postgres-secondary = {
+              name = "PostgreSQL Secondary";
+              url = "tcp://${quasar}:${toString ports.postgres}";
             };
             prometheus = {
               name = "Prometheus";
