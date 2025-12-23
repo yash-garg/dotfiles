@@ -108,6 +108,10 @@ in
               name = "Grafana";
               url = "http://localhost:9092";
             };
+            golink = {
+              name = "Golink";
+              url = "https://go.${tailnet}";
+            };
             home-assistant = {
               name = "Home Assistant";
               url = "http://homeassistant.${tailnet}:8123";
