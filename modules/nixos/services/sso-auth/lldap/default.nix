@@ -15,6 +15,7 @@ in
     domain = mkOpt types.str "yashgarg.dev" "Base domain for lldap";
     user = mkOpt types.str "lldap" "The user which lldap will run on";
     group = mkOpt types.str "lldap" "The group of the user which lldap will run on";
+    port = mkOpt types.int ports.lldap "The port on which lldap will run";
   };
 
   config = mkIf cfg.enable {
@@ -31,7 +32,7 @@ in
         environmentFile = config.sops.secrets.lldap-env.path;
         silenceForceUserPassResetWarning = true;
         settings = {
-          http_port = ports.lldap;
+          http_port = cfg.port;
           ldap_base_dn = "dc=${concatStringsSep ",dc=" (splitString "." cfg.domain)}";
           ldap_user_email = "alt@${cfg.domain}";
           ldap_user_pass = "$LLDAP_USER_PASSWORD";
@@ -49,7 +50,7 @@ in
         };
         services.lldap.loadBalancer = {
           servers = [
-            { url = "http://localhost:${toString config.services.lldap.settings.http_port}"; }
+            { url = "http://localhost:${toString cfg.port}"; }
           ];
         };
       };

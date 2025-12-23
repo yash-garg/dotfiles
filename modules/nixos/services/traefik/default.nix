@@ -111,6 +111,10 @@ in
           addRoutersLabels = true;
           addServicesLabels = true;
         };
+
+        ping = {
+          entryPoint = "traefik";
+        };
       };
 
       dynamicConfigOptions.http = {
@@ -136,7 +140,7 @@ in
 
         middlewares = {
           auth.forwardAuth = {
-            address = "http://localhost:9091/api/authz/forward-auth";
+            address = "http://localhost:${toString ports.authelia}/api/authz/forward-auth";
             trustForwardHeader = true;
             authResponseHeaders = [
               "Remote-User"

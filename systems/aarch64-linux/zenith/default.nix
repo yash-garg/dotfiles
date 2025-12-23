@@ -80,6 +80,10 @@ in
               name = "Actual Budget";
               url = "http://localhost:${toString ports.actual-budget}";
             };
+            authelia = {
+              name = "Authelia";
+              url = "http://localhost:${toString ports.authelia}";
+            };
             bazarr = {
               name = "Bazarr";
               url = "http://${quasar}:${toString ports.bazarr}";
@@ -120,6 +124,10 @@ in
               name = "Linkding";
               url = "http://localhost:${toString ports.linkding}";
             };
+            lldap = {
+              name = "LLDAP";
+              url = "http://localhost:${toString ports.lldap}";
+            };
             mealie = {
               name = "Mealie";
               url = "http://${quasar}:${toString ports.mealie}";
@@ -159,6 +167,10 @@ in
             sonarr = {
               name = "Sonarr";
               url = "http://${quasar}:${toString ports.sonarr}";
+            };
+            traefik = {
+              name = "Traefik";
+              url = "http://localhost:8080/ping";
             };
             umami = {
               name = "Umami";
