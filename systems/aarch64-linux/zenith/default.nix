@@ -259,7 +259,7 @@ in
           domain = homeDomain;
           environmentFiles = [ config.sops.secrets.cf-tokens.path ];
           services = {
-            bazarr.url = "http://${quasar}:${toString ports.bazarr}";
+            bazarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.bazarr}";
             books.url = "http://${quasar}:${toString ports.calibre}";
             fs = {
               url = "http://${quasar}:${toString ports.copyparty}";
@@ -285,15 +285,15 @@ in
               useAuth = false;
             };
             prometheus.url = "http://${quasar}:${toString ports.prometheus}";
-            prowlarr.url = "http://${quasar}:${toString ports.prowlarr}";
+            prowlarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             restic.url = "http://${nova}:9898";
-            radarr.url = "http://${quasar}:${toString ports.radarr}";
+            radarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.radarr}";
             rss = {
               url = "http://${quasar}:${toString ports.miniflux}";
               useAuth = false;
             };
-            sonarr.url = "http://${quasar}:${toString ports.sonarr}";
+            sonarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.sonarr}";
             stream = {
               url = "http://${quasar}:${toString ports.jellyfin}";
               useAuth = false;

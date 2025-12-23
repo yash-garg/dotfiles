@@ -99,7 +99,8 @@ in
             title = "Homelab Status | Yash Garg";
             description = "Monitoring for My Services";
             header = "Yash's Homelab Status";
-            link = "https://status.${cfg.domain}";
+            link = "https://${cfg.domain}";
+            logo = "https://${cfg.domain}/img/logo.png";
             dark-mode = true;
           };
         };
