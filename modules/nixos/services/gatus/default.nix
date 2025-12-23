@@ -44,6 +44,7 @@ let
       {
         inherit (endpoint) name url interval;
         inherit conditions;
+        alerts = [ { type = "ntfy"; } ];
         ui = {
           hide-conditions = true;
           hide-hostname = true;
@@ -73,6 +74,7 @@ in
         settings = recursiveUpdate endpointsConfig {
           alerting.ntfy = {
             topic = "$GATUS_TOPIC";
+            url = "https://ntfy.sh";
             click = "https://status.${cfg.domain}";
             default-alert = {
               description = "Gatus health check";
