@@ -44,7 +44,10 @@ let
       {
         inherit (endpoint) name url interval;
         inherit conditions;
-        alerts = [ { type = "ntfy"; } ];
+        alerts = [
+          { type = "discord"; }
+          { type = "ntfy"; }
+        ];
         ui = {
           hide-conditions = true;
           hide-hostname = true;
@@ -76,15 +79,20 @@ in
       gatus = enabled // {
         environmentFile = config.sops.secrets.gatus-env.path;
         settings = recursiveUpdate endpointsConfig {
-          alerting.ntfy = {
-            topic = "$GATUS_TOPIC";
-            url = "https://ntfy.sh";
-            click = "https://status.${cfg.domain}";
-            default-alert = {
-              description = "Gatus Health Check";
-              send-on-resolved = true;
-              failure-threshold = cfg.alerting.failureThreshold;
-              success-threshold = cfg.alerting.successThreshold;
+          alerting = {
+            discord = {
+              webhook-url = "\${GATUS_WEBHOOK_URL}";
+            };
+            ntfy = {
+              topic = "\${GATUS_TOPIC}";
+              url = "https://ntfy.sh";
+              click = "https://status.${cfg.domain}";
+              default-alert = {
+                description = "Gatus Health Check";
+                send-on-resolved = true;
+                failure-threshold = cfg.alerting.failureThreshold;
+                success-threshold = cfg.alerting.successThreshold;
+              };
             };
           };
           metrics = true;
