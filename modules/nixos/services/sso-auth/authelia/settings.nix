@@ -32,6 +32,7 @@ in
       {
         domain = "*.${domain}";
         policy = "one_factor";
+        subject = [ "group:internal" ];
       }
     ];
   };
@@ -99,13 +100,50 @@ in
           "preferred_username"
         ];
       };
+      authorization_policies = {
+        internal_one_factor = {
+          default_policy = "deny";
+          rules = [
+            {
+              policy = "one_factor";
+              subject = [ "group:internal" ];
+            }
+          ];
+        };
+        mealie_access = {
+          default_policy = "deny";
+          rules = [
+            {
+              policy = "one_factor";
+              subject = [
+                "group:internal"
+                "group:mealie-admins"
+                "group:mealie-users"
+              ];
+            }
+          ];
+        };
+        jellyfin_access = {
+          default_policy = "deny";
+          rules = [
+            {
+              policy = "one_factor";
+              subject = [
+                "group:internal"
+                "group:jellyfin-admins"
+                "group:jellyfin-users"
+              ];
+            }
+          ];
+        };
+      };
       clients = [
         {
           client_id = "actual-budget";
           client_name = "Actual Budget";
           client_secret = "$pbkdf2-sha512$310000$iWomIaFYWHHBwj3ILVzL.Q$l9rRfes89uaXIGQnSZqtlLsAa8zMkjHWvUL39mnjHXBq.bokav5Z.dc3.mcUZxkW.5M64InDQZ5eg/81HWlETA";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           grant_types = [
             "authorization_code"
           ];
@@ -147,7 +185,7 @@ in
           client_name = "Forgejo";
           client_secret = "$pbkdf2-sha512$310000$jZCkAHO4SX26j3DUiyRpfw$kbL7tPjDrbLK4YtFt7kLLKl2LfWoWghrp8bJFCfmKGCgKa2RXUiu1B2C/Tx19Xfn38J7z/ToB0ckgvp15CY99A";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           grant_types = [
             "authorization_code"
           ];
@@ -168,7 +206,7 @@ in
           client_name = "Grafana";
           client_secret = "$pbkdf2-sha512$310000$nWiTXHRVFg.0p0DFs0Fr9Q$ZkDnbKytBDwzW7JAdmreKAFnsdk93k5Y91WqefgppXayVU6xVtGokDj2/qoyzqbBgP2FhX0Jg7Vf4ADOWdIuWA";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           claims_policy = "grafana";
           grant_types = [
             "authorization_code"
@@ -190,7 +228,7 @@ in
           client_name = "Immich";
           client_secret = "$pbkdf2-sha512$310000$we2.VRlN/pvtnZoUt0.kpw$qRAAKL..H4GnzEzMiMH.MPoXLy0IB3BslhB2.0gTVK99cuAyQEOsNNQ052huyqgpwdpTHVfaU68CmUzC.gnLGg";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           redirect_uris = [
             "https://photos.${domain}/auth/login"
             "https://photos.${domain}/user-settings"
@@ -209,7 +247,7 @@ in
           client_name = "Jellyfin";
           client_secret = "$pbkdf2-sha512$310000$6MaPLvchHznyIyOpGM0pjw$wIBCSHF5R57zG9DtXyDn65jhPpkBL63/4PXh.MSYbiRxln.jg65OAF.E.cluk9ljSayfy1GemMYMAZG82JcwFg";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "jellyfin_access";
           redirect_uris = [
             "https://stream.${domain}/sso/OID/redirect/authelia"
           ];
@@ -226,7 +264,7 @@ in
           client_name = "Linkding";
           client_secret = "$pbkdf2-sha512$310000$jXF45KQfnCDkLgwYlPFUSg$KKe9Gno3dHq8uZkyD9ItqU4mVXkhkk2zfdHTsqpbWcp8oxkxZ5nAgwqgj.wpnTW.NkXs66zFdSdSFT3t2b04gA";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           redirect_uris = [
             "https://links.${domain}/oidc/callback/"
           ];
@@ -243,7 +281,7 @@ in
           client_name = "Mealie";
           client_secret = "$pbkdf2-sha512$310000$2134vs5nM5P6LhYDJEGIKg$kJ4ddV127kSLE7FcVHReV/mZ9d6rjT.mntrKqoh.8WndDhoCLf3laThkNbvYnQKGu6wo3FNNuGMkmD0tNP8Xsg";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "mealie_access";
           grant_types = [ "authorization_code" ];
           redirect_uris = [ "https://meals.${domain}/login" ];
           scopes = [
@@ -260,7 +298,7 @@ in
           client_name = "Miniflux";
           client_secret = "$pbkdf2-sha512$310000$ixsi8LqA7zxNPLXbpjqSAQ$1GQ.NssJ/QKvD7qCgwxsT7PFpD4ZxilDDq17.GSqFbcqueNGJy.2Jv8xYszFjumkE7pLNTbG0Lg6bR2clzTXvw";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           redirect_uris = [
             "https://rss.${domain}/oauth2/oidc/callback"
           ];
@@ -277,7 +315,7 @@ in
           client_name = "Paperless";
           client_secret = "$pbkdf2-sha512$310000$L2POBBIm7MhKxfGUwCXZNg$hqRUxAB4wBa3jMePdFMIG6jFOYdstgMiowwzc11RaOJMyj4eBr74ZJY1jClATbCx51oTO.JRz1TGgtzcrOegnQ";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           redirect_uris = [
             "https://paperless.${domain}/accounts/oidc/authelia/login/callback/"
           ];
@@ -295,7 +333,7 @@ in
           client_name = "Tandoor";
           client_secret = "$pbkdf2-sha512$310000$zyxRgO3vxU1QQI/doVsRaQ$wHW9bDWtBitWrQgRuOHi5lOVtfC44NC12mDD3JXUGtsA8JCARTsVUlUnt42KyON5RzlYO95UVr.tJlDURcS.Bw";
           public = false;
-          authorization_policy = "one_factor";
+          authorization_policy = "internal_one_factor";
           grant_types = [
             "authorization_code"
           ];
