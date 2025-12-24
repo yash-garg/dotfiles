@@ -56,6 +56,15 @@ in
         settingsFiles = [ config.sops.secrets.notifier-settings.path ];
       };
 
+      prometheus.scrapeConfigs = [
+        {
+          job_name = "authelia";
+          static_configs = [
+            { targets = [ "localhost:${toString ports.exporters.authelia}" ]; }
+          ];
+        }
+      ];
+
       traefik.dynamicConfigOptions.http = {
         routers.authelia = {
           rule = "Host(`auth.${cfg.domain}`)";

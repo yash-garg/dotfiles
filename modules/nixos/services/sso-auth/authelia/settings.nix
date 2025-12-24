@@ -411,6 +411,7 @@ in
 
   telemetry.metrics = {
     enabled = true;
+    address = "tcp://:${toString ports.exporters.authelia}/metrics";
   };
 
   totp = {

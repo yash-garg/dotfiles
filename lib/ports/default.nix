@@ -11,6 +11,7 @@
     calibre = 8083;
     copyparty = 9005;
     exporters = {
+      authelia = 9107;
       immich = 2284;
       minecraft = 25585;
       node = 9100;
