@@ -60,6 +60,10 @@ in
     enable = mkEnableOption "Gatus Uptime Monitor";
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
     endpoints = mkOpt (types.attrsOf endpointType) { } "Endpoints to monitor";
+    alerting = {
+      failureThreshold = mkOpt types.int 1 "Number of consecutive failures before alerting";
+      successThreshold = mkOpt types.int 2 "Number of consecutive successes before resolving";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -77,10 +81,10 @@ in
             url = "https://ntfy.sh";
             click = "https://status.${cfg.domain}";
             default-alert = {
-              description = "Gatus health check";
+              description = "Gatus Health Check";
               send-on-resolved = true;
-              failure-threshold = 5;
-              success-threshold = 2;
+              failure-threshold = cfg.alerting.failureThreshold;
+              success-threshold = cfg.alerting.successThreshold;
             };
           };
           metrics = true;
