@@ -30,6 +30,11 @@ in
         policy = "two_factor";
       }
       {
+        domain = "books.${domain}";
+        policy = "bypass";
+        resources = [ "^/opds/" ];
+      }
+      {
         domain = "links.${domain}";
         policy = "bypass";
         resources = [ "^/api/" ];
