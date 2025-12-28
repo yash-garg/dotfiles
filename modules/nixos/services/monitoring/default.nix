@@ -177,8 +177,14 @@ in
           in
           {
             auth.disable_login_form = ssoEnabled;
-            "auth.generic_oauth" = {
+            "auth.proxy" = {
               enabled = ssoEnabled;
+              header_name = "Remote-User";
+              auto_sign_up = true;
+              role_attribute_path = "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'";
+            };
+            "auth.generic_oauth" = {
+              enabled = false;
               name = "Authelia";
               icon = "signin";
               scopes = "openid,email,profile,groups";
@@ -334,6 +340,7 @@ in
         routers.grafana = {
           rule = "Host(`grafana.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "auth" ];
           service = "grafana";
           tls.certResolver = "letsencrypt";
         };
