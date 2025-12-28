@@ -290,10 +290,7 @@ in
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             restic.url = "http://${nova}:9898";
             radarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.radarr}";
-            rss = {
-              url = "http://${quasar}:${toString ports.miniflux}";
-              useAuth = false;
-            };
+            rss.url = "http://${quasar}:${toString ports.miniflux}";
             sonarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.sonarr}";
             stream = {
               url = "http://${quasar}:${toString ports.jellyfin}";

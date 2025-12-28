@@ -48,6 +48,11 @@ in
         ];
       }
       {
+        domain = "rss.${domain}";
+        policy = "bypass";
+        resources = [ "^/fever/" ];
+      }
+      {
         domain = "*.${domain}";
         policy = "one_factor";
         subject = [ "group:internal" ];

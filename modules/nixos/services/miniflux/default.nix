@@ -37,6 +37,8 @@ in
           METRICS_ALLOWED_NETWORKS = "0.0.0.0/0";
           METRICS_COLLECTOR = 1;
           DISABLE_LOCAL_AUTH = 1;
+          AUTH_PROXY_HEADER = "Remote-User";
+          AUTH_PROXY_USER_CREATION = 1;
           OAUTH2_USER_CREATION = 1;
           OAUTH2_PROVIDER = "oidc";
           OAUTH2_OIDC_PROVIDER_NAME = "Authelia";
@@ -56,6 +58,7 @@ in
         routers.miniflux = {
           rule = "Host(`rss.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "auth" ];
           service = "miniflux";
           tls.certResolver = "letsencrypt";
         };
