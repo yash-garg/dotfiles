@@ -49,10 +49,10 @@ in
         LD_DB_ENGINE = "postgres";
         LD_DB_HOST = "/run/postgresql/";
         LD_DB_USER = cfg.database.user;
-        LD_ENABLE_AUTH_PROXY = "False";
+        LD_ENABLE_AUTH_PROXY = "True";
         LD_AUTH_PROXY_USERNAME_HEADER = "HTTP_REMOTE_USER";
         LD_AUTH_PROXY_LOGOUT_URL = "https://auth.${cfg.proxy.domain}/logout";
-        LD_ENABLE_OIDC = "True";
+        LD_ENABLE_OIDC = "False";
         OIDC_OP_AUTHORIZATION_ENDPOINT = "https://auth.${cfg.proxy.domain}/api/oidc/authorization";
         OIDC_OP_TOKEN_ENDPOINT = "https://auth.${cfg.proxy.domain}/api/oidc/token";
         OIDC_OP_USER_ENDPOINT = "https://auth.${cfg.proxy.domain}/api/oidc/userinfo";
@@ -76,6 +76,7 @@ in
         routers.linkding = {
           rule = "Host(`links.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "auth" ];
           service = "linkding";
           tls.certResolver = "letsencrypt";
         };

@@ -30,6 +30,11 @@ in
         policy = "two_factor";
       }
       {
+        domain = "links.${domain}";
+        policy = "bypass";
+        resources = [ "^/api/" ];
+      }
+      {
         domain = "*.${domain}";
         policy = "one_factor";
         subject = [ "group:internal" ];
