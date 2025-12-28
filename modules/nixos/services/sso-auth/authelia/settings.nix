@@ -35,6 +35,14 @@ in
         resources = [ "^/api/" ];
       }
       {
+        domain = "paperless.${domain}";
+        policy = "bypass";
+        resources = [
+          "^/api/"
+          "^/share/"
+        ];
+      }
+      {
         domain = "*.${domain}";
         policy = "one_factor";
         subject = [ "group:internal" ];

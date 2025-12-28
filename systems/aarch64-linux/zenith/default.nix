@@ -276,10 +276,7 @@ in
               useAuth = false;
             };
             n8n.url = "http://${quasar}:${toString ports.n8n}";
-            paperless = {
-              url = "http://${quasar}:${toString ports.paperless-ngx}";
-              useAuth = false;
-            };
+            paperless.url = "http://${quasar}:${toString ports.paperless-ngx}";
             pdf = {
               url = "http://${quasar}:${toString ports.bentopdf}";
               useAuth = false;

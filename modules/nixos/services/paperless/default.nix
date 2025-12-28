@@ -55,9 +55,12 @@ in
           PAPERLESS_TIME_ZONE = "Asia/Kolkata";
           PAPERLESS_DISABLE_REGULAR_LOGIN = true;
           PAPERLESS_URL = "https://paperless.${cfg.proxy.domain}";
-          PAPERLESS_REDIRECT_LOGIN_TO_SSO = true;
+          PAPERLESS_REDIRECT_LOGIN_TO_SSO = false;
           PAPERLESS_OCR_SKIP_ARCHIVE_FILE = "always";
           PAPERLESS_WEBHOOKS_ALLOWED_SCHEMES = "https";
+          PAPERLESS_ENABLE_HTTP_REMOTE_USER = true;
+          PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME = "HTTP_REMOTE_USER";
+          PAPERLESS_LOGOUT_REDIRECT_URL = "https://auth.${cfg.proxy.domain}/logout";
         };
       };
 
@@ -74,6 +77,7 @@ in
         routers.paperless = {
           rule = "Host(`paperless.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "auth" ];
           service = "paperless";
           tls.certResolver = "letsencrypt";
         };
