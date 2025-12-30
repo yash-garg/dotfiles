@@ -18,6 +18,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets.console-token = {
+      sopsFile = snowfall.fs.get-file "secrets/crowdsec.yaml";
+      key = "console_token";
+    };
+
     services = {
       crowdsec = enabled // {
         inherit (cfg) user group;
@@ -68,6 +73,17 @@ in
         };
         settings = {
           lapi.credentialsFile = "/var/lib/crowdsec/state/lapi.yaml";
+          capi.credentialsFile = "/var/lib/crowdsec/state/capi.yaml";
+          console = {
+            tokenFile = config.sops.secrets.console-token.path;
+            configuration = {
+              share_manual_decisions = true;
+              share_custom = true;
+              share_tainted = true;
+              share_context = true;
+              console_management = true;
+            };
+          };
           general = {
             api.server = enabled // {
               listen_uri = "127.0.0.1:${toString cfg.port}";
