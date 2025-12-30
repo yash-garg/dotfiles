@@ -10,8 +10,10 @@
     bentopdf = 8088;
     calibre = 8083;
     copyparty = 9005;
+    crowdsec = 6060;
     exporters = {
       authelia = 9107;
+      crowdsec = 9108;
       immich = 2284;
       minecraft = 25585;
       node = 9100;

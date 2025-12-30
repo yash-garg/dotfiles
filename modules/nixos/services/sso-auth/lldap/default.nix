@@ -45,7 +45,10 @@ in
           rule = "Host(`users.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
           service = "lldap";
-          middlewares = [ "auth" ];
+          middlewares = [
+            "crowdsec"
+            "auth"
+          ];
           tls.certResolver = "letsencrypt";
         };
         services.lldap.loadBalancer = {

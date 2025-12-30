@@ -125,6 +125,7 @@ in
         routers.immich = {
           rule = "Host(`photos.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "crowdsec" ];
           service = "immich";
           tls.certResolver = "letsencrypt";
         };

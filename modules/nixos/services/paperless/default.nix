@@ -77,7 +77,10 @@ in
         routers.paperless = {
           rule = "Host(`paperless.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "auth" ];
+          middlewares = [
+            "crowdsec"
+            "auth"
+          ];
           service = "paperless";
           tls.certResolver = "letsencrypt";
         };

@@ -340,7 +340,10 @@ in
         routers.grafana = {
           rule = "Host(`grafana.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "auth" ];
+          middlewares = [
+            "crowdsec"
+            "auth"
+          ];
           service = "grafana";
           tls.certResolver = "letsencrypt";
         };

@@ -41,6 +41,7 @@ in
           rule = "Host(`analytics.${cfg.baseUrl}`)";
           entryPoints = [ "websecure" ];
           service = "umami";
+          middlewares = [ "crowdsec" ];
           tls.certResolver = "letsencrypt";
         };
         services.umami.loadBalancer = {

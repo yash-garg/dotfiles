@@ -58,7 +58,10 @@ in
         routers.miniflux = {
           rule = "Host(`rss.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "auth" ];
+          middlewares = [
+            "crowdsec"
+            "auth"
+          ];
           service = "miniflux";
           tls.certResolver = "letsencrypt";
         };

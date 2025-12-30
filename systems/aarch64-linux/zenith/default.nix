@@ -69,6 +69,8 @@ in
           domain = homeDomain;
         };
 
+        crowdsec = enabled;
+
         forgejo = enabled // {
           domain = homeDomain;
         };
@@ -99,6 +101,11 @@ in
             copyparty = {
               name = "Copyparty";
               url = "http://${quasar}:${toString ports.copyparty}";
+            };
+            crowdsec = {
+              name = "CrowdSec";
+              url = "http://localhost:${toString ports.crowdsec}/v1/heartbeat";
+              extraConditions = [ "[STATUS] == 401" ];
             };
             forgejo = {
               name = "Forgejo";
@@ -288,14 +295,16 @@ in
             prometheus.url = "http://${quasar}:${toString ports.prometheus}";
             prowlarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
-            restic.url = "http://${nova}:9898";
             radarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.radarr}";
             rss.url = "http://${quasar}:${toString ports.miniflux}";
             sonarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.sonarr}";
             stream = {
               url = "http://${quasar}:${toString ports.jellyfin}";
               useAuth = false;
-              middlewares = [ "jellyfin-redirect" ];
+              middlewares = [
+                "crowdsec"
+                "jellyfin-redirect"
+              ];
             };
             unraid = {
               url = "https://${nova}";

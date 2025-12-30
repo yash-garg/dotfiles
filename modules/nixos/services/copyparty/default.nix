@@ -77,6 +77,7 @@ in
         routers.copyparty = {
           rule = "Host(`fs.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "crowdsec" ];
           service = "copyparty";
           tls.certResolver = "letsencrypt";
         };

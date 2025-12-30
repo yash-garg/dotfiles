@@ -87,6 +87,7 @@ in
         routers.forgejo = {
           rule = "Host(`git.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "crowdsec" ];
           service = "forgejo";
           tls.certResolver = "letsencrypt";
         };

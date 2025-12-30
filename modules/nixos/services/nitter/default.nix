@@ -42,6 +42,7 @@ in
         routers.nitter = {
           rule = "Host(`x.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "crowdsec" ];
           service = "nitter";
           tls.certResolver = "letsencrypt";
         };

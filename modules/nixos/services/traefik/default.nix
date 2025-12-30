@@ -9,17 +9,22 @@ with lib.${namespace};
 let
   cfg = config.${namespace}.services.traefik;
 
-  mkRouter = name: {
-    inherit name;
-    value = {
-      rule = "Host(`${name}.${cfg.domain}`)";
-      entryPoints = [ "websecure" ];
-      service = name;
-      tls.certResolver = "letsencrypt";
-      middlewares =
-        (cfg.services.${name}.middlewares or [ ]) ++ optional (cfg.services.${name}.useAuth or true) "auth";
+  mkRouter =
+    name:
+    let
+      svc = cfg.services.${name};
+      middlewares = [ "crowdsec" ] ++ (optional (svc.useAuth or true) "auth") ++ (svc.middlewares or [ ]);
+    in
+    {
+      inherit name;
+      value = {
+        rule = "Host(`${name}.${cfg.domain}`)";
+        entryPoints = [ "websecure" ];
+        service = name;
+        tls.certResolver = "letsencrypt";
+        inherit middlewares;
+      };
     };
-  };
 
   mkService =
     {
@@ -57,6 +62,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets.crowdsec-api-key = {
+      sopsFile = snowfall.fs.get-file "secrets/traefik.yaml";
+      key = "crowdsec_api_key";
+      owner = "traefik";
+      group = "traefik";
+      mode = "0400";
+      restartUnits = [ "traefik.service" ];
+    };
+
     services.traefik = enabled // {
       inherit (cfg) environmentFiles;
 
@@ -77,7 +91,6 @@ in
         };
 
         entryPoints = {
-          minecraft.address = ":25565";
           web = {
             address = ":80";
             transport.respondingTimeouts = {
@@ -96,6 +109,11 @@ in
           };
         };
 
+        experimental.plugins.bouncer = {
+          moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
+          version = "v1.5.0-beta1";
+        };
+
         global = {
           checkNewVersion = false;
           sendAnonymousUsage = false;
@@ -112,9 +130,7 @@ in
           addServicesLabels = true;
         };
 
-        ping = {
-          entryPoint = "traefik";
-        };
+        ping.entryPoint = "traefik";
       };
 
       dynamicConfigOptions.http = {
@@ -128,7 +144,10 @@ in
                 entryPoints = [ "websecure" ];
                 service = "api@internal";
                 tls.certResolver = "letsencrypt";
-                middlewares = [ "auth" ];
+                middlewares = [
+                  "crowdsec"
+                  "auth"
+                ];
               };
             }
           ]
@@ -150,6 +169,27 @@ in
             ];
           };
 
+          crowdsec.plugin.bouncer = {
+            enabled = true;
+            logLevel = "INFO";
+            crowdsecMode = "stream";
+            crowdsecLapiScheme = "http";
+            crowdsecLapiHost = "127.0.0.1:${toString ports.crowdsec}";
+            crowdsecLapiKeyFile = config.sops.secrets.crowdsec-api-key.path;
+            forwardedHeadersTrustedIPs = [
+              "127.0.0.1/32"
+              "10.0.0.0/8"
+              "172.16.0.0/12"
+              "192.168.0.0/16"
+            ];
+            clientTrustedIPs = [
+              "127.0.0.1/32"
+              "10.0.0.0/8"
+              "172.16.0.0/12"
+              "192.168.0.0/16"
+            ];
+          };
+
           jellyfin-redirect.redirectRegex = {
             permanent = true;
             regex = "^https://stream.${cfg.domain}/?$";
@@ -157,9 +197,7 @@ in
           };
         };
 
-        serversTransports.insecure = {
-          insecureSkipVerify = true;
-        };
+        serversTransports.insecure.insecureSkipVerify = true;
       };
     };
 

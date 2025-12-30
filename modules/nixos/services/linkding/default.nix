@@ -76,7 +76,10 @@ in
         routers.linkding = {
           rule = "Host(`links.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "auth" ];
+          middlewares = [
+            "crowdsec"
+            "auth"
+          ];
           service = "linkding";
           tls.certResolver = "letsencrypt";
         };

@@ -16,9 +16,9 @@ let
         group = mkOpt types.str "" "Optional group for organizing endpoints";
         url = mkOpt types.nonEmptyStr "" "URL to monitor";
         interval = mkOpt types.nonEmptyStr "10m" "How often to check the endpoint";
-        extraConditions =
-          mkOpt (types.listOf types.nonEmptyStr) [ ]
-            "Additional conditions beyond the defaults";
+        extraConditions = mkOpt (types.listOf types.nonEmptyStr) [
+          "[STATUS] == 200"
+        ] "Force conditions to be true";
       };
     }
   );
@@ -29,17 +29,12 @@ let
         # Determine if this is a TCP/UDP endpoint based on URL prefix
         isTcpUdp = (hasPrefix "tcp://" endpoint.url) || (hasPrefix "udp://" endpoint.url);
 
-        # Use different default conditions for TCP/UDP vs HTTP endpoints
-        defaultConditions =
+        # Use different conditions for TCP/UDP vs HTTP endpoints
+        conditions =
           if isTcpUdp then
             [ "[CONNECTED] == true" ]
           else
-            [
-              "[STATUS] == 200"
-              "[RESPONSE_TIME] < 1000"
-            ];
-
-        conditions = defaultConditions ++ endpoint.extraConditions;
+            endpoint.extraConditions ++ [ "[RESPONSE_TIME] < 1000" ];
       in
       {
         inherit (endpoint) name url interval;
@@ -141,6 +136,7 @@ in
         routers.gatus = {
           rule = "Host(`status.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "crowdsec" ];
           service = "gatus";
           tls.certResolver = "letsencrypt";
         };

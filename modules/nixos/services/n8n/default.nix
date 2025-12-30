@@ -49,6 +49,7 @@ in
         routers.n8n = {
           rule = "Host(`n8n.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
+          middlewares = [ "crowdsec" ];
           service = "n8n";
           tls.certResolver = "letsencrypt";
         };
