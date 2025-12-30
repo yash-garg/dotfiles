@@ -75,6 +75,8 @@ in
       inherit (cfg) environmentFiles;
 
       staticConfigOptions = {
+        accessLog.format = "json";
+
         api = {
           dashboard = true;
           insecure = false;
@@ -120,7 +122,7 @@ in
         };
 
         log = {
-          level = "WARN";
+          level = "DEBUG";
           format = "json";
         };
 

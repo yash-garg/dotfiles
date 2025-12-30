@@ -45,16 +45,12 @@ in
           acquisitions = [
             {
               source = "journalctl";
-              journalctl_filter = [
-                "_SYSTEMD_UNIT=traefik.service"
-              ];
+              journalctl_filter = [ "_SYSTEMD_UNIT=traefik.service" ];
               labels.type = "traefik";
             }
             {
               source = "journalctl";
-              journalctl_filter = [
-                "_SYSTEMD_UNIT=authelia-main.service"
-              ];
+              journalctl_filter = [ "_SYSTEMD_UNIT=authelia-main.service" ];
               labels.type = "authelia";
             }
           ];

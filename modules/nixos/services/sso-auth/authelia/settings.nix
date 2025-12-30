@@ -391,9 +391,8 @@ in
   };
 
   log = {
-    level = "info";
+    level = "debug";
     format = "json";
-    file_path = "/tmp/authelia.log";
     keep_stdout = true;
   };
 
