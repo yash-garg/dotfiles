@@ -35,6 +35,14 @@ in
         resources = [ "^/opds/" ];
       }
       {
+        domain = "books.${domain}";
+        policy = "one_factor";
+        subject = [
+          "group:internal"
+          "group:books-users"
+        ];
+      }
+      {
         domain = "links.${domain}";
         policy = "bypass";
         resources = [ "^/api/" ];
