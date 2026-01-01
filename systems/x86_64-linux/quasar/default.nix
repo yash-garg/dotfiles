@@ -37,7 +37,7 @@ in
     services = {
       arr-stack = enabled // {
         mediaDirs = [
-          "/mnt/data/media"
+          "/mnt/media/main"
           "/mnt/media/samsung"
           "/mnt/media/wd"
         ];
@@ -46,7 +46,7 @@ in
       bentopdf = enabled;
 
       calibre-web = enabled // {
-        mediaDir = "/mnt/data/media/books";
+        mediaDir = "/mnt/books";
       };
 
       copyparty = enabled // {
@@ -54,7 +54,7 @@ in
         group = "users";
         volumes = {
           "/books" = {
-            path = "/mnt/data/media/books";
+            path = "/mnt/books";
             access = {
               r.wmda = "*";
             };
@@ -72,7 +72,7 @@ in
             };
           };
           "/photos" = {
-            path = "/mnt/data/media/photos";
+            path = "/mnt/photos";
             access = {
               r.wmda = "*";
             };
@@ -103,7 +103,7 @@ in
 
       immich = enabled // {
         backup = enabled;
-        mediaDir = "/mnt/data/media/photos";
+        mediaDir = "/mnt/photos";
       };
 
       mealie = enabled;
