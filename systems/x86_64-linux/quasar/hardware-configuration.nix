@@ -46,6 +46,7 @@ in
         ];
       };
       mounts = {
+        "/mnt/backups" = "/mnt/user/backups";
         "/mnt/books" = "/mnt/user/data/media/books";
         "/mnt/documents" = "/mnt/user/documents";
         "/mnt/media/main/movies" = "/mnt/user/data/media/movies";
