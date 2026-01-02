@@ -73,7 +73,7 @@ in
       lldapEnabled = config.${namespace}.services.lldap.enable;
     in
     {
-      password_reset.disable = true;
+      password_reset.disable = false;
       refresh_interval = "5m";
       file = mkIf (!lldapEnabled) {
         inherit (config.sops.secrets.user-settings) path;
