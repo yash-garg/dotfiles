@@ -32,7 +32,7 @@ in
       {
         domain = "books.${domain}";
         policy = "bypass";
-        resources = [ "^/opds/" ];
+        resources = [ "^/opds(/.*)?$" ];
       }
       {
         domain = "books.${domain}";
@@ -45,20 +45,20 @@ in
       {
         domain = "links.${domain}";
         policy = "bypass";
-        resources = [ "^/api/" ];
+        resources = [ "^/api(/.*)?$" ];
       }
       {
         domain = "paperless.${domain}";
         policy = "bypass";
         resources = [
-          "^/api/"
-          "^/share/"
+          "^/api(/.*)?$"
+          "^/share(/.*)?$"
         ];
       }
       {
         domain = "rss.${domain}";
         policy = "bypass";
-        resources = [ "^/fever/" ];
+        resources = [ "^/fever(/.*)?$" ];
       }
       {
         domain = "*.${domain}";
