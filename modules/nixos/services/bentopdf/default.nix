@@ -14,7 +14,7 @@ in
   options.${namespace}.services.bentopdf = {
     enable = mkEnableOption "BentoPDF: A Privacy First PDF Toolkit";
     port = mkOpt types.int ports.bentopdf "The port for the BentoPDF service";
-    version = mkOpt types.str "v1.15.3" "The version of the BentoPDF service";
+    version = mkOpt types.str "v1.15.4" "The version of the BentoPDF service";
   };
 
   config = mkIf cfg.enable {
