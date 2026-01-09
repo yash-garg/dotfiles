@@ -12,6 +12,8 @@ in
 {
   options.${namespace}.services.linkding = {
     enable = mkEnableOption "Easy to use self-hosted bookmark manager";
+    port = mkOpt types.int ports.linkding "The port for the linkding service";
+    version = mkOpt types.str "1.45.0" "The version of the linkding service";
     database = {
       enable = mkEnableOption "Enable the linkding database";
       user = mkOpt types.str "linkding" "The user for the linkding database";
@@ -35,9 +37,9 @@ in
     };
 
     virtualisation.oci-containers.containers.linkding = {
-      image = "sissbruecker/linkding:latest";
+      image = "sissbruecker/linkding:${cfg.version}";
       autoStart = true;
-      ports = [ "${toString ports.linkding}:9090" ];
+      ports = [ "${toString cfg.port}:9090" ];
       volumes = [
         "/var/lib/linkding:/app/data"
         "/run/postgresql:/run/postgresql/"
@@ -45,6 +47,7 @@ in
       environmentFiles = [ config.sops.secrets.linkding-env.path ];
       environment = {
         LD_CSRF_TRUSTED_ORIGINS = "https://links.${cfg.proxy.domain}";
+        LD_DISABLE_LOGIN_FORM = "True";
         LD_DB_DATABASE = cfg.database.name;
         LD_DB_ENGINE = "postgres";
         LD_DB_HOST = "/run/postgresql/";
@@ -84,7 +87,7 @@ in
           tls.certResolver = "letsencrypt";
         };
         services.linkding.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.linkding}"; } ];
+          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
         };
       };
     };
