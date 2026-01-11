@@ -59,7 +59,7 @@ in
     domain = mkOpt types.str "yashgarg.dev" "Base domain for Gatus";
     endpoints = mkOpt (types.attrsOf endpointType) { } "Endpoints to monitor";
     alerting = {
-      failureThreshold = mkOpt types.int 1 "Number of consecutive failures before alerting";
+      failureThreshold = mkOpt types.int 2 "Number of consecutive failures before alerting";
       successThreshold = mkOpt types.int 2 "Number of consecutive successes before resolving";
     };
   };
@@ -74,22 +74,27 @@ in
       gatus = enabled // {
         environmentFile = config.sops.secrets.gatus-env.path;
         settings = recursiveUpdate endpointsConfig {
-          alerting = {
-            discord = {
-              webhook-url = "\${GATUS_WEBHOOK_URL}";
-            };
-            ntfy = {
-              topic = "\${GATUS_TOPIC}";
-              url = "https://ntfy.sh";
-              click = "https://status.${cfg.domain}";
-              default-alert = {
+          alerting =
+            let
+              defaultAlert = {
                 description = "Gatus Health Check";
                 send-on-resolved = true;
                 failure-threshold = cfg.alerting.failureThreshold;
                 success-threshold = cfg.alerting.successThreshold;
               };
+            in
+            {
+              discord = {
+                webhook-url = "\${GATUS_WEBHOOK_URL}";
+                default-alert = defaultAlert;
+              };
+              ntfy = {
+                topic = "\${GATUS_TOPIC}";
+                url = "https://ntfy.sh";
+                click = "https://status.${cfg.domain}";
+                default-alert = defaultAlert;
+              };
             };
-          };
           metrics = true;
           storage = {
             type = "postgres";

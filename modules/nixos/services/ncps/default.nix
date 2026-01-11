@@ -15,7 +15,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    sops.secrets.ncps-private-key.sopsFile = snowfall.fs.get-file "secrets/ncps.yaml";
+    sops.secrets.ncps-private-key = {
+      sopsFile = snowfall.fs.get-file "secrets/ncps.yaml";
+      owner = "ncps";
+    };
 
     services = {
       ncps = enabled // {
