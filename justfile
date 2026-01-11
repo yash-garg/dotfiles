@@ -4,9 +4,9 @@ default:
 deploy:
     #!/usr/bin/env bash
     if [[ $(uname) == "Darwin" ]]; then
-        sudo darwin-rebuild switch --flake . | nom
+        sudo darwin-rebuild switch --flake .
     else
-        nixos-rebuild switch --flake . --use-remote-sudo
+        sudo nixos-rebuild switch --flake .
     fi
 
 debug:
