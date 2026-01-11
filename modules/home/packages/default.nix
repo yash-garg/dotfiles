@@ -14,6 +14,7 @@
     just
     jq
     mediainfo
+    mergiraf
     mtr
     nixfmt
     nix-inspect
