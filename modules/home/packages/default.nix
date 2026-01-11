@@ -15,7 +15,7 @@
     jq
     mediainfo
     mtr
-    nixfmt-rfc-style
+    nixfmt
     nix-inspect
     nixos-generators
     nixpkgs-review

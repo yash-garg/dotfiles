@@ -39,5 +39,5 @@ _: {
     SSH_AUTH_SOCK = "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
   };
 
-  system.stateVersion = 5;
+  system.stateVersion = 6;
 }

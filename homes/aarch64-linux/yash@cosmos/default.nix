@@ -5,5 +5,5 @@ with lib.${namespace};
 
   shells.${namespace}.bash = enabled;
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "26.05";
 }

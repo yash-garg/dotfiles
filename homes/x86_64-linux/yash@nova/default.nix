@@ -13,5 +13,5 @@ with lib.${namespace};
 
   shells.${namespace}.zsh = enabled;
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "26.05";
 }
