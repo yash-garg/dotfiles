@@ -57,15 +57,6 @@
         };
 
         hosts = {
-          cosmos.modules = [
-            raspberry-pi-nix.nixosModules.raspberry-pi
-            srvos.nixosModules.mixins-mdns
-            vscode-server.nixosModules.default
-          ];
-          nova.modules = [
-            srvos.nixosModules.desktop
-            srvos.nixosModules.mixins-systemd-boot
-          ];
           orion.modules = [
             srvos.nixosModules.mixins-telegraf
             srvos.nixosModules.roles-prometheus

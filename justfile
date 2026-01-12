@@ -21,9 +21,6 @@ history:
 gc:
     sudo nix-collect-garbage --delete-old
 
-darwin-check:
-    nom build .#darwinConfigurations.trinity.system
-
 topology sys:
     nom build .#topology.{{ sys }}.config.output
 
