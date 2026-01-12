@@ -21,9 +21,6 @@ history:
 gc:
     sudo nix-collect-garbage --delete-old
 
-topology sys:
-    nom build .#topology.{{ sys }}.config.output
-
 eval conf:
     nix eval .#{{ conf }} --apply builtins.attrNames --json
 

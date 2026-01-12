@@ -21,7 +21,7 @@ let
           browseable = mkBoolOpt true "Whether the share is browseable.";
           comment = mkOpt str name "An optional comment.";
           read-only = mkBoolOpt false "Whether the share should be read only.";
-          only-owner-editable = mkBoolOpt false "Whether the share is only writable by the system owner (plusultra.user.name).";
+          only-owner-editable = mkBoolOpt false "Whether the share is only writable by the system owner (${config.${namespace}.user.name}).";
 
           extra-config = mkOpt attrs { } "Extra configuration options for the share.";
         };

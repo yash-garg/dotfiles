@@ -33,7 +33,6 @@
         modules = {
           darwin = [
             nix-index-database.darwinModules.nix-index
-            nix-topology.nixosModules.default
             sops-nix.darwinModules.sops
             srvos.darwinModules.desktop
             srvos.darwinModules.mixins-trusted-nix-caches
@@ -46,7 +45,6 @@
             golink.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
-            nix-topology.nixosModules.default
             nixos-cosmic.nixosModules.default
             nixos-generators.nixosModules.all-formats
             nixos-wsl.nixosModules.default
@@ -80,20 +78,11 @@
       overlays = with inputs; [
         copyparty.overlays.default
         neovim.overlays.default
-        nix-topology.overlays.default
         nur.overlays.default
       ];
 
       outputs-builder = channels: {
         formatter = (treefmtModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
-
-        topology = import inputs.nix-topology {
-          pkgs = channels.nixpkgs;
-          modules = [
-            { inherit (inputs.self) nixosConfigurations; }
-            ./topology
-          ];
-        };
       };
 
       templates = {
@@ -158,9 +147,6 @@
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-topology.url = "github:oddlama/nix-topology";
-    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs.url = "github:yash-garg/nixpkgs/nixpkgs-unstable";

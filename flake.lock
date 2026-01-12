@@ -365,24 +365,6 @@
     },
     "flake-parts_3": {
       "inputs": {
-        "nixpkgs-lib": "nixpkgs-lib"
-      },
-      "locked": {
-        "lastModified": 1765835352,
-        "narHash": "sha256-XswHlK/Qtjasvhd1nOa1e8MgZ8GS//jBoTqWtrS1Giw=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "a34fae9c08a15ad73f295041fec82323541400a9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "flake-parts_4": {
-      "inputs": {
         "nixpkgs-lib": [
           "nur",
           "nixpkgs"
@@ -402,7 +384,7 @@
         "type": "github"
       }
     },
-    "flake-parts_5": {
+    "flake-parts_4": {
       "inputs": {
         "nixpkgs-lib": [
           "stylix",
@@ -720,11 +702,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1768103955,
-        "narHash": "sha256-MBAdYwv2OcWQ71TI4aHj0kx2TYL97fMnvg3VZIy7sVw=",
+        "lastModified": 1768220257,
+        "narHash": "sha256-la5B50PEQ+D6OObkTG76B9LlJpY0yZ6Llmkq5Vyok4A=",
         "owner": "yash-garg",
         "repo": "neovim",
-        "rev": "3cd1b7925d331e64c6fb2560473a94d698599880",
+        "rev": "e2238a7bd754c494a01b50b21c23e6d3a0923c5a",
         "type": "github"
       },
       "original": {
@@ -750,27 +732,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-index-database",
-        "type": "github"
-      }
-    },
-    "nix-topology": {
-      "inputs": {
-        "flake-parts": "flake-parts_3",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1768068512,
-        "narHash": "sha256-pH5wkcNOiXy4MBjDTe6A1gml+7m+ULC3lYMBPMqdS1w=",
-        "owner": "oddlama",
-        "repo": "nix-topology",
-        "rev": "4367a2093c5ff74fc478466aebf41d47ce0cacb4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oddlama",
-        "repo": "nix-topology",
         "type": "github"
       }
     },
@@ -873,21 +834,6 @@
         "url": "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.xz"
       }
     },
-    "nixpkgs-lib": {
-      "locked": {
-        "lastModified": 1765674936,
-        "narHash": "sha256-k00uTP4JNfmejrCLJOwdObYC9jHRrr/5M/a/8L2EIdo=",
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "rev": "2075416fcb47225d9b68ac469a5c4801a9c4dd85",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "type": "github"
-      }
-    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1730741070,
@@ -961,7 +907,7 @@
     },
     "nur": {
       "inputs": {
-        "flake-parts": "flake-parts_4",
+        "flake-parts": "flake-parts_3",
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
@@ -1100,7 +1046,6 @@
         "lanzaboote": "lanzaboote",
         "neovim": "neovim",
         "nix-index-database": "nix-index-database",
-        "nix-topology": "nix-topology",
         "nixos-cosmic": "nixos-cosmic",
         "nixos-generators": "nixos-generators",
         "nixos-wsl": "nixos-wsl",
@@ -1393,7 +1338,7 @@
         "base16-helix": "base16-helix",
         "base16-vim": "base16-vim",
         "firefox-gnome-theme": "firefox-gnome-theme",
-        "flake-parts": "flake-parts_5",
+        "flake-parts": "flake-parts_4",
         "gnome-shell": "gnome-shell",
         "nixpkgs": [
           "nixpkgs"

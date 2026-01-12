@@ -57,7 +57,7 @@ in
       };
     in
     lib.mapAttrs (
-      mountPoint: remotePath:
+      _mountPoint: remotePath:
       defaultOpts
       // {
         device = "${unraid}:${remotePath}";
