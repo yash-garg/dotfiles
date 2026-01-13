@@ -159,6 +159,14 @@ in
               name = "N8N";
               url = "http://${quasar}:${toString ports.n8n}";
             };
+            ollama = {
+              name = "Ollama";
+              url = "http://${quasar}:${toString ports.ollama}";
+            };
+            chat = {
+              name = "Open WebUI";
+              url = "http://${quasar}:${toString ports.open-webui}";
+            };
             paperless = {
               name = "Paperless NGX";
               url = "http://${quasar}:${toString ports.paperless-ngx}";
@@ -272,6 +280,7 @@ in
           services = {
             bazarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.bazarr}";
             books.url = "http://${quasar}:${toString ports.calibre}";
+            chat.url = "http://${quasar}:${toString ports.open-webui}";
             fs = {
               url = "http://${quasar}:${toString ports.copyparty}";
               useInsecure = true;

@@ -125,6 +125,8 @@ in
         mediaDir = "/mnt/documents/";
       };
 
+      ollama = enabled;
+
       postgres = enabled // {
         package = pkgs.postgresql_16;
       };
