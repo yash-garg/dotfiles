@@ -42,6 +42,7 @@
     n8n = 5678;
     nitter = 9045;
     ollama = 11434;
+    open-webui = 11435;
     paperless-ngx = 8010;
     plausible = 8181;
     pl3xmap = 81;
