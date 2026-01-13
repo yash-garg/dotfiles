@@ -59,6 +59,12 @@ in
           e2ts = true;
           re-maxage = 3600;
           stats = true;
+          shr = "/share";
+          no-robots = true;
+          idp-h-usr = "Remote-User";
+          xff-src = "100.111.67.44";
+          xff-hdr = "X-Forwarded-For";
+          rproxy = 1;
         }
         // cfg.extraSettings;
       };
@@ -77,7 +83,10 @@ in
         routers.copyparty = {
           rule = "Host(`fs.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "crowdsec" ];
+          middlewares = [
+            "crowdsec"
+            "auth"
+          ];
           service = "copyparty";
           tls.certResolver = "letsencrypt";
         };

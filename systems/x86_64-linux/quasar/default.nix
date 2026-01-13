@@ -52,32 +52,30 @@ in
       copyparty = enabled // {
         user = "yash";
         group = "users";
-        volumes = {
-          "/books" = {
-            path = "/mnt/books";
-            access = {
-              r.wmda = "*";
+        volumes =
+          let
+            defaultAccess = {
+              r.wmda = "yash";
+            };
+          in
+          {
+            "/books" = {
+              path = "/mnt/books";
+              access = defaultAccess;
+            };
+            "/documents" = {
+              path = "/mnt/documents/documents/originals";
+              access = defaultAccess;
+            };
+            "/media" = {
+              path = "/mnt/media";
+              access = defaultAccess;
+            };
+            "/photos" = {
+              path = "/mnt/photos";
+              access = defaultAccess;
             };
           };
-          "/documents" = {
-            path = "/mnt/documents/documents/originals";
-            access = {
-              r.wmda = "*";
-            };
-          };
-          "/media" = {
-            path = "/mnt/media";
-            access = {
-              r.wmda = "*";
-            };
-          };
-          "/photos" = {
-            path = "/mnt/photos";
-            access = {
-              r.wmda = "*";
-            };
-          };
-        };
       };
 
       frigate = enabled // {
