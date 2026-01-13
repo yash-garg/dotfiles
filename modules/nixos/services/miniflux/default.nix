@@ -39,12 +39,7 @@ in
           DISABLE_LOCAL_AUTH = 1;
           AUTH_PROXY_HEADER = "Remote-User";
           AUTH_PROXY_USER_CREATION = 1;
-          TRUSTED_REVERSE_PROXY_NETWORKS = "127.0.0.1/32,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16";
-          OAUTH2_USER_CREATION = 1;
-          OAUTH2_PROVIDER = "oidc";
-          OAUTH2_OIDC_PROVIDER_NAME = "Authelia";
-          OAUTH2_REDIRECT_URL = "https://rss.${cfg.proxy.domain}/oauth2/oidc/callback";
-          OAUTH2_OIDC_DISCOVERY_ENDPOINT = "https://auth.${cfg.proxy.domain}";
+          TRUSTED_REVERSE_PROXY_NETWORKS = "127.0.0.1/32,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,100.64.0.0/10";
         };
       };
 
