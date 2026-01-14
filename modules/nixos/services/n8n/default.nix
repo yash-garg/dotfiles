@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   namespace,
   ...
 }:
@@ -8,6 +9,11 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.n8n;
+  hooksFile = pkgs.writeText "n8n-hooks.js" (
+    replaceStrings [ "@N8N_BASE_PATH@" "@DOMAIN@" ] [ "${pkgs.n8n}/lib/n8n" cfg.domain ] (
+      builtins.readFile ./hooks.js
+    )
+  );
 in
 {
   options.${namespace}.services.n8n = {
@@ -26,6 +32,8 @@ in
           DB_POSTGRESDB_USER = "n8n";
           EXECUTIONS_DATA_PRUNE = "true";
           EXECUTIONS_DATA_MAX_AGE = "336"; # 2 weeks
+          # Custom hooks and SSO configuration
+          EXTERNAL_HOOK_FILES = "${hooksFile}";
           N8N_FORWARD_AUTH_HEADER = "Remote-Email";
           N8N_HIRING_BANNER_ENABLED = "false";
           N8N_PORT = toString cfg.port;
