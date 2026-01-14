@@ -39,6 +39,9 @@ in
     }) "The package to use for copyparty";
     volumes = mkOpt (types.attrsOf volumeType) { } "The volumes to serve";
     extraSettings = mkOpt types.attrs { } "Extra settings to pass to copyparty";
+    waitForMounts =
+      mkOpt (types.listOf types.str) [ ]
+        "List of systemd mount unit names to wait for (e.g., [\"mnt-books.mount\" \"mnt-photos.mount\"])";
   };
 
   config = mkIf cfg.enable {
@@ -107,6 +110,12 @@ in
 
     users.groups = mkIf (cfg.group == "copyparty") {
       copyparty = { };
+    };
+
+    # Make copyparty wait for mount units to be available
+    systemd.services.copyparty = mkIf (cfg.waitForMounts != [ ]) {
+      after = cfg.waitForMounts;
+      requires = cfg.waitForMounts;
     };
   };
 }

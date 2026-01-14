@@ -52,6 +52,15 @@ in
       copyparty = enabled // {
         user = "yash";
         group = "users";
+        waitForMounts = [
+          "mnt-books.mount"
+          "mnt-documents.mount"
+          "mnt-media-main-movies.mount"
+          "mnt-media-main-tv.mount"
+          "mnt-media-samsung.mount"
+          "mnt-media-wd.mount"
+          "mnt-photos.mount"
+        ];
         volumes =
           let
             defaultAccess = {
