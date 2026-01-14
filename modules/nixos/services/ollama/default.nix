@@ -28,7 +28,12 @@ in
       ollama = enabled // {
         inherit (cfg) port;
         host = "0.0.0.0";
-        loadModels = [ "deepseek-r1:8b" ];
+        loadModels = [
+          "deepseek-r1:8b"
+          "llama3.1:8b"
+          "mistral:7b"
+          "qwen2.5:7b"
+        ];
         openFirewall = true;
         package = (pkgs.ollama.override { acceleration = "cuda"; });
       };
