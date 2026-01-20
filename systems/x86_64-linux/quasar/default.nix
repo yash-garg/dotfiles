@@ -108,6 +108,8 @@ in
         ];
       };
 
+      home-assistant = enabled;
+
       immich = enabled // {
         backup = enabled;
         mediaDir = "/mnt/photos";

@@ -121,7 +121,7 @@ in
             };
             home-assistant = {
               name = "Home Assistant";
-              url = "http://homeassistant.${tailnet}:8123";
+              url = "http://${quasar}:${toString ports.home-assistant}";
             };
             immich = {
               name = "Immich";
@@ -285,8 +285,8 @@ in
               url = "http://${quasar}:${toString ports.copyparty}";
               useInsecure = true;
             };
-            home.url = "http://homeassistant.${tailnet}:8123";
-            map.url = "http://${vortex}:81";
+            home.url = "http://${quasar}:${toString ports.home-assistant}";
+            map.url = "http://${vortex}:${toString ports.pl3xmap}";
             meals = {
               url = "http://${quasar}:${toString ports.mealie}";
               useAuth = false;

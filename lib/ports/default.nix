@@ -27,6 +27,7 @@
     forgejo = 9012;
     gatus = 3333;
     grafana = 9002;
+    home-assistant = 8123;
     immich = {
       machine-learning = 3003;
       webui = 8086;
