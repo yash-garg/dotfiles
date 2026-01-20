@@ -87,27 +87,6 @@ in
           };
       };
 
-      frigate = enabled // {
-        cameraConfigs = [
-          {
-            name = "cam1";
-            path = "rtsp://10.0.0.187:554/cam/realmonitor?channel=1&subtype=0";
-          }
-          {
-            name = "cam2";
-            path = "rtsp://10.0.0.187:554/cam/realmonitor?channel=2&subtype=0";
-          }
-          {
-            name = "cam3";
-            path = "rtsp://10.0.0.187:554/cam/realmonitor?channel=3&subtype=0";
-          }
-          {
-            name = "cam4";
-            path = "rtsp://10.0.0.187:554/cam/realmonitor?channel=2&subtype=0";
-          }
-        ];
-      };
-
       immich = enabled // {
         backup = enabled;
         mediaDir = "/mnt/photos";
@@ -131,8 +110,6 @@ in
         backup = enabled;
         mediaDir = "/mnt/documents/";
       };
-
-      ollama = enabled;
 
       postgres = enabled // {
         package = pkgs.postgresql_16;
