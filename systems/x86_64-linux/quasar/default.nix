@@ -104,8 +104,6 @@ in
 
       nvidia-exporter = enabled;
 
-      n8n = enabled;
-
       paperless = enabled // {
         backup = enabled;
         mediaDir = "/mnt/documents/";

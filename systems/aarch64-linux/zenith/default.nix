@@ -151,10 +151,6 @@ in
               name = "Minecraft Map";
               url = "http://${vortex}:${toString ports.pl3xmap}";
             };
-            n8n = {
-              name = "N8N";
-              url = "http://${quasar}:${toString ports.n8n}";
-            };
             paperless = {
               name = "Paperless NGX";
               url = "http://${quasar}:${toString ports.paperless-ngx}";
@@ -276,7 +272,6 @@ in
               url = "http://${quasar}:${toString ports.mealie}";
               useAuth = false;
             };
-            n8n.url = "http://${quasar}:${toString ports.n8n}";
             paperless.url = "http://${quasar}:${toString ports.paperless-ngx}";
             pdf = {
               url = "http://${quasar}:${toString ports.bentopdf}";
