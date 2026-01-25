@@ -35,7 +35,7 @@ in
           "qwen2.5:7b"
         ];
         openFirewall = true;
-        package = (pkgs.ollama.override { acceleration = "cuda"; });
+        package = pkgs.ollama.override { acceleration = "cuda"; };
       };
 
       open-webui = enabled // {

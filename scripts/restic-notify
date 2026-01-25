@@ -1,56 +1,34 @@
 #!/usr/bin/env bash
 
-# Restic backup notification script
-# Usage: restic-notify.sh <app_name> <exit_status>
-
 set -euo pipefail
 
 APP_NAME="${1:-unknown}"
 EXIT_STATUS="${2:-1}"
 
-# Required environment variables
-: "${DISCORD_WEBHOOK:?DISCORD_WEBHOOK environment variable is required}"
-: "${NTFY_URL:?NTFY_URL environment variable is required}"
-
-# Function to send Discord notification
-send_discord() {
-    local content="$1"
-    if ! curl -s -H "Content-Type: application/json" \
-        -X POST \
-        -d "{\"content\": \"$content\"}" \
-        "$DISCORD_WEBHOOK" >/dev/null; then
-        echo "Warning: Failed to send Discord notification" >&2
-    fi
-}
-
-# Function to send ntfy notification
-send_ntfy() {
+: "${PUSHOVER_USER_KEY:?PUSHOVER_USER_KEY environment variable is required}"
+: "${PUSHOVER_API_TOKEN:?PUSHOVER_API_TOKEN environment variable is required}"
+send_pushover() {
     local title="$1"
     local message="$2"
     local priority="$3"
-    local tags="$4"
-
-    # Convert \n to actual newlines for ntfy
     local formatted_message
     formatted_message=$(echo -e "$message")
 
-    if ! curl -s -H "Content-Type: text/plain" \
-        -H "X-Title: $title" \
-        -H "X-Priority: $priority" \
-        -H "X-Tags: $tags" \
-        -d "$formatted_message" \
-        "$NTFY_URL" >/dev/null; then
-        echo "Warning: Failed to send ntfy notification" >&2
+    if ! curl -s \
+        --form-string "token=$PUSHOVER_API_TOKEN" \
+        --form-string "user=$PUSHOVER_USER_KEY" \
+        --form-string "title=$title" \
+        --form-string "message=$formatted_message" \
+        --form-string "priority=$priority" \
+        https://api.pushover.net/1/messages.json >/dev/null; then
+        echo "Warning: Failed to send Pushover notification" >&2
     fi
 }
 
-# Function to parse backup statistics from systemd journal
 parse_backup_stats() {
     local app_name="$1"
     local stats_content=""
     local has_stats=false
-
-    # Get the latest backup log from systemd journal for this service
     local journal_output
     if ! journal_output=$(journalctl -u "restic-backups-${app_name}.service" --since "1 hour ago" --no-pager -o cat 2>/dev/null); then
         echo "Warning: Could not retrieve journal logs for restic-backups-${app_name}.service" >&2
@@ -59,7 +37,6 @@ parse_backup_stats() {
         return
     fi
 
-    # Try to extract statistics from JSON summary output (modern restic format)
     local summary_json
     summary_json=$(echo "$journal_output" | grep '"message_type":"summary"' | tail -1)
 
@@ -68,7 +45,6 @@ parse_backup_stats() {
         local data_blobs tree_blobs data_added_bytes data_added_formatted total_files total_bytes
         local total_duration backup_start
 
-        # Extract values from JSON using grep and sed
         files_new=$(echo "$summary_json" | grep -o '"files_new":[0-9]*' | grep -o '[0-9]*' || echo "0")
         files_changed=$(echo "$summary_json" | grep -o '"files_changed":[0-9]*' | grep -o '[0-9]*' || echo "0")
         files_unmodified=$(echo "$summary_json" | grep -o '"files_unmodified":[0-9]*' | grep -o '[0-9]*' || echo "0")
@@ -81,15 +57,11 @@ parse_backup_stats() {
         total_files=$(echo "$summary_json" | grep -o '"total_files_processed":[0-9]*' | grep -o '[0-9]*' || echo "0")
         total_bytes=$(echo "$summary_json" | grep -o '"total_bytes_processed":[0-9]*' | grep -o '[0-9]*' || echo "0")
 
-        # Extract backup start time
         backup_start=$(echo "$summary_json" | grep -o '"backup_start":"[^"]*"' | cut -d'"' -f4 || echo "$(date -Iseconds)")
-
-        # Convert bytes to human readable format
         if [ "$data_added_bytes" -gt 0 ]; then
             if command -v numfmt >/dev/null 2>&1; then
                 data_added_formatted=$(numfmt --to=iec --suffix=B --format="%.3f" "$data_added_bytes" 2>/dev/null || echo "${data_added_bytes} B")
             else
-                # Simple conversion without numfmt
                 if [ "$data_added_bytes" -ge 1073741824 ]; then
                     data_added_formatted="$(echo "scale=3; $data_added_bytes / 1073741824" | bc 2>/dev/null || echo $(($data_added_bytes / 1073741824))) GB"
                 elif [ "$data_added_bytes" -ge 1048576 ]; then
@@ -104,7 +76,6 @@ parse_backup_stats() {
             data_added_formatted="0 B"
         fi
 
-        # Convert total bytes processed
         local total_bytes_formatted
         if [ "$total_bytes" -gt 0 ]; then
             if command -v numfmt >/dev/null 2>&1; then
@@ -122,20 +93,16 @@ parse_backup_stats() {
             total_bytes_formatted="0 B"
         fi
 
-        # Try to get snapshot ID from other log lines - look for 8-character hex IDs at start of lines
         local snapshot_id
         snapshot_id=$(echo "$journal_output" | grep -E '^[a-f0-9]{8}[[:space:]]' | tail -1 | cut -d' ' -f1 || echo "unknown")
         if [ "$snapshot_id" = "unknown" ]; then
-            # Fallback: look for snapshot ID in any format
             snapshot_id=$(echo "$journal_output" | grep -o '[a-f0-9]\{8\}' | tail -1 || echo "unknown")
         fi
 
-        # Create formatted message in the requested style
-        stats_content="Snapshot Success for Plan \"${app_name}\" at ${backup_start}\\nSnapshot: ${snapshot_id}\\nOverview:\\n- Data added: ${data_added_formatted}\\n- Total files processed: ${total_files}\\n- Total bytes processed: ${total_bytes_formatted}\\nBackup Statistics:\\n- Files new: ${files_new}\\n- Files changed: ${files_changed}\\n- Files unmodified: ${files_unmodified}\\n- Dirs new: ${dirs_new}\\n- Dirs changed: ${dirs_changed}\\n- Dirs unmodified: ${dirs_unmodified}\\n- Data blobs: ${data_blobs}\\n- Tree blobs: ${tree_blobs}"
+        stats_content="Backup: ${app_name}\\nTime: ${backup_start}\\nSnapshot: ${snapshot_id}\\n\\nData Added: ${data_added_formatted}\\nFiles Processed: ${total_files}\\nBytes Processed: ${total_bytes_formatted}\\n\\nFiles:\\n  New: ${files_new}\\n  Changed: ${files_changed}\\n  Unmodified: ${files_unmodified}\\n\\nDirectories:\\n  New: ${dirs_new}\\n  Changed: ${dirs_changed}\\n  Unmodified: ${dirs_unmodified}\\n\\nBlobs:\\n  Data: ${data_blobs}\\n  Tree: ${tree_blobs}"
 
         has_stats=true
     else
-        # Try legacy text format (fallback)
         if echo "$journal_output" | grep -q "Files:"; then
             local files_new files_changed files_unmodified data_added_raw snapshot_id backup_time
 
@@ -149,44 +116,34 @@ parse_backup_stats() {
             fi
             backup_time=$(date -Iseconds)
 
-            stats_content="Snapshot Success for Plan \"${app_name}\" at ${backup_time}\\nSnapshot: ${snapshot_id}\\nOverview:\\n- Data added: ${data_added_raw}\\nBackup Statistics:\\n- Files new: ${files_new}\\n- Files changed: ${files_changed}\\n- Files unmodified: ${files_unmodified}"
+            stats_content="Backup: ${app_name}\\nTime: ${backup_time}\\nSnapshot: ${snapshot_id}\\n\\nData Added: ${data_added_raw}\\n\\nFiles:\\n  New: ${files_new}\\n  Changed: ${files_changed}\\n  Unmodified: ${files_unmodified}"
             has_stats=true
         else
-            # No statistics found - create basic success message
             backup_time=$(date -Iseconds)
-            stats_content="Snapshot Success for Plan \"${app_name}\" at ${backup_time}\\nSnapshot: unknown\\nOverview:\\n- Backup completed successfully"
+            stats_content="Backup: ${app_name}\\nTime: ${backup_time}\\nSnapshot: unknown\\n\\nStatus: Completed successfully"
             has_stats=false
         fi
     fi
 
-    # Output the results
     echo "STATS_CONTENT=\"$stats_content\""
     echo "HAS_STATS=$has_stats"
 }
 
-# Function to log messages
 log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >&2
 }
 
-# Main logic
 log "Starting backup notification for $APP_NAME with exit status $EXIT_STATUS"
 
 if [ "$EXIT_STATUS" -ne 0 ]; then
-    # Backup failed - formatted message
     backup_time=$(date -Iseconds)
-    message="Snapshot Failure for Plan \"${APP_NAME}\" at ${backup_time}\\nSnapshot: unknown\\nOverview:\\n- Backup failed with exit code ${EXIT_STATUS}"
-    log "Backup failed, sending failure notifications"
-    send_discord "$message"
-    send_ntfy "Backup ${APP_NAME}" "$message" "5" "x,warning,backup"
+    message="Backup: ${APP_NAME}\\nTime: ${backup_time}\\n\\nStatus: FAILED\\nExit Code: ${EXIT_STATUS}"
+    log "Backup failed, sending failure notification"
+    send_pushover "Backup Failed: ${APP_NAME}" "$message" "1"
 else
-    # Backup successful - get statistics
     log "Backup successful, parsing statistics"
     eval "$(parse_backup_stats "$APP_NAME")"
-
-    # Send formatted notification to both platforms
-    send_discord "$STATS_CONTENT"
-    send_ntfy "Backup ${APP_NAME}" "$STATS_CONTENT" "3" "white_check_mark,backup"
+    send_pushover "Backup Complete: ${APP_NAME}" "$STATS_CONTENT" "0"
 fi
 
 log "Backup notification completed"
