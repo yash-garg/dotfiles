@@ -233,28 +233,6 @@ in
           token_endpoint_auth_method = "client_secret_basic";
         }
         {
-          client_id = "grafana";
-          client_name = "Grafana";
-          client_secret = "$pbkdf2-sha512$310000$nWiTXHRVFg.0p0DFs0Fr9Q$ZkDnbKytBDwzW7JAdmreKAFnsdk93k5Y91WqefgppXayVU6xVtGokDj2/qoyzqbBgP2FhX0Jg7Vf4ADOWdIuWA";
-          public = false;
-          authorization_policy = "internal_one_factor";
-          claims_policy = "grafana";
-          grant_types = [
-            "authorization_code"
-          ];
-          redirect_uris = [
-            "https://grafana.${domain}/login/generic_oauth"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-            "groups"
-          ];
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
           client_id = "immich";
           client_name = "Immich";
           client_secret = "$pbkdf2-sha512$310000$we2.VRlN/pvtnZoUt0.kpw$qRAAKL..H4GnzEzMiMH.MPoXLy0IB3BslhB2.0gTVK99cuAyQEOsNNQ052huyqgpwdpTHVfaU68CmUzC.gnLGg";
@@ -291,23 +269,6 @@ in
           token_endpoint_auth_method = "client_secret_post";
         }
         {
-          client_id = "linkding";
-          client_name = "Linkding";
-          client_secret = "$pbkdf2-sha512$310000$jXF45KQfnCDkLgwYlPFUSg$KKe9Gno3dHq8uZkyD9ItqU4mVXkhkk2zfdHTsqpbWcp8oxkxZ5nAgwqgj.wpnTW.NkXs66zFdSdSFT3t2b04gA";
-          public = false;
-          authorization_policy = "internal_one_factor";
-          redirect_uris = [
-            "https://links.${domain}/oidc/callback/"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-          ];
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_post";
-        }
-        {
           client_id = "mealie";
           client_name = "Mealie";
           client_secret = "$pbkdf2-sha512$310000$2134vs5nM5P6LhYDJEGIKg$kJ4ddV127kSLE7FcVHReV/mZ9d6rjT.mntrKqoh.8WndDhoCLf3laThkNbvYnQKGu6wo3FNNuGMkmD0tNP8Xsg";
@@ -320,76 +281,6 @@ in
             "profile"
             "email"
             "groups"
-          ];
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
-          client_id = "miniflux";
-          client_name = "Miniflux";
-          client_secret = "$pbkdf2-sha512$310000$ixsi8LqA7zxNPLXbpjqSAQ$1GQ.NssJ/QKvD7qCgwxsT7PFpD4ZxilDDq17.GSqFbcqueNGJy.2Jv8xYszFjumkE7pLNTbG0Lg6bR2clzTXvw";
-          public = false;
-          authorization_policy = "internal_one_factor";
-          redirect_uris = [
-            "https://rss.${domain}/oauth2/oidc/callback"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-          ];
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
-          client_id = "paperless";
-          client_name = "Paperless";
-          client_secret = "$pbkdf2-sha512$310000$L2POBBIm7MhKxfGUwCXZNg$hqRUxAB4wBa3jMePdFMIG6jFOYdstgMiowwzc11RaOJMyj4eBr74ZJY1jClATbCx51oTO.JRz1TGgtzcrOegnQ";
-          public = false;
-          authorization_policy = "internal_one_factor";
-          redirect_uris = [
-            "https://paperless.${domain}/accounts/oidc/authelia/login/callback/"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-            "groups"
-          ];
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
-          client_id = "tandoor";
-          client_name = "Tandoor";
-          client_secret = "$pbkdf2-sha512$310000$zyxRgO3vxU1QQI/doVsRaQ$wHW9bDWtBitWrQgRuOHi5lOVtfC44NC12mDD3JXUGtsA8JCARTsVUlUnt42KyON5RzlYO95UVr.tJlDURcS.Bw";
-          public = false;
-          authorization_policy = "internal_one_factor";
-          grant_types = [
-            "authorization_code"
-          ];
-          redirect_uris = [
-            "https://recipes.${domain}/accounts/oidc/authelia/login/callback/"
-          ];
-          scopes = [
-            "openid"
-            "profile"
-            "email"
-          ];
-          userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
-        }
-        {
-          client_id = "tailscale";
-          client_name = "Tailscale";
-          client_secret = "$pbkdf2-sha512$310000$oQVBGFNKM9uiscpWlEMzmw$9qZf/57tlwlmZX.Ni2tlkQH7h3LJRiCTw7D5uJGG8HVApcd1m/1GUTnd01F/os9jpW7wqH0mvabyuXMmz5MDzQ";
-          redirect_uris = [
-            "https://login.tailscale.com/a/oauth_response"
-          ];
-          scopes = [
-            "openid"
-            "email"
-            "profile"
           ];
           userinfo_signed_response_alg = "none";
           token_endpoint_auth_method = "client_secret_basic";
