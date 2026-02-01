@@ -76,6 +76,10 @@ in
               path = "/mnt/documents/documents/originals";
               access = defaultAccess;
             };
+            "/downloads" = {
+              path = "/mnt/downloads";
+              access = defaultAccess;
+            };
             "/media" = {
               path = "/mnt/media";
               access = defaultAccess;

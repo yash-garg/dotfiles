@@ -49,6 +49,7 @@ in
         "/mnt/backups" = "/mnt/user/backups";
         "/mnt/books" = "/mnt/user/data/media/books";
         "/mnt/documents" = "/mnt/user/documents";
+        "/mnt/downloads" = "/mnt/user/downloads";
         "/mnt/media/main/movies" = "/mnt/user/data/media/movies";
         "/mnt/media/main/tv" = "/mnt/user/data/media/tv";
         "/mnt/media/samsung" = "/mnt/disks/Samsung_External";
