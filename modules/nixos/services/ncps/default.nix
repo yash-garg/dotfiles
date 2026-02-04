@@ -41,13 +41,11 @@ in
           caches = [
             "https://yash-garg.cachix.org"
             "https://cache.nixos.org"
-            "https://raspberry-pi-nix.cachix.org"
             "https://cosmic.cachix.org/"
           ];
           publicKeys = [
             "yash-garg.cachix.org-1:sHcKOvVej+RlINvt4XVAOE/Cnho3hnrHHRv0uq1u7Xs="
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-            "raspberry-pi-nix.cachix.org-1:WmV2rdSangxW0rZjY/tBvBDSaNFQ3DyEQsVw8EvHn9o="
             "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
           ];
         };

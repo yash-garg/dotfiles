@@ -46,6 +46,7 @@
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
             nixos-cosmic.nixosModules.default
+            nixos-facter.nixosModules.facter
             nixos-generators.nixosModules.all-formats
             nixos-wsl.nixosModules.default
             sops-nix.nixosModules.sops
@@ -138,7 +139,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.2";
+    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.3";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim.url = "github:yash-garg/neovim";
@@ -156,6 +157,12 @@
     nixos-cosmic.inputs.nixpkgs-stable.follows = "nixpkgs";
     nixos-cosmic.inputs.flake-compat.follows = "flake-compat";
 
+    nixos-facter.url = "github:nix-community/nixos-facter";
+    nixos-facter.inputs.disko.follows = "disko";
+    nixos-facter.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-facter.inputs.flake-utils.follows = "flake-utils";
+    nixos-facter.inputs.treefmt-nix.follows = "treefmt-nix";
+
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -164,9 +171,6 @@
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
 
     nur.url = "github:nix-community/NUR";
-
-    raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
-    raspberry-pi-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     snowfall-lib.url = "github:snowfallorg/lib/main";
     snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
