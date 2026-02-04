@@ -46,27 +46,11 @@
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
             nixos-cosmic.nixosModules.default
-            nixos-facter.nixosModules.facter
             nixos-generators.nixosModules.all-formats
             nixos-wsl.nixosModules.default
             sops-nix.nixosModules.sops
             srvos.nixosModules.mixins-trusted-nix-caches
             stylix.nixosModules.stylix
-          ];
-        };
-
-        hosts = {
-          orion.modules = [
-            srvos.nixosModules.mixins-telegraf
-            srvos.nixosModules.roles-prometheus
-          ];
-          vortex.modules = [
-            srvos.nixosModules.mixins-telegraf
-            srvos.nixosModules.roles-prometheus
-          ];
-          zenith.modules = [
-            srvos.nixosModules.mixins-telegraf
-            srvos.nixosModules.roles-prometheus
           ];
         };
       };
@@ -162,13 +146,6 @@
     nixos-cosmic.inputs.nixpkgs.follows = "nixpkgs";
     nixos-cosmic.inputs.nixpkgs-stable.follows = "nixpkgs";
     nixos-cosmic.inputs.flake-compat.follows = "flake-compat";
-
-    nixos-facter.url = "github:nix-community/nixos-facter";
-    nixos-facter.inputs.disko.follows = "disko";
-    nixos-facter.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-facter.inputs.flake-utils.follows = "flake-utils";
-    nixos-facter.inputs.systems.follows = "systems";
-    nixos-facter.inputs.treefmt-nix.follows = "treefmt-nix";
 
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
