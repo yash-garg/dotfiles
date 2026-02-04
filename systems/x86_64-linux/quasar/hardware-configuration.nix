@@ -66,6 +66,10 @@ in
     ) mounts;
 
   hardware = {
+    facter = {
+      reportPath = ./facter.json;
+      detected.graphics.enable = false;
+    };
     graphics = {
       enable = true;
       package = driverPkg;

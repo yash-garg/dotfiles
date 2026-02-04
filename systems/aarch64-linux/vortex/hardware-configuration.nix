@@ -19,6 +19,11 @@
     extraModulePackages = [ ];
   };
 
+  hardware.facter = {
+    reportPath = ./facter.json;
+    detected.graphics.enable = false;
+  };
+
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp0s6.useDHCP = lib.mkDefault true;
 
