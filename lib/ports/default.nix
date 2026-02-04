@@ -26,6 +26,7 @@
     };
     forgejo = 9012;
     gatus = 3333;
+    glance = 9044;
     grafana = 9002;
     immich = {
       machine-learning = 3003;

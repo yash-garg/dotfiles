@@ -1,6 +1,0 @@
-include:
-  - path:
-      - glance/docker-compose.yml
-      - h5ai/docker-compose.yml
-volumes:
-  h5ai-data:
