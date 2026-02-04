@@ -11,17 +11,46 @@
             "with lib;",
             "with lib.\\${namespace};",
             "let",
-            "  srv = config.\\${namespace}.services;",
-            "  cfg = srv.${1:name};",
+            "  cfg = config.\\${namespace}.services.${1:name};",
             "in",
             "{",
             "  options.\\${namespace}.services.${1:name} = {",
-            "    enable = mkEnableOption \"Enable ${1:name} service\";",
+            "    enable = mkEnableOption \"${1:name}: ${2:description}\";",
             "  };",
             "",
             "  config = mkIf cfg.enable { };",
             "}"
         ],
         "description": "Boilerplate for a NixOS service module"
-    }
+    },
+    "Prometheus Scrape Config": {
+        "prefix": "nixprom",
+        "body": [
+            "prometheus.scrapeConfigs = [",
+            "  {",
+            "    job_name = \"${1:service-name}\";",
+            "    static_configs = [ { targets = [ \"127.0.0.1:\\${toString ports.exporters.${1:service-name}}\" ]; } ];",
+            "  }",
+            "];"
+        ],
+        "description": "Prometheus scrape configuration for a service"
+    },
+    "Traefik Router Config": {
+        "prefix": "nixtraefik",
+        "body": [
+            "traefik.dynamicConfigOptions.http = {",
+            "  routers.${1:service-name} = {",
+            "    rule = \"Host(`${2:subdomain}.\\${cfg.domain}`)\";",
+            "    entryPoints = [ \"websecure\" ];",
+            "    middlewares = [ \"crowdsec\" ];",
+            "    service = \"${1:service-name}\";",
+            "    tls.certResolver = \"letsencrypt\";",
+            "  };",
+            "  services.${1:service-name}.loadBalancer = {",
+            "    servers = [ { url = \"http://localhost:\\${toString cfg.port}\"; } ];",
+            "  };",
+            "};"
+        ],
+        "description": "Traefik router and service configuration"
+    },
 }
