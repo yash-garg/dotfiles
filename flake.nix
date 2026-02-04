@@ -125,7 +125,11 @@
     flake-compat.url = "github:nix-community/flake-compat";
     flake-compat.flake = false;
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+
     flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.systems.follows = "systems";
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
@@ -135,12 +139,14 @@
 
     golink.url = "github:tailscale/golink";
     golink.inputs.nixpkgs.follows = "nixpkgs";
+    golink.inputs.systems.follows = "systems";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.3";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.inputs.flake-parts.follows = "flake-parts";
 
     neovim.url = "github:yash-garg/neovim";
     neovim.inputs.nixpkgs.follows = "nixpkgs";
@@ -161,6 +167,7 @@
     nixos-facter.inputs.disko.follows = "disko";
     nixos-facter.inputs.nixpkgs.follows = "nixpkgs";
     nixos-facter.inputs.flake-utils.follows = "flake-utils";
+    nixos-facter.inputs.systems.follows = "systems";
     nixos-facter.inputs.treefmt-nix.follows = "treefmt-nix";
 
     nixos-generators.url = "github:nix-community/nixos-generators";
@@ -171,6 +178,7 @@
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
 
     nur.url = "github:nix-community/NUR";
+    nur.inputs.flake-parts.follows = "flake-parts";
 
     snowfall-lib.url = "github:snowfallorg/lib/main";
     snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
@@ -181,12 +189,17 @@
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
+    spicetify-nix.inputs.systems.follows = "systems";
 
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
 
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.systems.follows = "systems";
+    stylix.inputs.flake-parts.follows = "flake-parts";
+
+    systems.url = "github:nix-systems/default";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
