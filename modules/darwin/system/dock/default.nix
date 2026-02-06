@@ -29,7 +29,7 @@ in
       tilesize = 35;
 
       persistent-apps = [
-        "/System/Applications/Launchpad.app"
+        "/System/Applications/Apps.app"
       ]
       ++ map (app: "${brewAppDir}/${app}.app") cfg.persistentApps;
 
