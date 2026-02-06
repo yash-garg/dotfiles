@@ -116,7 +116,7 @@ in
           DisableLiveTvChannelUserDataName = true;
           PreferredMetadataLanguage = "en";
           MetadataCountryCode = "IN";
-          ServerName = config.networking.hostName;
+          ServerName = "Jellyflix";
           UICulture = "en-US";
           PluginRepositories = {
             RepositoryInfo = [

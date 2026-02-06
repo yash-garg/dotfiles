@@ -8,10 +8,12 @@ with lib;
 with lib.${namespace};
 let
   casks = [
+    "flutter"
     "ghostty"
     "iina"
     "jetbrains-toolbox"
     "maccy"
+    "obsidian"
     "orbstack"
     "raycast"
     "spotify"
@@ -49,10 +51,7 @@ in
 
       caskArgs.appdir = "/Applications";
 
-      casks = map (cask: {
-        name = cask;
-        greedy = true;
-      }) casks;
+      casks = map (cask: { name = cask; }) casks;
 
       greedyCasks = false;
 

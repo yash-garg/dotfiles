@@ -30,7 +30,6 @@ in
 
     homebrew = {
       additionalCasks = [
-        "flutter"
         "google-chrome"
         "windsurf@next"
       ];
