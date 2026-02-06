@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     age
+    attic-client
     cachix
     curl
     deploy-rs

@@ -69,6 +69,11 @@ in
           domain = homeDomain;
         };
 
+        atticd = enabled // {
+          bucket = "attic-cache";
+          endpoint = "https://a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com";
+        };
+
         crowdsec = enabled;
 
         forgejo = enabled // {
@@ -81,6 +86,10 @@ in
             actual-budget = {
               name = "Actual Budget";
               url = "http://localhost:${toString ports.actual-budget}";
+            };
+            atticd = {
+              name = "Attic Cache";
+              url = "http://localhost:${toString ports.atticd}";
             };
             authelia = {
               name = "Authelia";

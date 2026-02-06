@@ -5,6 +5,7 @@
     alertmanager = 9093;
     alertmanager-ntfy = 9081;
     alloy = 12346;
+    atticd = 9020;
     authelia = 9091;
     bazarr = 6767;
     bentopdf = 8088;
