@@ -117,10 +117,6 @@
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
-    ghostty.url = "github:ghostty-org/ghostty";
-    ghostty.inputs.flake-compat.follows = "flake-compat";
-    ghostty.inputs.zig.follows = "zig";
-
     golink.url = "github:tailscale/golink";
     golink.inputs.nixpkgs.follows = "nixpkgs";
     golink.inputs.systems.follows = "systems";
@@ -184,11 +180,6 @@
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     vscode-server.inputs.flake-utils.follows = "flake-utils";
-
-    zig.url = "github:mitchellh/zig-overlay";
-    zig.inputs.nixpkgs.follows = "nixpkgs";
-    zig.inputs.flake-compat.follows = "flake-compat";
-    zig.inputs.flake-utils.follows = "flake-utils";
 
     zjstatus.url = "github:dj95/zjstatus";
     zjstatus.inputs.nixpkgs.follows = "nixpkgs";

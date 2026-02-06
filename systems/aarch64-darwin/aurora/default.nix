@@ -31,7 +31,6 @@ in
     homebrew = {
       additionalCasks = [
         "flutter"
-        "firefox"
         "google-chrome"
         "windsurf@next"
       ];
@@ -42,11 +41,17 @@ in
         "swiftformat"
         "xcode-build-server"
         "xcode-kotlin"
+        "vault"
       ];
     };
 
     user.name = "ygarg";
   };
+
+  homebrew.taps = [
+    "anomalyco/tap"
+    "hashicorp/tap"
+  ];
 
   snowfallorg.users.${username}.home.config = {
     programs.git.includes = mkAfter [
