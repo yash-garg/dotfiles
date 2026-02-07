@@ -41,7 +41,8 @@ runs:
       echo "netrc-file = $HOME/.config/nix/netrc" >> ~/.config/nix/nix.conf
       nix profile install \
         --option extra-substituters "https://$ENDPOINT/$CACHE" \
-        --option extra-trusted-public-keys "$PUBLIC_KEY"
+        --option extra-trusted-public-keys "$PUBLIC_KEY" \
+        "github:msfjarvis/nixpkgs?rev=9e9176e5b903b91322be4ebcba0fd109ccada25a#attic-client"
       attic login --set-default ci "https://$ENDPOINT" "$TOKEN"
       attic use "$CACHE"
     env:
