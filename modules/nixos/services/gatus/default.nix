@@ -77,9 +77,11 @@ in
           alerting.pushover = {
             application-token = "\${PUSHOVER_API_TOKEN}";
             user-key = "\${PUSHOVER_USER_KEY}";
-            send-on-resolved = true;
-            failure-threshold = cfg.alerting.failureThreshold;
-            success-threshold = cfg.alerting.successThreshold;
+            default-alert = {
+              send-on-resolved = true;
+              failure-threshold = cfg.alerting.failureThreshold;
+              success-threshold = cfg.alerting.successThreshold;
+            };
           };
           metrics = true;
           storage = {
