@@ -42,7 +42,7 @@ in
           database.url = "postgres://atticd/atticd?host=/run/postgresql";
           garbage-collection = {
             interval = "1 day";
-            default-retention-period = "14 days";
+            default-retention-period = "7 days";
           };
           storage = {
             inherit (cfg) bucket endpoint;
