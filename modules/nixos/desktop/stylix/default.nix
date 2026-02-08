@@ -36,8 +36,8 @@ in
           package = pkgs.noto-fonts-color-emoji;
         };
         monospace = {
-          name = "IosevkaTerm Nerd Font Mono Regular";
-          package = pkgs.nerd-fonts.jetbrains-mono;
+          name = "Maple Mono Regular";
+          package = pkgs.maple-mono.variable;
         };
         sansSerif = {
           name = "Roboto Regular";

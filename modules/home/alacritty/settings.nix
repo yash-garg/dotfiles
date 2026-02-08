@@ -9,22 +9,22 @@
       size = 17;
 
       normal = {
-        family = "IosevkaTerm Nerd Font Mono";
+        family = "Maple Mono NF";
         style = "Regular";
       };
 
       bold = {
-        family = "IosevkaTerm Nerd Font Mono";
+        family = "Maple Mono NF";
         style = "Bold";
       };
 
       bold_italic = {
-        family = "IosevkaTerm Nerd Font Mono";
+        family = "Maple Mono NF";
         style = "Bold Italic";
       };
 
       italic = {
-        family = "IosevkaTerm Nerd Font Mono";
+        family = "Maple Mono NF";
         style = "Italic";
       };
     };

@@ -57,7 +57,7 @@ _: {
     osc = false;
     osd-bar = false;
     border = false;
-    osd-font = "IosevkaTerm Nerd Font Mono";
+    osd-font = "Maple Mono NF";
     osd-font-size = 16;
     title = "\${media-title} [\${time-pos}\${!duration==0: / \${duration}}]";
     force-window-position = true;

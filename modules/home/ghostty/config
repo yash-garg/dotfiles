@@ -1,10 +1,11 @@
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 
+font-family = Maple Mono NF
 font-family = MonoLisa Mono
 font-family = IosevkaTerm Nerd Font Mono
 font-style = Medium
 font-style-bold = Bold
-font-feature = calt
+font-feature = calt, cv02, cv08, cv31, cv35, cv61, cv66
 font-size = 15
 font-thicken = true
 
