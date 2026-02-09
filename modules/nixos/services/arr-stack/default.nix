@@ -36,6 +36,11 @@ in
         openFirewall = true;
       };
 
+      jellyseerr = enabled // {
+        port = ports.jellyseerr;
+        openFirewall = true;
+      };
+
       prowlarr = enabled // {
         openFirewall = true;
         settings = {

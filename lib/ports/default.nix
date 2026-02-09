@@ -34,6 +34,7 @@
       webui = 8086;
     };
     jellyfin = 8096;
+    jellyseerr = 5055;
     linkding = 9095;
     lldap = 17170;
     loki = 3100;

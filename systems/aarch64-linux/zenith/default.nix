@@ -136,6 +136,10 @@ in
               name = "Jellyfin";
               url = "http://${quasar}:${toString ports.jellyfin}";
             };
+            jellyseerr = {
+              name = "Jellyseerr";
+              url = "http://${quasar}:${toString ports.jellyseerr}";
+            };
             linkding = {
               name = "Linkding";
               url = "http://localhost:${toString ports.linkding}";
@@ -294,6 +298,7 @@ in
             prowlarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.prowlarr}";
             qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             radarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.radarr}";
+            requests.url = "http://${quasar}:${toString ports.jellyseerr}";
             rss.url = "http://${quasar}:${toString ports.miniflux}";
             sonarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.sonarr}";
             stream = {
