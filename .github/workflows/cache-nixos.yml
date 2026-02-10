@@ -25,7 +25,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     env:
       ATTIC_CACHE: main
-      ATTIC_PUBLIC_KEY: "main:NJFT3TW7YUy7Ee3HPnkx3FS3Hw3N4OYidsOF/3A12Do="
+      ATTIC_PUBLIC_KEY: "main:HSjMXykUEH/2Y05jnLirO2F3km3UAqh817+I/mVXGfc="
     steps:
       - name: Create disk space
         if: "${{ matrix.runner == 'ubuntu-latest' }}"
