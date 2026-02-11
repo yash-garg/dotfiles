@@ -16,37 +16,35 @@ inputs:
   github-token:
     description: "GitHub token for Nix to use for API requests"
     required: true
-
 runs:
   using: "composite"
   steps:
-  - name: Install Nix
-    shell: bash
-    run: |
-      if [[ -z $(command -v nix) ]]; then
-        curl --proto '=https' --tlsv1.2 -sSf -L https://install.lix.systems/lix | sh -s -- install --no-confirm --extra-conf "
-          trusted-users = $(whoami)
-          access-tokens = github.com=$GITHUB_TOKEN
-        "
-      fi
-    env:
-      GITHUB_TOKEN: ${{ inputs.github-token }}
-
-  - name: Set up Attic
-    shell: bash
-    run: |
-      mkdir -p ~/.config/nix
-      echo "machine $ENDPOINT" >> ~/.config/nix/netrc
-      echo "password $TOKEN" >> ~/.config/nix/netrc
-      echo "netrc-file = $HOME/.config/nix/netrc" >> ~/.config/nix/nix.conf
-      nix profile install \
-        --option extra-substituters "https://$ENDPOINT/$CACHE" \
-        --option extra-trusted-public-keys "$PUBLIC_KEY" \
-        "github:msfjarvis/nixpkgs?rev=9e9176e5b903b91322be4ebcba0fd109ccada25a#attic-client"
-      attic login --set-default ci "https://$ENDPOINT" "$TOKEN"
-      attic use "$CACHE"
-    env:
-      CACHE: ${{ inputs.attic-cache }}
-      ENDPOINT: ${{ inputs.attic-endpoint }}
-      PUBLIC_KEY: ${{ inputs.attic-public-key }}
-      TOKEN: ${{ inputs.attic-token }}
+    - name: Install Nix
+      shell: bash
+      run: |
+        if [[ -z $(command -v nix) ]]; then
+          curl --proto '=https' --tlsv1.2 -sSf -L https://install.lix.systems/lix | sh -s -- install --no-confirm --extra-conf "
+            trusted-users = $(whoami)
+            access-tokens = github.com=$GITHUB_TOKEN
+          "
+        fi
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+    - name: Set up Attic
+      shell: bash
+      run: |
+        mkdir -p ~/.config/nix
+        echo "machine $ENDPOINT" >> ~/.config/nix/netrc
+        echo "password $TOKEN" >> ~/.config/nix/netrc
+        echo "netrc-file = $HOME/.config/nix/netrc" >> ~/.config/nix/nix.conf
+        nix profile install \
+          --option extra-substituters "https://$ENDPOINT/$CACHE" \
+          --option extra-trusted-public-keys "$PUBLIC_KEY" \
+          "github:msfjarvis/nixpkgs?rev=9e9176e5b903b91322be4ebcba0fd109ccada25a#attic-client"
+        attic login --set-default ci "https://$ENDPOINT" "$TOKEN"
+        attic use "$CACHE"
+      env:
+        CACHE: ${{ inputs.attic-cache }}
+        ENDPOINT: ${{ inputs.attic-endpoint }}
+        PUBLIC_KEY: ${{ inputs.attic-public-key }}
+        TOKEN: ${{ inputs.attic-token }}
