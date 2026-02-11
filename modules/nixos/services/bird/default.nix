@@ -55,7 +55,7 @@ in
   config = mkIf cfg.enable {
     services.bird = enabled // {
       autoReload = true;
-      checkConfig = false; # Can't check config with runtime secrets
+      checkConfig = true;
       config = ''
         log syslog all;
 

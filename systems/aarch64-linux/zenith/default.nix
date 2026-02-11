@@ -43,17 +43,16 @@ in
     initrd.systemd = enabled;
   };
 
-  networking = {
-    domain = "";
-    hostName = "zenith";
-    firewall.allowedTCPPorts = [
-      80
-      443
-    ];
-    networkmanager = enabled;
-  };
-
   dots = {
+    hardware.networking = enabled // {
+      hostName = "zenith";
+      domain = "";
+      tcpPorts = [
+        80
+        443
+      ];
+    };
+
     server = enabled;
 
     services =

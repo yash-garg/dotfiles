@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   namespace,
   ...
 }:
@@ -29,34 +28,34 @@ in
     device = "/dev/vda";
   };
 
-  # Static IP configuration for Vultr VPS
-  networking = {
-    useDHCP = lib.mkForce false;
-    interfaces.ens3 = {
-      ipv4.addresses = [
-        {
-          address = "139.84.177.122";
-          prefixLength = 23;
-        }
-      ];
-      ipv6.addresses = [
-        {
-          address = "2401:c080:3400:224f:5400:05ff:feef:f172";
-          prefixLength = 64;
-        }
-      ];
-    };
-    defaultGateway = "139.84.176.1";
-    defaultGateway6 = {
-      address = "fe80::fc00:5ff:feef:f172";
-      interface = "ens3";
-    };
-  };
-
   dots = {
     hardware.networking = enabled // {
       inherit hostName;
       extra = true;
+      # Static IP configuration for Vultr VPS
+      interfaces = [
+        {
+          name = "ens3";
+          useDHCP = false;
+          ipv4 = [
+            {
+              address = "139.84.177.122";
+              prefixLength = 23;
+            }
+          ];
+          ipv6 = [
+            {
+              address = "2401:c080:3400:224f:5400:05ff:feef:f172";
+              prefixLength = 64;
+            }
+          ];
+        }
+      ];
+      defaultGateway = "139.84.176.1";
+      defaultGateway6 = {
+        address = "fe80::fc00:5ff:feef:f172";
+        interface = "ens3";
+      };
     };
 
     services = {

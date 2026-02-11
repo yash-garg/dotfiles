@@ -27,7 +27,7 @@ in
   };
 
   dots = {
-    hardware.networking = {
+    hardware.networking = enabled // {
       inherit hostName;
       tcpPorts = [ 22 ];
     };

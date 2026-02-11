@@ -37,17 +37,16 @@ in
     initrd.systemd = enabled;
   };
 
-  networking = {
-    domain = "";
-    firewall.allowedTCPPorts = [
-      80
-      443
-    ];
-    networkmanager = enabled;
-    inherit hostName;
-  };
-
   dots = {
+    hardware.networking = enabled // {
+      inherit hostName;
+      domain = "";
+      tcpPorts = [
+        80
+        443
+      ];
+    };
+
     server = enabled;
 
     services = {
