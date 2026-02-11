@@ -32,7 +32,6 @@ in
   # Static IP configuration for Vultr VPS
   networking = {
     useDHCP = lib.mkForce false;
-
     interfaces.ens3 = {
       ipv4.addresses = [
         {
@@ -47,7 +46,6 @@ in
         }
       ];
     };
-
     defaultGateway = "139.84.176.1";
     defaultGateway6 = {
       address = "fe80::fc00:5ff:feef:f172";
@@ -59,7 +57,6 @@ in
     hardware.networking = enabled // {
       inherit hostName;
       extra = true;
-      tcpPorts = [ 22 ];
     };
 
     services = {
