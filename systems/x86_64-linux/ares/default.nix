@@ -29,6 +29,32 @@ in
     device = "/dev/vda";
   };
 
+  # Static IP configuration for Vultr VPS
+  networking = {
+    useDHCP = lib.mkForce false;
+
+    interfaces.ens3 = {
+      ipv4.addresses = [
+        {
+          address = "139.84.177.122";
+          prefixLength = 23;
+        }
+      ];
+      ipv6.addresses = [
+        {
+          address = "2401:c080:3400:224f:5400:05ff:feef:f172";
+          prefixLength = 64;
+        }
+      ];
+    };
+
+    defaultGateway = "139.84.176.1";
+    defaultGateway6 = {
+      address = "fe80::fc00:5ff:feef:f172";
+      interface = "ens3";
+    };
+  };
+
   dots = {
     hardware.networking = enabled // {
       inherit hostName;
@@ -37,10 +63,31 @@ in
     };
 
     services = {
+      bird = enabled // {
+        routerId = "139.84.177.122";
+        bgpPeers = [
+          {
+            name = "vultr";
+            export = "all";
+            localAs = 201349;
+            remoteAs = 64515;
+            multihop = 2;
+            neighborAddress = "2001:19f0:ffff::1";
+            sourceAddress = "2401:c080:3400:224f:5400:05ff:feef:f172";
+            gracefulRestart = true;
+            password = "YOUR_PASSWORD_HERE";
+          }
+        ];
+        staticRoutes = [
+          {
+            prefix = "2a0c:9a40:8910::/44";
+            type = "blackhole";
+          }
+        ];
+      };
+
       ssh = enabled // {
         addRootKeys = true;
-        passwordAuth = true;
-        permitRootLogin = true;
       };
 
       tailscale = enabled // {

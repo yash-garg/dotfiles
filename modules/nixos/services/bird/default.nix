@@ -20,6 +20,7 @@ let
       import = mkOpt types.str "none" "Import filter (none, all, or filter name)";
       export = mkOpt types.str "none" "Export filter (none, all, or filter name)";
       gracefulRestart = mkBoolOpt false "Enable graceful restart";
+      password = mkOpt (types.nullOr types.str) null "Password for BGP connection";
       extraConfig = mkOpt types.lines "" "Additional BGP peer configuration";
     };
   };
@@ -27,7 +28,16 @@ let
   staticRouteType = types.submodule {
     options = {
       prefix = mkOpt types.str "2001:db8:1000::/48" "Route prefix";
-      via = mkOpt types.str "2001:db8::2" "Gateway address";
+      via =
+        mkOpt (types.nullOr types.str) null
+          "Gateway address (optional, not used with blackhole/unreachable/reject)";
+      type = mkOpt (types.nullOr (
+        types.enum [
+          "blackhole"
+          "unreachable"
+          "reject"
+        ]
+      )) null "Special route type (blackhole, unreachable, or reject)";
     };
   };
 in
@@ -45,7 +55,7 @@ in
   config = mkIf cfg.enable {
     services.bird = enabled // {
       autoReload = true;
-      checkConfig = true;
+      checkConfig = false; # Can't check config with runtime secrets
       config = ''
         log syslog all;
 
@@ -53,8 +63,10 @@ in
 
         protocol kernel {
           scan time ${toString cfg.kernelScanTime};
-          import none;
-          export none;
+          ipv6 {
+            import none;
+            export none;
+          };
         }
 
         protocol device {
@@ -66,11 +78,14 @@ in
             protocol bgp ${peer.name} {
               local as ${toString peer.localAs};
               ${optionalString (peer.sourceAddress != null) "source address ${peer.sourceAddress};"}
-              import ${peer.import};
-              export ${peer.export};
+              ipv6 {
+                import ${peer.import};
+                export ${peer.export};
+              };
               ${optionalString peer.gracefulRestart "graceful restart on;"}
               ${optionalString (peer.multihop != null) "multihop ${toString peer.multihop};"}
               neighbor ${peer.neighborAddress} as ${toString peer.remoteAs};
+              ${optionalString (peer.password != null) "password \"${peer.password}\";"}
               ${peer.extraConfig}
             }
           '') cfg.bgpPeers
@@ -78,8 +93,15 @@ in
 
         ${optionalString (cfg.staticRoutes != [ ]) ''
           protocol static {
+            ipv6;
             ${concatMapStringsSep "\n    " (
-              route: "route ${route.prefix} via ${route.via};"
+              route:
+              if route.type != null then
+                "route ${route.prefix} ${route.type};"
+              else if route.via != null then
+                "route ${route.prefix} via ${route.via};"
+              else
+                throw "Static route ${route.prefix} must have either 'via' or 'type' specified"
             ) cfg.staticRoutes}
           }
         ''}
