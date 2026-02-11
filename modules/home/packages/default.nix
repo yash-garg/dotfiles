@@ -3,7 +3,6 @@
   home.packages = with pkgs; [
     age
     attic-client
-    cachix
     curl
     deploy-rs
     difftastic
@@ -18,22 +17,14 @@
     mergiraf
     mtr
     nixfmt
-    nix-inspect
-    nixos-generators
-    nixpkgs-review
     nurl
     nvd
-    ookla-speedtest
     pkgs.${namespace}.git-spr
     ripe-atlas-tools
     ripgrep
     restic
-    ruff
-    scc
-    shfmt
     sops
     unzip
-    uv
     whois
     yq
     zip
