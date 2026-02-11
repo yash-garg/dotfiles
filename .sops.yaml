@@ -1,5 +1,6 @@
 keys:
   - &personal age1nn5xascw770dyjnga00ptpy3nuxuhunygajkekdaa7sjfx74msss63crpw
+  - &ares age1gjpkkr3vp8xaswzmnywl9zalkgja3v6y3eqy4rthk2nxdssvk3lq6gsfsl
   - &astra age1mchyxdcsrxqly8esmfa8d3urgq99kae25e6kn606v6dt6r7z7v7q8ezly5
   - &aurora age1yq2ksala2xds5jd626yqqt84uyuzetmknpyyemn7nuvgv4jdmy3s95ewwa
   - &orion age1shggmz7tt4uc0jucrn42gnu5mtwd7rmumw70k4xw0xj7wmps3yxqarmy97
@@ -10,6 +11,7 @@ creation_rules:
   - key_groups:
       - age:
           - *personal
+          - *ares
           - *astra
           - *aurora
           - *orion
