@@ -16,6 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - target: ares
+            runner: ubuntu-latest
           - target: quasar
             runner: ubuntu-latest
           - target: vortex
