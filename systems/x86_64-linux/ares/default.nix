@@ -61,25 +61,35 @@ in
     services = {
       bird = enabled // {
         routerId = "139.84.177.122";
-        bgpPeers = [
-          {
-            name = "vultr";
-            export = "all";
-            localAs = 201349;
-            remoteAs = 64515;
-            multihop = 2;
-            neighborAddress = "2001:19f0:ffff::1";
-            sourceAddress = "2401:c080:3400:224f:5400:05ff:feef:f172";
-            gracefulRestart = true;
-            password = "YOUR_PASSWORD_HERE";
+        extraConfig = ''
+          protocol static {
+            ipv6;
+            route 2a0c:9a40:8911::/48 blackhole;
           }
-        ];
-        staticRoutes = [
-          {
-            prefix = "2a0c:9a40:8910::/44";
-            type = "blackhole";
+
+          protocol bgp vultr {
+            local as 201349;
+            source address 2401:c080:3400:224f:5400:05ff:feef:f172;
+            ipv6 {
+              import filter {
+                  if net = ::/0 then accept;
+                  reject;
+              };
+
+              export filter {
+                  if net = 2a0c:9a40:8911::/48 then accept;
+                  reject;
+              };
+
+              import limit 5;
+              export limit 5;
+            };
+            graceful restart on;
+            multihop 2;
+            neighbor 2001:19f0:ffff::1 as 64515;
+            password "YOUR_PASSWORD_HERE";
           }
-        ];
+        '';
       };
 
       ssh = enabled // {
