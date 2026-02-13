@@ -38,7 +38,6 @@ in
           rule = "Host(`analytics.${cfg.baseUrl}`)";
           entryPoints = [ "websecure" ];
           service = "plausible";
-          middlewares = [ "crowdsec" ];
           tls.certResolver = "letsencrypt";
         };
         services.plausible.loadBalancer = {

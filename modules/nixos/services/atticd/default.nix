@@ -56,7 +56,6 @@ in
         routers.atticd = {
           rule = "Host(`cache.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "crowdsec" ];
           service = "atticd";
           tls.certResolver = "letsencrypt";
         };

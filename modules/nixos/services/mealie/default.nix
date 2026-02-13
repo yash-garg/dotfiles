@@ -46,7 +46,6 @@ in
         routers.mealie = {
           rule = "Host(`meals.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "crowdsec" ];
           service = "mealie";
           tls.certResolver = "letsencrypt";
         };

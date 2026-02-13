@@ -87,7 +87,6 @@ in
           rule = "Host(`fs.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           service = "copyparty";

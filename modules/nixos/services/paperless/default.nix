@@ -78,7 +78,6 @@ in
           rule = "Host(`paperless.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           service = "paperless";

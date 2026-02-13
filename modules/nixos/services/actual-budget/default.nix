@@ -58,7 +58,6 @@ in
         routers.actual = {
           rule = "Host(`money.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "crowdsec" ];
           service = "actual";
           tls.certResolver = "letsencrypt";
         };

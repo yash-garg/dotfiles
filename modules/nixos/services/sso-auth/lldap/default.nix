@@ -46,7 +46,6 @@ in
           entryPoints = [ "websecure" ];
           service = "lldap";
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           tls.certResolver = "letsencrypt";

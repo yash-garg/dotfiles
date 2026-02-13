@@ -70,7 +70,6 @@ in
           rule = "Host(`auth.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
           service = "authelia";
-          middlewares = [ "crowdsec" ];
           tls.certResolver = "letsencrypt";
         };
         services.authelia.loadBalancer = {

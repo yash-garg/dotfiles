@@ -42,7 +42,6 @@
             "  routers.${1:service-name} = {",
             "    rule = \"Host(`${2:subdomain}.\\${cfg.domain}`)\";",
             "    entryPoints = [ \"websecure\" ];",
-            "    middlewares = [ \"crowdsec\" ];",
             "    service = \"${1:service-name}\";",
             "    tls.certResolver = \"letsencrypt\";",
             "  };",

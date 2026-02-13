@@ -55,7 +55,6 @@ in
           rule = "Host(`rss.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           service = "miniflux";

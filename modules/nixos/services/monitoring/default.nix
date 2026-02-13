@@ -72,15 +72,6 @@ in
         provision = enabled // {
           dashboards.settings.providers = [
             {
-              name = "Crowdsec";
-              allowUiUpdates = true;
-              options.path = pkgs.fetchurl {
-                name = "crowdsec-overview-grafana-dashboard.json";
-                url = "https://raw.githubusercontent.com/crowdsecurity/grafana-dashboards/refs/heads/master/dashboards_v5/Crowdsec%20Overview.json";
-                hash = "sha256-/boB/qkOyJoiIkLdiq9vadU9plvuhxfMT30FyBDKNs8=";
-              };
-            }
-            {
               name = "Gatus";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {
@@ -359,7 +350,6 @@ in
           rule = "Host(`grafana.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           service = "grafana";

@@ -71,7 +71,6 @@ in
           entryPoints = [ "websecure" ];
           service = "open-webui";
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           tls.certResolver = "letsencrypt";

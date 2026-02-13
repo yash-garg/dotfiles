@@ -73,8 +73,6 @@ in
           endpoint = "https://a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com";
         };
 
-        crowdsec = enabled;
-
         forgejo = enabled // {
           domain = homeDomain;
         };
@@ -109,11 +107,6 @@ in
             copyparty = {
               name = "Copyparty";
               url = "http://${quasar}:${toString ports.copyparty}";
-            };
-            crowdsec = {
-              name = "CrowdSec";
-              url = "http://localhost:${toString ports.crowdsec}/v1/heartbeat";
-              extraConditions = [ "[STATUS] == 401" ];
             };
             forgejo = {
               name = "Forgejo";
@@ -304,7 +297,6 @@ in
               url = "http://${quasar}:${toString ports.jellyfin}";
               useAuth = false;
               middlewares = [
-                "crowdsec"
                 "jellyfin-redirect"
               ];
             };

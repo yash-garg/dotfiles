@@ -80,7 +80,6 @@ in
           rule = "Host(`links.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];
           middlewares = [
-            "crowdsec"
             "auth"
           ];
           service = "linkding";

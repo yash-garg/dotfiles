@@ -129,7 +129,6 @@ in
         routers.gatus = {
           rule = "Host(`status.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
-          middlewares = [ "crowdsec" ];
           service = "gatus";
           tls.certResolver = "letsencrypt";
         };

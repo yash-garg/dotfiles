@@ -49,7 +49,7 @@ let
     name:
     let
       svc = cfg.services.${name};
-      middlewares = [ "crowdsec" ] ++ (optional (svc.useAuth or true) "auth") ++ (svc.middlewares or [ ]);
+      middlewares = (optional (svc.useAuth or true) "auth") ++ (svc.middlewares or [ ]);
     in
     {
       inherit name;
@@ -98,15 +98,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    sops.secrets.crowdsec-api-key = {
-      sopsFile = snowfall.fs.get-file "secrets/traefik.yaml";
-      key = "crowdsec_api_key";
-      owner = "traefik";
-      group = "traefik";
-      mode = "0400";
-      restartUnits = [ "traefik.service" ];
-    };
-
     services.traefik = enabled // {
       inherit (cfg) environmentFiles;
       useEnvSubst = false;
@@ -150,11 +141,6 @@ in
           };
         };
 
-        experimental.plugins.bouncer = {
-          moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
-          version = "v1.5.0-beta1";
-        };
-
         global = {
           checkNewVersion = false;
           sendAnonymousUsage = false;
@@ -187,7 +173,6 @@ in
                 service = "api@internal";
                 tls.certResolver = "letsencrypt";
                 middlewares = [
-                  "crowdsec"
                   "auth"
                 ];
               };
@@ -209,19 +194,6 @@ in
               "Remote-Email"
               "Remote-Name"
             ];
-          };
-
-          crowdsec.plugin.bouncer = {
-            enabled = true;
-            logLevel = "INFO";
-            crowdsecMode = "stream";
-            crowdsecLapiScheme = "http";
-            crowdsecLapiHost = "127.0.0.1:${toString ports.crowdsec}";
-            crowdsecLapiKeyFile = config.sops.secrets.crowdsec-api-key.path;
-            # Trust Cloudflare to provide real client IP in X-Forwarded-For
-            forwardedHeadersTrustedIPs = trustedIPs;
-            # Only whitelist local IPs from blocking, NOT Cloudflare
-            clientTrustedIPs = localIPs;
           };
 
           jellyfin-redirect.redirectRegex = {

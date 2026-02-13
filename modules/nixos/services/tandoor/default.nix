@@ -55,7 +55,6 @@ in
           rule = "Host(`recipes.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
           service = "tandoor-recipes";
-          middlewares = [ "crowdsec" ];
           tls.certResolver = "letsencrypt";
         };
         services.tandoor-recipes.loadBalancer = {
