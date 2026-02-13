@@ -53,7 +53,7 @@ in
         ];
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.n8n.settings.http = {
         routers.n8n = {
           rule = "Host(`n8n.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

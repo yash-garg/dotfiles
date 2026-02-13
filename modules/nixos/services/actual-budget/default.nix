@@ -54,7 +54,7 @@ in
         }
       );
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.actual-budget.settings.http = {
         routers.actual = {
           rule = "Host(`money.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

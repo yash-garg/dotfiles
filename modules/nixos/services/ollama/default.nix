@@ -65,7 +65,7 @@ in
         environmentFile = config.sops.secrets.open-webui-env.path;
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.ollama.settings.http = {
         routers.open-webui = {
           rule = "Host(`chat.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

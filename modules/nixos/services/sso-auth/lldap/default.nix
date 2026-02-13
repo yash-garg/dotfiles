@@ -35,12 +35,12 @@ in
           http_port = cfg.port;
           ldap_base_dn = "dc=${concatStringsSep ",dc=" (splitString "." cfg.domain)}";
           ldap_user_email = "alt@${cfg.domain}";
-          ldap_user_pass = "$LLDAP_USER_PASSWORD";
+          ldap_user_pass = "$LDAP_USER_PASS";
           database_url = "postgresql://lldap@localhost/lldap?host=/run/postgresql";
         };
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.lldap.settings.http = {
         routers.lldap = {
           rule = "Host(`users.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

@@ -75,7 +75,7 @@ in
         ];
       };
 
-      traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
+      traefik.dynamic.files.linkding.settings.http = mkIf cfg.proxy.enable {
         routers.linkding = {
           rule = "Host(`links.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];

@@ -121,7 +121,7 @@ in
         }
       );
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.immich.settings.http = {
         routers.immich = {
           rule = "Host(`photos.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

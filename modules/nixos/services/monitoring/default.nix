@@ -354,7 +354,7 @@ in
         ];
       };
 
-      traefik.dynamicConfigOptions.http = mkIf cfg.grafana.enable {
+      traefik.dynamic.files.monitoring.settings.http = mkIf cfg.grafana.enable {
         routers.grafana = {
           rule = "Host(`grafana.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

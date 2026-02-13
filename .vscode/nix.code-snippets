@@ -38,7 +38,7 @@
     "Traefik Router Config": {
         "prefix": "nixtraefik",
         "body": [
-            "traefik.dynamicConfigOptions.http = {",
+            "traefik.dynamic.files.${1:service-name}.settings.http = {",
             "  routers.${1:service-name} = {",
             "    rule = \"Host(`${2:subdomain}.\\${cfg.domain}`)\";",
             "    entryPoints = [ \"websecure\" ];",

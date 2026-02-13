@@ -36,7 +36,7 @@ in
         };
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.umami.settings.http = {
         routers.umami = {
           rule = "Host(`analytics.${cfg.baseUrl}`)";
           entryPoints = [ "websecure" ];

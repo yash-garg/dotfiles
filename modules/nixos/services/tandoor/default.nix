@@ -50,7 +50,7 @@ in
         }
       ];
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.tandoor.settings.http = {
         routers.tandoor-recipes = {
           rule = "Host(`recipes.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

@@ -65,7 +65,7 @@ in
         }
       );
 
-      traefik.dynamicConfigOptions = mkIf cfg.proxy.enable {
+      traefik.dynamic.files.minecraft.settings = mkIf cfg.proxy.enable {
         http = {
           routers.pl3xmap = {
             rule = "Host(`map.${cfg.proxy.domain}`)";

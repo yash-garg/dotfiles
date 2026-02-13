@@ -42,7 +42,7 @@ in
         };
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.mealie.settings.http = {
         routers.mealie = {
           rule = "Host(`meals.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

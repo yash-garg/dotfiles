@@ -109,8 +109,9 @@ in
 
     services.traefik = enabled // {
       inherit (cfg) environmentFiles;
+      useEnvSubst = false;
 
-      staticConfigOptions = {
+      static.settings = {
         accessLog.format = "json";
 
         api = {
@@ -173,7 +174,8 @@ in
         ping.entryPoint = "traefik";
       };
 
-      dynamicConfigOptions.http = {
+      dynamic.dir = "/var/lib/traefik/dynamic";
+      dynamic.files.main.settings.http = {
         routers = builtins.listToAttrs (
           map mkRouter (builtins.attrNames cfg.services)
           ++ [

@@ -38,7 +38,7 @@ in
         sessionsFile = config.sops.secrets.sessions-secret.path;
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.nitter.settings.http = {
         routers.nitter = {
           rule = "Host(`x.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

@@ -73,7 +73,7 @@ in
         }
       );
 
-      traefik.dynamicConfigOptions.http = mkIf cfg.proxy.enable {
+      traefik.dynamic.files.paperless.settings.http = mkIf cfg.proxy.enable {
         routers.paperless = {
           rule = "Host(`paperless.${cfg.proxy.domain}`)";
           entryPoints = [ "websecure" ];

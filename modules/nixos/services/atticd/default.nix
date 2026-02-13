@@ -52,7 +52,7 @@ in
         };
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.atticd.settings.http = {
         routers.atticd = {
           rule = "Host(`cache.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

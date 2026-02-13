@@ -65,7 +65,7 @@ in
         }
       ];
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.authelia.settings.http = {
         routers.authelia = {
           rule = "Host(`auth.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

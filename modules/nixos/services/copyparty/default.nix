@@ -82,7 +82,7 @@ in
         }
       ];
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.copyparty.settings.http = {
         routers.copyparty = {
           rule = "Host(`fs.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

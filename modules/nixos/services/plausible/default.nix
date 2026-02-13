@@ -33,7 +33,7 @@ in
         };
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.plausible.settings.http = {
         routers.plausible = {
           rule = "Host(`analytics.${cfg.baseUrl}`)";
           entryPoints = [ "websecure" ];

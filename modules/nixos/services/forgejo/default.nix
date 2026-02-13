@@ -83,7 +83,7 @@ in
         };
       };
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.forgejo.settings.http = {
         routers.forgejo = {
           rule = "Host(`git.${cfg.domain}`)";
           entryPoints = [ "websecure" ];

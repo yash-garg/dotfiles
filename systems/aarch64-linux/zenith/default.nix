@@ -88,7 +88,7 @@ in
             };
             atticd = {
               name = "Attic Cache";
-              url = "http://localhost:${toString ports.atticd}";
+              url = "https://cache.${homeDomain}";
             };
             authelia = {
               name = "Authelia";

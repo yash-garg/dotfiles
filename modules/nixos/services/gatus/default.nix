@@ -125,7 +125,7 @@ in
         }
       ];
 
-      traefik.dynamicConfigOptions.http = {
+      traefik.dynamic.files.gatus.settings.http = {
         routers.gatus = {
           rule = "Host(`status.${cfg.domain}`)";
           entryPoints = [ "websecure" ];
