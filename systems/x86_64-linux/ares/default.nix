@@ -72,13 +72,13 @@ in
             source address 2401:c080:3400:224f:5400:05ff:feef:f172;
             ipv6 {
               import filter {
-                  if net = ::/0 then accept;
-                  reject;
+                if net = ::/0 then accept;
+                reject;
               };
 
               export filter {
-                  if net = 2a0c:9a40:8911::/48 then accept;
-                  reject;
+                if net = 2a0c:9a40:8911::/48 then accept;
+                reject;
               };
 
               import limit 5;

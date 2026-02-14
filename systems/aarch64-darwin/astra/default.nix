@@ -39,6 +39,7 @@ in
         "discord"
         "firefox"
         "notion-calendar"
+        "winbox"
       ];
 
       masApps = {
