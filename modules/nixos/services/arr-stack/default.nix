@@ -36,7 +36,7 @@ in
         openFirewall = true;
       };
 
-      jellyseerr = enabled // {
+      jellyseerr = disabled // {
         port = ports.jellyseerr;
         openFirewall = true;
       };
