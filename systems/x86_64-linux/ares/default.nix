@@ -65,6 +65,8 @@ in
           protocol static {
             ipv6;
             route 2a0c:9a40:8911::/48 blackhole;
+            route 2a0c:9a40:8912::/48 blackhole;
+            route 2a0c:9a40:8913::/48 blackhole;
           }
 
           protocol bgp vultr {
@@ -77,7 +79,11 @@ in
               };
 
               export filter {
-                if net = 2a0c:9a40:8911::/48 then accept;
+                if net ~ [
+                  2a0c:9a40:8911::/48,
+                  2a0c:9a40:8912::/48,
+                  2a0c:9a40:8913::/48
+                ] then accept;
                 reject;
               };
 
