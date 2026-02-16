@@ -28,6 +28,11 @@
     fsType = "ext4";
   };
 
+  hardware.facter = {
+    reportPath = ./facter.json;
+    detected.graphics.enable = false;
+  };
+
   swapDevices = [
     {
       device = "/swapfile";
