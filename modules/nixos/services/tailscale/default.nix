@@ -23,6 +23,7 @@ in
     openFirewall = mkBoolOpt true "Open firewall for Tailscale";
     setNameservers = mkBoolOpt true "Set nameservers to Tailscale's DNS servers";
     ssh = mkBoolOpt false "Enable SSH access to this device via Tailscale";
+    acceptRoutes = mkBoolOpt false "Accept subnet routes advertised by other nodes";
     subnetRouting = {
       enable = mkEnableOption "Enable subnet routing";
       routes = mkOpt (types.listOf types.str) [ ] "List of subnets to advertise to Tailscale";
@@ -50,13 +51,26 @@ in
           "--accept-risk=lose-ssh"
           "--ssh"
         ])
+        (optional cfg.acceptRoutes "--accept-routes")
         (optionals cfg.subnetRouting.enable [
           "--advertise-routes=${concatStringsSep "," cfg.subnetRouting.routes}"
         ])
         cfg.extraOptions
       ];
       permitCertUid = "caddy";
-      useRoutingFeatures = "both";
+      # Set routing features based on role:
+      # - "server" if advertising routes (exit node or subnet router)
+      # - "client" if only accepting routes
+      # - "both" if doing both
+      useRoutingFeatures =
+        if (cfg.exitNode || cfg.subnetRouting.enable) && cfg.acceptRoutes then
+          "both"
+        else if cfg.exitNode || cfg.subnetRouting.enable then
+          "server"
+        else if cfg.acceptRoutes then
+          "client"
+        else
+          "none";
     };
   };
 }

@@ -70,14 +70,8 @@ in
 
       tailscale = enabled // {
         authKeyFile = config.sops.secrets.server-tsauthkey.path;
-        exitNode = true;
+        acceptRoutes = true;
         ssh = true;
-        subnetRouting = enabled // {
-          routes = [
-            "192.168.0.0/24"
-            "192.168.1.0/24"
-          ];
-        };
       };
     };
 
