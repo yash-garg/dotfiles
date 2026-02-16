@@ -46,6 +46,7 @@ in
         80
         443
       ];
+      interfaces.tailscale0.ipv6 = [ "2a0c:9a40:8911::102/128" ];
     };
 
     services = {

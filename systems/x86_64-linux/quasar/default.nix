@@ -32,6 +32,7 @@ in
     hardware.networking = enabled // {
       inherit hostName;
       ports = [ 22 ];
+      interfaces.tailscale0.ipv6 = [ "2a0c:9a40:8911::101/128" ];
     };
 
     services = {
