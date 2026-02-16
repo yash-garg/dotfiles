@@ -31,7 +31,7 @@ in
 
     hardware.networking = enabled // {
       inherit hostName;
-      tcpPorts = [ 22 ];
+      ports = [ 22 ];
     };
 
     services = {

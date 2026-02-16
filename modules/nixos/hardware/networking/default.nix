@@ -9,102 +9,137 @@ with lib.${namespace};
 let
   cfg = config.${namespace}.hardware.networking;
 
-  ipv4AddressType = types.submodule {
-    options = {
-      address = mkOpt types.str "" "IPv4 address";
-      prefixLength = mkOpt types.int 24 "IPv4 prefix length";
+  # Parse "ip/prefix" into { address, prefixLength }
+  parseAddr =
+    addr:
+    let
+      parts = splitString "/" addr;
+      ip = head parts;
+      prefix =
+        if length parts > 1 then
+          toInt (elemAt parts 1)
+        else if hasInfix ":" ip then
+          64
+        else
+          24;
+    in
+    {
+      address = ip;
+      prefixLength = prefix;
     };
-  };
 
-  ipv6AddressType = types.submodule {
-    options = {
-      address = mkOpt types.str "" "IPv6 address";
-      prefixLength = mkOpt types.int 64 "IPv6 prefix length";
-    };
-  };
-
-  interfaceType = types.submodule {
-    options = {
-      name = mkOpt types.str "eth0" "Interface name";
-      ipv4 = mkOpt (types.listOf ipv4AddressType) [ ] "List of IPv4 addresses";
-      ipv6 = mkOpt (types.listOf ipv6AddressType) [ ] "List of IPv6 addresses";
-      useDHCP = mkBoolOpt true "Whether to use DHCP on this interface";
-    };
-  };
+  # Parse route string "dest/prefix via gateway" or "dest/prefix"
+  parseRoute =
+    route:
+    let
+      parts = splitString " via " route;
+      destParts = splitString "/" (head parts);
+      dest = head destParts;
+      prefix = if length destParts > 1 then toInt (elemAt destParts 1) else 32;
+      hasGateway = length parts > 1;
+    in
+    {
+      address = dest;
+      prefixLength = prefix;
+      via = if hasGateway then elemAt parts 1 else null;
+    }
+    // optionalAttrs (dest == "0.0.0.0" && hasGateway) { options.onlink = ""; };
 in
 {
   options.${namespace}.hardware.networking = with types; {
-    enable = mkBoolOpt false "Whether or not to enable networking support";
-    domain = mkOpt str "" "The domain name of the machine";
+    enable = mkBoolOpt false "Whether to enable networking configuration";
+
     hostName = mkOpt str "nixos" "The hostname of the machine";
-    hosts = mkOpt attrs { } (mdDoc "An attribute set to merge with `networking.hosts`");
-    extra = mkBoolOpt true "Whether or not to enable extra networking features";
-    tcpPorts = mkOpt (listOf port) [
-      80
-      443
-      8080
-    ] "A list of ports to open in the firewall";
+    domain = mkOpt str "" "The domain name of the machine";
+    hosts = mkOpt attrs { } "Additional entries for /etc/hosts";
 
-    # Static IP configuration
-    interfaces = mkOpt (listOf interfaceType) [ ] "Network interface configurations";
-    defaultGateway = mkOpt (nullOr str) null "Default IPv4 gateway";
-    defaultGateway6 = mkOpt (nullOr (submodule {
+    # Simple interface configuration
+    interfaces = mkOpt (attrsOf (submodule {
       options = {
-        address = mkOpt str "" "IPv6 gateway address";
-        interface = mkOpt str "" "Interface for IPv6 gateway";
+        ipv4 = mkOpt (listOf str) [ ] "IPv4 addresses (e.g., '192.168.1.10/24')";
+        ipv6 = mkOpt (listOf str) [ ] "IPv6 addresses (e.g., '2001:db8::1/64')";
+        routes = mkOpt (listOf str) [ ] "Routes (e.g., '0.0.0.0/0 via 192.168.1.1')";
+        dhcp = mkOpt (nullOr bool) null "Override DHCP for this interface";
       };
-    })) null "Default IPv6 gateway configuration";
+    })) { } "Interface configurations";
+
+    # Gateways
+    gateway = mkOpt (nullOr str) null "Default IPv4 gateway";
+    gateway6 =
+      mkOpt (nullOr str) null
+        "Default IPv6 gateway (format: 'address' or 'address interface')";
+
+    # Firewall
+    ports = mkOpt (listOf port) [ ] "TCP ports to open";
+    portsUDP = mkOpt (listOf port) [ ] "UDP ports to open";
+
+    # Feature toggles
+    dhcp = mkBoolOpt true "Enable DHCP by default";
+    networkManager = mkBoolOpt true "Enable NetworkManager";
   };
 
-  config = mkIf cfg.enable {
-    networking = mkMerge [
-      {
-        inherit (cfg) domain;
-        inherit (cfg) hosts;
-        hostName = mkDefault cfg.hostName;
+  config = mkIf cfg.enable (
+    let
+      hasStaticIPs = any (iface: iface.ipv4 != [ ] || iface.ipv6 != [ ]) (attrValues cfg.interfaces);
+    in
+    {
+      networking = mkMerge [
+        # Base configuration
+        {
+          inherit (cfg) hostName domain hosts;
 
-        # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-        # (the default) this is the recommended approach. When using systemd-networkd it's
-        # still possible to use this option, but it's recommended to use it in conjunction
-        # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-        interfaces.wlan0.useDHCP = mkDefault true;
-        useDHCP = mkDefault true;
+          useDHCP = mkDefault (cfg.dhcp && !hasStaticIPs);
+          networkmanager.enable = cfg.networkManager;
+          nftables.enable = true;
 
-        # Enable networking
-        networkmanager.enable = cfg.extra;
-        nftables.enable = cfg.extra;
+          firewall = {
+            enable = true;
+            allowPing = true;
+            allowedTCPPorts = cfg.ports;
+            allowedUDPPorts = cfg.portsUDP;
+          };
+        }
 
-        firewall = enabled // {
-          allowPing = true;
-          allowedTCPPorts = cfg.tcpPorts;
-        };
-      }
+        # Interface configuration
+        (mkIf (cfg.interfaces != { }) {
+          interfaces = mapAttrs (
+            _name: iface:
+            let
+              hasAddrs = iface.ipv4 != [ ] || iface.ipv6 != [ ];
+            in
+            {
+              useDHCP = if iface.dhcp != null then iface.dhcp else !hasAddrs;
+              ipv4 = {
+                addresses = map parseAddr iface.ipv4;
+              }
+              // optionalAttrs (iface.routes != [ ]) {
+                routes = map parseRoute iface.routes;
+              };
+              ipv6.addresses = map parseAddr iface.ipv6;
+            }
+          ) cfg.interfaces;
+        })
 
-      # Static IP configuration
-      (mkIf (cfg.interfaces != [ ]) {
-        useDHCP = mkForce false;
-        interfaces = listToAttrs (
-          map (iface: {
-            inherit (iface) name;
-            value = {
-              inherit (iface) useDHCP;
-              ipv4.addresses = iface.ipv4;
-              ipv6.addresses = iface.ipv6;
-            };
-          }) cfg.interfaces
-        );
-      })
+        # Gateway configuration
+        (mkIf (cfg.gateway != null) { defaultGateway = cfg.gateway; })
 
-      # Default gateways
-      (mkIf (cfg.defaultGateway != null) {
-        inherit (cfg) defaultGateway;
-      })
-
-      (mkIf (cfg.defaultGateway6 != null) {
-        defaultGateway6 = {
-          inherit (cfg.defaultGateway6) address interface;
-        };
-      })
-    ];
-  };
+        (mkIf (cfg.gateway6 != null) (
+          let
+            parts = splitString " " cfg.gateway6;
+            hasInterface = length parts > 1;
+          in
+          {
+            defaultGateway6 =
+              if hasInterface then
+                {
+                  address = head parts;
+                  interface = elemAt parts 1;
+                }
+              else
+                cfg.gateway6;
+          }
+        ))
+      ];
+    }
+  );
 }

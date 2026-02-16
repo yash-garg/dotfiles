@@ -29,56 +29,27 @@ in
     device = "/dev/sda";
   };
 
-  networking.interfaces.ens18.ipv4.routes = [
-    {
-      address = "118.91.187.129";
-      prefixLength = 32;
-      via = null;
-    }
-    {
-      address = "0.0.0.0";
-      prefixLength = 0;
-      via = "118.91.187.129";
-      options.onlink = "";
-    }
-  ];
-
   dots = {
     server = enabled;
 
     hardware.networking = enabled // {
       inherit hostName;
-      defaultGateway = null;
-      defaultGateway6 = null;
-      extra = true;
-      interfaces = [
-        {
-          name = "ens18";
-          useDHCP = false;
-          ipv4 = [
-            {
-              address = "118.91.187.146";
-              prefixLength = 32;
-            }
-          ];
-          ipv6 = [
-            {
-              address = "2a0c:9a40:2711:111::1001";
-              prefixLength = 64;
-            }
-          ];
-        }
-        {
-          name = "ens19";
-          useDHCP = false;
-          ipv6 = [
-            {
-              address = "2001:7f8:ca:1::20:1349:1";
-              prefixLength = 64;
-            }
-          ];
-        }
+      ports = [
+        80
+        443
+        8080
       ];
+      interfaces = {
+        ens18 = {
+          ipv4 = [ "118.91.187.146/32" ];
+          ipv6 = [ "2a0c:9a40:2711:111::1001/64" ];
+          routes = [
+            "118.91.187.129/32"
+            "0.0.0.0/0 via 118.91.187.129"
+          ];
+        };
+        ens19.ipv6 = [ "2001:7f8:ca:1::20:1349:1/64" ];
+      };
     };
 
     services = {

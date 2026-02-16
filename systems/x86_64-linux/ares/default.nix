@@ -34,34 +34,20 @@ in
 
     hardware.networking = enabled // {
       inherit hostName;
-      extra = true;
-      interfaces = [
-        {
-          name = "ens3";
-          useDHCP = false;
-          ipv4 = [
-            {
-              address = "139.84.177.122";
-              prefixLength = 23;
-            }
-          ];
-          ipv6 = [
-            {
-              address = "2401:c080:3400:224f:5400:05ff:feef:f172";
-              prefixLength = 64;
-            }
-            {
-              address = "2a0c:9a40:8911::1";
-              prefixLength = 48;
-            }
-          ];
-        }
+      ports = [
+        80
+        443
+        8080
       ];
-      defaultGateway = "139.84.176.1";
-      defaultGateway6 = {
-        address = "fe80::fc00:5ff:feef:f172";
-        interface = "ens3";
+      interfaces.ens3 = {
+        ipv4 = [ "139.84.177.122/23" ];
+        ipv6 = [
+          "2401:c080:3400:224f:5400:05ff:feef:f172/64"
+          "2a0c:9a40:8911::1/48"
+        ];
       };
+      gateway = "139.84.176.1";
+      gateway6 = "fe80::fc00:5ff:feef:f172 ens3";
     };
 
     services = {

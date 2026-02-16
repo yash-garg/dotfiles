@@ -42,8 +42,7 @@ in
 
     hardware.networking = enabled // {
       inherit hostName;
-      domain = "";
-      tcpPorts = [
+      ports = [
         80
         443
       ];
