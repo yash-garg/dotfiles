@@ -35,7 +35,6 @@ in
     hardware.networking = enabled // {
       inherit hostName;
       extra = true;
-      # Static IP configuration for Vultr VPS
       interfaces = [
         {
           name = "ens3";
@@ -50,6 +49,10 @@ in
             {
               address = "2401:c080:3400:224f:5400:05ff:feef:f172";
               prefixLength = 64;
+            }
+            {
+              address = "2a0c:9a40:8911::1";
+              prefixLength = 48;
             }
           ];
         }
@@ -120,7 +123,6 @@ in
     extraGroups = [ "wheel" ];
   };
 
-  # Enable passwordless sudo.
   security.sudo.extraRules = [
     {
       users = [ "yash" ];
