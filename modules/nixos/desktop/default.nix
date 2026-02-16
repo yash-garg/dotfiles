@@ -44,6 +44,7 @@ in
 
       system = {
         boot = enabled;
+        fonts = enabled;
         xkb = enabled;
       };
     };

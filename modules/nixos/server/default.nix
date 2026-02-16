@@ -20,10 +20,7 @@ in
     dots = {
       services = {
         chrony = enabled;
-        ncps = disabled;
       };
-
-      virtualisation = enabled;
     };
 
     users.users.yash.packages = with pkgs; [ nfs-utils ];

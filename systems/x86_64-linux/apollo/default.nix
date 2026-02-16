@@ -44,6 +44,8 @@ in
   ];
 
   dots = {
+    server = enabled;
+
     hardware.networking = enabled // {
       inherit hostName;
       defaultGateway = null;

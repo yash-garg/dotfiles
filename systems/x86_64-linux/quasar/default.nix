@@ -27,12 +27,12 @@ in
   };
 
   dots = {
+    server = enabled;
+
     hardware.networking = enabled // {
       inherit hostName;
       tcpPorts = [ 22 ];
     };
-
-    server = enabled;
 
     services = {
       arr-stack = enabled // {
@@ -142,6 +142,8 @@ in
       secure = disabled;
       timeout = 1;
     };
+
+    virtualisation = enabled;
   };
 
   # Enable passwordless sudo.

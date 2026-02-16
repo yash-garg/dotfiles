@@ -38,6 +38,8 @@ in
   };
 
   dots = {
+    server = enabled;
+
     hardware.networking = enabled // {
       inherit hostName;
       domain = "";
@@ -46,8 +48,6 @@ in
         443
       ];
     };
-
-    server = enabled;
 
     services = {
       minecraft-server = enabled // {
@@ -80,6 +80,8 @@ in
         };
       };
     };
+
+    virtualisation = enabled;
   };
 
   users.users.yash = {

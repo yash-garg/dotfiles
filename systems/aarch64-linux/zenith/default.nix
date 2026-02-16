@@ -44,6 +44,8 @@ in
   };
 
   dots = {
+    server = enabled;
+
     hardware.networking = enabled // {
       hostName = "zenith";
       domain = "";
@@ -52,8 +54,6 @@ in
         443
       ];
     };
-
-    server = enabled;
 
     services =
       let
@@ -307,6 +307,8 @@ in
           baseUrl = domain;
         };
       };
+
+    virtualisation = enabled;
   };
 
   users.users.yash = {
