@@ -34,14 +34,7 @@ in
   config = mkIf cfg.enable {
     # always allow traffic from Tailscale network
     networking.firewall.trustedInterfaces = mkIf cfg.openFirewall [ "tailscale0" ];
-    networking = {
-      nameservers = mkIf cfg.setNameservers [
-        "100.100.100.100"
-        "8.8.8.8"
-        "1.1.1.1"
-      ];
-      search = [ cfg.tailnet ];
-    };
+    networking.search = [ cfg.tailnet ];
 
     services.tailscale = enabled // {
       inherit (cfg) authKeyFile openFirewall;

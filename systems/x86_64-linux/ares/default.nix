@@ -22,6 +22,12 @@ in
     };
 
     server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
+    cf-api-token = {
+      sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
+      format = "dotenv";
+      owner = "caddy";
+      group = "caddy";
+    };
   };
 
   boot.loader.grub = enabled // {
@@ -43,6 +49,9 @@ in
         ipv6 = [
           "2401:c080:3400:224f:5400:05ff:feef:f172/64"
           "2a0c:9a40:8911::1/48"
+        ];
+        routes = [
+          "0.0.0.0/0 via 139.84.176.1"
         ];
       };
       gateway = "139.84.176.1";
@@ -97,6 +106,46 @@ in
         authKeyFile = config.sops.secrets.server-tsauthkey.path;
         acceptRoutes = true;
         ssh = true;
+      };
+
+      caddy = enabled // {
+        environmentFile = config.sops.secrets.cf-api-token.path;
+        servers = {
+          zenith = {
+            primary = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
+            fallback = "[zenith.your-tailnet.ts.net]:443";
+            services = [
+              "cache"
+              "money"
+              "git"
+              "links"
+              "grafana"
+              "auth"
+              "users"
+              "status"
+              "analytics"
+            ];
+          };
+          quasar = {
+            primary = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
+            fallback = "[quasar.your-tailnet.ts.net]:443";
+            services = [
+              "photos"
+              "books"
+              "pdf"
+              "fs"
+              "meals"
+              "rss"
+              "paperless"
+              "stream"
+              "qbit"
+              "radarr"
+              "sonarr"
+              "prowlarr"
+              "bazarr"
+            ];
+          };
+        };
       };
     };
   };

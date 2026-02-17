@@ -87,11 +87,16 @@ in
         # Base configuration
         {
           inherit (cfg) hostName domain hosts;
-
-          useDHCP = mkDefault (cfg.dhcp && !hasStaticIPs);
+          useDHCP = (if hasStaticIPs then mkForce else mkDefault) (cfg.dhcp && !hasStaticIPs);
           networkmanager.enable = cfg.networkManager;
           nftables.enable = true;
-
+          nameservers = [
+            "100.100.100.100"
+            "1.1.1.1"
+            "1.0.0.1"
+            "2606:4700:4700::1111"
+            "2606:4700:4700::1001"
+          ];
           firewall = {
             enable = true;
             allowPing = true;
