@@ -131,7 +131,7 @@ in
         *.${cfg.domain} {
           ${concatStrings (mapAttrsToList mkProxy cfg.servers)}
           handle {
-            respond "Not Found" 404
+            respond "Public Ingress Proxy\nNothing to see." 404
           }
         }
       '';
