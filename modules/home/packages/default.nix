@@ -11,6 +11,7 @@
       age
       curl
       deploy-rs
+      difftastic
       fd
       just
       jq
@@ -19,6 +20,7 @@
       nixfmt
       nurl
       ripgrep
+      ripe-atlas-tools
       restic
       sops
       unzip
@@ -26,8 +28,6 @@
       yq
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
-      difftastic
       pkgs.${namespace}.git-spr
-      ripe-atlas-tools
     ];
 }
