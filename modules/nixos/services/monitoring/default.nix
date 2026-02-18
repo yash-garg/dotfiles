@@ -209,6 +209,7 @@ in
               role_attribute_path = "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'";
             };
             analytics.feedback_links_enabled = false;
+            security.secret_key = "X7cW8MFm853Smm9H6hRm";
             server = {
               inherit (cfg) domain;
               root_url = "https://grafana.${cfg.domain}";
