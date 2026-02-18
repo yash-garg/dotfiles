@@ -72,6 +72,19 @@ in
         provision = enabled // {
           dashboards.settings.providers = [
             {
+              name = "BGP Tools";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "bgp-dashboard.json";
+                url = "https://bgp.tools/assets/text/grafana-dash.json";
+                curlOptsList = [
+                  "-A"
+                  "NixOS Grafana Dashboard Provisioning"
+                ];
+                hash = "sha256-ZAdkMiPs1x1KOBVcZjH7MSJ05zAGdEWprNL9UlmgVCs=";
+              };
+            }
+            {
               name = "Gatus";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {

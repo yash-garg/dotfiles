@@ -304,6 +304,18 @@ in
     virtualisation = enabled;
   };
 
+  services.prometheus.scrapeConfigs = [
+    {
+      job_name = "bgptools-export";
+      scheme = "https";
+      metrics_path = "/prom/76dd5676-5af1-4e32-8716-381770873249";
+      scrape_interval = "30s";
+      static_configs = [
+        { targets = [ "prometheus.bgp.tools" ]; }
+      ];
+    }
+  ];
+
   users.users.yash = {
     isNormalUser = true;
     hashedPasswordFile = config.sops.secrets.user-password.path;
