@@ -24,8 +24,7 @@ in
     boot = {
       initrd.systemd = enabled;
 
-      # Use latest kernel by default.
-      kernelPackages = mkDefault pkgs.linuxPackages_latest;
+      kernelPackages = mkDefault pkgs.linuxPackages_6_18;
 
       # Secure Boot
       lanzaboote = {
