@@ -21,12 +21,6 @@ in
       key = "vultr_bgp_password";
       owner = config.systemd.services.bird.serviceConfig.User;
     };
-    cf-api-token = {
-      sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
-      format = "dotenv";
-      owner = config.services.caddy.user;
-      inherit (config.services.caddy) group;
-    };
     user-password = {
       sopsFile = snowfall.fs.get-file "secrets/users.yaml";
       key = hostName;

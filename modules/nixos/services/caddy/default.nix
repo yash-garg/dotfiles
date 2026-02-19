@@ -42,6 +42,7 @@ let
     "10.0.0.0/8"
     "172.16.0.0/12"
     "192.168.0.0/16"
+    "100.64.0.0/10" # Tailscale CGNAT range
   ];
 
   trustedProxies = localIPs ++ cloudflareIPs;
@@ -106,13 +107,28 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets = {
+      caddy-origin-cert = {
+        sopsFile = lib.snowfall.fs.get-file "secrets/cert.pem";
+        format = "binary";
+        owner = config.services.caddy.user;
+        inherit (config.services.caddy) group;
+      };
+      cf-env = {
+        sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
+        format = "dotenv";
+        owner = config.services.caddy.user;
+        inherit (config.services.caddy) group;
+      };
+    };
+
     services = {
       caddy = enabled // {
         package = pkgs.caddy.withPlugins {
           plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
           hash = "sha256-bJO2RIa6hYsoVl3y2L86EM34Dfkm2tlcEsXn2+COgzo";
         };
-        inherit (cfg) environmentFile;
+        environmentFile = config.sops.secrets.cf-env.path;
         globalConfig = ''
           acme_dns cloudflare {env.CF_DNS_API_TOKEN}
           metrics
@@ -123,6 +139,13 @@ in
         logFormat = "level INFO";
         extraConfig = mkIf (cfg.servers != { }) ''
           *.${cfg.domain} {
+            @external not remote_ip ${concatStringsSep " " localIPs}
+            tls {
+              client_auth @external {
+                mode require_and_verify
+                trusted_ca_cert_file ${config.sops.secrets.caddy-origin-cert.path}
+              }
+            }
             ${concatStrings (mapAttrsToList mkProxy cfg.servers)}
             handle {
               respond "Public Ingress Proxy. Nothing to see." 404
