@@ -14,6 +14,7 @@
     crowdsec = 6060;
     exporters = {
       authelia = 9107;
+      caddy = 2019;
       crowdsec = 9108;
       immich = 2284;
       minecraft = 25585;

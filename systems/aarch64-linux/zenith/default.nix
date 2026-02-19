@@ -211,6 +211,18 @@ in
           grafana = enabled // {
             remoteDatasources = [
               {
+                name = "apollo";
+                ip = "100.98.187.93";
+                prometheus = true;
+                loki = true;
+              }
+              {
+                name = "ares";
+                ip = "100.105.194.6";
+                prometheus = true;
+                loki = true;
+              }
+              {
                 name = "quasar";
                 ip = "100.93.8.41";
                 prometheus = true;

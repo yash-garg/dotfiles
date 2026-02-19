@@ -106,35 +106,45 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.caddy = enabled // {
-      package = pkgs.caddy.withPlugins {
-        plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-        hash = "sha256-bJO2RIa6hYsoVl3y2L86EM34Dfkm2tlcEsXn2+COgzo";
-      };
-      inherit (cfg) environmentFile;
-      globalConfig = ''
-        acme_dns cloudflare {env.CF_DNS_API_TOKEN}
-        servers {
-          trusted_proxies static ${concatStringsSep " " trustedProxies}
-        }
-      '';
-      logFormat = ''
-        output file /var/log/caddy/caddy_main.log {
-          roll_size 100MiB
-          roll_keep 5
-          roll_keep_for 100d
-        }
-        format json
-        level INFO
-      '';
-      extraConfig = mkIf (cfg.servers != { }) ''
-        *.${cfg.domain} {
-          ${concatStrings (mapAttrsToList mkProxy cfg.servers)}
-          handle {
-            respond "Public Ingress Proxy\nNothing to see." 404
+    services = {
+      caddy = enabled // {
+        package = pkgs.caddy.withPlugins {
+          plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
+          hash = "sha256-bJO2RIa6hYsoVl3y2L86EM34Dfkm2tlcEsXn2+COgzo";
+        };
+        inherit (cfg) environmentFile;
+        globalConfig = ''
+          acme_dns cloudflare {env.CF_DNS_API_TOKEN}
+          metrics
+          servers {
+            trusted_proxies static ${concatStringsSep " " trustedProxies}
           }
+        '';
+        logFormat = ''
+          output file /var/log/caddy/caddy_main.log {
+            roll_size 100MiB
+            roll_keep 5
+            roll_keep_for 100d
+          }
+          format json
+          level INFO
+        '';
+        extraConfig = mkIf (cfg.servers != { }) ''
+          *.${cfg.domain} {
+            ${concatStrings (mapAttrsToList mkProxy cfg.servers)}
+            handle {
+              respond "Public Ingress Proxy. Nothing to see." 404
+            }
+          }
+        '';
+      };
+
+      prometheus.scrapeConfigs = [
+        {
+          job_name = "caddy";
+          static_configs = [ { targets = [ "localhost:${toString ports.exporters.caddy}" ]; } ];
         }
-      '';
+      ];
     };
   };
 }

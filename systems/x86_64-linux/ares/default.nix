@@ -104,16 +104,6 @@ in
         '';
       };
 
-      ssh = enabled // {
-        addRootKeys = true;
-      };
-
-      tailscale = enabled // {
-        authKeyFile = config.sops.secrets.server-tsauthkey.path;
-        acceptRoutes = true;
-        ssh = true;
-      };
-
       caddy = enabled // {
         environmentFile = config.sops.secrets.cf-api-token.path;
         servers = {
@@ -152,6 +142,22 @@ in
             ];
           };
         };
+      };
+
+      monitoring = enabled // {
+        alloy = enabled;
+        loki = enabled;
+        prometheus = enabled;
+      };
+
+      ssh = enabled // {
+        addRootKeys = true;
+      };
+
+      tailscale = enabled // {
+        authKeyFile = config.sops.secrets.server-tsauthkey.path;
+        acceptRoutes = true;
+        ssh = true;
       };
     };
   };
