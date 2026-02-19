@@ -99,6 +99,9 @@ in
       };
 
       caddy = enabled // {
+        auth = enabled // {
+          url = "http://[fd7a:115c:a1e0::1901:432c]:${toString ports.authelia}";
+        };
         servers = {
           zenith = {
             address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";

@@ -49,11 +49,7 @@ in
 
       bentopdf = enabled;
 
-      caddy = enabled // {
-        auth = enabled // {
-          url = "zenith.turtle-lake.ts.net:${toString ports.authelia}";
-        };
-      };
+      caddy = enabled;
 
       calibre-web = enabled // {
         mediaDir = "/mnt/books";

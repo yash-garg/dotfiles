@@ -130,6 +130,7 @@ in
     dots.services.caddy.services.status = {
       inherit (cfg) domain;
       upstream = "localhost:${toString ports.gatus}";
+      auth = false;
     };
   };
 }

@@ -69,7 +69,6 @@ in
 
         caddy = enabled // {
           domain = homeDomain;
-          auth = enabled;
         };
 
         forgejo = enabled // {
@@ -182,10 +181,6 @@ in
             sonarr = {
               name = "Sonarr";
               url = "http://${quasar}:${toString ports.sonarr}";
-            };
-            traefik = {
-              name = "Traefik";
-              url = "http://localhost:8080/ping";
             };
             umami = {
               name = "Umami";

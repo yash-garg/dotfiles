@@ -41,6 +41,7 @@ in
     dots.services.caddy.services.analytics = {
       domain = cfg.baseUrl;
       upstream = "localhost:${toString cfg.port}";
+      auth = false;
     };
   };
 }
