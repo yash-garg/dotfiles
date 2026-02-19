@@ -85,6 +85,15 @@ in
               };
             }
             {
+              name = "Caddy";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "caddy-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/20802/revisions/1/download";
+                hash = "sha256-vSt63PakGp5NzKFjbU5Yh0nDbKET5QRWp5nusM76/O4=";
+              };
+            }
+            {
               name = "Gatus";
               allowUiUpdates = true;
               options.path = pkgs.fetchurl {
