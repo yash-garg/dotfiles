@@ -102,7 +102,7 @@ in
         servers = {
           zenith = {
             address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
-            fallback = "zenith.turtle-lake.ts.net:443";
+            fallback = "[fd7a:115c:a1e0::1901:432c]:443";
             services = [
               "cache"
               "money"
@@ -117,7 +117,7 @@ in
           };
           quasar = {
             address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
-            fallback = "quasar.turtle-lake.ts.net:443";
+            fallback = "[fd7a:115c:a1e0::8601:831]:443";
             services = [
               "photos"
               "books"
@@ -136,7 +136,7 @@ in
           };
           vortex = {
             address = "[2603:c021:400a:2a00:0:d199:f3c0:ff54]:443";
-            fallback = "vortex.turtle-lake.ts.net:443";
+            fallback = "[fd7a:115c:a1e0::fb01:f473]:443";
             services = [ "map" ];
           };
         };

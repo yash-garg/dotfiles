@@ -45,6 +45,8 @@ in
 
       bentopdf = enabled;
 
+      caddy = enabled;
+
       calibre-web = enabled // {
         mediaDir = "/mnt/books";
       };

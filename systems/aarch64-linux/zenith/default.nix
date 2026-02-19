@@ -18,11 +18,6 @@ in
   ];
 
   sops.secrets = {
-    cf-tokens = {
-      sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
-      format = "dotenv";
-      owner = config.services.traefik.group;
-    };
     user-password = {
       sopsFile = snowfall.fs.get-file "secrets/users.yaml";
       key = config.networking.hostName;
