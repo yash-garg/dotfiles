@@ -88,6 +88,7 @@ in
     dots.services.caddy.services.git = {
       inherit (cfg) domain;
       upstream = "localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+      auth = false;
     };
   };
 }

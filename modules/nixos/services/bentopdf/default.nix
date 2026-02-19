@@ -33,6 +33,7 @@ in
     dots.services.caddy.services.pdf = {
       inherit (cfg) domain;
       upstream = "localhost:${toString cfg.port}";
+      auth = false;
     };
   };
 }

@@ -59,6 +59,7 @@ in
     dots.services.caddy.services.money = {
       inherit (cfg) domain;
       upstream = "localhost:${toString ports.actual-budget}";
+      auth = false;
     };
 
     systemd.services.actual.serviceConfig.EnvironmentFile = [
