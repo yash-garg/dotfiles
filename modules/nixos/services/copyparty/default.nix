@@ -65,7 +65,7 @@ in
           shr = "/share";
           no-robots = true;
           idp-h-usr = "Remote-User";
-          xff-src = "100.111.67.44";
+          xff-src = "127.0.0.0/16";
           xff-hdr = "X-Forwarded-For";
           rproxy = 1;
         }
