@@ -231,6 +231,7 @@ in
               role_attribute_path = "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'";
             };
             analytics.feedback_links_enabled = false;
+            security.secret_key = "X7cW8MFm853Smm9H6hRm";
             server = {
               inherit (cfg) domain;
               root_url = "https://grafana.${cfg.domain}";
@@ -253,6 +254,11 @@ in
               http_listen_port = cfg.loki.port;
               grpc_listen_port = 0;
               log_level = "warn";
+            };
+            memberlist = {
+              abort_if_cluster_join_fails = false;
+              bind_addr = [ "127.0.0.1" ];
+              bind_port = 0;
             };
             common = {
               replication_factor = 1;

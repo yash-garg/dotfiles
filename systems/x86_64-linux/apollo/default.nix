@@ -120,12 +120,6 @@ in
         '';
       };
 
-      monitoring = enabled // {
-        alloy = enabled;
-        loki = enabled;
-        prometheus = enabled;
-      };
-
       ssh = enabled // {
         addRootKeys = true;
       };
