@@ -15,19 +15,24 @@ in
   ];
 
   sops.secrets = {
+    bgp-password = {
+      reloadUnits = [ config.systemd.services.bird.name ];
+      sopsFile = snowfall.fs.get-file "secrets/bird.yaml";
+      key = "vultr_bgp_password";
+      owner = config.systemd.services.bird.serviceConfig.User;
+    };
+    cf-api-token = {
+      sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
+      format = "dotenv";
+      owner = config.services.caddy.user;
+      inherit (config.services.caddy) group;
+    };
     user-password = {
       sopsFile = snowfall.fs.get-file "secrets/users.yaml";
       key = hostName;
       neededForUsers = true;
     };
-
     server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
-    cf-api-token = {
-      sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
-      format = "dotenv";
-      owner = "caddy";
-      group = "caddy";
-    };
   };
 
   boot.loader.grub = enabled // {
@@ -69,6 +74,7 @@ in
             route 2a0c:9a40:8913::/48 blackhole;
           }
 
+          include "${config.sops.secrets.bgp-password.path}";
           protocol bgp vultr {
             local as 201349;
             source address 2401:c080:3400:224f:5400:05ff:feef:f172;
@@ -93,7 +99,7 @@ in
             graceful restart on;
             multihop 2;
             neighbor 2001:19f0:ffff::1 as 64515;
-            password "YOUR_PASSWORD_HERE";
+            password BGP_PASSWD;
           }
         '';
       };

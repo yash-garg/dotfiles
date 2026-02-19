@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     services.bird = enabled // {
       autoReload = true;
-      checkConfig = true;
+      checkConfig = false;
       config = ''
         log syslog all;
 
