@@ -38,18 +38,12 @@ in
         sessionsFile = config.sops.secrets.sessions-secret.path;
       };
 
-      traefik.dynamic.files.nitter.settings.http = {
-        routers.nitter = {
-          rule = "Host(`x.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "nitter";
-          tls.certResolver = "letsencrypt";
-        };
+    };
 
-        services.nitter.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
-        };
-      };
+    dots.services.caddy.services.x = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.port}";
+      auth = false;
     };
   };
 }

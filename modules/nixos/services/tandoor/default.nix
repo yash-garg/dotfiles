@@ -50,17 +50,12 @@ in
         }
       ];
 
-      traefik.dynamic.files.tandoor.settings.http = {
-        routers.tandoor-recipes = {
-          rule = "Host(`recipes.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "tandoor-recipes";
-          tls.certResolver = "letsencrypt";
-        };
-        services.tandoor-recipes.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString config.services.tandoor-recipes.port}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.recipes = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString config.services.tandoor-recipes.port}";
+      auth = false;
     };
 
     systemd.services.tandoor-recipes = {

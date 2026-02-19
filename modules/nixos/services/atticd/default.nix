@@ -51,28 +51,22 @@ in
           };
         };
       };
+    };
 
-      traefik.dynamic.files.atticd.settings.http = {
-        routers.atticd = {
-          rule = "Host(`cache.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "atticd";
-          tls.certResolver = "letsencrypt";
-        };
-        services.atticd.loadBalancer = {
-          servers = [ { url = "http://127.0.0.1:${toString cfg.port}"; } ];
-        };
-      };
+    dots.services.caddy.services.cache = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.port}";
+      auth = false;
+    };
 
-      postgresql = enabled // {
-        ensureUsers = [
-          {
-            name = "atticd";
-            ensureDBOwnership = true;
-          }
-        ];
-        ensureDatabases = [ "atticd" ];
-      };
+    services.postgresql = enabled // {
+      ensureUsers = [
+        {
+          name = "atticd";
+          ensureDBOwnership = true;
+        }
+      ];
+      ensureDatabases = [ "atticd" ];
     };
   };
 }

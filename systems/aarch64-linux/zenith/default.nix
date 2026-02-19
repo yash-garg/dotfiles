@@ -72,6 +72,11 @@ in
           endpoint = "https://a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com";
         };
 
+        caddy = enabled // {
+          domain = homeDomain;
+          auth = enabled;
+        };
+
         forgejo = enabled // {
           domain = homeDomain;
         };
@@ -254,51 +259,6 @@ in
           authKeyFile = config.sops.secrets.server-tsauthkey.path;
           acceptRoutes = true;
           ssh = true;
-        };
-
-        traefik = enabled // {
-          domain = homeDomain;
-          environmentFiles = [ config.sops.secrets.cf-tokens.path ];
-          services = {
-            bazarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.bazarr}";
-            books.url = "http://${quasar}:${toString ports.calibre}";
-            fs = {
-              url = "http://${quasar}:${toString ports.copyparty}";
-              useInsecure = true;
-            };
-            home.url = "http://homeassistant.${tailnet}:8123";
-            map.url = "http://${vortex}:81";
-            meals = {
-              url = "http://${quasar}:${toString ports.mealie}";
-              useAuth = false;
-            };
-            paperless.url = "http://${quasar}:${toString ports.paperless-ngx}";
-            pdf = {
-              url = "http://${quasar}:${toString ports.bentopdf}";
-              useAuth = false;
-            };
-            photos = {
-              url = "http://${quasar}:${toString ports.immich.webui}";
-              useAuth = false;
-            };
-            prometheus.url = "http://${quasar}:${toString ports.prometheus}";
-            prowlarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.prowlarr}";
-            qbit.url = "http://${quasar}:${toString ports.qbittorrent.webui}";
-            radarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.radarr}";
-            rss.url = "http://${quasar}:${toString ports.miniflux}";
-            sonarr.url = "http://$ARR_USER:$ARR_PASSWORD@${quasar}:${toString ports.sonarr}";
-            stream = {
-              url = "http://${quasar}:${toString ports.jellyfin}";
-              useAuth = false;
-              middlewares = [
-                "jellyfin-redirect"
-              ];
-            };
-            unraid = {
-              url = "https://${nova}";
-              useInsecure = true;
-            };
-          };
         };
 
         umami = enabled // {

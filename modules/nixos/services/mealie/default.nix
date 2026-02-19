@@ -42,17 +42,12 @@ in
         };
       };
 
-      traefik.dynamic.files.mealie.settings.http = {
-        routers.mealie = {
-          rule = "Host(`meals.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "mealie";
-          tls.certResolver = "letsencrypt";
-        };
-        services.mealie.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString config.services.mealie.port}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.meals = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString config.services.mealie.port}";
+      auth = false;
     };
   };
 }

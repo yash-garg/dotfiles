@@ -75,20 +75,11 @@ in
         ];
       };
 
-      traefik.dynamic.files.linkding.settings.http = mkIf cfg.proxy.enable {
-        routers.linkding = {
-          rule = "Host(`links.${cfg.proxy.domain}`)";
-          entryPoints = [ "websecure" ];
-          middlewares = [
-            "auth"
-          ];
-          service = "linkding";
-          tls.certResolver = "letsencrypt";
-        };
-        services.linkding.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.links = mkIf cfg.proxy.enable {
+      inherit (cfg.proxy) domain;
+      upstream = "localhost:${toString cfg.port}";
     };
   };
 }

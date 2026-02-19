@@ -49,8 +49,11 @@ in
     };
 
     services = {
+      caddy = enabled;
+
       minecraft-server = enabled // {
         backup = enabled;
+        proxy = enabled;
       };
 
       monitoring = enabled // {

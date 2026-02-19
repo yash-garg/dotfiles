@@ -50,20 +50,11 @@ in
         }
       ];
 
-      traefik.dynamic.files.miniflux.settings.http = mkIf cfg.proxy.enable {
-        routers.miniflux = {
-          rule = "Host(`rss.${cfg.proxy.domain}`)";
-          entryPoints = [ "websecure" ];
-          middlewares = [
-            "auth"
-          ];
-          service = "miniflux";
-          tls.certResolver = "letsencrypt";
-        };
-        services.miniflux.loadBalancer = {
-          servers = [ { url = "http://${config.services.miniflux.config.LISTEN_ADDR}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.rss = mkIf cfg.proxy.enable {
+      inherit (cfg.proxy) domain;
+      upstream = config.services.miniflux.config.LISTEN_ADDR;
     };
   };
 }

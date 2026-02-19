@@ -65,21 +65,11 @@ in
         environmentFile = config.sops.secrets.open-webui-env.path;
       };
 
-      traefik.dynamic.files.ollama.settings.http = {
-        routers.open-webui = {
-          rule = "Host(`chat.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "open-webui";
-          middlewares = [
-            "auth"
-          ];
-          tls.certResolver = "letsencrypt";
-        };
+    };
 
-        services.open-webui.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.webui-port}"; } ];
-        };
-      };
+    dots.services.caddy.services.chat = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.webui-port}";
     };
   };
 }

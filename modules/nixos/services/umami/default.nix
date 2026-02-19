@@ -36,17 +36,11 @@ in
         };
       };
 
-      traefik.dynamic.files.umami.settings.http = {
-        routers.umami = {
-          rule = "Host(`analytics.${cfg.baseUrl}`)";
-          entryPoints = [ "websecure" ];
-          service = "umami";
-          tls.certResolver = "letsencrypt";
-        };
-        services.umami.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.analytics = {
+      domain = cfg.baseUrl;
+      upstream = "localhost:${toString cfg.port}";
     };
   };
 }

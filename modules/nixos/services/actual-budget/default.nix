@@ -54,17 +54,11 @@ in
         }
       );
 
-      traefik.dynamic.files.actual-budget.settings.http = {
-        routers.actual = {
-          rule = "Host(`money.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "actual";
-          tls.certResolver = "letsencrypt";
-        };
-        services.actual.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.actual-budget}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.money = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString ports.actual-budget}";
     };
 
     systemd.services.actual.serviceConfig.EnvironmentFile = [

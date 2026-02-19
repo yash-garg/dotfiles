@@ -65,17 +65,12 @@ in
         }
       ];
 
-      traefik.dynamic.files.authelia.settings.http = {
-        routers.authelia = {
-          rule = "Host(`auth.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "authelia";
-          tls.certResolver = "letsencrypt";
-        };
-        services.authelia.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.authelia}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.auth = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString ports.authelia}";
+      auth = false;
     };
   };
 }

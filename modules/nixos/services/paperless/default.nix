@@ -73,20 +73,11 @@ in
         }
       );
 
-      traefik.dynamic.files.paperless.settings.http = mkIf cfg.proxy.enable {
-        routers.paperless = {
-          rule = "Host(`paperless.${cfg.proxy.domain}`)";
-          entryPoints = [ "websecure" ];
-          middlewares = [
-            "auth"
-          ];
-          service = "paperless";
-          tls.certResolver = "letsencrypt";
-        };
-        services.paperless.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.paperless-ngx}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.paperless = mkIf cfg.proxy.enable {
+      inherit (cfg.proxy) domain;
+      upstream = "localhost:${toString ports.paperless-ngx}";
     };
 
     systemd.tmpfiles.rules = [

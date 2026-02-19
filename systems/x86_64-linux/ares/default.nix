@@ -99,11 +99,10 @@ in
       };
 
       caddy = enabled // {
-        environmentFile = config.sops.secrets.cf-api-token.path;
         servers = {
           zenith = {
-            primary = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
-            fallback = "[zenith.your-tailnet.ts.net]:443";
+            address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
+            fallback = "zenith.turtle-lake.ts.net:443";
             services = [
               "cache"
               "money"
@@ -117,8 +116,8 @@ in
             ];
           };
           quasar = {
-            primary = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
-            fallback = "[quasar.your-tailnet.ts.net]:443";
+            address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
+            fallback = "quasar.turtle-lake.ts.net:443";
             services = [
               "photos"
               "books"
@@ -134,6 +133,11 @@ in
               "prowlarr"
               "bazarr"
             ];
+          };
+          vortex = {
+            address = "[2603:c021:400a:2a00:0:d199:f3c0:ff54]:443";
+            fallback = "vortex.turtle-lake.ts.net:443";
+            services = [ "map" ];
           };
         };
       };

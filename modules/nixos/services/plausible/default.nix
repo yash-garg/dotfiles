@@ -33,17 +33,12 @@ in
         };
       };
 
-      traefik.dynamic.files.plausible.settings.http = {
-        routers.plausible = {
-          rule = "Host(`analytics.${cfg.baseUrl}`)";
-          entryPoints = [ "websecure" ];
-          service = "plausible";
-          tls.certResolver = "letsencrypt";
-        };
-        services.plausible.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.plausible}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.analytics = {
+      domain = cfg.baseUrl;
+      upstream = "localhost:${toString ports.plausible}";
+      auth = false;
     };
   };
 }
