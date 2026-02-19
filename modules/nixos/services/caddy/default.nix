@@ -111,6 +111,10 @@ let
     in
     ''
       ${host} {
+        ${optionalString (svc.redirectRoot != null) ''
+          @root path /
+          redir @root ${svc.redirectRoot} permanent
+        ''}
         ${optionalString (cfg.auth.enable && svc.auth) forwardAuthSnippet}
         reverse_proxy ${upstream}
       }
@@ -142,6 +146,7 @@ let
       domain = mkOpt types.str cfg.domain "Domain for this service";
       upstream = mkOpt types.str "" "Upstream URL";
       auth = mkBoolOpt true "Use forward auth";
+      redirectRoot = mkOpt (types.nullOr types.str) null "Permanent redirect from / to this path";
     };
   });
 

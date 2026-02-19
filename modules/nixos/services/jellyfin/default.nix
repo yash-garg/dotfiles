@@ -157,6 +157,7 @@ in
       inherit (cfg) domain;
       upstream = "localhost:${toString ports.jellyfin}";
       auth = false;
+      redirectRoot = "/sso/OID/start/authelia";
     };
   };
 }
