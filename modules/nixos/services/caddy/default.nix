@@ -199,7 +199,15 @@ in
             trusted_proxies static ${concatStringsSep " " trustedProxies}
           }
         '';
-        logFormat = "level INFO";
+        logFormat = ''
+          output file /var/log/caddy/caddy_main.log {
+            roll_size 100MiB
+            roll_keep 5
+            roll_keep_for 100d
+          }
+          format json
+          level INFO
+        '';
         extraConfig = ingressConfig + internalConfig;
       };
 
