@@ -152,5 +152,11 @@ in
         };
       }}
     '';
+
+    dots.services.caddy.services.stream = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString ports.jellyfin}";
+      auth = false;
+    };
   };
 }

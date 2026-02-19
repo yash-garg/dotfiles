@@ -99,13 +99,10 @@ in
       };
 
       caddy = enabled // {
-        auth = enabled // {
-          url = "http://[fd7a:115c:a1e0::1901:432c]:${toString ports.authelia}";
-        };
         servers = {
           zenith = {
-            address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
-            fallback = "[fd7a:115c:a1e0::1901:432c]:443";
+            address = "zenith.turtle-lake.ts.net:443";
+            fallback = null;
             hosts = [
               "cache.ipx.ovh"
               "money.ipx.ovh"
@@ -121,8 +118,8 @@ in
             ];
           };
           quasar = {
-            address = "[2405:201:4019:70a6:3880:1948:620b:354e]:443";
-            fallback = "[fd7a:115c:a1e0::8601:831]:443";
+            address = "quasar.turtle-lake.ts.net:443";
+            fallback = null;
             hosts = [
               "photos.ipx.ovh"
               "books.ipx.ovh"
@@ -140,8 +137,8 @@ in
             ];
           };
           vortex = {
-            address = "[2603:c021:400a:2a00:0:d199:f3c0:ff54]:443";
-            fallback = "[fd7a:115c:a1e0::fb01:f473]:443";
+            address = "vortex.turtle-lake.ts.net:443";
+            fallback = null;
             hosts = [ "map.ipx.ovh" ];
           };
         };

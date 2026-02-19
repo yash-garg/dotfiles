@@ -13,6 +13,7 @@ in
   options.${namespace}.services.arr-stack = {
     enable = mkEnableOption "Enable the full media automation stack";
     mediaDirs = mkOpt (types.listOf types.str) [ ] "The media directories to use for the services";
+    domain = mkOpt types.str "ipx.ovh" "The domain to use for the services";
     user = mkOpt types.str "media" "The user to run the services as";
     group = mkOpt types.str "media" "The group to run the services as";
   };
@@ -25,6 +26,24 @@ in
         };
       in
       {
+        caddy.services = {
+          radarr = {
+            inherit (cfg) domain;
+            upstream = "localhost:${toString ports.radarr}";
+          };
+          sonarr = {
+            inherit (cfg) domain;
+            upstream = "localhost:${toString ports.sonarr}";
+          };
+          prowlarr = {
+            inherit (cfg) domain;
+            upstream = "localhost:${toString ports.prowlarr}";
+          };
+          bazarr = {
+            inherit (cfg) domain;
+            upstream = "localhost:${toString ports.bazarr}";
+          };
+        };
         jellyfin = defaults;
         qbittorrent = defaults;
       };

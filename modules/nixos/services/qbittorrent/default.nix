@@ -13,6 +13,7 @@ in
 {
   options.${namespace}.services.qbittorrent = {
     enable = mkEnableOption "qbittorrent: BitTorrent Client";
+    domain = mkOpt types.str "ipx.ovh" "The domain name for the qbittorrent service";
     user = mkOpt types.str "qbittorrent" "The user to run qbittorrent as";
     group = mkOpt types.str "qbittorrent" "The group to run qbittorrent as";
     torrentingPort = mkOpt types.int ports.qbittorrent.torrenting "The port for torrenting";
@@ -51,6 +52,11 @@ in
           General.Locale = "en";
         };
       };
+    };
+
+    dots.services.caddy.services.qbit = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.webuiPort}";
     };
   };
 }

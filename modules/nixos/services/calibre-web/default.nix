@@ -17,6 +17,7 @@ in
 {
   options.${namespace}.services.calibre-web = {
     enable = mkEnableOption "Calibre Web: Web interface for Calibre";
+    domain = mkOpt types.str "ipx.ovh" "The domain name for the calibre-web service";
     port = mkOpt types.int ports.calibre "The port for the calibre-web service";
     user = mkOpt types.str "calibre-web" "The user for the calibre-web service";
     group = mkOpt types.str "calibre-web" "The group for the calibre-web service";
@@ -60,5 +61,10 @@ in
     systemd.tmpfiles.rules = [
       "d ${cfg.mediaDir} 0775 ${cfg.user} ${cfg.group} -"
     ];
+
+    dots.services.caddy.services.books = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.port}";
+    };
   };
 }

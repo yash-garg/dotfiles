@@ -69,6 +69,17 @@ in
 
         caddy = enabled // {
           domain = homeDomain;
+          auth = enabled;
+          services = {
+            home = {
+              domain = homeDomain;
+              upstream = "http://homeassistant.${config.${namespace}.services.tailscale.tailnet}:8123";
+            };
+            unraid = {
+              domain = homeDomain;
+              upstream = "https://${nova}";
+            };
+          };
         };
 
         forgejo = enabled // {
