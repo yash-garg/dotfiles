@@ -82,21 +82,11 @@ in
         }
       ];
 
-      traefik.dynamic.files.copyparty.settings.http = {
-        routers.copyparty = {
-          rule = "Host(`fs.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          middlewares = [
-            "auth"
-          ];
-          service = "copyparty";
-          tls.certResolver = "letsencrypt";
-        };
+    };
 
-        services.copyparty.loadBalancer = {
-          servers = [ { url = "http://${config.services.copyparty.settings.i}:${toString cfg.port}"; } ];
-        };
-      };
+    dots.services.caddy.services.fs = {
+      inherit (cfg) domain;
+      upstream = "${config.services.copyparty.settings.i}:${toString cfg.port}";
     };
 
     users.users = mkIf (cfg.user == "copyparty") {

@@ -83,19 +83,11 @@ in
         };
       };
 
-      traefik.dynamic.files.forgejo.settings.http = {
-        routers.forgejo = {
-          rule = "Host(`git.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "forgejo";
-          tls.certResolver = "letsencrypt";
-        };
-        services.forgejo.loadBalancer = {
-          servers = [
-            { url = "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}"; }
-          ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.git = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
     };
   };
 }

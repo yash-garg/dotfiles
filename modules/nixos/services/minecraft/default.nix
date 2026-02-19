@@ -64,33 +64,12 @@ in
           timerConfig.OnCalendar = "weekly";
         }
       );
+    };
 
-      traefik.dynamic.files.minecraft.settings = mkIf cfg.proxy.enable {
-        http = {
-          routers.pl3xmap = {
-            rule = "Host(`map.${cfg.proxy.domain}`)";
-            entryPoints = [ "websecure" ];
-            service = "pl3xmap";
-          };
-          services.pl3xmap.loadBalancer = {
-            servers = [
-              { url = "http://localhost:${toString ports.pl3xmap}"; }
-            ];
-          };
-        };
-        tcp = {
-          routers.minecraft = {
-            rule = "HostSNI(`*`)";
-            entryPoints = [ "minecraft" ];
-            service = "minecraft";
-          };
-          services.minecraft.loadBalancer = {
-            servers = [
-              { url = "http://localhost:${toString cfg.port}"; }
-            ];
-          };
-        };
-      };
+    dots.services.caddy.services.map = mkIf cfg.proxy.enable {
+      inherit (cfg.proxy) domain;
+      upstream = "localhost:${toString ports.pl3xmap}";
+      auth = false;
     };
 
     virtualisation.oci-containers.containers.minecraft-server = {

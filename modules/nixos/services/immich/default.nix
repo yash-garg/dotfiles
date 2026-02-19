@@ -121,17 +121,12 @@ in
         }
       );
 
-      traefik.dynamic.files.immich.settings.http = {
-        routers.immich = {
-          rule = "Host(`photos.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "immich";
-          tls.certResolver = "letsencrypt";
-        };
-        services.immich.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.photos = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.port}";
+      auth = false;
     };
 
     systemd.tmpfiles.rules =

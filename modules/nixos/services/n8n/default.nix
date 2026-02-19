@@ -53,18 +53,11 @@ in
         ];
       };
 
-      traefik.dynamic.files.n8n.settings.http = {
-        routers.n8n = {
-          rule = "Host(`n8n.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "n8n";
-          tls.certResolver = "letsencrypt";
-        };
+    };
 
-        services.n8n.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.port}"; } ];
-        };
-      };
+    dots.services.caddy.services.n8n = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.port}";
     };
   };
 }

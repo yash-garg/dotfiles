@@ -125,18 +125,11 @@ in
         }
       ];
 
-      traefik.dynamic.files.gatus.settings.http = {
-        routers.gatus = {
-          rule = "Host(`status.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "gatus";
-          tls.certResolver = "letsencrypt";
-        };
+    };
 
-        services.gatus.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString ports.gatus}"; } ];
-        };
-      };
+    dots.services.caddy.services.status = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString ports.gatus}";
     };
   };
 }

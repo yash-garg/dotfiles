@@ -40,22 +40,11 @@ in
         };
       };
 
-      traefik.dynamic.files.lldap.settings.http = {
-        routers.lldap = {
-          rule = "Host(`users.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          service = "lldap";
-          middlewares = [
-            "auth"
-          ];
-          tls.certResolver = "letsencrypt";
-        };
-        services.lldap.loadBalancer = {
-          servers = [
-            { url = "http://localhost:${toString cfg.port}"; }
-          ];
-        };
-      };
+    };
+
+    dots.services.caddy.services.users = {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.port}";
     };
 
     users.users = mkIf (cfg.user == "lldap") {

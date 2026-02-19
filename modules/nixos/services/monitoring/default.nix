@@ -373,21 +373,11 @@ in
         ];
       };
 
-      traefik.dynamic.files.monitoring.settings.http = mkIf cfg.grafana.enable {
-        routers.grafana = {
-          rule = "Host(`grafana.${cfg.domain}`)";
-          entryPoints = [ "websecure" ];
-          middlewares = [
-            "auth"
-          ];
-          service = "grafana";
-          tls.certResolver = "letsencrypt";
-        };
+    };
 
-        services.grafana.loadBalancer = {
-          servers = [ { url = "http://localhost:${toString cfg.grafana.port}"; } ];
-        };
-      };
+    dots.services.caddy.services.grafana = mkIf cfg.grafana.enable {
+      inherit (cfg) domain;
+      upstream = "localhost:${toString cfg.grafana.port}";
     };
 
     environment.etc."alloy/config.alloy" = mkIf cfg.alloy.enable {
