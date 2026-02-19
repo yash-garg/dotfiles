@@ -8,7 +8,7 @@
 with lib;
 with lib.${namespace};
 let
-  cfg = config.${namespace}.services.caddy;
+  cfg = config.dots.services.caddy;
 
   cloudflareIPs = [
     "173.245.48.0/20"
@@ -45,13 +45,12 @@ let
 
   trustedProxies = localIPs ++ cloudflareIPs;
 
-  mkHosts = svcs: concatMapStringsSep " " (s: "${s}.${cfg.domain}") svcs;
-
   mkServerProxy =
     name: srv:
     let
       upstreams = if srv.fallback != null then "${srv.address} ${srv.fallback}" else srv.address;
       usesTls = hasInfix ":443" srv.address || hasPrefix "https://" srv.address;
+      hosts = concatStringsSep " " srv.hosts;
       commonOpts = ''
         ${optionalString (srv.fallback != null) "lb_policy first"}
         header_up Host {host}
@@ -59,7 +58,7 @@ let
       '';
     in
     ''
-      @${name} host ${mkHosts srv.services}
+      @${name} host ${hosts}
       handle @${name} {
         @ws {
           header Connection *Upgrade*
@@ -117,14 +116,21 @@ let
       }
     '';
 
-  ingressConfig = optionalString (cfg.servers != { }) ''
-    *.${cfg.domain} {
+  # Extract unique domains from all hosts
+  allHosts = flatten (mapAttrsToList (_: srv: srv.hosts) cfg.servers);
+  getDomain = host: concatStringsSep "." (tail (splitString "." host));
+  allDomains = unique (map getDomain allHosts);
+
+  mkDomainBlock = domain: ''
+    *.${domain} {
       ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
       handle {
         respond "Not found" 404
       }
     }
   '';
+
+  ingressConfig = optionalString (cfg.servers != { }) (concatStrings (map mkDomainBlock allDomains));
 
   internalConfig = optionalString (cfg.services != { }) (
     concatStrings (mapAttrsToList mkServiceConfig cfg.services)
@@ -143,7 +149,7 @@ let
     options = {
       address = mkOpt types.str "" "Primary upstream address";
       fallback = mkOpt (types.nullOr types.str) null "Fallback upstream address";
-      services = mkOpt (types.listOf types.str) [ ] "Subdomains to route";
+      hosts = mkOpt (types.listOf types.str) [ ] "Full hostnames to route (e.g., cache.ipx.ovh)";
     };
   };
 in

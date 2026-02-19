@@ -31,7 +31,11 @@ in
 
     hardware.networking = enabled // {
       inherit hostName;
-      ports = [ 22 ];
+      ports = [
+        22
+        80
+        443
+      ];
     };
 
     services = {
@@ -45,7 +49,11 @@ in
 
       bentopdf = enabled;
 
-      caddy = enabled;
+      caddy = enabled // {
+        auth = enabled // {
+          url = "zenith.turtle-lake.ts.net:${toString ports.authelia}";
+        };
+      };
 
       calibre-web = enabled // {
         mediaDir = "/mnt/books";
@@ -100,7 +108,9 @@ in
 
       mealie = enabled;
 
-      miniflux = enabled;
+      miniflux = enabled // {
+        proxy = enabled;
+      };
 
       monitoring = enabled // {
         alloy = enabled;
@@ -113,6 +123,7 @@ in
       paperless = enabled // {
         backup = enabled;
         mediaDir = "/mnt/documents/";
+        proxy = enabled;
       };
 
       postgres = enabled // {

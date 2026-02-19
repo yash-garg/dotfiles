@@ -103,41 +103,43 @@ in
           zenith = {
             address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
             fallback = "[fd7a:115c:a1e0::1901:432c]:443";
-            services = [
-              "cache"
-              "money"
-              "git"
-              "links"
-              "grafana"
-              "auth"
-              "users"
-              "status"
-              "analytics"
+            hosts = [
+              "cache.ipx.ovh"
+              "money.ipx.ovh"
+              "git.ipx.ovh"
+              "links.ipx.ovh"
+              "grafana.ipx.ovh"
+              "auth.ipx.ovh"
+              "users.ipx.ovh"
+              "home.ipx.ovh"
+              "unraid.ipx.ovh"
+              "status.yashgarg.dev"
+              "analytics.yashgarg.dev"
             ];
           };
           quasar = {
-            address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
+            address = "[2405:201:4019:70a6:3880:1948:620b:354e]:443";
             fallback = "[fd7a:115c:a1e0::8601:831]:443";
-            services = [
-              "photos"
-              "books"
-              "pdf"
-              "fs"
-              "meals"
-              "rss"
-              "paperless"
-              "stream"
-              "qbit"
-              "radarr"
-              "sonarr"
-              "prowlarr"
-              "bazarr"
+            hosts = [
+              "photos.ipx.ovh"
+              "books.ipx.ovh"
+              "pdf.ipx.ovh"
+              "fs.ipx.ovh"
+              "meals.ipx.ovh"
+              "rss.ipx.ovh"
+              "paperless.ipx.ovh"
+              "stream.ipx.ovh"
+              "qbit.ipx.ovh"
+              "radarr.ipx.ovh"
+              "sonarr.ipx.ovh"
+              "prowlarr.ipx.ovh"
+              "bazarr.ipx.ovh"
             ];
           };
           vortex = {
             address = "[2603:c021:400a:2a00:0:d199:f3c0:ff54]:443";
             fallback = "[fd7a:115c:a1e0::fb01:f473]:443";
-            services = [ "map" ];
+            hosts = [ "map.ipx.ovh" ];
           };
         };
       };
