@@ -125,7 +125,7 @@ let
     *.${domain} {
       ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
       handle {
-        respond "Not found" 404
+        respond "404: Congratulations! You found the one thing I'm NOT reverse proxying. Here's your prize: nothing." 404
       }
     }
   '';
