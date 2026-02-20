@@ -27,7 +27,7 @@ in
 
         protocol kernel {
           ipv6 {
-            import none;
+            import all;
             export none;
           };
         }

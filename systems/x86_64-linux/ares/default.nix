@@ -47,7 +47,7 @@ in
         ipv4 = [ "139.84.177.122/23" ];
         ipv6 = [
           "2401:c080:3400:224f:5400:05ff:feef:f172/64"
-          "2a0c:9a40:8911::1/48"
+          "2a0c:9a40:8911:0::1/64"
         ];
         routes = [
           "0.0.0.0/0 via 139.84.176.1"
@@ -66,6 +66,7 @@ in
             route 2a0c:9a40:8911::/48 blackhole;
             route 2a0c:9a40:8912::/48 blackhole;
             route 2a0c:9a40:8913::/48 blackhole;
+            route 2a0c:9a40:8914::/48 blackhole;
           }
 
           include "${config.sops.secrets.bgp-password.path}";
@@ -82,7 +83,8 @@ in
                 if net ~ [
                   2a0c:9a40:8911::/48,
                   2a0c:9a40:8912::/48,
-                  2a0c:9a40:8913::/48
+                  2a0c:9a40:8913::/48,
+                  2a0c:9a40:8914::/48
                 ] then accept;
                 reject;
               };
