@@ -27,10 +27,31 @@ in
       neededForUsers = true;
     };
     server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
+    wireguard-key = {
+      sopsFile = snowfall.fs.get-file "secrets/wireguard.yaml";
+      key = "ares-privkey";
+      mode = "0400";
+    };
   };
 
   boot.loader.grub = enabled // {
     device = "/dev/vda";
+  };
+
+  networking.firewall.allowedUDPPorts = [ ports.wireguard ];
+  networking.wg-quick.interfaces.wg0 = {
+    address = [ "fd00:100::1/64" ];
+    listenPort = ports.wireguard;
+    privateKeyFile = config.sops.secrets.wireguard-key.path;
+    peers = [
+      {
+        publicKey = "PNrL8QIKxJTDE4WWwOrz+aj8YonWkCbDmrUDUO1D5xk="; # vortex
+        allowedIPs = [
+          "fd00:100::2/128"
+          "2a0c:9a40:8913::/48"
+        ];
+      }
+    ];
   };
 
   dots = {
@@ -65,7 +86,7 @@ in
             ipv6;
             route 2a0c:9a40:8911::/48 blackhole;
             route 2a0c:9a40:8912::/48 blackhole;
-            route 2a0c:9a40:8913::/48 blackhole;
+            route 2a0c:9a40:8913::/48 via "wg0";
             route 2a0c:9a40:8914::/48 blackhole;
           }
 
@@ -140,7 +161,7 @@ in
             ];
           };
           vortex = {
-            address = "[2603:c021:400a:2a00:0:d199:f3c0:ff54]:443";
+            address = "[2a0c:9a40:8913::1]:443";
             fallback = "[fd7a:115c:a1e0::fb01:f473]:443";
             hosts = [ "map.ipx.ovh" ];
           };
