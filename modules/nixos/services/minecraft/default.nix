@@ -69,7 +69,6 @@ in
     dots.services.caddy.services.map = mkIf cfg.proxy.enable {
       inherit (cfg.proxy) domain;
       upstream = "localhost:${toString ports.pl3xmap}";
-      auth = false;
     };
 
     virtualisation.oci-containers.containers.minecraft-server = {

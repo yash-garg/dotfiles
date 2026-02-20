@@ -49,7 +49,11 @@ in
     };
 
     services = {
-      caddy = enabled;
+      caddy = enabled // {
+        auth = enabled // {
+          url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
+        };
+      };
 
       minecraft-server = enabled // {
         backup = enabled;
