@@ -45,13 +45,6 @@ in
     privateKeyFile = config.sops.secrets.wireguard-key.path;
     peers = [
       {
-        publicKey = "PNrL8QIKxJTDE4WWwOrz+aj8YonWkCbDmrUDUO1D5xk="; # vortex
-        allowedIPs = [
-          "fd00:100::2/128"
-          "2a0c:9a40:8913::/48"
-        ];
-      }
-      {
         publicKey = "EJ1bNmnxfXLZkWvwnhj8IsuXyuDrfg8c5wOH8YQVo1Y="; # quasar
         allowedIPs = [
           "fd00:100::4/128"
@@ -59,10 +52,24 @@ in
         ];
       }
       {
+        publicKey = "PNrL8QIKxJTDE4WWwOrz+aj8YonWkCbDmrUDUO1D5xk="; # vortex
+        allowedIPs = [
+          "fd00:100::2/128"
+          "2a0c:9a40:8913::/48"
+        ];
+      }
+      {
         publicKey = "7tP8xwL3/4qWhNzL0l7hRlHvCqIC1TnvUMY0Cj1CARw="; # zenith
         allowedIPs = [
           "fd00:100::3/128"
           "2a0c:9a40:8914::/48"
+        ];
+      }
+      {
+        publicKey = "rvAvMfde2j/mQIv6uvtFQETy1TjkwF/GMWFK9Zrrm2o="; # glinet
+        allowedIPs = [
+          "fd00:100::5/128"
+          "2a0c:9a40:8911:1::/64"
         ];
       }
     ];
@@ -99,6 +106,7 @@ in
           protocol static {
             ipv6;
             route 2a0c:9a40:8911::/48 blackhole;
+            route 2a0c:9a40:8911:1::/64 via "wg0";
             route 2a0c:9a40:8912::/48 via "wg0";
             route 2a0c:9a40:8913::/48 via "wg0";
             route 2a0c:9a40:8914::/48 via "wg0";
