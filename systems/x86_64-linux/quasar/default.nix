@@ -22,8 +22,29 @@ in
       key = hostName;
       neededForUsers = true;
     };
-
     server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
+    wireguard-key = {
+      sopsFile = snowfall.fs.get-file "secrets/wireguard.yaml";
+      key = "quasar-privkey";
+      mode = "0400";
+    };
+  };
+
+  networking.firewall.allowedUDPPorts = [ ports.wireguard ];
+  networking.wg-quick.interfaces.wg0 = {
+    address = [
+      "fd00:100::4/64"
+      "2a0c:9a40:8912::1/64"
+    ];
+    privateKeyFile = config.sops.secrets.wireguard-key.path;
+    peers = [
+      {
+        publicKey = "XPTZ/mSeFBK7ekDSX/FjqJ411MWQB+M59SKbO/wjyUU=";
+        endpoint = "[2401:c080:3400:224f:5400:05ff:feef:f172]:${toString ports.wireguard}";
+        allowedIPs = [ "fd00:100::1/128" ];
+        persistentKeepalive = 25;
+      }
+    ];
   };
 
   dots = {

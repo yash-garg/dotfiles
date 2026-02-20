@@ -51,6 +51,20 @@ in
           "2a0c:9a40:8913::/48"
         ];
       }
+      {
+        publicKey = "EJ1bNmnxfXLZkWvwnhj8IsuXyuDrfg8c5wOH8YQVo1Y="; # quasar
+        allowedIPs = [
+          "fd00:100::4/128"
+          "2a0c:9a40:8912::/48"
+        ];
+      }
+      {
+        publicKey = "7tP8xwL3/4qWhNzL0l7hRlHvCqIC1TnvUMY0Cj1CARw="; # zenith
+        allowedIPs = [
+          "fd00:100::3/128"
+          "2a0c:9a40:8914::/48"
+        ];
+      }
     ];
   };
 
@@ -85,9 +99,9 @@ in
           protocol static {
             ipv6;
             route 2a0c:9a40:8911::/48 blackhole;
-            route 2a0c:9a40:8912::/48 blackhole;
+            route 2a0c:9a40:8912::/48 via "wg0";
             route 2a0c:9a40:8913::/48 via "wg0";
-            route 2a0c:9a40:8914::/48 blackhole;
+            route 2a0c:9a40:8914::/48 via "wg0";
           }
 
           include "${config.sops.secrets.bgp-password.path}";
@@ -124,7 +138,7 @@ in
       caddy = enabled // {
         servers = {
           zenith = {
-            address = "[2603:c021:4006:a800:0:dd78:b386:aace]:443";
+            address = "[2a0c:9a40:8914::1]:443";
             fallback = "[fd7a:115c:a1e0::1901:432c]:443";
             hosts = [
               "cache.ipx.ovh"
@@ -141,9 +155,8 @@ in
             ];
           };
           quasar = {
-            # address = "[2405:201:4019:70a6:3880:1948:620b:354e]:443";
-            address = "[fd7a:115c:a1e0::8601:831]:443";
-            fallback = null;
+            address = "[2a0c:9a40:8912::1]:443";
+            fallback = "[fd7a:115c:a1e0::8601:831]:443";
             hosts = [
               "photos.ipx.ovh"
               "books.ipx.ovh"
