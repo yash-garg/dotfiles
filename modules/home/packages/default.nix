@@ -25,6 +25,7 @@
       sops
       unzip
       whois
+      wireguard-tools
       yq
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
