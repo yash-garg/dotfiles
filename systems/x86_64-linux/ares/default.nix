@@ -66,7 +66,7 @@ in
         ];
       }
       {
-        publicKey = "rvAvMfde2j/mQIv6uvtFQETy1TjkwF/GMWFK9Zrrm2o="; # glinet
+        publicKey = "M7aq0j2aOz2AUoFWpi7uorN0jsFqp5tJgGoUxQTwC1s="; # glinet
         allowedIPs = [
           "fd00:100::5/128"
           "2a0c:9a40:8911:1::/64"
