@@ -52,6 +52,7 @@ in
     services =
       let
         inherit (config.${namespace}.services.tailscale) tailnet;
+        ares = "ares.${tailnet}";
         nova = "nova.${tailnet}";
         quasar = "quasar.${tailnet}";
         vortex = "vortex.${tailnet}";
@@ -91,115 +92,222 @@ in
           endpoints = {
             actual-budget = {
               name = "Actual Budget";
+              group = "BOM";
               url = "http://localhost:${toString ports.actual-budget}";
             };
             atticd = {
               name = "Attic Cache";
+              group = "BOM";
               url = "https://cache.${homeDomain}";
             };
             authelia = {
               name = "Authelia";
+              group = "BOM";
               url = "http://localhost:${toString ports.authelia}";
             };
             bazarr = {
               name = "Bazarr";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.bazarr}";
             };
             bentopdf = {
               name = "BentoPDF";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.bentopdf}";
             };
             calibre-web = {
               name = "Calibre Web";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.calibre}";
             };
             copyparty = {
               name = "Copyparty";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.copyparty}";
             };
             forgejo = {
               name = "Forgejo";
+              group = "BOM";
               url = "http://localhost:${toString ports.forgejo}";
             };
             grafana = {
               name = "Grafana";
+              group = "BOM";
               url = "http://localhost:9092";
             };
             home-assistant = {
               name = "Home Assistant";
+              group = "Homelab";
               url = "http://homeassistant.${tailnet}:8123";
             };
             immich = {
               name = "Immich";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.immich.webui}";
             };
             jellyfin = {
               name = "Jellyfin";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.jellyfin}";
             };
             linkding = {
               name = "Linkding";
+              group = "BOM";
               url = "http://localhost:${toString ports.linkding}";
             };
             lldap = {
               name = "LLDAP";
+              group = "BOM";
               url = "http://localhost:${toString ports.lldap}";
             };
             mealie = {
               name = "Mealie";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.mealie}";
             };
             miniflux = {
               name = "Miniflux";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.miniflux}";
             };
             minecraft-server = {
               name = "Minecraft Server";
+              group = "BOM";
               url = "udp://${vortex}:${toString ports.minecraft}";
             };
             minecraft-map = {
               name = "Minecraft Map";
+              group = "BOM";
               url = "http://${vortex}:${toString ports.pl3xmap}";
             };
             paperless = {
               name = "Paperless NGX";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.paperless-ngx}";
             };
             postgres-primary = {
-              name = "PostgreSQL Primary";
+              name = "PostgreSQL";
+              group = "BOM";
               url = "tcp://localhost:${toString ports.postgres}";
             };
             postgres-secondary = {
-              name = "PostgreSQL Secondary";
+              name = "PostgreSQL";
+              group = "Homelab";
               url = "tcp://${quasar}:${toString ports.postgres}";
             };
             prometheus = {
               name = "Prometheus";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.prometheus}";
+            };
+            loki = {
+              name = "Loki";
+              group = "Homelab";
+              url = "tcp://${quasar}:${toString ports.loki}";
+            };
+            alloy = {
+              name = "Alloy";
+              group = "Homelab";
+              url = "http://${quasar}:${toString ports.alloy}";
+            };
+            caddy = {
+              name = "Caddy";
+              group = "Homelab";
+              url = "tcp://${quasar}:443";
             };
             prowlarr = {
               name = "Prowlarr";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.prowlarr}";
             };
             qbittorrent = {
               name = "qBittorrent";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             };
             radarr = {
               name = "Radarr";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.radarr}";
             };
             sonarr = {
               name = "Sonarr";
+              group = "Homelab";
               url = "http://${quasar}:${toString ports.sonarr}";
             };
             umami = {
               name = "Umami";
+              group = "BOM";
               url = "http://localhost:${toString ports.umami}";
             };
             unraid = {
               name = "Unraid";
+              group = "Homelab";
               url = "http://${nova}";
+            };
+
+            # DEL: ares monitoring and public proxy
+            prometheus-ares = {
+              name = "Prometheus";
+              group = "DEL";
+              url = "http://${ares}:${toString ports.prometheus}";
+            };
+            loki-ares = {
+              name = "Loki";
+              group = "DEL";
+              url = "tcp://${ares}:${toString ports.loki}";
+            };
+            caddy-ares = {
+              name = "Caddy";
+              group = "DEL";
+              url = "tcp://${ares}:443";
+            };
+            alloy-ares = {
+              name = "Alloy";
+              group = "DEL";
+              url = "http://${ares}:${toString ports.alloy}";
+            };
+            proxy-ipv4 = {
+              name = "Public Proxy IPv4";
+              group = "DEL";
+              url = "tcp://139.84.177.122:443";
+            };
+            proxy-ipv6 = {
+              name = "Public Proxy IPv6";
+              group = "DEL";
+              url = "tcp://[2a0c:9a40:8911::1]:443";
+            };
+
+            # BOM: zenith monitoring and public proxy
+            prometheus-bom = {
+              name = "Prometheus";
+              group = "BOM";
+              url = "http://localhost:${toString ports.prometheus}";
+            };
+            loki-bom = {
+              name = "Loki";
+              group = "BOM";
+              url = "tcp://localhost:${toString ports.loki}";
+            };
+            caddy-bom = {
+              name = "Caddy";
+              group = "BOM";
+              url = "tcp://localhost:443";
+            };
+            alloy-bom = {
+              name = "Alloy";
+              group = "BOM";
+              url = "http://localhost:${toString ports.alloy}";
+            };
+            proxy-bom-ipv4 = {
+              name = "Public Proxy IPv4";
+              group = "BOM";
+              url = "tcp://140.238.230.183:443";
+            };
+            proxy-bom-ipv6 = {
+              name = "Public Proxy IPv6";
+              group = "BOM";
+              url = "tcp://[2603:c021:4006:a800:0:dd78:b386:aace]:443";
             };
           };
         };
