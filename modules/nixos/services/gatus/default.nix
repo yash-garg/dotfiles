@@ -16,8 +16,9 @@ let
         group = mkOpt types.str "" "Optional group for organizing endpoints";
         url = mkOpt types.nonEmptyStr "" "URL to monitor";
         interval = mkOpt types.nonEmptyStr "10m" "How often to check the endpoint";
-        maxResponseTimeMs = mkOpt types.int 1000
-          "Max response time in ms for HTTP endpoints; use higher values for external/slow sites";
+        maxResponseTimeMs =
+          mkOpt types.int 1000
+            "Max response time in ms for HTTP endpoints; use higher values for external/slow sites";
         extraConditions = mkOpt (types.listOf types.nonEmptyStr) [
           "[STATUS] == 200"
         ] "Force conditions to be true";
@@ -36,8 +37,7 @@ let
           if isTcpUdp then
             [ "[CONNECTED] == true" ]
           else
-            endpoint.extraConditions
-            ++ [ "[RESPONSE_TIME] < ${toString endpoint.maxResponseTimeMs}" ];
+            endpoint.extraConditions ++ [ "[RESPONSE_TIME] < ${toString endpoint.maxResponseTimeMs}" ];
       in
       {
         inherit (endpoint) name url interval;

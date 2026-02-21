@@ -25,6 +25,7 @@
       radarr = 9103;
       readarr = 9104;
       sonarr = 9105;
+      snmp = 9109;
     };
     forgejo = 9012;
     gatus = 3333;

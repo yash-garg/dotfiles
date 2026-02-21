@@ -187,6 +187,51 @@ in
     }
   ];
 
+  services.prometheus = {
+    exporters.snmp = enabled // {
+      configuration = {
+        auths.homelab_auth = {
+          community = "homelab";
+          version = 2;
+        };
+        modules.mikrotik = {
+          walk = [
+            "1.3.6.1.2.1.2" # interfaces
+            "1.3.6.1.2.1.31" # interface extended stats
+            "1.3.6.1.4.1.14988.1" # MikroTik specific (CPU, temp, etc)
+          ];
+        };
+      };
+      port = ports.exporters.snmp;
+    };
+
+    scrapeConfigs = [
+      {
+        job_name = "mikrotik-snmp";
+        scrape_interval = "60s";
+        metrics_path = "/snmp";
+        params = {
+          module = [ "mikrotik" ];
+          auth = [ "homelab_auth" ];
+          target = [ "10.0.0.1" ];
+        };
+        static_configs = [
+          { targets = [ "127.0.0.1:${toString ports.exporters.snmp}" ]; }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__param_target" ];
+            target_label = "instance";
+          }
+          {
+            target_label = "__address__";
+            replacement = "127.0.0.1:${toString ports.exporters.snmp}";
+          }
+        ];
+      }
+    ];
+  };
+
   systemd.targets.multi-user.enable = true;
 
   users = {

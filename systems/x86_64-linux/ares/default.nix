@@ -38,7 +38,6 @@ in
     device = "/dev/vda";
   };
 
-  networking.firewall.allowedUDPPorts = [ ports.wireguard ];
   networking.wg-quick.interfaces.wg0 = {
     address = [ "fd00:100::1/64" ];
     listenPort = ports.wireguard;
@@ -163,8 +162,8 @@ in
             ];
           };
           quasar = {
-            address = "[2a0c:9a40:8912::1]:443";
-            fallback = "[fd7a:115c:a1e0::8601:831]:443";
+            # address = "[2a0c:9a40:8912::1]:443";
+            address = "[fd7a:115c:a1e0::8601:831]:443";
             hosts = [
               "photos.ipx.ovh"
               "books.ipx.ovh"
@@ -197,6 +196,7 @@ in
 
       ssh = enabled // {
         addRootKeys = true;
+        openFirewall = false;
       };
 
       tailscale = enabled // {
