@@ -61,6 +61,9 @@ in
           PAPERLESS_ENABLE_HTTP_REMOTE_USER = true;
           PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME = "HTTP_REMOTE_USER";
           PAPERLESS_LOGOUT_REDIRECT_URL = "https://auth.${cfg.proxy.domain}/logout";
+          PAPERLESS_USE_X_FORWARD_HOST = true;
+          PAPERLESS_USE_X_FORWARD_PORT = true;
+          PAPERLESS_TRUSTED_PROXIES = "127.0.0.0/8,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,100.64.0.0/10,fc00::/7,fd00::/8,fe80::/10,2a0c:9a40:8911::/48,139.84.177.122/32";
         };
       };
 
