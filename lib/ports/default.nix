@@ -9,6 +9,7 @@
     authelia = 9091;
     bazarr = 6767;
     bentopdf = 8088;
+    caddy = 8880;
     calibre = 8083;
     copyparty = 9005;
     crowdsec = 6060;

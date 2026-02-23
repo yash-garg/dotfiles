@@ -63,16 +63,19 @@ in
 
     hardware.networking = enabled // {
       inherit hostName;
-      ports = [
-        80
-        443
-      ];
     };
 
     services = {
       caddy = enabled // {
         auth = enabled // {
           url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
+        };
+        internal = enabled // {
+          trustedProxies = [
+            "2a0c:9a40:8911::/48" # Ares IPv6 prefix
+            "139.84.177.122/32" # Ares IPv4
+            "fd00:100::/64" # WireGuard internal
+          ];
         };
       };
 
@@ -113,7 +116,6 @@ in
     extraGroups = [ "wheel" ];
   };
 
-  # Enable passwordless sudo.
   security.sudo.extraRules = [
     {
       users = [ "yash" ];
@@ -126,7 +128,6 @@ in
     }
   ];
 
-  # Disable autologin.
   services.getty.autologinUser = null;
 
   systemd.targets.multi-user.enable = true;

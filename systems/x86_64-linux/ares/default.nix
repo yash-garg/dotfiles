@@ -145,8 +145,8 @@ in
       caddy = enabled // {
         servers = {
           zenith = {
-            address = "[2a0c:9a40:8914::1]:443";
-            fallback = "[fd7a:115c:a1e0::1901:432c]:443";
+            address = "http://[2a0c:9a40:8914::1]:${toString ports.caddy}";
+            fallback = "http://[fd7a:115c:a1e0::1901:432c]:${toString ports.caddy}";
             hosts = [
               "cache.ipx.ovh"
               "money.ipx.ovh"
@@ -162,8 +162,8 @@ in
             ];
           };
           quasar = {
-            # address = "[2a0c:9a40:8912::1]:443";
-            address = "[fd7a:115c:a1e0::8601:831]:443";
+            address = "http://[2a0c:9a40:8912::1]:${toString ports.caddy}";
+            fallback = "http://[fd7a:115c:a1e0::8601:831]:${toString ports.caddy}";
             hosts = [
               "photos.ipx.ovh"
               "books.ipx.ovh"
@@ -181,8 +181,8 @@ in
             ];
           };
           vortex = {
-            address = "[2a0c:9a40:8913::1]:443";
-            fallback = "[fd7a:115c:a1e0::fb01:f473]:443";
+            address = "http://[2a0c:9a40:8913::1]:${toString ports.caddy}";
+            fallback = "http://[fd7a:115c:a1e0::fb01:f473]:${toString ports.caddy}";
             hosts = [ "map.ipx.ovh" ];
           };
         };

@@ -53,9 +53,7 @@ in
     hardware.networking = enabled // {
       inherit hostName;
       ports = [
-        22
-        80
-        443
+        22 # SSH only - 80/443 not needed, traffic comes through internal port from Ares
       ];
     };
 
@@ -73,6 +71,13 @@ in
       caddy = enabled // {
         auth = enabled // {
           url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
+        };
+        internal = enabled // {
+          trustedProxies = [
+            "2a0c:9a40:8911::/48" # Ares IPv6 prefix
+            "139.84.177.122/32" # Ares IPv4
+            "fd00:100::/64" # WireGuard internal
+          ];
         };
       };
 
