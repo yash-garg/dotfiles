@@ -35,15 +35,7 @@ let
     "2c0f:f248::/32"
   ];
 
-  localIPs = [
-    "127.0.0.1/32"
-    "10.0.0.0/8"
-    "172.16.0.0/12"
-    "192.168.0.0/16"
-    "100.64.0.0/10"
-  ];
-
-  trustedProxies = localIPs ++ cloudflareIPs;
+  allTrustedProxies = trustedProxies.list ++ cloudflareIPs;
 
   # Common utilities
   normalizeUpstream = u: if hasPrefix "http://" u || hasPrefix "https://" u then u else "http://${u}";
@@ -316,7 +308,7 @@ in
           email spam@${cfg.domain}
           metrics
           servers {
-            trusted_proxies static ${concatStringsSep " " (trustedProxies ++ cfg.internal.trustedProxies)}
+            trusted_proxies static ${concatStringsSep " " (allTrustedProxies ++ cfg.internal.trustedProxies)}
           }
         '';
         logFormat = ''

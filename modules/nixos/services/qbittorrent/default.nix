@@ -46,7 +46,7 @@ in
             AuthSubnetWhitelistEnabled = true;
             Password_PBKDF2 = "@ByteArray(vVAbbSGAmkemV9cSj95beg==:dcK684mnx6yHbTTOJ8yK0YjRSrARSNTPTy7AjOioIA+ixOU6IxVUUR5FHDmJQJO+nJElxCsV2X2WB96/rYqdmg==)";
             RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
-            TrustedReverseProxiesList = "127.0.0.1";
+            TrustedReverseProxiesList = trustedProxies.semicolonSeparated;
             Username = "yash";
           };
           General.Locale = "en";

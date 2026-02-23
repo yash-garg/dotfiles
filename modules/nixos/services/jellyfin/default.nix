@@ -42,6 +42,22 @@ in
     };
 
     systemd.services.jellyfin.preStart = ''
+      ${generateXmlConfig "network" {
+        NetworkConfiguration = xmlNamespaces // {
+          EnableIPv4 = true;
+          EnableIPv6 = true;
+          EnableRemoteAccess = true;
+          EnableUPnP = false;
+          PublicPort = 443;
+          PublicHttpsPort = 443;
+          BaseUrl = "/";
+          RequireHttps = false;
+          EnableHttps = false;
+          CertificatePassword = "";
+          KnownProxies.string = trustedProxies.list;
+        };
+      }}
+
       ${generateXmlConfig "branding" {
         BrandingOptions = xmlNamespaces // {
           CustomCss = ''

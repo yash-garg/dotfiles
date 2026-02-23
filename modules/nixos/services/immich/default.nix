@@ -68,6 +68,7 @@ in
           IMMICH_HOST = mkForce "0.0.0.0";
           IMMICH_IGNORE_MOUNT_CHECK_ERRORS = "true";
           IMMICH_TELEMETRY_INCLUDE = "all";
+          IMMICH_TRUSTED_PROXIES = trustedProxies.commaSeparated;
         };
         openFirewall = true;
         machine-learning = enabled // {

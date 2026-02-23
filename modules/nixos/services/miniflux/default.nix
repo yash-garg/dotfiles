@@ -8,16 +8,6 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.miniflux;
-  trustedProxyNetworks = concatStringsSep "," [
-    "127.0.0.0/8"
-    "::1/128"
-    "10.0.0.0/8"
-    "172.16.0.0/12"
-    "192.168.0.0/16"
-    "100.64.0.0/10"
-    "fc00::/7"
-    "fe80::/10"
-  ];
 in
 {
   options.${namespace}.services.miniflux = {
@@ -50,7 +40,7 @@ in
           DISABLE_LOCAL_AUTH = 1;
           AUTH_PROXY_HEADER = "Remote-User";
           AUTH_PROXY_USER_CREATION = 1;
-          TRUSTED_REVERSE_PROXY_NETWORKS = trustedProxyNetworks;
+          TRUSTED_REVERSE_PROXY_NETWORKS = trustedProxies.commaSeparated;
         };
       };
 
