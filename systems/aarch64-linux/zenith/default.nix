@@ -65,10 +65,6 @@ in
 
     hardware.networking = enabled // {
       hostName = "zenith";
-      ports = [
-        80
-        443
-      ];
     };
 
     services =
@@ -93,6 +89,13 @@ in
         caddy = enabled // {
           domain = homeDomain;
           auth = enabled;
+          internal = enabled // {
+            trustedProxies = [
+              "2a0c:9a40:8911::/48" # Ares IPv6 prefix
+              "139.84.177.122/32" # Ares IPv4
+              "fd00:100::/64" # WireGuard internal
+            ];
+          };
           services = {
             home = {
               domain = homeDomain;
