@@ -324,16 +324,6 @@ in
               group = "BOM";
               url = "http://localhost:${toString ports.alloy}";
             };
-            proxy-bom-ipv4 = {
-              name = "Public Proxy IPv4";
-              group = "BOM";
-              url = "tcp://140.238.230.183:443";
-            };
-            proxy-bom-ipv6 = {
-              name = "Public Proxy IPv6";
-              group = "BOM";
-              url = "tcp://[2603:c021:4006:a800:0:dd78:b386:aace]:443";
-            };
           };
         };
 
