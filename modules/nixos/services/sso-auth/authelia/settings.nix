@@ -61,6 +61,10 @@ in
         resources = [ "^/fever(/.*)?$" ];
       }
       {
+        domain = "*.home.${domain}";
+        policy = "bypass";
+      }
+      {
         domain = "*.${domain}";
         policy = "one_factor";
         subject = [ "group:internal" ];
@@ -241,6 +245,8 @@ in
           redirect_uris = [
             "https://photos.${domain}/auth/login"
             "https://photos.${domain}/user-settings"
+            "https://photos.home.${domain}/auth/login"
+            "https://photos.home.${domain}/user-settings"
             "app.immich:///oauth-callback"
           ];
           scopes = [
@@ -259,6 +265,7 @@ in
           authorization_policy = "jellyfin_access";
           redirect_uris = [
             "https://stream.${domain}/sso/OID/redirect/authelia"
+            "https://jf.home.${domain}/sso/OID/redirect/authelia"
           ];
           scopes = [
             "openid"
@@ -275,7 +282,10 @@ in
           public = false;
           authorization_policy = "mealie_access";
           grant_types = [ "authorization_code" ];
-          redirect_uris = [ "https://meals.${domain}/login" ];
+          redirect_uris = [
+            "https://meals.${domain}/login"
+            "https://meals.home.${domain}/login"
+          ];
           scopes = [
             "openid"
             "profile"
