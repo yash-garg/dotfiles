@@ -195,9 +195,17 @@ in
         };
         modules.mikrotik = {
           walk = [
-            "1.3.6.1.2.1.2" # interfaces
-            "1.3.6.1.2.1.31" # interface extended stats
-            "1.3.6.1.4.1.14988.1" # MikroTik specific (CPU, temp, etc)
+            "1.3.6.1.2.1.2" # ifTable (basic interface info)
+            "1.3.6.1.2.1.31.1" # ifXTable (64-bit counters, HC counters)
+            "1.3.6.1.2.1.25.1" # hrSystem (uptime, date)
+            "1.3.6.1.2.1.25.2" # hrStorage (memory, disk usage)
+            "1.3.6.1.2.1.25.3" # hrDevice (CPU load)
+            "1.3.6.1.2.1.1" # sysDescr, sysUpTime, sysName, etc.
+            "1.3.6.1.4.1.14988.1.1.1" # mtxrSystem (firmware, board name, license)
+            "1.3.6.1.4.1.14988.1.1.3" # mtxrHealth (CPU temp, voltage, fan)
+            "1.3.6.1.4.1.14988.1.1.7" # mtxrWireless (wireless stats, if applicable)
+            "1.3.6.1.4.1.14988.1.1.14" # mtxrDHCP (DHCP lease count)
+            "1.3.6.1.4.1.14988.1.1.16" # mtxrInterfaceStats (per-interface bytes)
           ];
         };
       };
