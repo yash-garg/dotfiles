@@ -98,6 +98,31 @@ let
       }
     '';
 
+  # Snippet for a service (host matcher + handle); used inside a wildcard block to avoid per-host certs
+  mkServiceHandle =
+    name: svc:
+    let
+      subdomain = if svc.subdomain != null then svc.subdomain else name;
+      host = "${subdomain}.${svc.domain}";
+      upstream =
+        if hasPrefix "http://" svc.upstream || hasPrefix "https://" svc.upstream then
+          svc.upstream
+        else
+          "http://${svc.upstream}";
+    in
+    ''
+      @svc_${name} host ${host}
+      handle @svc_${name} {
+        ${optionalString (svc.redirectRoot != null) ''
+          @root path /
+          redir @root ${svc.redirectRoot} permanent
+        ''}
+        ${optionalString (cfg.auth.enable && svc.auth) forwardAuthSnippet}
+        reverse_proxy ${upstream}
+      }
+    '';
+
+  # Standalone site block for a service (only used when domain has no wildcard block; requests its own cert)
   mkServiceConfig =
     name: svc:
     let
@@ -120,24 +145,50 @@ let
       }
     '';
 
-  # Extract unique domains from all hosts
+  # Extract unique domains from servers and services (one wildcard cert per domain).
+  # Include service domains so hosts with only services (e.g. zenith) still get a wildcard block.
   allHosts = flatten (mapAttrsToList (_: srv: srv.hosts) cfg.servers);
   getDomain = host: concatStringsSep "." (tail (splitString "." host));
-  allDomains = unique (map getDomain allHosts);
+  serverDomains = unique (map getDomain allHosts);
+  serviceDomains = unique (map (svc: svc.domain) (attrValues cfg.services));
+  ingressDomains = unique (serverDomains ++ serviceDomains);
 
-  mkDomainBlock = domain: ''
-    *.${domain} {
-      ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
-      handle {
-        respond "404: Congratulations! You found the one thing I'm NOT reverse proxying. Here's your prize: nothing." 404
+  # Services on a given domain (to be folded into that domain's wildcard block)
+  servicesForDomain =
+    domain:
+    mapAttrsToList (name: svc: { inherit name svc; }) (
+      filterAttrs (_: svc: svc.domain == domain) cfg.services
+    );
+
+  # Site key *.${domain} makes Caddy obtain a single wildcard cert per domain (ACME DNS).
+  # Direct services on this domain are included here so they use the wildcard cert instead of requesting their own.
+  mkDomainBlock =
+    domain:
+    let
+      services = servicesForDomain domain;
+      serviceHandles = map ({ name, svc }: mkServiceHandle name svc) services;
+    in
+    ''
+      *.${domain} {
+        ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
+        ${concatStrings serviceHandles}
+        handle {
+          respond "404: Congratulations! You found the one thing I'm NOT reverse proxying. Here's your prize: nothing." 404
+        }
       }
-    }
-  '';
+    '';
 
-  ingressConfig = optionalString (cfg.servers != { }) (concatStrings (map mkDomainBlock allDomains));
+  ingressConfig = optionalString (ingressDomains != [ ]) (
+    concatStrings (map mkDomainBlock ingressDomains)
+  );
 
+  # Only emit standalone site blocks for services whose domain has no wildcard (e.g. other domains)
   internalConfig = optionalString (cfg.services != { }) (
-    concatStrings (mapAttrsToList mkServiceConfig cfg.services)
+    concatStrings (
+      mapAttrsToList mkServiceConfig (
+        filterAttrs (_: svc: !(elem svc.domain ingressDomains)) cfg.services
+      )
+    )
   );
 
   serviceSubmodule = types.submodule (_: {

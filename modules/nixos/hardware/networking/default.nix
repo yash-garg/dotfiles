@@ -89,7 +89,7 @@ in
           inherit (cfg) hostName domain hosts;
           useDHCP = (if hasStaticIPs then mkForce else mkDefault) (cfg.dhcp && !hasStaticIPs);
           networkmanager.enable = cfg.networkManager;
-          nftables.enable = true;
+          nftables = enabled;
           nameservers = [
             "100.100.100.100"
             "1.1.1.1"
@@ -97,8 +97,7 @@ in
             "2606:4700:4700::1111"
             "2606:4700:4700::1001"
           ];
-          firewall = {
-            enable = true;
+          firewall = enabled // {
             allowPing = true;
             allowedTCPPorts = cfg.ports;
             allowedUDPPorts = cfg.portsUDP;
