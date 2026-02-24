@@ -54,7 +54,12 @@ in
       {
         publicKey = "XPTZ/mSeFBK7ekDSX/FjqJ411MWQB+M59SKbO/wjyUU=";
         endpoint = "[2401:c080:3400:224f:5400:05ff:feef:f172]:${toString ports.wireguard}";
-        allowedIPs = [ "fd00:100::/64" "2a0c:9a40:8911::/48" "2a0c:9a40:8912::/48" "2a0c:9a40:8913::/48" ];
+        allowedIPs = [
+          "fd00:100::/64"
+          "2a0c:9a40:8911::/48"
+          "2a0c:9a40:8912::/48"
+          "2a0c:9a40:8913::/48"
+        ];
         persistentKeepalive = 25;
       }
     ];
@@ -381,7 +386,6 @@ in
 
         tailscale = enabled // {
           authKeyFile = config.sops.secrets.server-tsauthkey.path;
-          acceptRoutes = true;
           ssh = true;
         };
 

@@ -105,7 +105,6 @@ in
 
       tailscale = enabled // {
         authKeyFile = config.sops.secrets.server-tsauthkey.path;
-        acceptRoutes = true;
         ssh = true;
       };
     };
