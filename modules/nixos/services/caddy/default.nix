@@ -212,7 +212,7 @@ let
         ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
         ${concatStrings serviceHandles}
         handle {
-          respond "Not found" 404
+          redir https://youtu.be/dQw4w9WgXcQ 301
         }
       }
     '';
