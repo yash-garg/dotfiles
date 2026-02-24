@@ -40,6 +40,7 @@ in
 
   networking.wg-quick.interfaces.wg0 = {
     address = [ "fd00:100::1/64" ];
+    mtu = 1420;
     listenPort = ports.wireguard;
     privateKeyFile = config.sops.secrets.wireguard-key.path;
     peers = [
@@ -69,6 +70,13 @@ in
         allowedIPs = [
           "fd00:100::5/128"
           "2a0c:9a40:8911:1::/64"
+        ];
+      }
+      {
+        publicKey = "BjR9Cnlj+ky491Ysru4yLUIdKx3Gizzh74r95ZLMpSY="; # mikrotik
+        allowedIPs = [
+          "fd00:100::6/128"
+          "2a0c:9a40:8912:1::/64"
         ];
       }
     ];
@@ -162,7 +170,7 @@ in
             ];
           };
           quasar = {
-            address = "http://[fd7a:115c:a1e0::8601:831]:${toString ports.caddy}";
+            address = "http://[2405:201:4019:7033:5054:ff:fed0:31f1]:${toString ports.caddy}";
             fallback = "http://[2a0c:9a40:8912::1]:${toString ports.caddy}";
             hosts = [
               "photos.ipx.ovh"
