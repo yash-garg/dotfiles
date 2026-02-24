@@ -63,7 +63,7 @@ in
     hardware.networking = enabled // {
       inherit hostName;
       ports = [
-        22 # SSH only - 80/443 not needed, traffic comes through internal port from Ares
+        22
       ];
     };
 

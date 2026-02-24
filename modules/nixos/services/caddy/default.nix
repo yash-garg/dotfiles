@@ -43,11 +43,12 @@ let
   # Failover options for multiple upstreams
   failoverOpts = ''
     lb_policy first
+    lb_retries 2
     fail_duration 30s
     max_fails 2
-    unhealthy_latency 5s
-    lb_try_duration 15s
-    lb_try_interval 500ms
+    unhealthy_latency 2s
+    lb_try_duration 3s
+    lb_try_interval 10ms
   '';
 
   # Forward auth snippet
@@ -136,9 +137,22 @@ let
         transport http {
           tls
           tls_insecure_skip_verify
-          read_timeout 30s
-          write_timeout 30s
+          read_timeout 10s
+          write_timeout 10s
+          dial_timeout 3s
+          keepalive 30s
+          keepalive_idle_conns 10
           versions ${version}
+        }
+      '';
+
+      timeoutOpts = ''
+        transport http {
+          read_timeout 10s
+          write_timeout 10s
+          dial_timeout 3s
+          keepalive 30s
+          keepalive_idle_conns 10
         }
       '';
 
@@ -158,11 +172,11 @@ let
         }
         reverse_proxy @ws ${upstreams} {
           ${commonOpts}
-          ${optionalString usesTls (tlsOpts "1.1")}
+          ${if usesTls then tlsOpts "1.1" else timeoutOpts}
         }
         reverse_proxy ${upstreams} {
           ${commonOpts}
-          ${optionalString usesTls (tlsOpts "2")}
+          ${if usesTls then tlsOpts "2" else timeoutOpts}
         }
       }
     '';
