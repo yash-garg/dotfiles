@@ -67,6 +67,7 @@ in
           IMMICH_CONFIG_FILE = mkForce config.sops.templates."immich-config.json".path;
           IMMICH_HOST = mkForce "0.0.0.0";
           IMMICH_IGNORE_MOUNT_CHECK_ERRORS = "true";
+          IMMICH_MICROSERVICES_METRICS_PORT = toString ports.immich.microservices;
           IMMICH_TELEMETRY_INCLUDE = "all";
           IMMICH_TRUSTED_PROXIES = trustedProxies.commaSeparated;
         };

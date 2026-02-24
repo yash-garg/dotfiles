@@ -29,11 +29,13 @@
       snmp = 9109;
     };
     forgejo = 9012;
+    frigate = 5000;
     gatus = 3333;
     glance = 9044;
     grafana = 9002;
     immich = {
       machine-learning = 3003;
+      microservices = 8084;
       webui = 8086;
     };
     jellyfin = 8096;

@@ -28,6 +28,11 @@ in
       key = "quasar-privkey";
       mode = "0400";
     };
+    frigate-env = {
+      sopsFile = snowfall.fs.get-file "secrets/frigate.env";
+      format = "dotenv";
+      mode = "0400";
+    };
   };
 
   networking.firewall.allowedUDPPorts = [ ports.wireguard ];
@@ -126,6 +131,43 @@ in
             };
           };
       };
+
+      frigate =
+        let
+          rtspUrl =
+            channel:
+            "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.0.0.53:554/cam/realmonitor?channel=${toString channel}&subtype=0";
+          mkCamera = name: channel: {
+            inherit name;
+            value = {
+              ffmpeg.inputs = [
+                {
+                  path = rtspUrl channel;
+                  roles = [
+                    "record"
+                  ];
+                }
+              ];
+              detect = {
+                width = 1920;
+                height = 1080;
+              };
+            };
+          };
+        in
+        enabled
+        // {
+          environmentFile = config.sops.secrets.frigate-env.path;
+          settings = {
+            detect.enabled = false;
+            cameras = builtins.listToAttrs [
+              (mkCamera "cam1" 1)
+              (mkCamera "cam2" 2)
+              (mkCamera "cam3" 3)
+              (mkCamera "cam4" 4)
+            ];
+          };
+        };
 
       immich = enabled // {
         backup = enabled;
