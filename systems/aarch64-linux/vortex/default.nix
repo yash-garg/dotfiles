@@ -41,7 +41,6 @@ in
     initrd.systemd = enabled;
   };
 
-  networking.firewall.allowedUDPPorts = [ ports.wireguard ];
   networking.wg-quick.interfaces.wg0 = {
     address = [
       "fd00:100::2/64"

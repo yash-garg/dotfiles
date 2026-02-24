@@ -162,8 +162,8 @@ in
             ];
           };
           quasar = {
-            address = "http://[2a0c:9a40:8912::1]:${toString ports.caddy}";
-            fallback = "http://[fd7a:115c:a1e0::8601:831]:${toString ports.caddy}";
+            address = "http://[fd7a:115c:a1e0::8601:831]:${toString ports.caddy}";
+            fallback = "http://[2a0c:9a40:8912::1]:${toString ports.caddy}";
             hosts = [
               "photos.ipx.ovh"
               "books.ipx.ovh"

@@ -15,9 +15,6 @@
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
-  boot.kernel.sysctl = {
-    "net.ipv6.conf.all.forwarding" = 1;
-  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/3f67bbae-65d6-41c6-a6d6-55309841d4b6";

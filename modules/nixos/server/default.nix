@@ -17,12 +17,28 @@ in
   };
 
   config = mkIf cfg.enable {
+    boot.kernel.sysctl = {
+      "net.ipv6.conf.all.forwarding" = true;
+    };
+
+    networking.firewall = {
+      allowedUDPPorts = [ ports.wireguard ];
+      trustedInterfaces = [ "wg0" ];
+    };
+
     dots = {
       services = {
         chrony = enabled;
       };
     };
 
-    users.users.yash.packages = with pkgs; [ nfs-utils ];
+    users.users.yash.packages = with pkgs; [
+      nfs-utils
+      tcpdump
+      iperf3
+      netcat-gnu
+      lsof
+      bind.dnsutils
+    ];
   };
 }
