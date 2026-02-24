@@ -155,7 +155,7 @@ in
             };
           };
         in
-        enabled
+        disabled
         // {
           environmentFile = config.sops.secrets.frigate-env.path;
           settings = {
