@@ -51,6 +51,32 @@ let
     lb_try_interval 10ms
   '';
 
+  # Timeout options generator
+  mkTimeoutOpts =
+    {
+      useTls ? false,
+      isWebSocket ? false,
+      tlsVersion ? "2",
+    }:
+    let
+      timeout = if isWebSocket then "0" else "10s";
+      tlsConfig = optionalString useTls ''
+        tls
+        tls_insecure_skip_verify
+        versions ${tlsVersion}
+      '';
+    in
+    ''
+      transport http {
+        ${tlsConfig}
+        read_timeout ${timeout}
+        write_timeout ${timeout}
+        dial_timeout 3s
+        keepalive 30s
+        keepalive_idle_conns 10
+      }
+    '';
+
   # Forward auth snippet
   forwardAuthSnippet =
     let
@@ -61,6 +87,27 @@ let
         uri /api/authz/forward-auth
         copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
         header_up X-Forwarded-Proto https
+      }
+    '';
+
+  # WebSocket-aware reverse proxy
+  mkReverseProxy =
+    {
+      upstreams,
+      headers,
+      hasMultiple ? false,
+    }:
+    ''
+      @ws {
+        header Connection *Upgrade*
+        header Upgrade websocket
+      }
+      reverse_proxy @ws ${upstreams} {
+        ${headers}
+      }
+      reverse_proxy ${upstreams} {
+        ${headers}
+        ${optionalString hasMultiple failoverOpts}
       }
     '';
 
@@ -80,7 +127,7 @@ let
       upstreams = if hasMultiple then "${upstream} ${normalizeUpstream svc.fallback}" else upstream;
 
       # Internal mode uses forwarded headers; others use direct
-      headerOpts =
+      headers =
         if mode == "internal" then
           ''
             header_up Host {host}
@@ -92,14 +139,7 @@ let
             header_up Host {host}
             header_up X-Real-IP {remote_host}
             header_up X-Forwarded-Proto {scheme}
-            ${optionalString hasMultiple failoverOpts}
           '';
-
-      reverseProxyBlock = ''
-        reverse_proxy ${upstreams} {
-          ${headerOpts}
-        }
-      '';
 
       handleContent = ''
         ${optionalString (svc.redirectRoot != null) ''
@@ -107,7 +147,7 @@ let
           redir @root ${svc.redirectRoot} permanent
         ''}
         ${optionalString (cfg.auth.enable && svc.auth) forwardAuthSnippet}
-        ${reverseProxyBlock}
+        ${mkReverseProxy { inherit upstreams headers hasMultiple; }}
       '';
     in
     if mode == "site" then
@@ -133,30 +173,7 @@ let
       usesTls = hasInfix ":443" srv.address || hasPrefix "https://" srv.address;
       hosts = concatStringsSep " " srv.hosts;
 
-      tlsOpts = version: ''
-        transport http {
-          tls
-          tls_insecure_skip_verify
-          read_timeout 10s
-          write_timeout 10s
-          dial_timeout 3s
-          keepalive 30s
-          keepalive_idle_conns 10
-          versions ${version}
-        }
-      '';
-
-      timeoutOpts = ''
-        transport http {
-          read_timeout 10s
-          write_timeout 10s
-          dial_timeout 3s
-          keepalive 30s
-          keepalive_idle_conns 10
-        }
-      '';
-
-      commonOpts = ''
+      headers = ''
         header_up Host {host}
         header_up X-Real-IP {remote_host}
         header_up X-Forwarded-Proto {scheme}
@@ -171,12 +188,19 @@ let
           header Upgrade websocket
         }
         reverse_proxy @ws ${upstreams} {
-          ${commonOpts}
-          ${if usesTls then tlsOpts "1.1" else timeoutOpts}
+          ${headers}
+          ${mkTimeoutOpts {
+            inherit usesTls;
+            isWebSocket = true;
+            tlsVersion = "1.1";
+          }}
         }
         reverse_proxy ${upstreams} {
-          ${commonOpts}
-          ${if usesTls then tlsOpts "2" else timeoutOpts}
+          ${headers}
+          ${mkTimeoutOpts {
+            inherit usesTls;
+            tlsVersion = "2";
+          }}
         }
       }
     '';
