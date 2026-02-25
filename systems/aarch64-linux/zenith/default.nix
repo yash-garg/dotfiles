@@ -332,6 +332,10 @@ in
           };
         };
 
+        joplin = enabled // {
+          domain = homeDomain;
+        };
+
         linkding = enabled // {
           database = enabled;
           proxy = enabled // {

@@ -164,6 +164,7 @@ in
               "auth.ipx.ovh"
               "users.ipx.ovh"
               "home.ipx.ovh"
+              "notes.ipx.ovh"
               "unraid.ipx.ovh"
               "status.yashgarg.dev"
               "analytics.yashgarg.dev"

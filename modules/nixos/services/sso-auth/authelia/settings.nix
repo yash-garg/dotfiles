@@ -56,6 +56,11 @@ in
         ];
       }
       {
+        domain = "notes.${domain}";
+        policy = "bypass";
+        resources = [ "^/api(/.*)?$" ];
+      }
+      {
         domain = "rss.${domain}";
         policy = "bypass";
         resources = [ "^/fever(/.*)?$" ];

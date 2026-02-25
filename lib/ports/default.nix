@@ -40,6 +40,7 @@
     };
     jellyfin = 8096;
     jellyseerr = 5055;
+    joplin = 9098;
     linkding = 9095;
     lldap = 17170;
     loki = 3100;
