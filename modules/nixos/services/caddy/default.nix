@@ -54,13 +54,13 @@ let
   # Timeout options generator
   mkTimeoutOpts =
     {
-      useTls ? false,
+      usesTls ? false,
       isWebSocket ? false,
       tlsVersion ? "2",
     }:
     let
       timeout = if isWebSocket then "0" else "10s";
-      tlsConfig = optionalString useTls ''
+      tlsConfig = optionalString usesTls ''
         tls
         tls_insecure_skip_verify
         versions ${tlsVersion}

@@ -13,7 +13,7 @@ let
     settingsSha256 = "sha256-um53cr2Xo90VhZM1bM2CH4q9b/1W2YOqUcvXPV6uw2s=";
     persistencedSha256 = "sha256-lbYSa97aZ+k0CISoSxOMLyyMX//Zg2Raym6BC4COipU=";
   };
-  unraid = "10.0.0.68";
+  unraid = "10.0.0.50";
 in
 {
   imports = [
