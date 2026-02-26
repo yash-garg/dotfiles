@@ -240,44 +240,25 @@ in
 
   services.prometheus = {
     exporters.snmp = enabled // {
-      configuration = {
-        auths.homelab_auth = {
-          community = "homelab";
-          version = 2;
-        };
-        modules.mikrotik = {
-          walk = [
-            "1.3.6.1.2.1.2" # ifTable (basic interface info)
-            "1.3.6.1.2.1.31.1" # ifXTable (64-bit counters, HC counters)
-            "1.3.6.1.2.1.25.1" # hrSystem (uptime, date)
-            "1.3.6.1.2.1.25.2" # hrStorage (memory, disk usage)
-            "1.3.6.1.2.1.25.3" # hrDevice (CPU load)
-            "1.3.6.1.2.1.1" # sysDescr, sysUpTime, sysName, etc.
-            "1.3.6.1.4.1.14988.1.1.1" # mtxrSystem (firmware, board name, license)
-            "1.3.6.1.4.1.14988.1.1.3" # mtxrHealth (CPU temp, voltage, fan)
-            "1.3.6.1.4.1.14988.1.1.7" # mtxrWireless (wireless stats, if applicable)
-            "1.3.6.1.4.1.14988.1.1.14" # mtxrDHCP (DHCP lease count)
-            "1.3.6.1.4.1.14988.1.1.16" # mtxrInterfaceStats (per-interface bytes)
-          ];
-        };
-      };
+      configurationPath = ./snmp.yml;
       port = ports.exporters.snmp;
     };
 
     scrapeConfigs = [
       {
-        job_name = "mikrotik-snmp";
-        scrape_interval = "60s";
+        job_name = "mikrotik";
+        scrape_interval = "30s";
         metrics_path = "/snmp";
         params = {
           module = [ "mikrotik" ];
-          auth = [ "homelab_auth" ];
-          target = [ "10.0.0.1" ];
+          auth = [ "homelab_v2" ];
         };
-        static_configs = [
-          { targets = [ "127.0.0.1:${toString ports.exporters.snmp}" ]; }
-        ];
+        static_configs = [ { targets = [ "10.0.0.1" ]; } ];
         relabel_configs = [
+          {
+            source_labels = [ "__address__" ];
+            target_label = "__param_target";
+          }
           {
             source_labels = [ "__param_target" ];
             target_label = "instance";
