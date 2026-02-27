@@ -179,6 +179,7 @@ in
               "pdf.ipx.ovh"
               "fs.ipx.ovh"
               "meals.ipx.ovh"
+              "ntop.ipx.ovh"
               "rss.ipx.ovh"
               "paperless.ipx.ovh"
               "stream.ipx.ovh"

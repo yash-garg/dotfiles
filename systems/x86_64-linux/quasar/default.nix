@@ -191,6 +191,8 @@ in
         prometheus = enabled;
       };
 
+      ntopng = enabled;
+
       nvidia-exporter = enabled;
 
       paperless = enabled // {

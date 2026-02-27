@@ -235,6 +235,11 @@ in
               group = "Homelab";
               url = "tcp://${quasar}:${toString ports.loki}";
             };
+            ntopng = {
+              name = "Ntopng";
+              group = "Homelab";
+              url = "http://${quasar}:${toString ports.ntopng.webui}";
+            };
             alloy = {
               name = "Alloy";
               group = "Homelab";
