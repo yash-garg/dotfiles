@@ -43,6 +43,14 @@ in
         ];
       }
       {
+        domain = "photos.${domain}";
+        policy = "one_factor";
+        subject = [
+          "group:internal"
+          "group:immich-users"
+        ];
+      }
+      {
         domain = "links.${domain}";
         policy = "bypass";
         resources = [ "^/api(/.*)?$" ];
