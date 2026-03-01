@@ -76,7 +76,7 @@ in
         publicKey = "BjR9Cnlj+ky491Ysru4yLUIdKx3Gizzh74r95ZLMpSY="; # mikrotik
         allowedIPs = [
           "fd00:100::6/128"
-          "2a0c:9a40:8912:1::/64"
+          "2a0c:9a40:8915::/48"
         ];
       }
     ];
@@ -117,6 +117,7 @@ in
             route 2a0c:9a40:8912::/48 via "wg0";
             route 2a0c:9a40:8913::/48 via "wg0";
             route 2a0c:9a40:8914::/48 via "wg0";
+            route 2a0c:9a40:8915::/48 via "wg0";
           }
 
           include "${config.sops.secrets.bgp-password.path}";
@@ -134,13 +135,14 @@ in
                   2a0c:9a40:8911::/48,
                   2a0c:9a40:8912::/48,
                   2a0c:9a40:8913::/48,
-                  2a0c:9a40:8914::/48
+                  2a0c:9a40:8914::/48,
+                  2a0c:9a40:8915::/48
                 ] then accept;
                 reject;
               };
 
-              import limit 5;
-              export limit 5;
+              import limit 6;
+              export limit 6;
             };
             graceful restart on;
             multihop 2;
