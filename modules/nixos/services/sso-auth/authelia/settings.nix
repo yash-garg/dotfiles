@@ -43,14 +43,6 @@ in
         ];
       }
       {
-        domain = "photos.${domain}";
-        policy = "one_factor";
-        subject = [
-          "group:internal"
-          "group:immich-users"
-        ];
-      }
-      {
         domain = "links.${domain}";
         policy = "bypass";
         resources = [ "^/api(/.*)?$" ];
@@ -171,6 +163,18 @@ in
             }
           ];
         };
+        immich_access = {
+          default_policy = "deny";
+          rules = [
+            {
+              policy = "one_factor";
+              subject = [
+                "group:internal"
+                "group:immich-users"
+              ];
+            }
+          ];
+        };
         jellyfin_access = {
           default_policy = "deny";
           rules = [
@@ -254,7 +258,7 @@ in
           client_name = "Immich";
           client_secret = "$pbkdf2-sha512$310000$we2.VRlN/pvtnZoUt0.kpw$qRAAKL..H4GnzEzMiMH.MPoXLy0IB3BslhB2.0gTVK99cuAyQEOsNNQ052huyqgpwdpTHVfaU68CmUzC.gnLGg";
           public = false;
-          authorization_policy = "internal_one_factor";
+          authorization_policy = "immich_access";
           redirect_uris = [
             "https://photos.${domain}/auth/login"
             "https://photos.${domain}/user-settings"
