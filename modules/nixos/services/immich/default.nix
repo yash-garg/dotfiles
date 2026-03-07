@@ -82,7 +82,7 @@ in
         mediaLocation = cfg.mediaDir;
         redis = enabled;
         settings = {
-          backup.database.enabled = false;
+          backup.database.enabled = true;
           job = {
             faceDetection.concurrency = 10;
             thumbnailGeneration.concurrency = 50;
