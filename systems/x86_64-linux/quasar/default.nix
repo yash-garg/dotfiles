@@ -207,6 +207,8 @@ in
 
       restic = enabled;
 
+      ripe-probe = enabled;
+
       ssh = enabled // {
         addRootKeys = true;
         passwordAuth = false;
@@ -255,7 +257,7 @@ in
           module = [ "mikrotik" ];
           auth = [ "homelab_v2" ];
         };
-        static_configs = [ { targets = [ "10.0.0.1" ]; } ];
+        static_configs = [ { targets = [ "10.0.20.1" ]; } ];
         relabel_configs = [
           {
             source_labels = [ "__address__" ];

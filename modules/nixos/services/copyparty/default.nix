@@ -71,17 +71,6 @@ in
         }
         // cfg.extraSettings;
       };
-
-      prometheus.scrapeConfigs = [
-        {
-          job_name = "copyparty";
-          metrics_path = "/.cpr/metrics";
-          static_configs = [
-            { targets = [ "${config.services.copyparty.settings.i}:${toString cfg.port}" ]; }
-          ];
-        }
-      ];
-
     };
 
     dots.services.caddy.services.fs = {
