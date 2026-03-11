@@ -26,7 +26,7 @@
       unzip
       whois
       wireguard-tools
-      yq
+      yq-go
     ]
     ++ lib.optionals pkgs.stdenv.isDarwin [
       pkgs.${namespace}.git-spr
