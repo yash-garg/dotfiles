@@ -59,8 +59,6 @@ in
         accelerationDevices = [ "/dev/dri/renderD128" ];
         database = enabled // {
           createDB = true;
-          enableVectorChord = true;
-          enableVectors = true;
         };
         environment = {
           IMMICH_API_METRICS_PORT = toString ports.exporters.immich;
