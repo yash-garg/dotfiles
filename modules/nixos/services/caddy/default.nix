@@ -47,7 +47,7 @@ let
     fail_duration 30s
     max_fails 2
     unhealthy_latency 2s
-    lb_try_duration 3s
+    lb_try_duration 10s
     lb_try_interval 10ms
   '';
 
@@ -338,7 +338,7 @@ in
       caddy = enabled // {
         package = pkgs.caddy.withPlugins {
           plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-          hash = "sha256-bJO2RIa6hYsoVl3y2L86EM34Dfkm2tlcEsXn2+COgzo";
+          hash = "sha256-bL1cpMvDogD/pdVxGA8CAMEXazWpFDBiGBxG83SmXLA=";
         };
         environmentFile = config.sops.secrets.cf-env.path;
         globalConfig = ''
