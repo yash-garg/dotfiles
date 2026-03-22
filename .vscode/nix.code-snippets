@@ -35,21 +35,4 @@
         ],
         "description": "Prometheus scrape configuration for a service"
     },
-    "Traefik Router Config": {
-        "prefix": "nixtraefik",
-        "body": [
-            "traefik.dynamic.files.${1:service-name}.settings.http = {",
-            "  routers.${1:service-name} = {",
-            "    rule = \"Host(`${2:subdomain}.\\${cfg.domain}`)\";",
-            "    entryPoints = [ \"websecure\" ];",
-            "    service = \"${1:service-name}\";",
-            "    tls.certResolver = \"letsencrypt\";",
-            "  };",
-            "  services.${1:service-name}.loadBalancer = {",
-            "    servers = [ { url = \"http://localhost:\\${toString cfg.port}\"; } ];",
-            "  };",
-            "};"
-        ],
-        "description": "Traefik router and service configuration"
-    },
 }

@@ -13,7 +13,7 @@ in
   options.${namespace}.services.miniflux = {
     enable = mkEnableOption "Miniflux: RSS Reader";
     proxy = {
-      enable = mkEnableOption "Enable traefik proxy for Miniflux";
+      enable = mkEnableOption "Enable reverse proxy for Miniflux";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the miniflux service";
     };
   };

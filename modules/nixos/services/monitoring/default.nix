@@ -156,15 +156,6 @@ in
                 hash = "sha256-/wpWvsZS4i8vkxQI/6qhsiwv1cDVWQBk31ZDFFxu8H4=";
               };
             }
-            {
-              name = "Traefik";
-              allowUiUpdates = true;
-              options.path = pkgs.fetchurl {
-                name = "traefik-9-grafana-dashboard.json";
-                url = "https://grafana.com/api/dashboards/17346/revisions/9/download";
-                hash = "sha256-OtMp0nNxIPMvZ6qwg/JFtVTqXE7IN4/u5xlu9ruffak=";
-              };
-            }
           ];
           datasources.settings.datasources =
             let

@@ -16,7 +16,7 @@ in
     dataDir = mkOpt types.str "/var/lib/paperless" "The data directory for paperless";
     mediaDir = mkOpt types.str "/var/lib/paperless/storage" "The media directory for paperless";
     proxy = {
-      enable = mkEnableOption "Enable traefik proxy for Paperless";
+      enable = mkEnableOption "Enable reverse proxy for Paperless";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the paperless service";
     };
     user = mkOpt types.str "paperless" "The user for paperless";

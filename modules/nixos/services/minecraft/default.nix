@@ -24,7 +24,7 @@ in
     seed = mkOpt types.str "-5584399987456711267" "Minecraft server seed";
     version = mkOpt types.str "1.21.11" "Minecraft server version";
     proxy = {
-      enable = mkEnableOption "Enable traefik proxy for Minecraft";
+      enable = mkEnableOption "Enable reverse proxy for Minecraft";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the minecraft service";
     };
     backup = {
