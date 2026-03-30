@@ -25,11 +25,6 @@ in
     };
     server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
     plausible-secret.sopsFile = snowfall.fs.get-file "secrets/plausible.yaml";
-    wireguard-key = {
-      sopsFile = snowfall.fs.get-file "secrets/wireguard.yaml";
-      key = "zenith-privkey";
-      mode = "0400";
-    };
   };
 
   boot = {
@@ -43,33 +38,16 @@ in
     initrd.systemd = enabled;
   };
 
-  networking.wg-quick.interfaces.wg0 = {
-    address = [
-      "fd00:100::3/64"
-      "2a0c:9a40:8914::1/64"
-    ];
-    mtu = 1420;
-    privateKeyFile = config.sops.secrets.wireguard-key.path;
-    peers = [
-      {
-        publicKey = "XPTZ/mSeFBK7ekDSX/FjqJ411MWQB+M59SKbO/wjyUU=";
-        endpoint = "[2401:c080:3400:224f:5400:05ff:feef:f172]:${toString ports.wireguard}";
-        allowedIPs = [
-          "fd00:100::/64"
-          "2a0c:9a40:8911::/48"
-          "2a0c:9a40:8912::/48"
-          "2a0c:9a40:8913::/48"
-        ];
-        persistentKeepalive = 25;
-      }
-    ];
-  };
-
   dots = {
     server = enabled;
 
     hardware.networking = enabled // {
       hostName = "zenith";
+      ports = [
+        80
+        443
+        8080
+      ];
     };
 
     services =
@@ -94,13 +72,7 @@ in
         caddy = enabled // {
           domain = homeDomain;
           auth = enabled;
-          internal = enabled // {
-            trustedProxies = [
-              "2a0c:9a40:8911::/48" # Ares IPv6 prefix
-              "139.84.177.122/32" # Ares IPv4
-              "fd00:100::/64" # WireGuard internal
-            ];
-          };
+          internal = enabled;
           services = {
             home = {
               domain = homeDomain;
@@ -109,6 +81,49 @@ in
             unraid = {
               domain = homeDomain;
               upstream = "https://${nova}";
+            };
+          };
+          servers = {
+            zenith = {
+              address = "http://localhost:${toString ports.caddy}";
+              hosts = [
+                "cache.${homeDomain}"
+                "money.${homeDomain}"
+                "git.${homeDomain}"
+                "links.${homeDomain}"
+                "grafana.${homeDomain}"
+                "auth.${homeDomain}"
+                "users.${homeDomain}"
+                "home.${homeDomain}"
+                "notes.${homeDomain}"
+                "unraid.${homeDomain}"
+                "status.${domain}"
+                "analytics.${domain}"
+              ];
+            };
+            quasar = {
+              address = "http://[2405:201:4019:7033:cb7f:5f0e:7136:11cd]:${toString ports.caddy}";
+              fallback = "http://quasar.${tailnet}:${toString ports.caddy}";
+              hosts = [
+                "photos.${homeDomain}"
+                "books.${homeDomain}"
+                "pdf.${homeDomain}"
+                "fs.${homeDomain}"
+                "meals.${homeDomain}"
+                "ntop.${homeDomain}"
+                "rss.${homeDomain}"
+                "paperless.${homeDomain}"
+                "stream.${homeDomain}"
+                "qbit.${homeDomain}"
+                "radarr.${homeDomain}"
+                "sonarr.${homeDomain}"
+                "prowlarr.${homeDomain}"
+                "bazarr.${homeDomain}"
+              ];
+            };
+            vortex = {
+              address = "http://vortex.${tailnet}:${toString ports.caddy}";
+              hosts = [ "map.${homeDomain}" ];
             };
           };
         };
