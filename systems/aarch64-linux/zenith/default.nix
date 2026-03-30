@@ -296,38 +296,6 @@ in
               url = "http://${nova}";
             };
 
-            # DEL: ares monitoring and public proxy
-            prometheus-ares = {
-              name = "Prometheus";
-              group = "DEL";
-              url = "http://${ares}:${toString ports.prometheus}";
-            };
-            loki-ares = {
-              name = "Loki";
-              group = "DEL";
-              url = "tcp://${ares}:${toString ports.loki}";
-            };
-            caddy-ares = {
-              name = "Caddy";
-              group = "DEL";
-              url = "tcp://${ares}:443";
-            };
-            alloy-ares = {
-              name = "Alloy";
-              group = "DEL";
-              url = "http://${ares}:${toString ports.alloy}";
-            };
-            proxy-ipv4 = {
-              name = "Public Proxy IPv4";
-              group = "DEL";
-              url = "tcp://139.84.177.122:443";
-            };
-            proxy-ipv6 = {
-              name = "Public Proxy IPv6";
-              group = "DEL";
-              url = "tcp://[2a0c:9a40:8911::1]:443";
-            };
-
             # BOM: zenith monitoring and public proxy
             prometheus-bom = {
               name = "Prometheus";
