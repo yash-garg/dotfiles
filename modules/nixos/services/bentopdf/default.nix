@@ -15,7 +15,7 @@ in
     enable = mkEnableOption "BentoPDF: A Privacy First PDF Toolkit";
     domain = mkOpt types.str "ipx.ovh" "The domain name for the BentoPDF service";
     port = mkOpt types.int ports.bentopdf "The port for the BentoPDF service";
-    version = mkOpt types.str "v1.15.4" "The version of the BentoPDF service";
+    version = mkOpt types.str "v2.8.0" "The version of the BentoPDF service";
   };
 
   config = mkIf cfg.enable {
