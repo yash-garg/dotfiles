@@ -33,6 +33,7 @@ in
     homebrew = {
       additionalCasks = [
         "actual"
+        "bambu-studio"
         "chatgpt"
         "chromedriver"
         "cursor"
