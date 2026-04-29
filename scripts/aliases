@@ -60,6 +60,10 @@ if type batman &>/dev/null; then
     alias man='batman'
 fi
 
+if type opencode &>/dev/null; then
+    alias oc='opencode'
+fi
+
 if type zellij &>/dev/null; then
     alias zj='zellij'
     alias zl='zellij --layout'
