@@ -32,11 +32,12 @@ in
       additionalCasks = [
         "google-chrome"
         "windsurf@next"
+        "zed"
       ];
 
       brews = [
         "cloudflared"
-        "openjdk@21"
+        "openjdk"
         "swiftformat"
         "xcode-build-server"
         "xcode-kotlin"
