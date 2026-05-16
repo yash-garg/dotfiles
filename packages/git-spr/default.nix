@@ -5,13 +5,13 @@
 }:
 buildGoModule rec {
   pname = "git-spr";
-  version = "0.16.0";
+  version = "0.17.6";
 
   src = fetchFromGitHub {
     owner = "ejoffe";
     repo = "spr";
     tag = "v${version}";
-    hash = "sha256-caEBsxajmjV7yr86WskkRBYBFzdV29wqu44fwMDowGw=";
+    hash = "sha256-B+uScDGBQpOTYqgeo9OQwzxPURsY1zTO6/OikwyT4jQ=";
   };
 
   vendorHash = "sha256-byl+MF0vlfa4V/3uPrv5Qlcvh5jIozEyUkKSSwlRWhs=";
