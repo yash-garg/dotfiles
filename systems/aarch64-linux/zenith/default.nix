@@ -53,7 +53,6 @@ in
     services =
       let
         inherit (config.${namespace}.services.tailscale) tailnet;
-        ares = "ares.${tailnet}";
         nova = "nova.${tailnet}";
         quasar = "quasar.${tailnet}";
         vortex = "vortex.${tailnet}";

@@ -62,7 +62,6 @@
 
       overlays = with inputs; [
         copyparty.overlays.default
-        neovim.overlays.default
         nur.overlays.default
       ];
 
@@ -127,10 +126,6 @@
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.3";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
-
-    neovim.url = "github:yash-garg/neovim";
-    neovim.inputs.nixpkgs.follows = "nixpkgs";
-    neovim.inputs.snowfall-lib.follows = "snowfall-lib";
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";

@@ -12,7 +12,7 @@ in
 {
   options.${namespace}.user = {
     name = mkOpt types.str "yash" "The user account.";
-    uid = mkOpt (types.nullOr types.int) 350 "The uid for the user account.";
+    uid = mkOpt (types.nullOr types.int) 502 "The uid for the user account.";
   };
 
   config = {
