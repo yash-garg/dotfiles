@@ -19,6 +19,7 @@
       mtr
       nixfmt
       nurl
+      pnpm
       ripgrep
       ripe-atlas-tools
       restic
