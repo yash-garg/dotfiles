@@ -101,7 +101,7 @@ in
               ];
             };
             quasar = {
-              address = "http://[2405:201:4019:7033:cb7f:5f0e:7136:11cd]:${toString ports.caddy}";
+              address = "http://[2405:201:4019:7033:5054:ff:fed0:31f1]:${toString ports.caddy}";
               fallback = "http://quasar.${tailnet}:${toString ports.caddy}";
               hosts = [
                 "photos.${homeDomain}"
