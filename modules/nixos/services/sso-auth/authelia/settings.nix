@@ -63,7 +63,10 @@ in
       {
         domain = "rss.${domain}";
         policy = "bypass";
-        resources = [ "^/fever(/.*)?$" ];
+        resources = [
+          "^/fever(/.*)?$"
+          "^/share(/.*)?$"
+        ];
       }
       {
         domain = "*.home.${domain}";
