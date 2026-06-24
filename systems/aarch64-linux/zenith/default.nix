@@ -98,6 +98,7 @@ in
                 "unraid.${homeDomain}"
                 "status.${domain}"
                 "analytics.${domain}"
+                "stats.${domain}"
               ];
             };
             quasar = {
@@ -129,6 +130,10 @@ in
 
         forgejo = enabled // {
           domain = homeDomain;
+        };
+
+        goatcounter = enabled // {
+          inherit domain;
         };
 
         gatus = enabled // {

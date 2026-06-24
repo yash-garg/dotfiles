@@ -32,6 +32,7 @@
     frigate = 5000;
     gatus = 3333;
     glance = 9044;
+    goatcounter = 9043;
     grafana = 9002;
     immich = {
       machine-learning = 3003;
