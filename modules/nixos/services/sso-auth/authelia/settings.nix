@@ -65,7 +65,7 @@ in
         policy = "bypass";
         resources = [
           "^/fever(/.*)?$"
-          "^/share(/.*)?$"
+          "^/v1(/.*)?$"
         ];
       }
       {
