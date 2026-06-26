@@ -36,15 +36,13 @@ in
 
       brews = [
         "cocoapods"
+        "github-mcp-server"
         "opencode"
+        "pi-coding-agent"
         "ruby"
         "swiftformat"
         "webp"
         "xcbeautify"
-        {
-          name = "JakeWharton/repo/diffuse";
-          args = [ "ignore-dependencies" ];
-        }
       ]
       ++ cfg.brews;
 
