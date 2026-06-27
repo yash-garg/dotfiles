@@ -49,8 +49,14 @@ in
   };
 
   homebrew.taps = [
-    "anomalyco/tap"
-    "hashicorp/tap"
+    {
+        name = "anomalyco/tap";
+        trusted = true;
+    }
+    {
+        name = "hashicorp/tap";
+        trusted = true;
+    }
   ];
 
   snowfallorg.users.${username}.home.config = {
