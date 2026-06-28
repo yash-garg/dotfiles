@@ -40,6 +40,11 @@
       webui = 8086;
     };
     jellyfin = 8096;
+    kroki = {
+      core = 8000;
+      mermaid = 8002;
+      excalidraw = 8004;
+    };
     jellyseerr = 5055;
     joplin = 9098;
     linkding = 9095;

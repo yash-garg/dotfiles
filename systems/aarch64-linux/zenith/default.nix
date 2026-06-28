@@ -95,6 +95,7 @@ in
                 "users.${homeDomain}"
                 "home.${homeDomain}"
                 "notes.${homeDomain}"
+                "kroki.${homeDomain}"
                 "unraid.${homeDomain}"
                 "status.${domain}"
                 "analytics.${domain}"
@@ -322,6 +323,10 @@ in
               url = "http://localhost:${toString ports.alloy}";
             };
           };
+        };
+
+        kroki = enabled // {
+          domain = homeDomain;
         };
 
         linkding = enabled // {
