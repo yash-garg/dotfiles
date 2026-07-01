@@ -442,6 +442,29 @@
         "type": "github"
       }
     },
+    "hister": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782907493,
+        "narHash": "sha256-IZ+tB3Y3jxYWPOrVYSQFo4Wb9/xq0d7+H75DAv1P5NU=",
+        "owner": "asciimoo",
+        "repo": "hister",
+        "rev": "719d13289a9a164785e70e4fb087250bfa1327d2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "asciimoo",
+        "repo": "hister",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -714,6 +737,7 @@
         "flake-utils": "flake-utils",
         "flake-utils-plus": "flake-utils-plus",
         "golink": "golink",
+        "hister": "hister",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nix-index-database": "nix-index-database",

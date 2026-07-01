@@ -43,6 +43,7 @@
             copyparty.nixosModules.default
             disko.nixosModules.disko
             golink.nixosModules.default
+            hister.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
             nixos-cosmic.nixosModules.default
@@ -119,6 +120,10 @@
     golink.url = "github:tailscale/golink";
     golink.inputs.nixpkgs.follows = "nixpkgs";
     golink.inputs.systems.follows = "systems";
+
+    hister.url = "github:asciimoo/hister";
+    hister.inputs.nixpkgs.follows = "nixpkgs";
+    hister.inputs.flake-parts.follows = "flake-parts";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";

@@ -34,6 +34,7 @@
     glance = 9044;
     goatcounter = 9043;
     grafana = 9002;
+    hister = 9048;
     immich = {
       machine-learning = 3003;
       microservices = 8084;

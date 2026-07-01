@@ -278,6 +278,24 @@ in
           token_endpoint_auth_method = "client_secret_post";
         }
         {
+          client_id = "hister";
+          client_name = "Hister";
+          client_secret = "$pbkdf2-sha512$310000$FsmtcHl5bIUqODtB7Kh96g$ZnbQXoSgqLSOpsDSneaPvbEAQZZqJdJjHmNnR24BJ20ZmT95NZbM1F+pxQE6JHNEQDrz1ab1DQuaNLAi6hDZGQ";
+          public = false;
+          authorization_policy = "internal_one_factor";
+          grant_types = [ "authorization_code" ];
+          redirect_uris = [
+            "https://search.${domain}/api/oauth/callback?provider=oidc"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+          ];
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
           client_id = "jellyfin";
           client_name = "Jellyfin";
           client_secret = "$pbkdf2-sha512$310000$6MaPLvchHznyIyOpGM0pjw$wIBCSHF5R57zG9DtXyDn65jhPpkBL63/4PXh.MSYbiRxln.jg65OAF.E.cluk9ljSayfy1GemMYMAZG82JcwFg";

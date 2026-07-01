@@ -100,6 +100,7 @@ in
                 "status.${domain}"
                 "analytics.${domain}"
                 "stats.${domain}"
+                "search.${homeDomain}"
               ];
             };
             quasar = {
@@ -180,10 +181,20 @@ in
               group = "BOM";
               url = "http://localhost:${toString ports.forgejo}";
             };
+            goatcounter = {
+              name = "GoatCounter";
+              group = "BOM";
+              url = "http://localhost:${toString ports.goatcounter}";
+            };
             grafana = {
               name = "Grafana";
               group = "BOM";
               url = "http://localhost:9092";
+            };
+            hister = {
+              name = "Hister";
+              group = "BOM";
+              url = "http://localhost:${toString ports.hister}";
             };
             home-assistant = {
               name = "Home Assistant";
@@ -323,6 +334,10 @@ in
               url = "http://localhost:${toString ports.alloy}";
             };
           };
+        };
+
+        hister = enabled // {
+          domain = homeDomain;
         };
 
         kroki = enabled // {
