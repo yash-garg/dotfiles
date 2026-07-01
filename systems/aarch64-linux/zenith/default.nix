@@ -95,7 +95,6 @@ in
                 "users.${homeDomain}"
                 "home.${homeDomain}"
                 "notes.${homeDomain}"
-                "kroki.${homeDomain}"
                 "unraid.${homeDomain}"
                 "status.${domain}"
                 "analytics.${domain}"
@@ -337,10 +336,6 @@ in
         };
 
         hister = enabled // {
-          domain = homeDomain;
-        };
-
-        kroki = enabled // {
           domain = homeDomain;
         };
 
