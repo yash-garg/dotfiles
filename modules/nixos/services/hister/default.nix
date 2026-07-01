@@ -24,11 +24,14 @@ in
 
     services.hister = enabled // {
       inherit (cfg) port;
+      dataDir = "/var/lib/hister";
       openFirewall = true;
       environmentFile = config.sops.secrets.hister-env.path;
       settings = {
         app.user_handling = true;
         server = {
+          address = "127.0.0.1:${toString cfg.port}";
+          base_url = "https://search.${cfg.domain}";
           database = "host=/run/postgresql dbname=hister sslmode=disable TimeZone=Asia/Kolkata";
           oauth_only = true;
           oauth.oidc = {
@@ -48,7 +51,7 @@ in
       ];
     };
 
-    dots.services.caddy.services.hister = {
+    dots.services.caddy.services.search = {
       inherit (cfg) domain;
       upstream = "localhost:${toString cfg.port}";
       auth = false;

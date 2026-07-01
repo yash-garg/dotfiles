@@ -110,7 +110,7 @@ in
   identity_providers = {
     oidc = {
       enable_client_debug_messages = false;
-      enforce_pkce = "always";
+      enforce_pkce = "public_clients_only";
       lifespans = {
         access_token = "30m";
         authorize_code = "1m";
@@ -280,9 +280,10 @@ in
         {
           client_id = "hister";
           client_name = "Hister";
-          client_secret = "$pbkdf2-sha512$310000$FsmtcHl5bIUqODtB7Kh96g$ZnbQXoSgqLSOpsDSneaPvbEAQZZqJdJjHmNnR24BJ20ZmT95NZbM1F+pxQE6JHNEQDrz1ab1DQuaNLAi6hDZGQ";
+          client_secret = "$pbkdf2-sha512$310000$fN5dX9GMK8Y/3t/NIiQMLg$qcerv.R.qx6P5M0MyKpyKpqe8UoWpa1dyOr6Ky3cZYO5tRKOU.5DEiujR/DQjtOsHzvbbuUOa5H0o.vVkDOJsg";
           public = false;
           authorization_policy = "internal_one_factor";
+          require_pkce = false;
           grant_types = [ "authorization_code" ];
           redirect_uris = [
             "https://search.${domain}/api/oauth/callback?provider=oidc"
@@ -293,7 +294,7 @@ in
             "email"
           ];
           userinfo_signed_response_alg = "none";
-          token_endpoint_auth_method = "client_secret_basic";
+          token_endpoint_auth_method = "client_secret_post";
         }
         {
           client_id = "jellyfin";
