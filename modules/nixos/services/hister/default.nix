@@ -26,12 +26,14 @@ in
       inherit (cfg) port;
       openFirewall = true;
       environmentFile = config.sops.secrets.hister-env.path;
-      app.user_handling = true;
-      server = {
-        database = "host=/run/postgresql dbname=hister sslmode=disable TimeZone=Asia/Kolkata";
-        oauth_only = true;
-        oauth.oidc = {
-          configuration_url = "https://auth.${cfg.domain}/.well-known/openid-configuration";
+      settings = {
+        app.user_handling = true;
+        server = {
+          database = "host=/run/postgresql dbname=hister sslmode=disable TimeZone=Asia/Kolkata";
+          oauth_only = true;
+          oauth.oidc = {
+            configuration_url = "https://auth.${cfg.domain}/.well-known/openid-configuration";
+          };
         };
       };
     };
