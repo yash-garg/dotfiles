@@ -38,10 +38,14 @@ in
       brews = [
         "cloudflared"
         "openjdk"
+        "node@22"
+        "sipp"
+        "socat"
         "swiftformat"
         "xcode-build-server"
         "xcode-kotlin"
         "vault"
+        "yarn"
       ];
     };
 
@@ -50,12 +54,12 @@ in
 
   homebrew.taps = [
     {
-        name = "anomalyco/tap";
-        trusted = true;
+      name = "anomalyco/tap";
+      trusted = true;
     }
     {
-        name = "hashicorp/tap";
-        trusted = true;
+      name = "hashicorp/tap";
+      trusted = true;
     }
   ];
 
