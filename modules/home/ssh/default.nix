@@ -14,20 +14,21 @@ with lib.${namespace};
       "~/.ssh/work"
       "~/.orbstack/ssh/config"
     ];
-    matchBlocks = {
-      "*" = {
-        addKeysToAgent = "yes";
-        serverAliveInterval = 60;
-        sendEnv = [ "COLORTERM" ];
-        setEnv = {
-          TERM = "xterm-256color";
-        };
-        extraOptions = mkIf pkgs.stdenv.isDarwin {
+    settings = {
+      "*" =
+        {
+          AddKeysToAgent = "yes";
+          ServerAliveInterval = 60;
+          SendEnv = [ "COLORTERM" ];
+          SetEnv = {
+            TERM = "xterm-256color";
+          };
+        }
+        // optionalAttrs pkgs.stdenv.isDarwin {
           IgnoreUnknown = "UseKeychain";
           UseKeychain = "yes";
         };
-      };
-      "github.com".identityFile = "~/.ssh/git-ssh";
+      "github.com".IdentityFile = "~/.ssh/git-ssh";
     };
   };
 }

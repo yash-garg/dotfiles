@@ -3,7 +3,7 @@ with lib;
 {
   imports = [ ../common.nix ];
 
-  programs.ssh.matchBlocks = {
-    "github.com".identityFile = mkForce "~/.ssh/git-work";
+  programs.ssh.settings = {
+    "github.com".IdentityFile = mkForce "~/.ssh/git-work";
   };
 }

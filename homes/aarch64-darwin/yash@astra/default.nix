@@ -8,7 +8,7 @@ with lib.${namespace};
 {
   imports = [ ../common.nix ];
 
-  programs.ssh.matchBlocks = {
-    "github.com".identityFile = mkForce null;
+  programs.ssh.settings = {
+    "github.com".IdentityFile = mkForce null;
   };
 }

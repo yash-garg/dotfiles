@@ -14,8 +14,9 @@ with lib.${namespace};
     . /opt/orbstack-guest/etc/profile-late
   '';
 
-  # Disable systemd-resolved
+  # Disable systemd-resolved and resolvconf; OrbStack manages /etc/resolv.conf
   services.resolved = disabled;
+  networking.resolvconf.enable = false;
   environment.etc."resolv.conf".source = "/opt/orbstack-guest/etc/resolv.conf";
 
   # Faster DHCP - OrbStack uses SLAAC exclusively
