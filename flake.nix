@@ -92,7 +92,7 @@
     copyparty.inputs.nixpkgs.follows = "nixpkgs";
     copyparty.inputs.flake-utils.follows = "flake-utils";
 
-    darwin.url = "github:LnL7/nix-darwin/master";
+    darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -125,7 +125,7 @@
     hister.inputs.nixpkgs.follows = "nixpkgs";
     hister.inputs.flake-parts.follows = "flake-parts";
 
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.3";
@@ -135,7 +135,7 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     # nixpkgs.url = "github:yash-garg/nixpkgs/nixpkgs-unstable";
 
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
@@ -167,7 +167,7 @@
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
 
-    stylix.url = "github:nix-community/stylix";
+    stylix.url = "github:nix-community/stylix/release-26.05";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.systems.follows = "systems";
     stylix.inputs.flake-parts.follows = "flake-parts";

@@ -18,13 +18,15 @@ in
   };
 
   dots = {
+    user.uid = 501;
+
     dock.persistentApps = [
       "Ghostty"
       "Xcode"
       "Cursor"
       "Spotify"
       "Discord"
-      "Firefox"
+      "Zen"
       "OrbStack"
       "WhatsApp"
       "Telegram"
@@ -38,9 +40,9 @@ in
         "chromedriver"
         "cursor"
         "discord"
-        "firefox"
         "notion-calendar"
         "winbox"
+        "zen"
       ];
 
       masApps = {
