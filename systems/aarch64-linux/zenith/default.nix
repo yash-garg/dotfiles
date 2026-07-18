@@ -63,11 +63,6 @@ in
           domain = homeDomain;
         };
 
-        atticd = enabled // {
-          bucket = "attic-cache";
-          endpoint = "https://a69e81e6342baaeed47710799b04477a.r2.cloudflarestorage.com";
-        };
-
         caddy = enabled // {
           domain = homeDomain;
           auth = enabled;
@@ -144,11 +139,6 @@ in
               name = "Actual Budget";
               group = "BOM";
               url = "http://localhost:${toString ports.actual-budget}";
-            };
-            atticd = {
-              name = "Attic Cache";
-              group = "BOM";
-              url = "https://cache.${homeDomain}";
             };
             authelia = {
               name = "Authelia";

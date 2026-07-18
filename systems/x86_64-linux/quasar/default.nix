@@ -72,7 +72,6 @@ in
         mediaDirs = [
           "/mnt/media/main"
           "/mnt/media/samsung"
-          "/mnt/media/wd"
         ];
       };
 
@@ -104,7 +103,6 @@ in
           "mnt-media-main-movies.mount"
           "mnt-media-main-tv.mount"
           "mnt-media-samsung.mount"
-          "mnt-media-wd.mount"
           "mnt-photos.mount"
         ];
         volumes =

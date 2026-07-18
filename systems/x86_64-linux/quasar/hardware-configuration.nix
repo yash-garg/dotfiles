@@ -53,7 +53,6 @@ in
         "/mnt/media/main/movies" = "/mnt/user/data/media/movies";
         "/mnt/media/main/tv" = "/mnt/user/data/media/tv";
         "/mnt/media/samsung" = "/mnt/disks/Samsung_External";
-        "/mnt/media/wd" = "/mnt/disks/WD_External";
         "/mnt/photos" = "/mnt/user/data/media/photos";
       };
     in
