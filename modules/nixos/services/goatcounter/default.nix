@@ -18,6 +18,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets.goatcounter-env = {
+      sopsFile = snowfall.fs.get-file "secrets/goatcounter.env";
+      format = "dotenv";
+    };
+
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
     services.postgresql = {
@@ -43,6 +48,7 @@ in
     systemd.services.goatcounter = {
       after = [ "postgresql.service" ];
       requires = [ "postgresql.service" ];
+      serviceConfig.EnvironmentFile = [ config.sops.secrets.goatcounter-env.path ];
     };
 
     dots.services.caddy.services.stats = {
