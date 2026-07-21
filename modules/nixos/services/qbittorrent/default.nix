@@ -17,10 +17,35 @@ in
     user = mkOpt types.str "qbittorrent" "The user to run qbittorrent as";
     group = mkOpt types.str "qbittorrent" "The group to run qbittorrent as";
     torrentingPort = mkOpt types.int ports.qbittorrent.torrenting "The port for torrenting";
-    webuiPort = mkOpt types.int ports.qbittorrent.webui "The port for the web UI";
+    webuiPort =
+      mkOpt types.int ports.qbittorrent.webui
+        "The internal port for qBittorrent's own web UI";
+    quiPort = mkOpt types.int ports.qui "The port for the qui web UI, fronting qBittorrent";
   };
 
   config = mkIf cfg.enable {
+    sops.secrets.qui-session-secret = {
+      sopsFile = snowfall.fs.get-file "secrets/qui.yaml";
+      owner = cfg.user;
+      inherit (cfg) group;
+    };
+
+    services.qui = enabled // {
+      inherit (cfg) user group;
+      secretFile = config.sops.secrets.qui-session-secret.path;
+      settings = {
+        host = "127.0.0.1";
+        port = cfg.quiPort;
+        # Authentication is handled upstream by Authelia; qui only accepts
+        # traffic from the local reverse proxy.
+        authDisabled = true;
+        I_ACKNOWLEDGE_THIS_IS_A_BAD_IDEA = true;
+        authDisabledAllowedCIDRs = [ "127.0.0.1/32" ];
+      };
+    };
+
+    systemd.services.qui.after = [ "qbittorrent.service" ];
+
     services.qbittorrent = enabled // {
       inherit (cfg)
         user
@@ -56,7 +81,7 @@ in
 
     dots.services.caddy.services.qbit = {
       inherit (cfg) domain;
-      upstream = "localhost:${toString cfg.webuiPort}";
+      upstream = "localhost:${toString cfg.quiPort}";
     };
   };
 }

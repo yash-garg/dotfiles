@@ -73,6 +73,7 @@
       torrenting = 9300;
       webui = 3001;
     };
+    qui = 9046;
     radarr = 7878;
     readarr = 8787;
     redis = 6379;
