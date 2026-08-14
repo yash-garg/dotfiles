@@ -135,8 +135,8 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
-    # nixpkgs.url = "github:yash-garg/nixpkgs/nixpkgs-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs.url = "github:yash-garg/nixpkgs/nixpkgs-unstable";
 
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     nixos-cosmic.inputs.nixpkgs.follows = "nixpkgs";
@@ -178,8 +178,6 @@
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
-    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
-    vscode-server.inputs.flake-utils.follows = "flake-utils";
 
     zjstatus.url = "github:dj95/zjstatus";
     zjstatus.inputs.nixpkgs.follows = "nixpkgs";
