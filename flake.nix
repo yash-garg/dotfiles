@@ -43,7 +43,6 @@
             copyparty.nixosModules.default
             disko.nixosModules.disko
             golink.nixosModules.default
-            hister.nixosModules.default
             lanzaboote.nixosModules.lanzaboote
             nix-index-database.nixosModules.nix-index
             nixos-cosmic.nixosModules.default
@@ -121,10 +120,6 @@
     golink.inputs.nixpkgs.follows = "nixpkgs";
     golink.inputs.systems.follows = "systems";
 
-    hister.url = "github:asciimoo/hister";
-    hister.inputs.nixpkgs.follows = "nixpkgs";
-    hister.inputs.flake-parts.follows = "flake-parts";
-
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -135,7 +130,6 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
