@@ -31,13 +31,16 @@ let
   };
 
   extendedLib = mkExtendedLib { inherit lib; };
+  homeExtendedLib = extendedLib.extend (
+    final: _prev: { hm = inputs.home-manager.lib.hm; }
+  );
 
   pkgsFor = arch: import inputs.nixpkgs { system = arch; inherit overlays; config = channelsConfig; };
 
-  mkSpecialArgs = username: {
+  mkSpecialArgs = { username, isHome ? false }: {
     inherit inputs self;
     namespace = "dots";
-    lib = extendedLib;
+    lib = if isHome then homeExtendedLib else extendedLib;
   }
   // lib.optionalAttrs (username != null) { homeUsername = username; };
 
@@ -68,7 +71,8 @@ let
       isDarwin = lib.hasSuffix "-darwin" arch;
       homeDirName = homeDirNameFor arch host;
       username = if homeDirName != null then lib.head (lib.splitString "@" homeDirName) else null;
-      specialArgs = mkSpecialArgs username;
+      specialArgs = mkSpecialArgs { inherit username; };
+      homeSpecialArgs = mkSpecialArgs { inherit username; isHome = true; };
 
       hmModule =
         if isDarwin then
@@ -81,7 +85,7 @@ let
 
       hmUserConfig = lib.optionalAttrs (homeModule != null) {
         home-manager = {
-          extraSpecialArgs = specialArgs;
+          extraSpecialArgs = homeSpecialArgs;
           users.${username} = {
             imports = baseModules.home ++ moduleTree.home ++ [ homeModule ];
           };
@@ -117,7 +121,7 @@ let
     { arch, homeDirName }:
     let
       username = lib.head (lib.splitString "@" homeDirName);
-      specialArgs = mkSpecialArgs username;
+      specialArgs = mkSpecialArgs { inherit username; isHome = true; };
       homeModule = homesDir + "/${arch}/${homeDirName}/default.nix";
     in
     inputs.home-manager.lib.homeManagerConfiguration {
