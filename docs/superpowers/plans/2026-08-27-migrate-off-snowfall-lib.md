@@ -607,24 +607,7 @@ git commit -m "feat: add systems.nix host/home auto-discovery and wiring"
   inputs = {
 ```
 
-**Note on `checks`:** the original `checks/deploy/default.nix` already implements this logic (`builtins.mapAttrs (_: deployLib: deployLib.deployChecks inputs.self.deploy) inputs.deploy-rs.lib`) without per-system filtering. Keep using that file as-is instead of duplicating its logic inline — replace the `checks = forAllSystems (...)` block above with:
-
-```nix
-      checks = forAllSystems (
-        system: _pkgs:
-        (import ./checks/deploy { inherit inputs; }).${system} or { }
-      );
-```
-
-Actually simplest and closest to current behavior (`checks/deploy/default.nix` returns an attrset already keyed by system via `deploy-rs.lib.${system}`): replace with
-
-```nix
-      checks =
-        let
-          allChecks = import ./checks/deploy { inherit inputs; };
-        in
-        inputs.nixpkgs.lib.genAttrs supportedSystems (system: allChecks.${system} or { });
-```
+**Note on `checks`:** the code above reuses `checks/deploy/default.nix` as-is (unchanged file, already returns an attrset keyed by system via `deploy-rs.lib.${system}`) rather than duplicating its `deployChecks` logic inline — the `checks = let allChecks = import ./checks/deploy { inherit inputs; }; in ...` block in Step 1 is the final, only version to implement. Do not implement any other variant.
 
 - [ ] **Step 2: Remove `snowfall-lib` and `flake-utils-plus` input declarations**
 
