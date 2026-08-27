@@ -51,7 +51,12 @@ let
   );
 
   homeArchs = builtins.attrNames (builtins.readDir homesDir);
-  homeDirsForArch = arch: builtins.attrNames (builtins.readDir (homesDir + "/${arch}"));
+  homeDirsForArch =
+    arch:
+    let
+      entries = builtins.readDir (homesDir + "/${arch}");
+    in
+    builtins.filter (name: entries.${name} == "directory") (builtins.attrNames entries);
   allHomeDirs = lib.flatten (
     map (arch: map (homeDirName: { inherit arch homeDirName; }) (homeDirsForArch arch)) homeArchs
   );
