@@ -15,7 +15,6 @@
       fd
       just
       jq
-      mcporter
       mediainfo
       mtr
       nixfmt
