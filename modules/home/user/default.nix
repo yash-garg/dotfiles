@@ -1,7 +1,8 @@
-{ config, ... }:
+# modules/home/user/default.nix
+{ pkgs, homeUsername, ... }:
 {
   home = {
-    username = config.snowfallorg.user.name;
-    homeDirectory = config.snowfallorg.user.home.directory;
+    username = homeUsername;
+    homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${homeUsername}" else "/home/${homeUsername}";
   };
 }
