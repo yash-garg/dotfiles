@@ -16,7 +16,7 @@ let
   ];
 in
 lib.extend (
-  final: _prev: {
+  _final: _prev: {
     dots = custom // {
       get-file = relPath: root + "/${relPath}";
     };

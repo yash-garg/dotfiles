@@ -1,5 +1,10 @@
 # modules/home/user/default.nix
-{ lib, pkgs, homeUsername, ... }:
+{
+  lib,
+  pkgs,
+  homeUsername,
+  ...
+}:
 {
   # home-manager's own nixos/common.nix module (shared by nixosModules.home-manager
   # and darwinModules.home-manager) also assigns `home.username`/`home.homeDirectory`

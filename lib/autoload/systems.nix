@@ -34,18 +34,27 @@ let
   # Home-manager's own bundled modules (e.g. modules/services/mako.nix) reference
   # lib.hm.*, which plain nixpkgs.lib doesn't have — extend on top of `.dots` for
   # home-manager evaluation contexts only; system-level contexts don't need `.hm`.
-  homeExtendedLib = extendedLib.extend (
-    final: _prev: { hm = inputs.home-manager.lib.hm; }
-  );
+  homeExtendedLib = extendedLib.extend (_final: _prev: { hm = inputs.home-manager.lib.hm; });
 
-  pkgsFor = arch: import inputs.nixpkgs { system = arch; inherit overlays; config = channelsConfig; };
+  pkgsFor =
+    arch:
+    import inputs.nixpkgs {
+      system = arch;
+      inherit overlays;
+      config = channelsConfig;
+    };
 
-  mkSpecialArgs = { username, isHome ? false }: {
-    inherit inputs self;
-    namespace = "dots";
-    lib = if isHome then homeExtendedLib else extendedLib;
-  }
-  // lib.optionalAttrs (username != null) { homeUsername = username; };
+  mkSpecialArgs =
+    {
+      username,
+      isHome ? false,
+    }:
+    {
+      inherit inputs self;
+      namespace = "dots";
+      lib = if isHome then homeExtendedLib else extendedLib;
+    }
+    // lib.optionalAttrs (username != null) { homeUsername = username; };
 
   systemArchs = builtins.attrNames (builtins.readDir systemsDir);
   hostsForArch = arch: builtins.attrNames (builtins.readDir (systemsDir + "/${arch}"));
@@ -80,7 +89,10 @@ let
       homeDirName = homeDirNameFor arch host;
       username = if homeDirName != null then lib.head (lib.splitString "@" homeDirName) else null;
       specialArgs = mkSpecialArgs { inherit username; };
-      homeSpecialArgs = mkSpecialArgs { inherit username; isHome = true; };
+      homeSpecialArgs = mkSpecialArgs {
+        inherit username;
+        isHome = true;
+      };
 
       hmModule =
         if isDarwin then
@@ -129,7 +141,10 @@ let
     { arch, homeDirName }:
     let
       username = lib.head (lib.splitString "@" homeDirName);
-      specialArgs = mkSpecialArgs { inherit username; isHome = true; };
+      specialArgs = mkSpecialArgs {
+        inherit username;
+        isHome = true;
+      };
       homeModule = homesDir + "/${arch}/${homeDirName}/default.nix";
     in
     inputs.home-manager.lib.homeManagerConfiguration {
@@ -139,7 +154,8 @@ let
     };
 
   builtSystems = map (h: h // { config = mkSystem h; }) allSystemHosts;
-  ofClass = isDarwinClass: builtins.filter (h: lib.hasSuffix "-darwin" h.arch == isDarwinClass) builtSystems;
+  ofClass =
+    isDarwinClass: builtins.filter (h: lib.hasSuffix "-darwin" h.arch == isDarwinClass) builtSystems;
 in
 {
   nixosConfigurations = builtins.listToAttrs (

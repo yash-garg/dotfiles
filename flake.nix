@@ -12,11 +12,16 @@
         "x86_64-linux"
       ];
 
-      extraOverlays = with inputs; [
-        copyparty.overlays.default
-        nur.overlays.default
-      ]
-      ++ (import ./lib/autoload/overlays.nix { inherit inputs; lib = inputs.nixpkgs.lib; });
+      extraOverlays =
+        with inputs;
+        [
+          copyparty.overlays.default
+          nur.overlays.default
+        ]
+        ++ (import ./lib/autoload/overlays.nix {
+          inherit inputs;
+          lib = inputs.nixpkgs.lib;
+        });
 
       channelsConfig = {
         allowUnfree = true;
@@ -54,18 +59,26 @@
       };
 
       systemsOutputs = import ./lib/autoload/systems.nix {
-        inherit inputs self extraOverlays channelsConfig baseModules;
+        inherit
+          inputs
+          self
+          extraOverlays
+          channelsConfig
+          baseModules
+          ;
       };
 
       deployLib = import ./lib/deploy { inherit inputs; };
 
       packagesOverlay = import ./lib/autoload/packages.nix { };
 
-      pkgsFor = system: import inputs.nixpkgs {
-        inherit system;
-        overlays = extraOverlays ++ [ packagesOverlay ];
-        config = channelsConfig;
-      };
+      pkgsFor =
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          overlays = extraOverlays ++ [ packagesOverlay ];
+          config = channelsConfig;
+        };
       forAllSystems = f: inputs.nixpkgs.lib.genAttrs supportedSystems (system: f system (pkgsFor system));
     in
     {
@@ -133,7 +146,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.systems.follows = "systems";
 
-
     golink.url = "github:tailscale/golink";
     golink.inputs.nixpkgs.follows = "nixpkgs";
     golink.inputs.systems.follows = "systems";
@@ -164,8 +176,6 @@
 
     nur.url = "github:nix-community/NUR";
     nur.inputs.flake-parts.follows = "flake-parts";
-
-
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
