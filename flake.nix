@@ -110,7 +110,7 @@
     copyparty.inputs.nixpkgs.follows = "nixpkgs";
     copyparty.inputs.flake-utils.follows = "flake-utils";
 
-    darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+    darwin.url = "github:nix-darwin/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     deploy-rs.url = "github:serokell/deploy-rs";
