@@ -26,7 +26,7 @@ in
       };
     };
     config = {
-      theme = if pkgs.stdenv.isDarwin then "auto:system" else "auto";
+      theme = if pkgs.stdenv.hostPlatform.isDarwin then "auto:system" else "auto";
       theme-dark = "catppuccin-mocha";
       theme-light = "catppuccin-latte";
     };

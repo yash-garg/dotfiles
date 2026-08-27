@@ -29,7 +29,7 @@
       wireguard-tools
       yq-go
     ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       pkgs.${namespace}.git-spr
     ];
 }

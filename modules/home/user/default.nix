@@ -10,7 +10,7 @@
   home = {
     username = lib.mkForce homeUsername;
     homeDirectory = lib.mkForce (
-      if pkgs.stdenv.isDarwin then "/Users/${homeUsername}" else "/home/${homeUsername}"
+      if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${homeUsername}" else "/home/${homeUsername}"
     );
   };
 }

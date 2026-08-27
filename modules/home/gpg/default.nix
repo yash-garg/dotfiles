@@ -29,8 +29,8 @@ in
       enableScDaemon = true;
       enableSshSupport = true;
       pinentry.package = mkMerge [
-        (mkIf pkgs.stdenv.isLinux pkgs.pinentry-gnome3)
-        (mkIf pkgs.stdenv.isDarwin pkgs.pinentry_mac)
+        (mkIf pkgs.stdenv.hostPlatform.isLinux pkgs.pinentry-gnome3)
+        (mkIf pkgs.stdenv.hostPlatform.isDarwin pkgs.pinentry_mac)
       ];
     };
   };

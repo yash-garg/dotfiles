@@ -15,7 +15,7 @@ in
     keyMode = "vi";
     mouse = true;
     newSession = true;
-    aggressiveResize = !pkgs.stdenv.isDarwin;
+    aggressiveResize = !pkgs.stdenv.hostPlatform.isDarwin;
     shell = shellPath;
     shortcut = "b";
     sensibleOnTop = false;
