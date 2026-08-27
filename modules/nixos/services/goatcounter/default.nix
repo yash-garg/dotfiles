@@ -19,7 +19,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.goatcounter-env = {
-      sopsFile = snowfall.fs.get-file "secrets/goatcounter.env";
+      sopsFile = lib.dots.get-file "secrets/goatcounter.env";
       format = "dotenv";
     };
 

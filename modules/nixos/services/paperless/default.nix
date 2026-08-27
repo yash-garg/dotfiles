@@ -31,7 +31,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.paperless-env = {
-      sopsFile = lib.snowfall.fs.get-file "secrets/paperless.env";
+      sopsFile = lib.dots.get-file "secrets/paperless.env";
       format = "dotenv";
       owner = config.services.paperless.user;
     };

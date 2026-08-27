@@ -21,7 +21,7 @@ let
   ]
   ++ cfg.additionalCasks;
   cfg = config.${namespace}.homebrew;
-  hmModules = lib.snowfall.fs.get-snowfall-file "modules/home";
+  hmModules = lib.dots.get-file "modules/home";
 in
 {
   options.${namespace}.homebrew = {

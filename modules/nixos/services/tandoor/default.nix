@@ -19,7 +19,7 @@ in
     sops.secrets.tandoor-env = {
       inherit (config.services.tandoor-recipes) group;
       owner = config.services.tandoor-recipes.user;
-      sopsFile = snowfall.fs.get-file "secrets/tandoor.env";
+      sopsFile = lib.dots.get-file "secrets/tandoor.env";
       format = "dotenv";
     };
 

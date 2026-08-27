@@ -46,13 +46,13 @@ in
     sops.secrets = mkMerge [
       {
         alertmanager-ntfy = {
-          sopsFile = lib.snowfall.fs.get-file "secrets/alertmanager.yaml";
+          sopsFile = lib.dots.get-file "secrets/alertmanager.yaml";
           key = "ntfy-settings";
         };
       }
       (mkIf cfg.grafana.enable {
         grafana-env = {
-          sopsFile = lib.snowfall.fs.get-file "secrets/grafana.env";
+          sopsFile = lib.dots.get-file "secrets/grafana.env";
           format = "dotenv";
         };
       })

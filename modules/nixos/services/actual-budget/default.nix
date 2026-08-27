@@ -24,7 +24,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.actual-env = {
-      sopsFile = snowfall.fs.get-file "secrets/actual.env";
+      sopsFile = lib.dots.get-file "secrets/actual.env";
       format = "dotenv";
     };
 

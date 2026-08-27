@@ -20,7 +20,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.miniflux-env = {
-      sopsFile = snowfall.fs.get-file "secrets/miniflux.env";
+      sopsFile = lib.dots.get-file "secrets/miniflux.env";
       format = "dotenv";
     };
 

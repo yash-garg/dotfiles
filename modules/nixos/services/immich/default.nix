@@ -29,7 +29,7 @@ in
     sops.secrets =
       let
         defaultAttrs = {
-          sopsFile = snowfall.fs.get-file "secrets/immich.yaml";
+          sopsFile = lib.dots.get-file "secrets/immich.yaml";
           owner = config.services.immich.user;
         };
       in

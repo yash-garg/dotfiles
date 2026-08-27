@@ -48,7 +48,7 @@ let
       ]
     }:$PATH"
 
-    exec ${pkgs.bash}/bin/bash ${snowfall.fs.get-file "scripts/restic-notify"} "$@"
+    exec ${pkgs.bash}/bin/bash ${lib.dots.get-file "scripts/restic-notify"} "$@"
   '';
 
   # Post-backup notification hook
@@ -76,7 +76,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.restic-env = {
-      sopsFile = snowfall.fs.get-file "secrets/restic.env";
+      sopsFile = lib.dots.get-file "secrets/restic.env";
       format = "dotenv";
     };
 

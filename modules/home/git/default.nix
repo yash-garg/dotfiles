@@ -19,7 +19,7 @@ with lib.${namespace};
     ];
 
     includes = [
-      { path = snowfall.fs.get-file ".gitconfig"; }
+      { path = lib.dots.get-file ".gitconfig"; }
     ];
   };
 }

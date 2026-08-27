@@ -3,7 +3,7 @@
 # Extends `lib` with `lib.dots`, replicating snowfall-lib's namespace
 # merging: every `lib/<name>/default.nix` file's top-level attrs are
 # flattened together under `lib.dots`, plus a `get-file` helper that
-# replaces `snowfall.fs.get-file`.
+# replaces `lib.dots.get-file`.
 { lib }:
 let
   root = ../..;

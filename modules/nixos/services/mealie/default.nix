@@ -18,7 +18,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.mealie-env = {
-      sopsFile = snowfall.fs.get-file "secrets/mealie.env";
+      sopsFile = lib.dots.get-file "secrets/mealie.env";
       format = "dotenv";
     };
 

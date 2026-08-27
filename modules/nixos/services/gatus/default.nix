@@ -74,7 +74,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.gatus-env = {
-      sopsFile = snowfall.fs.get-file "secrets/gatus.env";
+      sopsFile = lib.dots.get-file "secrets/gatus.env";
       format = "dotenv";
     };
 

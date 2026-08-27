@@ -20,7 +20,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.open-webui-env = {
-      sopsFile = snowfall.fs.get-file "secrets/open-webui.env";
+      sopsFile = lib.dots.get-file "secrets/open-webui.env";
       format = "dotenv";
     };
 

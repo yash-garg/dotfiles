@@ -12,17 +12,17 @@ with lib;
 
     ".functions" = {
       executable = true;
-      source = snowfall.fs.get-file "scripts/functions";
+      source = lib.dots.get-file "scripts/functions";
     };
 
     ".aliases" = {
       executable = true;
-      source = snowfall.fs.get-file "scripts/aliases";
+      source = lib.dots.get-file "scripts/aliases";
     };
 
     ".shell-init" = {
       executable = true;
-      source = snowfall.fs.get-file "scripts/shell-init";
+      source = lib.dots.get-file "scripts/shell-init";
     };
   };
 }
