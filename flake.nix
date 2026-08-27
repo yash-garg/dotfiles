@@ -138,7 +138,7 @@
     golink.inputs.nixpkgs.follows = "nixpkgs";
     golink.inputs.systems.follows = "systems";
 
-    home-manager.url = "github:nix-community/home-manager/release-26.05";
+    home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.3";
@@ -177,7 +177,7 @@
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
 
-    stylix.url = "github:nix-community/stylix/release-26.05";
+    stylix.url = "github:nix-community/stylix/master";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.systems.follows = "systems";
     stylix.inputs.flake-parts.follows = "flake-parts";
