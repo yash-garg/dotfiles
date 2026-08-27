@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Remove the unmaintained `snowfall-lib` flake input, replacing its auto-discovery, namespace-plumbing, and flake-assembly behavior with a small local `lib/autoload/` library, with zero behavior change across all 9 hosts.
+**Goal:** Remove the unmaintained `snowfall-lib` flake input, replacing its auto-discovery, namespace-plumbing, and flake-assembly behavior with a small local `lib/autoload/` library, with zero behavior change across all outputs: 4 `nixosConfigurations`, 2 `darwinConfigurations`, and 8 `homeConfigurations` (including the 2 standalone-only homes, `yash@apollo` and `yash@ares`, which have no matching `systems/` entry).
 
 **Architecture:** Four small, independently-readable Nix functions under `lib/autoload/` (`tree.nix`, `namespace.nix`, `packages.nix`, `overlays.nix`, `systems.nix`) replace `snowfall-lib.mkLib`/`mkFlake`. `flake.nix` is rewritten to call them directly. ~50 call sites across existing modules get mechanical renames (`snowfallorg.users.*` → `home-manager.users.*`, `snowfall.fs.get-file` → `lib.dots.get-file`).
 
@@ -30,15 +30,19 @@
 
 - [ ] **Step 1: Capture current flake outputs**
 
-Run:
+`nix flake show --json` currently errors out entirely on this repo (snowfall-lib's `flake-utils-plus` dependency evaluates `x86_64-darwin`, which nixpkgs-unstable has dropped) — use targeted `nix eval` instead, same as the `justfile`'s `eval` recipe:
+
 ```bash
 cd /Users/yash/dotfiles
-nix flake show --json 2>/dev/null > /tmp/snowfall-migration-baseline.json
-jq -r '.nixosConfigurations // {} | keys[]' /tmp/snowfall-migration-baseline.json | sort
-jq -r '.darwinConfigurations // {} | keys[]' /tmp/snowfall-migration-baseline.json | sort
+nix eval .#nixosConfigurations --apply builtins.attrNames --json | tee /tmp/snowfall-migration-baseline-nixos.json
+nix eval .#darwinConfigurations --apply builtins.attrNames --json | tee /tmp/snowfall-migration-baseline-darwin.json
+nix eval .#homeConfigurations --apply builtins.attrNames --json | tee /tmp/snowfall-migration-baseline-home.json
 ```
 
-Expected: prints all 9 host names (`orion`, `vortex`, `zenith`, `quasar`, `apollo`, `ares` under nixosConfigurations; `astra`, `aurora` under darwinConfigurations).
+Expected:
+- nixosConfigurations: `["orion","quasar","vortex","zenith"]`
+- darwinConfigurations: `["astra","aurora"]`
+- homeConfigurations: `["yash@apollo","yash@ares","yash@astra","yash@orion","yash@quasar","yash@vortex","yash@zenith","ygarg@aurora"]`
 
 - [ ] **Step 2: Record it in a scratch note**
 
@@ -310,16 +314,17 @@ git commit -m "feat: add overlays/* auto-discovery"
 
 ---
 
-## Task 5: `lib/autoload/systems.nix` — build `nixosConfigurations`/`darwinConfigurations`
+## Task 5: `lib/autoload/systems.nix` — build `nixosConfigurations`/`darwinConfigurations`/`homeConfigurations`
 
 **Files:**
 - Create: `lib/autoload/systems.nix`
 
 **Interfaces:**
-- Consumes: `lib/autoload/tree.nix`, `lib/autoload/namespace.nix`.
-- Produces: `{ inputs, self, extraOverlays, channelsConfig, baseModules }: { nixosConfigurations = {...}; darwinConfigurations = {...}; }`
+- Consumes: `lib/autoload/tree.nix`, `lib/autoload/namespace.nix`, `lib/autoload/packages.nix`.
+- Produces: `{ inputs, self, extraOverlays, channelsConfig, baseModules }: { nixosConfigurations = {...}; darwinConfigurations = {...}; homeConfigurations = {...}; }`
   - `baseModules :: { nixos = [module]; darwin = [module]; home = [module]; }` — the cross-cutting third-party modules (currently `systems.modules.darwin`/`.nixos` and `homes.modules` in `flake.nix`).
   - Each built system's `specialArgs` includes: `inputs`, `self`, `namespace = "dots"`, `lib` (extended via `namespace.nix`), and `homeUsername` (the username derived from the matching `homes/` folder, when one exists) — consumed by Task 9's rewrite of `modules/home/user/default.nix`.
+  - **Every** `homes/<arch>/<user>@<host>/default.nix` folder (8 total) produces a standalone `homeConfigurations."<user>@<host>"` output via `home-manager.lib.homeManagerConfiguration`, independent of whether a matching `systems/` entry exists — this is required for `yash@apollo` and `yash@ares` (`x86_64-linux`), which have no matching `systems/` folder at all and are standalone home-manager-only machines. Confirmed via `nix eval .#homeConfigurations --apply builtins.attrNames --json` against the current (pre-migration) flake: `["yash@apollo","yash@ares","yash@astra","yash@orion","yash@quasar","yash@vortex","yash@zenith","ygarg@aurora"]`.
 
 - [ ] **Step 1: Write the file**
 
@@ -328,8 +333,9 @@ git commit -m "feat: add overlays/* auto-discovery"
 #
 # Builds nixosConfigurations/darwinConfigurations from systems/<arch>/<host>,
 # auto-pairing each with homes/<arch>/<user>@<host> by folder-name
-# convention. Replaces snowfall-lib's system/home auto-discovery and
-# pairing.
+# convention, PLUS a standalone homeConfigurations."<user>@<host>" for
+# every homes/ folder regardless of whether a matching system exists.
+# Replaces snowfall-lib's system/home auto-discovery and pairing.
 {
   inputs,
   self,
@@ -349,10 +355,33 @@ let
 
   overlays = extraOverlays ++ [ packagesOverlay ];
 
-  archs = builtins.attrNames (builtins.readDir systemsDir);
+  moduleTree = {
+    nixos = tree (root + "/modules/nixos");
+    darwin = tree (root + "/modules/darwin");
+    home = tree (root + "/modules/home");
+  };
+
+  extendedLib = mkExtendedLib { inherit lib; };
+
+  pkgsFor = arch: import inputs.nixpkgs { system = arch; inherit overlays; config = channelsConfig; };
+
+  mkSpecialArgs = username: {
+    inherit inputs self;
+    namespace = "dots";
+    lib = extendedLib;
+  }
+  // lib.optionalAttrs (username != null) { homeUsername = username; };
+
+  systemArchs = builtins.attrNames (builtins.readDir systemsDir);
   hostsForArch = arch: builtins.attrNames (builtins.readDir (systemsDir + "/${arch}"));
-  allHosts = lib.flatten (
-    map (arch: map (host: { inherit arch host; }) (hostsForArch arch)) archs
+  allSystemHosts = lib.flatten (
+    map (arch: map (host: { inherit arch host; }) (hostsForArch arch)) systemArchs
+  );
+
+  homeArchs = builtins.attrNames (builtins.readDir homesDir);
+  homeDirsForArch = arch: builtins.attrNames (builtins.readDir (homesDir + "/${arch}"));
+  allHomeDirs = lib.flatten (
+    map (arch: map (homeDirName: { inherit arch homeDirName; }) (homeDirsForArch arch)) homeArchs
   );
 
   homeDirNameFor =
@@ -370,20 +399,7 @@ let
       isDarwin = lib.hasSuffix "-darwin" arch;
       homeDirName = homeDirNameFor arch host;
       username = if homeDirName != null then lib.head (lib.splitString "@" homeDirName) else null;
-
-      extendedLib = mkExtendedLib { inherit lib; };
-      specialArgs = {
-        inherit inputs self;
-        namespace = "dots";
-        lib = extendedLib;
-      }
-      // lib.optionalAttrs (username != null) { homeUsername = username; };
-
-      moduleTree = {
-        nixos = tree (root + "/modules/nixos");
-        darwin = tree (root + "/modules/darwin");
-        home = tree (root + "/modules/home");
-      };
+      specialArgs = mkSpecialArgs username;
 
       hmModule =
         if isDarwin then
@@ -396,7 +412,7 @@ let
 
       hmUserConfig = lib.optionalAttrs (homeModule != null) {
         home-manager = {
-          extraSpecialArgs = specialArgs // { };
+          extraSpecialArgs = specialArgs;
           users.${username} = {
             imports = baseModules.home ++ moduleTree.home ++ [ homeModule ];
           };
@@ -428,8 +444,21 @@ let
       ++ classModuleTree;
     };
 
-  built = map (h: h // { config = mkSystem h; }) allHosts;
-  ofClass = isDarwinClass: builtins.filter (h: lib.hasSuffix "-darwin" h.arch == isDarwinClass) built;
+  mkStandaloneHome =
+    { arch, homeDirName }:
+    let
+      username = lib.head (lib.splitString "@" homeDirName);
+      specialArgs = mkSpecialArgs username;
+      homeModule = homesDir + "/${arch}/${homeDirName}/default.nix";
+    in
+    inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgsFor arch;
+      extraSpecialArgs = specialArgs;
+      modules = baseModules.home ++ moduleTree.home ++ [ homeModule ];
+    };
+
+  builtSystems = map (h: h // { config = mkSystem h; }) allSystemHosts;
+  ofClass = isDarwinClass: builtins.filter (h: lib.hasSuffix "-darwin" h.arch == isDarwinClass) builtSystems;
 in
 {
   nixosConfigurations = builtins.listToAttrs (
@@ -437,6 +466,9 @@ in
   );
   darwinConfigurations = builtins.listToAttrs (
     map (h: lib.nameValuePair h.host h.config) (ofClass true)
+  );
+  homeConfigurations = builtins.listToAttrs (
+    map (h: lib.nameValuePair h.homeDirName (mkStandaloneHome h)) allHomeDirs
   );
 }
 ```
@@ -543,7 +575,7 @@ git commit -m "feat: add systems.nix host/home auto-discovery and wiring"
       forAllSystems = f: inputs.nixpkgs.lib.genAttrs supportedSystems (system: f system (pkgsFor system));
     in
     {
-      inherit (systemsOutputs) nixosConfigurations darwinConfigurations;
+      inherit (systemsOutputs) nixosConfigurations darwinConfigurations homeConfigurations;
 
       deploy = deployLib.mkDeploy { inherit self; };
 
@@ -837,7 +869,7 @@ git commit -m "chore: drop snowfall-lib and flake-utils-plus from flake.lock"
 
 ---
 
-## Task 11: Full validation across all 9 hosts
+## Task 11: Full validation across all outputs
 
 **Files:** none (validation only).
 
@@ -853,21 +885,20 @@ nix flake check
 
 Expected: passes with no errors.
 
-- [ ] **Step 2: Compare `nix flake show` host lists against the Task 0 baseline**
+- [ ] **Step 2: Compare output key lists against the Task 0 baseline**
 
 Run:
 ```bash
 cd /Users/yash/dotfiles
-nix flake show --json 2>/dev/null > /tmp/snowfall-migration-after.json
-diff \
-  <(jq -r '.nixosConfigurations // {} | keys[]' /tmp/snowfall-migration-baseline.json | sort) \
-  <(jq -r '.nixosConfigurations // {} | keys[]' /tmp/snowfall-migration-after.json | sort)
-diff \
-  <(jq -r '.darwinConfigurations // {} | keys[]' /tmp/snowfall-migration-baseline.json | sort) \
-  <(jq -r '.darwinConfigurations // {} | keys[]' /tmp/snowfall-migration-after.json | sort)
+nix eval .#nixosConfigurations --apply builtins.attrNames --json > /tmp/snowfall-migration-after-nixos.json
+nix eval .#darwinConfigurations --apply builtins.attrNames --json > /tmp/snowfall-migration-after-darwin.json
+nix eval .#homeConfigurations --apply builtins.attrNames --json > /tmp/snowfall-migration-after-home.json
+diff /tmp/snowfall-migration-baseline-nixos.json /tmp/snowfall-migration-after-nixos.json
+diff /tmp/snowfall-migration-baseline-darwin.json /tmp/snowfall-migration-after-darwin.json
+diff /tmp/snowfall-migration-baseline-home.json /tmp/snowfall-migration-after-home.json
 ```
 
-Expected: no diff output — identical host lists before and after.
+Expected: no diff output on any of the three — identical output key lists before and after (`nixosConfigurations`: `orion`,`quasar`,`vortex`,`zenith`; `darwinConfigurations`: `astra`,`aurora`; `homeConfigurations`: all 8, including standalone `yash@apollo`/`yash@ares`).
 
 - [ ] **Step 3: Build every darwin host**
 
@@ -885,13 +916,24 @@ Expected: both build successfully.
 Run:
 ```bash
 cd /Users/yash/dotfiles
-for host in orion vortex zenith quasar apollo ares; do
+for host in orion vortex zenith quasar; do
   echo "=== $host ==="
   nix build .#nixosConfigurations.$host.config.system.build.toplevel --no-link || echo "FAILED: $host"
 done
 ```
 
-Expected: all 6 hosts build successfully. (These may require your configured remote builders per `lib/nix-config` / `distributedBuilds = true` — that's unchanged from before this migration.)
+Expected: all 4 hosts build successfully. (These may require your configured remote builders per `lib/nix-config` / `distributedBuilds = true` — that's unchanged from before this migration.)
+
+- [ ] **Step 4b: Build the standalone home-manager configs (`apollo`, `ares` have no matching system)**
+
+Run:
+```bash
+cd /Users/yash/dotfiles
+nix build '.#homeConfigurations."yash@apollo".activationPackage' --no-link
+nix build '.#homeConfigurations."yash@ares".activationPackage' --no-link
+```
+
+Expected: both build successfully. These are the two hosts with no `systems/` entry at all — Task 5's `mkStandaloneHome` is the only thing that builds them, so this step is the real regression check for that code path.
 
 - [ ] **Step 5: Run the existing `just` recipes as a real-world sanity check**
 

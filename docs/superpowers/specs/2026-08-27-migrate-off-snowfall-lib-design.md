@@ -14,7 +14,17 @@ snowfall-lib currently provides four things this repo relies on:
    and `homes/<arch>/<user>@<host>/default.nix` are automatically
    turned into `nixosConfigurations`/`darwinConfigurations` and paired
    with a matching home-manager config by folder-name convention. No
-   entries in `flake.nix` are required.
+   entries in `flake.nix` are required. Separately, **every**
+   `homes/<arch>/<user>@<host>/default.nix` folder — 8 total — also
+   produces a standalone `homeConfigurations."<user>@<host>"` output,
+   regardless of whether a matching `systems/` entry exists. Two of the
+   8 homes (`yash@apollo`, `yash@ares`, both `x86_64-linux`) have **no**
+   matching `systems/` folder at all — they are standalone
+   home-manager-only machines, not full NixOS/darwin systems. So the
+   real host inventory is: 4 `nixosConfigurations` (`orion`, `vortex`,
+   `zenith`, `quasar`) + 2 `darwinConfigurations` (`astra`, `aurora`) +
+   8 `homeConfigurations` (the 6 above, plus standalone `yash@apollo`
+   and `yash@ares`) — not "9 hosts" as a flat count.
 2. **Module auto-import** — every `modules/{nixos,darwin,home}/**/default.nix`
    file (129 total: 76 nixos, 42 home, 11 darwin) is automatically
    collected and imported. There is no explicit `imports = [...]` list
@@ -48,7 +58,8 @@ snowfall-lib currently provides four things this repo relies on:
 - Replace the auto-discovery/namespace magic with a small, local,
   fully-readable library (`lib/autoload/`) that does only what this
   repo needs — not a general-purpose framework.
-- Ship as a single PR; validate all 9 hosts build before merging.
+- Ship as a single PR; validate every output (4 nixosConfigurations, 2
+  darwinConfigurations, 8 homeConfigurations) builds before merging.
 
 ## Non-goals
 
@@ -72,7 +83,9 @@ snowfall-lib currently provides four things this repo relies on:
 - `lib/autoload/systems.nix` — builds `nixosConfigurations`/
   `darwinConfigurations` from `systems/`, auto-attaching the matching
   `homes/` config as `home-manager.users.<user>` by folder-name
-  convention.
+  convention, plus a standalone `homeConfigurations` entry for every
+  `homes/` folder (needed for `yash@apollo`/`yash@ares`, which have no
+  matching `systems/` entry at all).
 - `lib/autoload/namespace.nix` — extends `lib` with `lib.dots.*`
   (including `lib.dots.get-file`, replacing `snowfall.fs.get-file`) and
   `pkgs` with `pkgs.dots.*`.
@@ -192,20 +205,20 @@ Single PR, in this order (all within one branch, one commit or logically-grouped
 ## Testing / validation
 
 - `nix flake check` passes.
-- Every host builds successfully and produces the same store path
-  category as before (spot-check via `nix build --dry-run` diff isn't
-  required, but a successful build of each is):
+- Every system/home builds successfully and produces the same store
+  path category as before:
   - `nom build .#darwinConfigurations.{astra,aurora}.system`
-  - `nom build .#nixosConfigurations.{orion,vortex,zenith,quasar,apollo,ares}.config.system.build.toplevel`
-- Each host's home-manager activation package builds (covered by the
-  above, since home-manager is wired in as a NixOS/darwin module here,
-  not standalone).
+  - `nom build .#nixosConfigurations.{orion,vortex,zenith,quasar}.config.system.build.toplevel`
+  - `nix build '.#homeConfigurations."yash@apollo".activationPackage'` and same for `yash@ares` — the two standalone-only homes, the real regression check for `homeConfigurations` since they have no paired system to fall back on.
+- Each system-paired host's home-manager activation package builds
+  (covered by the system builds above, since home-manager is wired in
+  as a NixOS/darwin module for those).
 - `just check <host>` (existing recipe) works unchanged for all hosts.
 - `deploy-rs` check (`nix flake check` covers `checks.<system>.deploy`) passes.
 - CI (`cache-nixos.yml`) passes on the PR.
-- `nix flake show` output is manually compared before/after to confirm
-  the same set of `nixosConfigurations`/`darwinConfigurations`/
-  `homeConfigurations` keys exist.
+- `nix eval .#{nixosConfigurations,darwinConfigurations,homeConfigurations} --apply builtins.attrNames --json`
+  output is compared before/after (`nix flake show` itself errors out on
+  this repo today, pre-migration, for unrelated reasons — see Risks).
 
 ## Risks
 
@@ -219,6 +232,18 @@ Single PR, in this order (all within one branch, one commit or logically-grouped
   `snowfallorg.users.*.name/.home.directory` needs care — confirm the
   replacement produces the same `home.username`/`home.homeDirectory`
   for every host (usernames differ: `yash` vs `ygarg`).
+- **`nix flake show` is already broken on `stable`**, independent of
+  this migration: snowfall-lib's `flake-utils-plus` dependency
+  evaluates `x86_64-darwin`, which nixpkgs-unstable dropped support for
+  (confirmed by running it during planning). Baseline/after comparisons
+  must use targeted `nix eval .#<output> --apply builtins.attrNames`
+  instead of `nix flake show`.
+- **Two hosts have no `systems/` entry**: `yash@apollo` and
+  `yash@ares` (`x86_64-linux`) are standalone home-manager-only
+  machines — confirmed via `nix eval .#homeConfigurations --apply
+  builtins.attrNames --json` returning 8 entries while
+  `nixosConfigurations` only returns 4. Any design that only handles
+  `systems/`-paired homes silently drops these two.
 - **`flake.lock` churn**: removing `snowfall-lib` and its transitive
   inputs (`flake-utils-plus`, etc.) will change `flake.lock`; confirm
   no other input still needs something `snowfall-lib` was pinning.
