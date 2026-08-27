@@ -10,9 +10,16 @@ let
 in
 {
   dots = builtins.listToAttrs (
-    map (name: {
-      inherit name;
-      value = final.callPackage (root + "/${name}") { };
-    }) names
+    final.lib.concatMap (name:
+      let
+        result = final.callPackage (root + "/${name}") { };
+        # Filter out callPackage utility attributes when flattening non-derivations
+        filterAttrs = builtins.filter (k: k != "override" && k != "overrideDerivation");
+      in
+      if final.lib.isDerivation result then
+        [{ inherit name; value = result; }]
+      else
+        map (key: { name = key; value = result.${key}; }) (filterAttrs (builtins.attrNames result))
+    ) names
   );
 }
