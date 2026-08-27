@@ -73,10 +73,11 @@
 
       deploy = deployLib.mkDeploy { inherit self; };
 
-      checks = forAllSystems (
-        system: _pkgs:
-        builtins.mapAttrs (_: deployChecksLib: deployChecksLib.deployChecks self.deploy) inputs.deploy-rs.lib.${system} or { }
-      );
+      checks =
+        let
+          allChecks = import ./checks/deploy { inherit inputs; };
+        in
+        inputs.nixpkgs.lib.genAttrs supportedSystems (system: allChecks.${system} or { });
 
       formatter = forAllSystems (
         _system: pkgs: (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper
