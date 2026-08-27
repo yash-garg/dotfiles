@@ -398,7 +398,7 @@ let
         home-manager = {
           extraSpecialArgs = specialArgs // { };
           users.${username} = {
-            imports = moduleTree.home ++ [ homeModule ];
+            imports = baseModules.home ++ moduleTree.home ++ [ homeModule ];
           };
         };
       };
@@ -519,6 +519,11 @@ git commit -m "feat: add systems.nix host/home auto-discovery and wiring"
           sops-nix.nixosModules.sops
           srvos.nixosModules.mixins-trusted-nix-caches
           stylix.nixosModules.stylix
+        ];
+
+        home = [
+          nix-index-database.homeModules.nix-index
+          spicetify-nix.homeManagerModules.default
         ];
       };
 
