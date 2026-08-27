@@ -247,3 +247,12 @@ Single PR, in this order (all within one branch, one commit or logically-grouped
 - **`flake.lock` churn**: removing `snowfall-lib` and its transitive
   inputs (`flake-utils-plus`, etc.) will change `flake.lock`; confirm
   no other input still needs something `snowfall-lib` was pinning.
+- **`nix.generateNixPathFromInputs`/`nix.linkInputs` were dropped, not reimplemented.**
+  These were snowfall-lib-specific `nix.*` options (not vanilla nixpkgs/nix-darwin) that
+  generated `/etc/nix/inputs/<input>` symlinks and matching `NIX_PATH` entries from flake
+  inputs — a legacy `nix-shell -p`/`<nixpkgs>`-channel-style convenience feature. Confirmed
+  via `nix eval` that no module in this repo depends on `NIX_PATH` at evaluation time, so
+  this is a real but low-impact behavior change: interactive `nix-shell -p`/`<nixpkgs>`
+  workflows on affected hosts lose the auto-populated `/etc/nix/inputs/*` symlinks. If this
+  matters in practice, it's a small standalone follow-up (an `environment.etc` + `nix.nixPath`
+  addition), not part of this migration.

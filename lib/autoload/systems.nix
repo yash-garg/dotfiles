@@ -31,6 +31,9 @@ let
   };
 
   extendedLib = mkExtendedLib { inherit lib; };
+  # Home-manager's own bundled modules (e.g. modules/services/mako.nix) reference
+  # lib.hm.*, which plain nixpkgs.lib doesn't have — extend on top of `.dots` for
+  # home-manager evaluation contexts only; system-level contexts don't need `.hm`.
   homeExtendedLib = extendedLib.extend (
     final: _prev: { hm = inputs.home-manager.lib.hm; }
   );
