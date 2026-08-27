@@ -73,9 +73,9 @@ snowfall-lib currently provides four things this repo relies on:
   `darwinConfigurations` from `systems/`, auto-attaching the matching
   `homes/` config as `home-manager.users.<user>` by folder-name
   convention.
-- `lib/autoload/namespace.nix` — extends `lib` with `lib.dots.*` and
+- `lib/autoload/namespace.nix` — extends `lib` with `lib.dots.*`
+  (including `lib.dots.get-file`, replacing `snowfall.fs.get-file`) and
   `pkgs` with `pkgs.dots.*`.
-- `lib/autoload/paths.nix` — replaces `snowfall.fs.get-file`.
 
 `flake.nix` is rewritten to call these directly instead of delegating
 to `snowfall-lib.mkFlake`.
@@ -182,7 +182,7 @@ Replaces the `snowfall-lib.mkLib`/`mkFlake` call with:
 
 Single PR, in this order (all within one branch, one commit or logically-grouped commits, merged together):
 
-1. Add `lib/autoload/{tree,systems,namespace,paths}.nix`.
+1. Add `lib/autoload/{tree,systems,namespace}.nix`.
 2. Rewrite `flake.nix` to stop referencing `snowfall-lib` and wire up the new autoload helpers.
 3. Do the ~40 mechanical replacements (`snowfallorg.users.*` → `home-manager.users.*`, `snowfall.fs.get-file` → `lib.dots.get-file`).
 4. Delete/update `modules/home/user/default.nix` as needed.
