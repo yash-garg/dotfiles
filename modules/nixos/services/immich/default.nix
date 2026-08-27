@@ -120,7 +120,6 @@ in
           timerConfig.OnCalendar = "weekly";
         }
       );
-
     };
 
     dots.services.caddy.services.photos = {
