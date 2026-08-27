@@ -45,7 +45,7 @@ in
     };
 
     sops.secrets.minecraft-env = {
-      sopsFile = snowfall.fs.get-file "secrets/minecraft.env";
+      sopsFile = lib.dots.get-file "secrets/minecraft.env";
       format = "dotenv";
     };
 

@@ -4,80 +4,99 @@
   outputs =
     inputs:
     let
-      lib = inputs.snowfall-lib.mkLib {
-        inherit inputs;
-        src = ./.;
-        snowfall = {
-          namespace = "dots";
-          meta = {
-            name = "yash-nix-configs";
-            title = "Yash's Nix configurations";
-          };
-        };
-      };
-      treefmtModule = inputs.treefmt-nix.lib.evalModule;
-    in
-    lib.mkFlake {
-      inherit inputs;
-      src = ./.;
+      inherit (inputs) self;
 
-      channels-config = {
+      supportedSystems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+
+      extraOverlays = with inputs; [
+        copyparty.overlays.default
+        nur.overlays.default
+      ]
+      ++ (import ./lib/autoload/overlays.nix { inherit inputs; lib = inputs.nixpkgs.lib; });
+
+      channelsConfig = {
         allowUnfree = true;
         cudaSupport = false;
         permittedInsecurePackages = [ "electron-27.3.11" ];
       };
 
-      deploy = lib.mkDeploy { inherit (inputs) self; };
+      baseModules = with inputs; {
+        darwin = [
+          nix-index-database.darwinModules.nix-index
+          sops-nix.darwinModules.sops
+          srvos.darwinModules.desktop
+          srvos.darwinModules.mixins-trusted-nix-caches
+          stylix.darwinModules.stylix
+        ];
 
-      systems = with inputs; {
-        modules = {
-          darwin = [
-            nix-index-database.darwinModules.nix-index
-            sops-nix.darwinModules.sops
-            srvos.darwinModules.desktop
-            srvos.darwinModules.mixins-trusted-nix-caches
-            stylix.darwinModules.stylix
-          ];
+        nixos = [
+          copyparty.nixosModules.default
+          disko.nixosModules.disko
+          golink.nixosModules.default
+          lanzaboote.nixosModules.lanzaboote
+          nix-index-database.nixosModules.nix-index
+          nixos-cosmic.nixosModules.default
+          nixos-generators.nixosModules.all-formats
+          nixos-wsl.nixosModules.default
+          sops-nix.nixosModules.sops
+          srvos.nixosModules.mixins-trusted-nix-caches
+          stylix.nixosModules.stylix
+        ];
 
-          nixos = [
-            copyparty.nixosModules.default
-            disko.nixosModules.disko
-            golink.nixosModules.default
-            lanzaboote.nixosModules.lanzaboote
-            nix-index-database.nixosModules.nix-index
-            nixos-cosmic.nixosModules.default
-            nixos-generators.nixosModules.all-formats
-            nixos-wsl.nixosModules.default
-            sops-nix.nixosModules.sops
-            srvos.nixosModules.mixins-trusted-nix-caches
-            stylix.nixosModules.stylix
-          ];
-        };
+        home = [
+          nix-index-database.homeModules.nix-index
+          spicetify-nix.homeManagerModules.default
+        ];
       };
 
-      homes.modules = with inputs; [
-        nix-index-database.homeModules.nix-index
-        spicetify-nix.homeManagerModules.default
-      ];
-
-      overlays = with inputs; [
-        copyparty.overlays.default
-        nur.overlays.default
-      ];
-
-      outputs-builder = channels: {
-        formatter = (treefmtModule channels.nixpkgs ./treefmt.nix).config.build.wrapper;
+      systemsOutputs = import ./lib/autoload/systems.nix {
+        inherit inputs self extraOverlays channelsConfig baseModules;
       };
+
+      deployLib = import ./lib/deploy { inherit inputs; };
+
+      packagesOverlay = import ./lib/autoload/packages.nix { };
+
+      pkgsFor = system: import inputs.nixpkgs {
+        inherit system;
+        overlays = extraOverlays ++ [ packagesOverlay ];
+        config = channelsConfig;
+      };
+      forAllSystems = f: inputs.nixpkgs.lib.genAttrs supportedSystems (system: f system (pkgsFor system));
+    in
+    {
+      inherit (systemsOutputs) nixosConfigurations darwinConfigurations homeConfigurations;
+
+      deploy = deployLib.mkDeploy { inherit self; };
+
+      checks =
+        let
+          allChecks = import ./checks/deploy { inherit inputs; };
+        in
+        inputs.nixpkgs.lib.genAttrs supportedSystems (system: allChecks.${system} or { });
+
+      formatter = forAllSystems (
+        _system: pkgs: (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper
+      );
+
+      packages = forAllSystems (_system: pkgs: pkgs.dots or { });
+
+      overlays.default = packagesOverlay;
 
       templates = {
         cpp.description = "devshell for a C++ project";
+        cpp.path = ./templates/cpp;
         go.description = "devshell for a Golang project";
+        go.path = ./templates/go;
         node.description = "devshell for a Node.js project";
+        node.path = ./templates/node;
         rust.description = "devshell for a Rust project";
+        rust.path = ./templates/rust;
       };
-    }
-    // {
-      inherit (inputs) self;
     };
 
   inputs = {
@@ -91,7 +110,7 @@
     copyparty.inputs.nixpkgs.follows = "nixpkgs";
     copyparty.inputs.flake-utils.follows = "flake-utils";
 
-    darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+    darwin.url = "github:nix-darwin/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -113,14 +132,13 @@
 
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.systems.follows = "systems";
-    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
-    flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
+
 
     golink.url = "github:tailscale/golink";
     golink.inputs.nixpkgs.follows = "nixpkgs";
     golink.inputs.systems.follows = "systems";
 
-    home-manager.url = "github:nix-community/home-manager/release-26.05";
+    home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote/v0.4.3";
@@ -147,9 +165,7 @@
     nur.url = "github:nix-community/NUR";
     nur.inputs.flake-parts.follows = "flake-parts";
 
-    snowfall-lib.url = "github:snowfallorg/lib/main";
-    snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
-    snowfall-lib.inputs.flake-utils-plus.follows = "flake-utils-plus";
+
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -161,7 +177,7 @@
     srvos.url = "github:nix-community/srvos";
     srvos.inputs.nixpkgs.follows = "nixpkgs";
 
-    stylix.url = "github:nix-community/stylix/release-26.05";
+    stylix.url = "github:nix-community/stylix/master";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.systems.follows = "systems";
     stylix.inputs.flake-parts.follows = "flake-parts";

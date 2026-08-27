@@ -27,7 +27,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.linkding-env = {
-      sopsFile = snowfall.fs.get-file "secrets/linkding.env";
+      sopsFile = lib.dots.get-file "secrets/linkding.env";
       format = "dotenv";
     };
 

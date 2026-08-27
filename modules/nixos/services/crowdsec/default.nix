@@ -19,7 +19,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.console-token = {
-      sopsFile = snowfall.fs.get-file "secrets/crowdsec.yaml";
+      sopsFile = lib.dots.get-file "secrets/crowdsec.yaml";
       key = "console_token";
     };
 

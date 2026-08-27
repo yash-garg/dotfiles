@@ -21,7 +21,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.atticd-env = {
-      sopsFile = lib.snowfall.fs.get-file "secrets/atticd.env";
+      sopsFile = lib.dots.get-file "secrets/atticd.env";
       format = "dotenv";
     };
 

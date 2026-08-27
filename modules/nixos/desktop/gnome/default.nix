@@ -37,7 +37,7 @@ in
       };
     };
 
-    snowfallorg.users.yash.home.config = {
+    home-manager.users.yash = {
       dconf = enabled // {
         # Note: Use `dconf dump dir` to get the current settings
         settings = {

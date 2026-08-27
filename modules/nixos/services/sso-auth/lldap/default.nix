@@ -20,7 +20,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.lldap-env = {
-      sopsFile = snowfall.fs.get-file "secrets/lldap.env";
+      sopsFile = lib.dots.get-file "secrets/lldap.env";
       format = "dotenv";
       owner = cfg.user;
       inherit (cfg) group;

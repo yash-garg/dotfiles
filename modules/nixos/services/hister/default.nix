@@ -18,7 +18,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.hister-env = {
-      sopsFile = snowfall.fs.get-file "secrets/hister.env";
+      sopsFile = lib.dots.get-file "secrets/hister.env";
       format = "dotenv";
     };
 

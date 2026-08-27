@@ -34,7 +34,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.cifs-env = {
-      sopsFile = snowfall.fs.get-file "secrets/cifs.env";
+      sopsFile = lib.dots.get-file "secrets/cifs.env";
       format = "dotenv";
     };
 

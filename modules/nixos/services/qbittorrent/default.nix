@@ -25,7 +25,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.qui-session-secret = {
-      sopsFile = snowfall.fs.get-file "secrets/qui.yaml";
+      sopsFile = lib.dots.get-file "secrets/qui.yaml";
       owner = cfg.user;
       inherit (cfg) group;
     };

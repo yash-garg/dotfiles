@@ -11,7 +11,7 @@ let
 in
 {
   sops.secrets.gitconfig = {
-    sopsFile = snowfall.fs.get-file "secrets/.gitconfig-personal";
+    sopsFile = lib.dots.get-file "secrets/.gitconfig-personal";
     format = "binary";
     mode = "0500";
     owner = username;
@@ -62,7 +62,7 @@ in
     SSH_AUTH_SOCK = "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
   };
 
-  snowfallorg.users.${username}.home.config = {
+  home-manager.users.${username} = {
     programs.git.includes = mkAfter [
       {
         condition = "gitdir/i:~/projects/work/**";

@@ -11,7 +11,7 @@ let
 in
 {
   sops.secrets.gitconfig = {
-    sopsFile = snowfall.fs.get-file "secrets/.gitconfig-work";
+    sopsFile = lib.dots.get-file "secrets/.gitconfig-work";
     format = "binary";
     mode = "0500";
     owner = username;
@@ -63,7 +63,7 @@ in
     }
   ];
 
-  snowfallorg.users.${username}.home.config = {
+  home-manager.users.${username} = {
     programs.git.includes = mkAfter [
       { inherit (config.sops.secrets.gitconfig) path; }
     ];

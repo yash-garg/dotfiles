@@ -16,7 +16,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.golink-tsauthkey = {
-      sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
+      sopsFile = lib.dots.get-file "secrets/tailscale.yaml";
       owner = config.services.golink.user;
       restartUnits = [ "golink.service" ];
     };

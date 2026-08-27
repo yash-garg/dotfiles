@@ -51,7 +51,7 @@ in
       };
     };
 
-    snowfallorg.users.yash.home.config = {
+    home-manager.users.yash = {
       programs.gradle = enabled // {
         settings = {
           "org.gradle.caching" = true;

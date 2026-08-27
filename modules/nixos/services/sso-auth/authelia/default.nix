@@ -20,7 +20,7 @@ in
     sops.secrets =
       let
         secretAttrs = {
-          sopsFile = snowfall.fs.get-file "secrets/authelia.yaml";
+          sopsFile = lib.dots.get-file "secrets/authelia.yaml";
           owner = config.services.authelia.instances.main.user;
           inherit (config.services.authelia.instances.main) group;
           mode = "0600";
@@ -35,7 +35,7 @@ in
         notifier-settings = secretAttrs;
         user-settings = secretAttrs;
         oidc-key = secretAttrs // {
-          sopsFile = snowfall.fs.get-file "secrets/oidc.key";
+          sopsFile = lib.dots.get-file "secrets/oidc.key";
           format = "binary";
         };
       };

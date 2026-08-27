@@ -319,13 +319,13 @@ in
   config = mkIf cfg.enable {
     sops.secrets = {
       cf-env = {
-        sopsFile = snowfall.fs.get-file "secrets/cloudflare.env";
+        sopsFile = lib.dots.get-file "secrets/cloudflare.env";
         format = "dotenv";
         owner = config.services.caddy.user;
         inherit (config.services.caddy) group;
       };
       caddy-origin-cert = {
-        sopsFile = snowfall.fs.get-file "secrets/cert.pem";
+        sopsFile = lib.dots.get-file "secrets/cert.pem";
         format = "binary";
         owner = config.services.caddy.user;
         inherit (config.services.caddy) group;

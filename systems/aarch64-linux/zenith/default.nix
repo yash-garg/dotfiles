@@ -19,12 +19,12 @@ in
 
   sops.secrets = {
     user-password = {
-      sopsFile = snowfall.fs.get-file "secrets/users.yaml";
+      sopsFile = lib.dots.get-file "secrets/users.yaml";
       key = config.networking.hostName;
       neededForUsers = true;
     };
-    server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
-    plausible-secret.sopsFile = snowfall.fs.get-file "secrets/plausible.yaml";
+    server-tsauthkey.sopsFile = lib.dots.get-file "secrets/tailscale.yaml";
+    plausible-secret.sopsFile = lib.dots.get-file "secrets/plausible.yaml";
   };
 
   boot = {

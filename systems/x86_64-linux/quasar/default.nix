@@ -18,18 +18,18 @@ in
 
   sops.secrets = {
     user-password = {
-      sopsFile = snowfall.fs.get-file "secrets/users.yaml";
+      sopsFile = lib.dots.get-file "secrets/users.yaml";
       key = hostName;
       neededForUsers = true;
     };
-    server-tsauthkey.sopsFile = snowfall.fs.get-file "secrets/tailscale.yaml";
+    server-tsauthkey.sopsFile = lib.dots.get-file "secrets/tailscale.yaml";
     wireguard-key = {
-      sopsFile = snowfall.fs.get-file "secrets/wireguard.yaml";
+      sopsFile = lib.dots.get-file "secrets/wireguard.yaml";
       key = "quasar-privkey";
       mode = "0400";
     };
     frigate-env = {
-      sopsFile = snowfall.fs.get-file "secrets/frigate.env";
+      sopsFile = lib.dots.get-file "secrets/frigate.env";
       format = "dotenv";
       mode = "0400";
     };

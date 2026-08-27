@@ -18,7 +18,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets.sessions-secret = {
-      sopsFile = snowfall.fs.get-file "secrets/nitter.yaml";
+      sopsFile = lib.dots.get-file "secrets/nitter.yaml";
       format = "binary";
     };
 

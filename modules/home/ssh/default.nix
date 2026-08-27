@@ -23,7 +23,7 @@ with lib.${namespace};
           TERM = "xterm-256color";
         };
       }
-      // optionalAttrs pkgs.stdenv.isDarwin {
+      // optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         IgnoreUnknown = "UseKeychain";
         UseKeychain = "yes";
       };
