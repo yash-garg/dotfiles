@@ -63,7 +63,7 @@ in
     }
   ];
 
-  snowfallorg.users.${username}.home.config = {
+  home-manager.users.${username} = {
     programs.git.includes = mkAfter [
       { inherit (config.sops.secrets.gitconfig) path; }
     ];

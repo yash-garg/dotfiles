@@ -62,7 +62,7 @@ in
     SSH_AUTH_SOCK = "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock";
   };
 
-  snowfallorg.users.${username}.home.config = {
+  home-manager.users.${username} = {
     programs.git.includes = mkAfter [
       {
         condition = "gitdir/i:~/projects/work/**";

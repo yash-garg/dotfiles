@@ -67,7 +67,7 @@ in
 
     # Since we aren't managing graphical apps with home-manager
     # on darwin, add the config files directly in xdg config
-    snowfallorg.users.${config.${namespace}.user.name}.home.config = {
+    home-manager.users.${config.${namespace}.user.name} = {
       xdg.configFile = {
         "ghostty/config".source = "${hmModules}/ghostty/config";
       };

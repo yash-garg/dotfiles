@@ -59,7 +59,7 @@ in
       };
     };
 
-    snowfallorg.users.yash.home.config = {
+    home-manager.users.yash = {
       stylix.targets = {
         alacritty = enabled;
         vesktop = enabled;
