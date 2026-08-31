@@ -278,7 +278,7 @@ in
             qbittorrent = {
               name = "qBittorrent";
               group = "Homelab";
-              url = "http://${quasar}:${toString ports.qui}";
+              url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             };
             radarr = {
               name = "Radarr";
