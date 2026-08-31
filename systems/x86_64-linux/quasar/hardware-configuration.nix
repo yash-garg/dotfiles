@@ -36,6 +36,11 @@ in
           "intr"
           "vers=4"
           "proto=tcp"
+          "noauto"
+          "x-systemd.automount"
+          "x-systemd.idle-timeout=600"
+          "x-systemd.mount-timeout=10s"
+          "nofail"
         ];
       };
       mounts = {
