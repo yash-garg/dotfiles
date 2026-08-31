@@ -47,7 +47,7 @@ in
         DB_CLIENT = "pg";
         POSTGRES_DATABASE = cfg.database.name;
         POSTGRES_USER = cfg.database.user;
-        POSTGRES_PORT = "5432";
+        POSTGRES_PORT = toString ports.postgres;
         POSTGRES_HOST = "/run/postgresql";
         TZ = "Asia/Kolkata";
       };

@@ -28,6 +28,7 @@ in
         environment = {
           DB_TYPE = "postgresdb";
           DB_POSTGRESDB_HOST = "/run/postgresql";
+          DB_POSTGRESDB_PORT = toString ports.postgres;
           DB_POSTGRESDB_DATABASE = "n8n";
           DB_POSTGRESDB_USER = "n8n";
           EXECUTIONS_DATA_PRUNE = "true";
