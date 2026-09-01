@@ -15,13 +15,13 @@ in
     enable = mkEnableOption "BentoPDF: A Privacy First PDF Toolkit";
     domain = mkOpt types.str "ipx.ovh" "The domain name for the BentoPDF service";
     port = mkOpt types.int ports.bentopdf "The port for the BentoPDF service";
-    version = mkOpt types.str "v2.8.6" "The version of the BentoPDF service";
+    version = mkOpt types.str "v2.8.8" "The version of the BentoPDF service";
   };
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
       bentopdf = {
-        image = "bentopdf/bentopdf-simple:${cfg.version}";
+        image = "bentopdfteam/bentopdf-simple:${cfg.version}";
         autoStart = true;
         ports = [ "${toString cfg.port}:8080" ];
         environment = {
