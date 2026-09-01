@@ -27,10 +27,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ ports.jellyfin ];
+
     services = {
       jellyfin = enabled // {
         inherit (cfg) user group;
-        openFirewall = true;
+        # cfg.openFirewall only opens jellyfin's hardcoded default ports
+        # (8096/8920), not the InternalHttpPort set below, so open the real
+        # port ourselves instead.
+        openFirewall = false;
       };
 
       prometheus.scrapeConfigs = [
@@ -48,6 +53,7 @@ in
           EnableIPv6 = true;
           EnableRemoteAccess = true;
           EnableUPnP = false;
+          InternalHttpPort = ports.jellyfin;
           PublicPort = 443;
           PublicHttpsPort = 443;
           BaseUrl = "/";
