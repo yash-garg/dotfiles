@@ -178,7 +178,7 @@ in
             grafana = {
               name = "Grafana";
               group = "BOM";
-              url = "http://localhost:9092";
+              url = "http://localhost:${toString ports.grafana}";
             };
             hister = {
               name = "Hister";
