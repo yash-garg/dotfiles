@@ -66,7 +66,7 @@
     paperless-ngx = 9055;
     pl3xmap = 9056;
     plausible = 9057;
-    postgres = 9058;
+    postgres = 5432;
     prometheus = 9059;
     prowlarr = 9060;
     qbittorrent = {
