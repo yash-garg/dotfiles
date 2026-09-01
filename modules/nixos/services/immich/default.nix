@@ -73,7 +73,7 @@ in
         machine-learning = enabled // {
           environment = {
             IMMICH_HOST = mkForce "0.0.0.0";
-            IMMICH_PORT = toString ports.immich.machine-learning;
+            IMMICH_PORT = mkForce (toString ports.immich.machine-learning);
             HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
           };
         };
