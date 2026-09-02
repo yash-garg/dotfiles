@@ -36,7 +36,7 @@ in
 
       brews = [
         "cocoapods"
-        "github-mcp-server"
+        "mole"
         "opencode"
         "pi-coding-agent"
         "ruby"
