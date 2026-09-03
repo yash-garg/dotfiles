@@ -13,6 +13,7 @@ let
     "iina"
     "jetbrains-toolbox"
     "maccy"
+    "nkzw-tech/tap/codiff"
     "obsidian"
     "orbstack"
     "raycast"
@@ -45,6 +46,8 @@ in
         "xcbeautify"
       ]
       ++ cfg.brews;
+
+      taps = [ "nkzw-tech/tap" ];
 
       caskArgs.appdir = "/Applications";
 
