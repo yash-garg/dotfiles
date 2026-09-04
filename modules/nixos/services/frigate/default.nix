@@ -25,9 +25,20 @@ in
       hostname = "0.0.0.0";
     };
 
+    # Frigate's NixOS module fronts everything (auth_request, HLS, thumbnails,
+    # websockets, etc.) with its own nginx vhost. By default that vhost tries
+    # to bind 0.0.0.0:80/443, which collides with our host-wide Caddy. Pin it
+    # to a private loopback port instead and have Caddy reverse_proxy to that.
+    services.nginx.virtualHosts."0.0.0.0".listen = [
+      {
+        addr = "127.0.0.1";
+        port = cfg.port;
+      }
+    ];
+
     dots.services.caddy.services.nvr = {
       inherit (cfg) domain;
-      upstream = "0.0.0.0:${toString cfg.port}";
+      upstream = "127.0.0.1:${toString cfg.port}";
       auth = true;
     };
 
