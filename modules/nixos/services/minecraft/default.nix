@@ -18,7 +18,7 @@ in
       mkOpt types.str "${config.users.users.yash.home}/minecraft-data"
         "Minecraft server data directory";
     difficulty = mkOpt types.str "NORMAL" "Minecraft server difficulty";
-    memory = mkOpt types.str "10G" "Minecraft server memory";
+    memory = mkOpt types.str "6G" "Minecraft server memory";
     motd = mkOpt types.str "§l§cPixel Paradise§r" "Minecraft server MOTD";
     port = mkOpt types.int ports.minecraft "Minecraft server port";
     seed = mkOpt types.str "-5584399987456711267" "Minecraft server seed";
