@@ -8,6 +8,21 @@ with lib;
 with lib.${namespace};
 let
   cfg = config.${namespace}.services.frigate;
+
+  # Frigate has no concept of Authelia users, so we disable its own auth
+  # and trust the identity headers our Caddy forward_auth already injects
+  # (Remote-User / Remote-Groups). Host configs can still override any of
+  # this via `settings`.
+  defaultSettings = {
+    auth.enabled = false;
+    proxy = {
+      header_map = {
+        user = "remote-user";
+        role = "remote-groups";
+      };
+      default_role = "admin";
+    };
+  };
 in
 {
   options.${namespace}.services.frigate = {
@@ -20,7 +35,7 @@ in
 
   config = mkIf cfg.enable {
     services.frigate = enabled // {
-      inherit (cfg) settings;
+      settings = recursiveUpdate defaultSettings cfg.settings;
       checkConfig = false;
       hostname = "0.0.0.0";
     };
