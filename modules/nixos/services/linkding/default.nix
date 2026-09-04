@@ -41,7 +41,7 @@ in
       autoStart = true;
       ports = [ "${toString cfg.port}:9090" ];
       volumes = [
-        "/var/lib/linkding:/app/data"
+        "/var/lib/linkding:/etc/linkding/data"
         "/run/postgresql:/run/postgresql/"
       ];
       environmentFiles = [ config.sops.secrets.linkding-env.path ];
