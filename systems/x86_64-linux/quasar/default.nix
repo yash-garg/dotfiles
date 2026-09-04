@@ -106,7 +106,7 @@ in
         let
           rtspUrl =
             channel:
-            "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.0.0.53:554/cam/realmonitor?channel=${toString channel}&subtype=0";
+            "rtsp://{FRIGATE_RTSP_USER}:{FRIGATE_RTSP_PASSWORD}@10.0.30.245:554/cam/realmonitor?channel=${toString channel}&subtype=0";
           mkCamera = name: channel: {
             inherit name;
             value = {
@@ -125,7 +125,7 @@ in
             };
           };
         in
-        disabled
+        enabled
         // {
           environmentFile = config.sops.secrets.frigate-env.path;
           settings = {

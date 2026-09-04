@@ -115,6 +115,7 @@ in
                 "sonarr.${homeDomain}"
                 "prowlarr.${homeDomain}"
                 "bazarr.${homeDomain}"
+                "nvr.${homeDomain}"
               ];
             };
             vortex = {
