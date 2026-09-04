@@ -13,7 +13,7 @@ in
   options.${namespace}.services.linkding = {
     enable = mkEnableOption "Easy to use self-hosted bookmark manager";
     port = mkOpt types.int ports.linkding "The port for the linkding service";
-    version = mkOpt types.str "1.45.0" "The version of the linkding service";
+    version = mkOpt types.str "1.46.2" "The version of the linkding service";
     database = {
       enable = mkEnableOption "Enable the linkding database";
       user = mkOpt types.str "linkding" "The user for the linkding database";
