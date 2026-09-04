@@ -44,9 +44,11 @@ let
   failoverOpts = ''
     lb_policy first
     lb_retries 2
-    fail_duration 30s
-    max_fails 2
-    unhealthy_latency 2s
+    health_interval 10s
+    health_timeout 3s
+    fail_duration 5s
+    max_fails 5
+    unhealthy_latency 3s
     lb_try_duration 10s
     lb_try_interval 10ms
   '';
