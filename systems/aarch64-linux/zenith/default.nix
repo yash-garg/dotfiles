@@ -410,6 +410,14 @@ in
         vaultwarden = enabled // {
           domain = homeDomain;
           backup = enabled;
+          smtp = enabled // {
+            host = "smtp.mx.cloudflare.net";
+            port = 465;
+            security = "force_tls";
+            username = "api_token";
+            from = "admin@yashgarg.dev";
+            fromName = "Vaultwarden Admin";
+          };
         };
       };
 

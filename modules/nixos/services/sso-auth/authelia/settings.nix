@@ -317,7 +317,7 @@ in
         {
           client_id = "vaultwarden";
           client_name = "Vaultwarden";
-          client_secret = "$pbkdf2-sha512$310000$xdipZUPxpjq7eNlOosc0CA$SdBYQLROxjlTtHYNi//tJCuPyR6SsDeBqOwqeF/xZMWWP6HYkn1SlYbD.WA/23PE6cbyA.CmIbitwFeKQrvYNA";
+          client_secret = "$pbkdf2-sha512$310000$HRXDjiBb5D0JmS0AgD8dSA$wQt2nwSwKjtW3o6a5PtkvVilo//AyAuDh2ncMpyeiBSZlUBDZswQ79x.9MoHWK6uJmcVsRQxZu4icTomW2tceQ";
           public = false;
           authorization_policy = "two_factor";
           require_pkce = true;

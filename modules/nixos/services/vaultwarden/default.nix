@@ -23,6 +23,17 @@ in
         mkOpt types.str "06a4a54ded73aeb04fb12c679a65ed78.r2.cloudflarestorage.com"
           "Restic repository URL";
     };
+
+    smtp = {
+      enable = mkEnableOption "SMTP email sending for Vaultwarden";
+      host = mkOpt types.str "" "SMTP server host";
+      port = mkOpt types.port 587 "SMTP server port";
+      security = mkOpt (types.enum [ "starttls" "force_tls" "off" ]) "starttls" "SMTP transport security";
+      from = mkOpt types.str "" "Email address to send from";
+      fromName = mkOpt types.str "Vaultwarden" "Display name to send from";
+      username = mkOpt types.str "" "SMTP auth username";
+      authMechanism = mkOpt types.str "Plain" "SMTP auth mechanism (Plain, Login, Xoauth2)";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -49,6 +60,15 @@ in
         SSO_CLIENT_ID = "vaultwarden";
         SSO_SCOPES = "openid email profile offline_access";
         SSO_PKCE = true;
+      } // optionalAttrs cfg.smtp.enable {
+        SMTP_HOST = cfg.smtp.host;
+        SMTP_PORT = cfg.smtp.port;
+        SMTP_SECURITY = cfg.smtp.security;
+        SMTP_FROM = cfg.smtp.from;
+        SMTP_FROM_NAME = cfg.smtp.fromName;
+        SMTP_USERNAME = cfg.smtp.username;
+        SMTP_AUTH_MECHANISM = cfg.smtp.authMechanism;
+        # SMTP_PASSWORD is set via secrets/vaultwarden.env (SMTP_PASSWORD=...).
       };
     };
 
