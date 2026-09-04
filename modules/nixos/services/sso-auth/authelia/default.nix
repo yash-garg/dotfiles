@@ -41,6 +41,11 @@ in
       };
 
     services = {
+      redis.servers.authelia = enabled // {
+        port = ports.redis.authelia;
+        unixSocketPerm = 770;
+      };
+
       authelia.instances.main = enabled // {
         environmentVariables = {
           AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = config.sops.secrets.ldap-secret.path;
@@ -65,6 +70,13 @@ in
         }
       ];
 
+    };
+
+    users.users.${config.services.authelia.instances.main.user}.extraGroups = [ "redis-authelia" ];
+
+    systemd.services.authelia-main = {
+      after = [ "redis-authelia.service" ];
+      requires = [ "redis-authelia.service" ];
     };
 
     dots.services.caddy.services.auth = {

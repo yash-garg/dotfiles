@@ -25,7 +25,7 @@ in
     services = {
       nitter = enabled // {
         openFirewall = true;
-        cache.redisPort = ports.redis;
+        cache.redisPort = ports.redis.nitter;
         redisCreateLocally = true;
         preferences = {
           autoplayGifs = false;

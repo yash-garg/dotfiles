@@ -371,13 +371,16 @@ in
     endpoints.authz.forward-auth.implementation = "ForwardAuth";
   };
 
-  session.cookies = [
-    {
-      inherit domain;
-      authelia_url = "https://auth.${domain}";
-      default_redirection_url = "https://${domain}/";
-    }
-  ];
+  session = {
+    redis.host = "/run/redis-authelia/redis.sock";
+    cookies = [
+      {
+        inherit domain;
+        authelia_url = "https://auth.${domain}";
+        default_redirection_url = "https://${domain}/";
+      }
+    ];
+  };
 
   telemetry.metrics = {
     enabled = true;

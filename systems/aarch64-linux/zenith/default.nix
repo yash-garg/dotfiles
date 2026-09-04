@@ -210,6 +210,11 @@ in
               group = "BOM";
               url = "http://localhost:${toString ports.lldap}";
             };
+            redis-authelia = {
+              name = "Redis";
+              group = "BOM";
+              url = "tcp://localhost:${toString ports.redis.authelia}";
+            };
             mealie = {
               name = "Mealie";
               group = "Homelab";

@@ -76,7 +76,10 @@
     qui = 9063;
     radarr = 9064;
     readarr = 9065;
-    redis = 9066;
+    redis = {
+      nitter = 9066;
+      authelia = 9072;
+    };
     sonarr = 9067;
     stirling-pdf = 9068;
     tandoor = 9069;
