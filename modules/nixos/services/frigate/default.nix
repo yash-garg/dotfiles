@@ -47,7 +47,7 @@ in
     services.nginx.virtualHosts."0.0.0.0".listen = [
       {
         addr = "127.0.0.1";
-        port = cfg.port;
+        inherit (cfg) port;
       }
     ];
 

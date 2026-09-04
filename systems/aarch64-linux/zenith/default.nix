@@ -311,6 +311,11 @@ in
               group = "DEL";
               url = "http://${nova}";
             };
+            vaultwarden = {
+              name = "Vaultwarden";
+              group = "BOM";
+              url = "http://localhost:${toString ports.vaultwarden}";
+            };
 
             # BOM: zenith monitoring and public proxy
             prometheus-bom = {
@@ -400,6 +405,11 @@ in
         umami = enabled // {
           appSecretFile = config.sops.secrets.plausible-secret.path;
           baseUrl = domain;
+        };
+
+        vaultwarden = enabled // {
+          domain = homeDomain;
+          backup = enabled;
         };
       };
 

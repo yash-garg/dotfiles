@@ -315,6 +315,32 @@ in
           token_endpoint_auth_method = "client_secret_post";
         }
         {
+          client_id = "vaultwarden";
+          client_name = "Vaultwarden";
+          client_secret = "$pbkdf2-sha512$310000$xdipZUPxpjq7eNlOosc0CA$SdBYQLROxjlTtHYNi//tJCuPyR6SsDeBqOwqeF/xZMWWP6HYkn1SlYbD.WA/23PE6cbyA.CmIbitwFeKQrvYNA";
+          public = false;
+          authorization_policy = "two_factor";
+          require_pkce = true;
+          pkce_challenge_method = "S256";
+          redirect_uris = [
+            "https://pass.${domain}/identity/connect/oidc-signin"
+          ];
+          scopes = [
+            "openid"
+            "profile"
+            "email"
+            "offline_access"
+          ];
+          response_types = [ "code" ];
+          grant_types = [
+            "authorization_code"
+            "refresh_token"
+          ];
+          access_token_signed_response_alg = "none";
+          userinfo_signed_response_alg = "none";
+          token_endpoint_auth_method = "client_secret_basic";
+        }
+        {
           client_id = "mealie";
           client_name = "Mealie";
           client_secret = "$pbkdf2-sha512$310000$2134vs5nM5P6LhYDJEGIKg$kJ4ddV127kSLE7FcVHReV/mZ9d6rjT.mntrKqoh.8WndDhoCLf3laThkNbvYnQKGu6wo3FNNuGMkmD0tNP8Xsg";

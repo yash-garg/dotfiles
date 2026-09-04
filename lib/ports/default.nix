@@ -84,6 +84,7 @@
     stirling-pdf = 9068;
     tandoor = 9069;
     umami = 9070;
+    vaultwarden = 9073;
     wireguard = 9071;
   };
 }
