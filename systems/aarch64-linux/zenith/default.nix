@@ -148,22 +148,22 @@ in
             };
             bazarr = {
               name = "Bazarr";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.bazarr}";
             };
             bentopdf = {
               name = "BentoPDF";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.bentopdf}";
             };
             calibre-web = {
               name = "Calibre Web";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.calibre}";
             };
             copyparty = {
               name = "Copyparty";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.copyparty}";
             };
             forgejo = {
@@ -188,17 +188,17 @@ in
             };
             home-assistant = {
               name = "Home Assistant";
-              group = "Homelab";
+              group = "DEL";
               url = "http://homeassistant.${tailnet}:8123";
             };
             immich = {
               name = "Immich";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.immich.webui}";
             };
             jellyfin = {
               name = "Jellyfin";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.jellyfin}";
             };
             linkding = {
@@ -218,12 +218,12 @@ in
             };
             mealie = {
               name = "Mealie";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.mealie}";
             };
             miniflux = {
               name = "Miniflux";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.miniflux}";
             };
             minecraft-server = {
@@ -238,7 +238,7 @@ in
             };
             paperless = {
               name = "Paperless NGX";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.paperless-ngx}";
             };
             postgres-primary = {
@@ -248,57 +248,57 @@ in
             };
             postgres-secondary = {
               name = "PostgreSQL";
-              group = "Homelab";
+              group = "DEL";
               url = "tcp://${quasar}:${toString ports.postgres}";
             };
             prometheus = {
               name = "Prometheus";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.prometheus}";
             };
             loki = {
               name = "Loki";
-              group = "Homelab";
+              group = "DEL";
               url = "tcp://${quasar}:${toString ports.loki}";
             };
             ntopng = {
               name = "Ntopng";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.ntopng.webui}";
             };
             alloy = {
               name = "Alloy";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.alloy}";
             };
             caddy = {
               name = "Caddy";
-              group = "Homelab";
+              group = "DEL";
               url = "tcp://${quasar}:443";
             };
             quasar-wan-ipv6 = {
               name = "WAN IPv6";
-              group = "Homelab";
+              group = "DEL";
               url = "tcp://[2405:201:4019:7033:5054:ff:fed0:31f1]:${toString ports.caddy}";
             };
             prowlarr = {
               name = "Prowlarr";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.prowlarr}";
             };
             qbittorrent = {
               name = "qBittorrent";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.qbittorrent.webui}";
             };
             radarr = {
               name = "Radarr";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.radarr}";
             };
             sonarr = {
               name = "Sonarr";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${quasar}:${toString ports.sonarr}";
             };
             umami = {
@@ -308,7 +308,7 @@ in
             };
             unraid = {
               name = "Unraid";
-              group = "Homelab";
+              group = "DEL";
               url = "http://${nova}";
             };
 
