@@ -104,7 +104,7 @@ in
             default-sort-by = "group";
             header = "Yash's Homelab Status";
             link = "https://${cfg.domain}";
-            logo = "https://${cfg.domain}/img/logo.png";
+            logo = "https://${cfg.domain}/android-chrome-192x192.png";
             dark-mode = true;
           };
         };
