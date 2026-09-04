@@ -270,6 +270,11 @@ in
               group = "Homelab";
               url = "tcp://${quasar}:443";
             };
+            quasar-wan-ipv6 = {
+              name = "WAN IPv6";
+              group = "Homelab";
+              url = "tcp://[2405:201:4019:7033:5054:ff:fed0:31f1]:${toString ports.caddy}";
+            };
             prowlarr = {
               name = "Prowlarr";
               group = "Homelab";

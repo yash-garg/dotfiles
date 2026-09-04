@@ -23,38 +23,11 @@ in
       neededForUsers = true;
     };
     server-tsauthkey.sopsFile = lib.dots.get-file "secrets/tailscale.yaml";
-    wireguard-key = {
-      sopsFile = lib.dots.get-file "secrets/wireguard.yaml";
-      key = "quasar-privkey";
-      mode = "0400";
-    };
     frigate-env = {
       sopsFile = lib.dots.get-file "secrets/frigate.env";
       format = "dotenv";
       mode = "0400";
     };
-  };
-
-  networking.wg-quick.interfaces.wg0 = {
-    address = [
-      "fd00:100::4/64"
-      "2a0c:9a40:8912::1/64"
-    ];
-    mtu = 1420;
-    privateKeyFile = config.sops.secrets.wireguard-key.path;
-    peers = [
-      {
-        publicKey = "XPTZ/mSeFBK7ekDSX/FjqJ411MWQB+M59SKbO/wjyUU=";
-        endpoint = "139.84.177.122:${toString ports.wireguard}";
-        allowedIPs = [
-          "fd00:100::/64"
-          "2a0c:9a40:8911::/48"
-          "2a0c:9a40:8913::/48"
-          "2a0c:9a40:8914::/48"
-        ];
-        persistentKeepalive = 25;
-      }
-    ];
   };
 
   dots = {
@@ -81,13 +54,7 @@ in
         auth = enabled // {
           url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
         };
-        internal = enabled // {
-          trustedProxies = [
-            "2a0c:9a40:8911::/48" # Ares IPv6 prefix
-            "139.84.177.122/32" # Ares IPv4
-            "fd00:100::/64" # WireGuard internal
-          ];
-        };
+        internal = enabled;
       };
 
       calibre-web = enabled // {
