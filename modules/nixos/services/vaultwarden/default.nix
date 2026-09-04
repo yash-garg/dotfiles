@@ -52,6 +52,7 @@ in
         ROCKET_PORT = cfg.port;
         SIGNUPS_ALLOWED = false;
         INVITATIONS_ALLOWED = true;
+        EMAIL_CHANGE_ALLOWED = false;
 
         # OIDC via Authelia as the only login method.
         SSO_ENABLED = true;
