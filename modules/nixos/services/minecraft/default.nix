@@ -22,7 +22,7 @@ in
     motd = mkOpt types.str "§l§cPixel Paradise§r" "Minecraft server MOTD";
     port = mkOpt types.int ports.minecraft "Minecraft server port";
     seed = mkOpt types.str "-5584399987456711267" "Minecraft server seed";
-    version = mkOpt types.str "1.21.11" "Minecraft server version";
+    version = mkOpt types.str "26.2" "Minecraft server version";
     proxy = {
       enable = mkEnableOption "Enable reverse proxy for Minecraft";
       domain = mkOpt types.str "ipx.ovh" "The domain name for the minecraft service";
@@ -72,7 +72,7 @@ in
     };
 
     virtualisation.oci-containers.containers.minecraft-server = {
-      image = "itzg/minecraft-server:latest";
+      image = "itzg/minecraft-server:java25";
       environmentFiles = [ config.sops.secrets.minecraft-env.path ];
       environment = {
         SEED = cfg.seed;
