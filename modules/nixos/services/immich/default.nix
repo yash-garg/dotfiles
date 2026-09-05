@@ -81,6 +81,7 @@ in
         redis = enabled;
         settings = {
           backup.database.enabled = true;
+          machineLearning.urls = [ "http://localhost:${toString ports.immich.machine-learning}" ];
           job = {
             faceDetection.concurrency = 10;
             thumbnailGeneration.concurrency = 50;
