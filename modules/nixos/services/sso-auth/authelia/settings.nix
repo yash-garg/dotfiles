@@ -112,10 +112,10 @@ in
       enable_client_debug_messages = false;
       enforce_pkce = "public_clients_only";
       lifespans = {
-        access_token = "30m";
+        access_token = "1h";
         authorize_code = "1m";
-        id_token = "30m";
-        refresh_token = "90m";
+        id_token = "1h";
+        refresh_token = "30d";
       };
       cors = {
         endpoints = [
@@ -320,6 +320,8 @@ in
           client_secret = "$pbkdf2-sha512$310000$HRXDjiBb5D0JmS0AgD8dSA$wQt2nwSwKjtW3o6a5PtkvVilo//AyAuDh2ncMpyeiBSZlUBDZswQ79x.9MoHWK6uJmcVsRQxZu4icTomW2tceQ";
           public = false;
           authorization_policy = "two_factor";
+          consent_mode = "pre-configured";
+          pre_configured_consent_duration = "6M";
           require_pkce = true;
           pkce_challenge_method = "S256";
           redirect_uris = [
