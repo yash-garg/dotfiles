@@ -93,7 +93,6 @@ in
                 "unraid.${homeDomain}"
                 "status.${domain}"
                 "analytics.${domain}"
-                "stats.${domain}"
                 "search.${homeDomain}"
               ];
             };
@@ -127,10 +126,6 @@ in
 
         forgejo = enabled // {
           domain = homeDomain;
-        };
-
-        goatcounter = enabled // {
-          inherit domain;
         };
 
         gatus = enabled // {
@@ -170,11 +165,6 @@ in
               name = "Forgejo";
               group = "BOM";
               url = "http://localhost:${toString ports.forgejo}";
-            };
-            goatcounter = {
-              name = "GoatCounter";
-              group = "BOM";
-              url = "http://localhost:${toString ports.goatcounter}";
             };
             grafana = {
               name = "Grafana";
