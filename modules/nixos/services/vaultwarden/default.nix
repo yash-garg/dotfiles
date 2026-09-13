@@ -28,7 +28,11 @@ in
       enable = mkEnableOption "SMTP email sending for Vaultwarden";
       host = mkOpt types.str "" "SMTP server host";
       port = mkOpt types.port 587 "SMTP server port";
-      security = mkOpt (types.enum [ "starttls" "force_tls" "off" ]) "starttls" "SMTP transport security";
+      security = mkOpt (types.enum [
+        "starttls"
+        "force_tls"
+        "off"
+      ]) "starttls" "SMTP transport security";
       from = mkOpt types.str "" "Email address to send from";
       fromName = mkOpt types.str "Vaultwarden" "Display name to send from";
       username = mkOpt types.str "" "SMTP auth username";
@@ -53,15 +57,15 @@ in
         SIGNUPS_ALLOWED = false;
         INVITATIONS_ALLOWED = true;
         EMAIL_CHANGE_ALLOWED = false;
-
-        # OIDC via Authelia as the only login method.
         SSO_ENABLED = true;
         SSO_ONLY = true;
         SSO_AUTHORITY = authUrl;
         SSO_CLIENT_ID = "vaultwarden";
         SSO_SCOPES = "openid email profile offline_access";
         SSO_PKCE = true;
-      } // optionalAttrs cfg.smtp.enable {
+        RSA_KEY_FILENAME = "/var/lib/vaultwarden/rsa_key";
+      }
+      // optionalAttrs cfg.smtp.enable {
         SMTP_HOST = cfg.smtp.host;
         SMTP_PORT = cfg.smtp.port;
         SMTP_SECURITY = cfg.smtp.security;
@@ -69,7 +73,6 @@ in
         SMTP_FROM_NAME = cfg.smtp.fromName;
         SMTP_USERNAME = cfg.smtp.username;
         SMTP_AUTH_MECHANISM = cfg.smtp.authMechanism;
-        # SMTP_PASSWORD is set via secrets/vaultwarden.env (SMTP_PASSWORD=...).
       };
     };
 
