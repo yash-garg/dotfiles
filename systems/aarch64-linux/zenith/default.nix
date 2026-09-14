@@ -336,7 +336,6 @@ in
         };
 
         linkding = enabled // {
-          database = enabled;
           proxy = enabled // {
             domain = homeDomain;
           };
