@@ -102,7 +102,6 @@ in
               hosts = [
                 "photos.${homeDomain}"
                 "books.${homeDomain}"
-                "pdf.${homeDomain}"
                 "fs.${homeDomain}"
                 "meals.${homeDomain}"
                 "ntop.${homeDomain}"
@@ -145,11 +144,6 @@ in
               name = "Bazarr";
               group = "DEL";
               url = "http://${quasar}:${toString ports.bazarr}";
-            };
-            bentopdf = {
-              name = "BentoPDF";
-              group = "DEL";
-              url = "http://${quasar}:${toString ports.bentopdf}";
             };
             calibre-web = {
               name = "Calibre Web";
