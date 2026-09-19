@@ -63,6 +63,8 @@ in
         SSO_CLIENT_ID = "vaultwarden";
         SSO_SCOPES = "openid email profile offline_access";
         SSO_PKCE = true;
+        # Prevents multi-device invalid_grant: SSO only for login, not token refresh.
+        SSO_AUTH_ONLY_NOT_SESSION = true;
         RSA_KEY_FILENAME = "/var/lib/vaultwarden/rsa_key";
       }
       // optionalAttrs cfg.smtp.enable {
