@@ -156,6 +156,51 @@ in
                 hash = "sha256-/wpWvsZS4i8vkxQI/6qhsiwv1cDVWQBk31ZDFFxu8H4=";
               };
             }
+            {
+              name = "Alertmanager";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "alertmanager-4-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/9578/revisions/4/download";
+                hash = "sha256-/scCKBKqTjRKKImIrEYLBKGweOUnkx+QsD5yLfdXW5o=";
+              };
+            }
+            {
+              name = "Prometheus Overview";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "prometheus-overview-2-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/3662/revisions/2/download";
+                hash = "sha256-+nsi8/dYNvGVGV+ftfO1gSAQbO5GpZwW480T5mHMM4Q=";
+              };
+            }
+            {
+              name = "Loki Global Metrics";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "loki-global-metrics-1-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/13407/revisions/1/download";
+                hash = "sha256-1sxTDSEwi2O/Ce+rWqqhMvsYEJeELBfkb9W2R6cDjcU=";
+              };
+            }
+            {
+              name = "MikroTik Monitoring";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "mikrotik-monitoring-9-grafana-dashboard.json";
+                url = "https://grafana.com/api/dashboards/14420/revisions/9/download";
+                hash = "sha256-Zb08lL9K83vCHqP7T3aaqoV1HFDayBY7hVWr++2lpng=";
+              };
+            }
+            {
+              name = "Authelia";
+              allowUiUpdates = true;
+              options.path = pkgs.fetchurl {
+                name = "authelia-grafana-dashboard.json";
+                url = "https://raw.githubusercontent.com/authelia/authelia/master/examples/grafana-dashboards/simple.json";
+                hash = "sha256-y+WbEev4ezdJyorjnnZi37CL1Pd9PxYAvl5N0hsFJnk=";
+              };
+            }
           ];
           datasources.settings.datasources =
             let
