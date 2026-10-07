@@ -23,7 +23,6 @@ in
       biome
       gopls
       golangci-lint-langserver
-      rust-analyzer
       ccls
       cmake-language-server
       vscode-langservers-extracted # html / css / json / eslint

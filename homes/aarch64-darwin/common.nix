@@ -17,6 +17,7 @@ with lib.${namespace};
   home.packages = with pkgs; [
     apktool
     nix-output-monitor
+    rustup
     scrcpy
   ];
 
