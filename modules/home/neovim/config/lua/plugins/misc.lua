@@ -11,9 +11,6 @@ return {
         opts = {},
     },
 
-    -- Nix syntax
-    { "LnL7/vim-nix" },
-
     -- nix develop integration
     { "figsoda/nix-develop.nvim" },
 }

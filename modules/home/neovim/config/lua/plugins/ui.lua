@@ -13,40 +13,31 @@ return {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         config = function()
-            local colors = {
-                blue = "#80a0ff",
-                cyan = "#89dceb",
-                black = "#11111b",
-                green = "#a6e3a1",
-                white = "#cdd6f4",
-                red = "#f38ba8",
-                violet = "#cba6f7",
-                grey = "#1e1e2e",
-            }
+            local cp = require("catppuccin.palettes").get_palette()
 
             local bubbles_theme = {
                 normal = {
-                    a = { fg = colors.black, bg = colors.violet },
-                    b = { fg = colors.white, bg = colors.grey },
-                    c = { fg = colors.white },
+                    a = { fg = cp.base, bg = cp.mauve },
+                    b = { fg = cp.text, bg = cp.surface0 },
+                    c = { fg = cp.text },
                 },
-                command = { a = { fg = colors.black, bg = colors.green } },
-                insert = { a = { fg = colors.black, bg = colors.blue } },
-                visual = { a = { fg = colors.black, bg = colors.cyan } },
-                replace = { a = { fg = colors.black, bg = colors.red } },
+                command = { a = { fg = cp.base, bg = cp.green } },
+                insert = { a = { fg = cp.base, bg = cp.blue } },
+                visual = { a = { fg = cp.base, bg = cp.teal } },
+                replace = { a = { fg = cp.base, bg = cp.red } },
                 inactive = {
-                    a = { fg = colors.white, bg = colors.black },
-                    b = { fg = colors.white, bg = colors.black },
-                    c = { fg = colors.white },
+                    a = { fg = cp.text, bg = cp.base },
+                    b = { fg = cp.text, bg = cp.base },
+                    c = { fg = cp.text },
                 },
             }
 
             require("lualine").setup({
                 options = {
                     theme = bubbles_theme,
-                    component_separators = { left = "│", right = "│" },
+                    component_separators = { left = "", right = "" },
                     globalstatus = true,
-                    section_separators = { left = "", right = "" },
+                    section_separators = { left = "", right = "" },
                 },
                 inactive_sections = {
                     lualine_a = { "filename" },
@@ -57,12 +48,12 @@ return {
                     lualine_z = { "location" },
                 },
                 sections = {
-                    lualine_a = { { "mode", padding = { left = 1, right = 2 }, separator = { left = "" } } },
+                    lualine_a = { { "mode", padding = { left = 1, right = 2 } } },
                     lualine_b = { { "filename", padding = { left = 2, right = 1 } }, "branch" },
                     lualine_c = { "%=" },
                     lualine_x = { "" },
                     lualine_y = { "filetype", "progress" },
-                    lualine_z = { { "location", separator = { right = "" } } },
+                    lualine_z = { "location" },
                 },
                 tabline = {},
                 winbar = {},
