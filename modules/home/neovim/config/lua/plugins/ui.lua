@@ -51,7 +51,14 @@ return {
                     lualine_a = { { "mode", padding = { left = 1, right = 2 } } },
                     lualine_b = { { "filename", padding = { left = 2, right = 1 } }, "branch" },
                     lualine_c = { "%=" },
-                    lualine_x = { "" },
+                    lualine_x = {
+                        {
+                            "diagnostics",
+                            sources = { "nvim_lsp" },
+                            symbols = { error = " ", warn = " ", info = " ", hint = " " },
+                        },
+                        { "diff", symbols = { added = " ", modified = " ", removed = " " } },
+                    },
                     lualine_y = { "filetype", "progress" },
                     lualine_z = { "location" },
                 },

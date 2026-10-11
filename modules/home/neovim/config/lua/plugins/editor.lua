@@ -51,12 +51,6 @@ return {
     -- Surround motions
     { "tpope/vim-surround" },
 
-    -- Smooth scrolling
-    {
-        "karb94/neoscroll.nvim",
-        opts = {},
-    },
-
     -- Commenting
     {
         "numToStr/Comment.nvim",
@@ -77,10 +71,5 @@ return {
         opts = {},
     },
 
-    -- Bad habits enforcer
-    {
-        "m4xshen/hardtime.nvim",
-        dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-        opts = {},
-    },
+
 }
