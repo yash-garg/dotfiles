@@ -340,7 +340,7 @@ in
       caddy = enabled // {
         package = pkgs.caddy.withPlugins {
           plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-          hash = "sha256-peY/XG37RC0e7FafJ3qNk53srtXZagxN/Hfexcc2TMM=";
+          hash = "sha256-8KwWkxhCyz7cxRFjm47tUS/veVH7cVzv/+FQ16ri3jE=";
         };
         environmentFile = config.sops.secrets.cf-env.path;
         globalConfig = ''
