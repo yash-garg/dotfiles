@@ -19,7 +19,7 @@ return {
                 normal = {
                     a = { fg = cp.base, bg = cp.mauve },
                     b = { fg = cp.text, bg = cp.surface0 },
-                    c = { fg = cp.text },
+                    c = { fg = cp.text, bg = cp.surface1 },
                 },
                 command = { a = { fg = cp.base, bg = cp.green } },
                 insert = { a = { fg = cp.base, bg = cp.blue } },
@@ -28,14 +28,14 @@ return {
                 inactive = {
                     a = { fg = cp.text, bg = cp.base },
                     b = { fg = cp.text, bg = cp.base },
-                    c = { fg = cp.text },
+                    c = { fg = cp.text, bg = cp.surface1 },
                 },
             }
 
             require("lualine").setup({
                 options = {
                     theme = bubbles_theme,
-                    component_separators = { left = "", right = "" },
+                    component_separators = { left = "", right = "" },
                     globalstatus = true,
                     section_separators = { left = "", right = "" },
                 },
@@ -49,17 +49,18 @@ return {
                 },
                 sections = {
                     lualine_a = { { "mode", padding = { left = 1, right = 2 } } },
-                    lualine_b = { { "filename", padding = { left = 2, right = 1 } }, "branch" },
-                    lualine_c = { "%=" },
+                    lualine_b = { { "filename", padding = { left = 2, right = 1 } } },
+                    lualine_c = { "branch" },
                     lualine_x = {
                         {
                             "diagnostics",
-                            sources = { "nvim_lsp" },
-                            symbols = { error = " ", warn = " ", info = " ", hint = " " },
+                            sources = { "nvim_diagnostic" },
+                            sections = { "error", "warn" },
+                            symbols = { error = "✗ ", warn = "⚠ " },
+                            colored = true,
                         },
-                        { "diff", symbols = { added = " ", modified = " ", removed = " " } },
                     },
-                    lualine_y = { "filetype", "progress" },
+                    lualine_y = { "filetype" },
                     lualine_z = { "location" },
                 },
                 tabline = {},
