@@ -52,7 +52,7 @@
     lldap = 9043;
     loki = 9044;
     mealie = 9045;
-    minecraft = 9046;
+    minecraft = 25565;
     miniflux = 9047;
     n8n = 9048;
     ncps = 9049;

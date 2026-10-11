@@ -213,7 +213,7 @@ in
             minecraft-server = {
               name = "Minecraft Server";
               group = "BOM";
-              url = "udp://${vortex}:${toString ports.minecraft}";
+              url = "tcp://${vortex}:${toString ports.minecraft}";
             };
             minecraft-map = {
               name = "Minecraft Map";
