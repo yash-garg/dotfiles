@@ -41,6 +41,7 @@ opt.splitright = true
 opt.splitbelow = true
 
 opt.clipboard = "unnamedplus"
+opt.cmdheight = 0
 
 -- Menus
 opt.pumheight = 16
