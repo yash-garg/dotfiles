@@ -57,12 +57,6 @@ return {
         opts = {},
     },
 
-    -- Commenting
-    {
-        "numToStr/Comment.nvim",
-        opts = {},
-    },
-
     -- Todo highlights
     {
         "folke/todo-comments.nvim",

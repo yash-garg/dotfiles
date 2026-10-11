@@ -122,9 +122,4 @@ return {
         end,
     },
 
-    -- Bufferline (disabled)
-    {
-        "akinsho/bufferline.nvim",
-        enabled = false,
-    },
 }
