@@ -46,7 +46,10 @@ opt.clipboard = "unnamedplus"
 opt.pumheight = 16
 opt.completeopt = { "menu", "menuone", "noselect" }
 
--- Folds
-opt.foldmethod = "indent"
-opt.foldnestmax = 3
-opt.foldenable = false
+-- Folds (nvim-ufo)
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
+opt.foldcolumn = "auto"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
