@@ -10,7 +10,16 @@ return {
         keys = {
             { "<leader>/", "<cmd>Telescope live_grep<cr>", desc = "Grep (root dir)" },
             { "<leader><space>", "<cmd>Telescope buffers<cr>", desc = "+buffer" },
-            { "<leader>p", "<cmd>Telescope git_files<cr>", desc = "Search git files" },
+            {
+                "<leader>p",
+                function()
+                    local ok = pcall(require("telescope.builtin").git_files)
+                    if not ok then
+                        require("telescope.builtin").find_files()
+                    end
+                end,
+                desc = "Search files (git or all)",
+            },
             { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Commits" },
             { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Status" },
             { "<C-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
