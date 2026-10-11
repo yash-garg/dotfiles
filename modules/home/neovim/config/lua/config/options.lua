@@ -48,8 +48,8 @@ opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- Folds (nvim-ufo)
 opt.foldmethod = "expr"
-opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
-opt.foldcolumn = "auto"
+opt.foldexpr = "v:lua.require('ufo').foldexpr()"
+opt.foldcolumn = "0"
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldenable = true
