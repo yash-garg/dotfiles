@@ -51,6 +51,12 @@ return {
     -- Surround motions
     { "tpope/vim-surround" },
 
+    -- Smooth scrolling
+    {
+        "karb94/neoscroll.nvim",
+        opts = {},
+    },
+
     -- Commenting
     {
         "numToStr/Comment.nvim",
