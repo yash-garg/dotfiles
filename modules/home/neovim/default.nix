@@ -23,14 +23,9 @@ in
       biome
       gopls
       golangci-lint-langserver
-      ccls
-      cmake-language-server
-      vscode-langservers-extracted # html / css / json / eslint
       typescript-language-server
       tailwindcss-language-server
       dart
-      kotlin-language-server
-      sqls
       ruff
       docker-compose-language-service
       yaml-language-server
