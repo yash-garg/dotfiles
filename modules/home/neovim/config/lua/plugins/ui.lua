@@ -1,11 +1,10 @@
 return {
     -- Dashboard
     {
-        "goolord/alpha-nvim",
+        "echasnovski/mini.starter",
+        version = "*",
         event = "VimEnter",
-        config = function()
-            require("alpha").setup(require("alpha.themes.startify").config)
-        end,
+        opts = {},
     },
 
     -- Statusline
