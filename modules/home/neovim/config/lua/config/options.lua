@@ -10,11 +10,11 @@ opt.cursorline = true
 opt.showcmd = true
 opt.list = true
 opt.listchars = {
-    tab = "  ",
-    trail = "·",
-    extends = "→",
-    precedes = "←",
-    nbsp = "␣",
+  tab = "  ",
+  trail = "·",
+  extends = "→",
+  precedes = "←",
+  nbsp = "␣",
 }
 opt.inccommand = "nosplit"
 
