@@ -13,7 +13,7 @@ let
   # that window's number. No cached active index or adjacent index is needed.
   windowFormat =
     numberColor:
-    "#[fg=#{?window_start_flag,#{@thm_green},#{@thm_surface_0}},bg=#{@thm_${numberColor}}]#[fg=#{@thm_crust}]#I#[fg=#{@thm_${numberColor}},bg=#{@thm_surface_0}]#[fg=#{@thm_fg}]#W#{?window_end_flag,#[fg=#{@thm_surface_0}]#[bg=#{@thm_mantle}],}#[none]";
+    "#[fg=#{?window_start_flag,#{@thm_green},#{@thm_surface_0}},bg=#{@thm_${numberColor}}]#[fg=#{@thm_crust}]#I#[fg=#{@thm_${numberColor}},bg=#{@thm_surface_0}]#[fg=#{@thm_fg}] #W #{?window_end_flag,#[fg=#{@thm_surface_0}]#[bg=#{@thm_mantle}],}#[none]";
   windowFormats = pkgs.writeText "tmux-window-formats.conf" ''
     set -g window-status-format '${windowFormat "overlay_2"}'
     set -g window-status-current-format '${windowFormat "mauve"}'
