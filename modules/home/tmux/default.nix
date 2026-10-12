@@ -68,6 +68,8 @@ in
       yank
     ];
     extraConfig = ''
+      set -g extended-keys on
+      set -g extended-keys-format csi-u
       set -ga terminal-overrides ",xterm-256color:Tc"
       set -sg escape-time 100
       set-option -g status-position top
