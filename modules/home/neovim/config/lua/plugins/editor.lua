@@ -64,12 +64,6 @@ return {
         opts = {},
     },
 
-    -- Keybind hints
-    {
-        "folke/which-key.nvim",
-        event = "VeryLazy",
-        opts = {},
-    },
 
 
 }
