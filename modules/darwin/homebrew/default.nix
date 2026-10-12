@@ -10,10 +10,8 @@ let
   casks = [
     "flutter"
     "ghostty"
-    "iina"
     "jetbrains-toolbox"
     "maccy"
-    "nkzw-tech/tap/codiff"
     "obsidian"
     "orbstack"
     "raycast"
@@ -37,7 +35,6 @@ in
       brews = [
         "cocoapods"
         "mole"
-        "opencode"
         "pi-coding-agent"
         "ruby"
         "swiftformat"
