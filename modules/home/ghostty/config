@@ -23,3 +23,5 @@ macos-titlebar-style = transparent
 macos-icon = blueprint
 macos-icon-frame = chrome
 window-padding-x = 10
+window-padding-color = extend
+scrollbar = never
