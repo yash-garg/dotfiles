@@ -8,6 +8,23 @@
 with lib.${namespace};
 let
   shellPath = if config.shells.${namespace}.bash.enable then null else "${pkgs.zsh}/bin/zsh";
+  catppuccinDir = "${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin";
+  switchCatppuccin = pkgs.writeShellScript "tmux-switch-catppuccin" ''
+    case "$1" in
+      light) flavor=latte ;;
+      dark) flavor=mocha ;;
+      *) exit 0 ;;
+    esac
+
+    palette_override="$(${pkgs.coreutils}/bin/mktemp)"
+    trap '${pkgs.coreutils}/bin/rm -f "$palette_override"' EXIT
+    ${pkgs.gnused}/bin/sed 's/^set -ogq /set -g /' \
+      "${catppuccinDir}/themes/catppuccin_''${flavor}_tmux.conf" > "$palette_override"
+
+    ${pkgs.tmux}/bin/tmux set -g @catppuccin_flavor "$flavor"
+    ${pkgs.tmux}/bin/tmux source-file "$palette_override"
+    ${pkgs.tmux}/bin/tmux source-file "${catppuccinDir}/catppuccin_tmux.conf"
+  '';
 in
 {
   programs.tmux = enabled // {
@@ -25,11 +42,15 @@ in
         plugin = catppuccin;
         extraConfig = ''
           set -g @catppuccin_flavor "mocha"
-          set -g @catppuccin_window_status_style "none"
-          set -g @catppuccin_status_background "none"
-          set -g @catppuccin_status_connect_separator "no"
-          set -g @catppuccin_status_right_separator " "
-          set -g @catppuccin_date_time_text "%H:%M"
+          set -g @catppuccin_window_status_style "custom"
+          set -g @catppuccin_status_background "default"
+          set -g @catppuccin_window_left_separator ""
+          set -g @catppuccin_window_middle_separator "#[fg=#{@catppuccin_window_number_color},bg=#{@catppuccin_window_text_color}]"
+          set -g @catppuccin_window_right_separator "#[fg=#{@catppuccin_window_text_color},bg=#{@_ctp_status_bg}]#[none]"
+          set -g @catppuccin_window_current_middle_separator "#[fg=#{@catppuccin_window_current_number_color},bg=#{@catppuccin_window_current_text_color}]"
+          set -g @catppuccin_window_current_right_separator "#[fg=#{@catppuccin_window_current_text_color},bg=#{@_ctp_status_bg}]#[none]"
+          set -g @catppuccin_window_text " #W"
+          set -g @catppuccin_window_current_text " #W"
           set -g @catppuccin_pane_border_style "fg=#{@thm_surface_1}"
           set -g @catppuccin_pane_active_border_style "fg=#{@thm_mauve}"
         '';
@@ -39,14 +60,15 @@ in
     extraConfig = ''
       set -ga terminal-overrides ",xterm-256color:Tc"
       set -sg escape-time 100
-      set-option -g status-position bottom
-      set -g status-left-length 30
-      set -g status-right-length 60
-      set -g status-left "#{E:@catppuccin_status_session}"
-      set -g status-right "#{E:@catppuccin_status_directory}#{E:@catppuccin_status_date_time}"
-      set -g window-status-separator " "
-      set -g window-status-format "#[fg=#313244,bg=default]#[fg=#bac2de,bg=#313244] #I #W #[fg=#313244,bg=default]#[default]"
-      set -g window-status-current-format "#[fg=#cba6f7,bg=default]#[fg=#11111b,bg=#cba6f7,bold] #I #W #[fg=#cba6f7,bg=default]#[default]"
+      set-option -g status-position top
+      set -g status-left-length 60
+      set -g status-right-length 80
+      set -g status-left "#[fg=#{@thm_crust},bg=#{@thm_green}]  #[fg=#{@thm_green},bg=#{@thm_mauve}]"
+      set -g status-right "#[fg=#{@thm_surface_0},bg=#{@thm_mantle}]#[fg=#{@thm_fg},bg=#{@thm_surface_0}]  #{b:pane_current_path} #[fg=#{@thm_sapphire},bg=#{@thm_surface_0}]#[fg=#{@thm_crust},bg=#{@thm_sapphire}] 󰃰 %H:%M"
+      set -g window-status-separator ""
+      set-hook -g client-light-theme 'run-shell "${switchCatppuccin} light"'
+      set-hook -g client-dark-theme 'run-shell "${switchCatppuccin} dark"'
+      set-hook -g client-attached 'run-shell "${switchCatppuccin} #{client_theme}"'
 
       # Key Bindings
       unbind c
