@@ -45,8 +45,13 @@ in
         "zen"
       ];
 
+      brews = [
+        "python@3.12"
+      ];
+
       masApps = {
         Bitwarden = 1352778147;
+        Flighty = 1358823008;
         Tailscale = 1475387142;
         Telegram = 747648890;
         Unread = 1363637349;
