@@ -52,25 +52,26 @@ in
         }
       ];
 
-      services.rex = mkIf sharedEnabled (
-        {
-          enable = true;
-        }
-        // optionalAttrs cfg.socketActivation {
-          socketActivation = true;
-          inherit (cfg) socketPath;
-        }
-      );
+      services.rex = mkMerge [
+        (mkIf sharedEnabled (
+          {
+            enable = true;
+          }
+          // optionalAttrs cfg.socketActivation {
+            socketActivation = true;
+            inherit (cfg) socketPath;
+          }
+        ))
+        (mkIf loginEnabled {
+          loginServer = {
+            enable = true;
+            inherit (cfg.loginServer) accounts;
+          }
+          // optionalAttrs cfg.loginServer.socketActivation { socketActivation = true; }
+          // optionalAttrs cfg.loginServer.tailscaleServe.enable { tailscaleServe.enable = true; };
+        })
+      ];
 
       users.groups.rex.members = mkIf sharedEnabled cfg.extraUsers;
-
-      services.rex.loginServer = mkIf loginEnabled (
-        {
-          enable = true;
-          inherit (cfg.loginServer) accounts;
-        }
-        // optionalAttrs cfg.loginServer.socketActivation { socketActivation = true; }
-        // optionalAttrs cfg.loginServer.tailscaleServe.enable { tailscaleServe.enable = true; }
-      );
     };
 }
