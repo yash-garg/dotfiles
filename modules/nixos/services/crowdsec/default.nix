@@ -27,7 +27,6 @@ in
       crowdsec = enabled // {
         inherit (cfg) user group;
         autoUpdateService = true;
-        openFirewall = true;
         hub = {
           collections = [
             "crowdsecurity/linux"
