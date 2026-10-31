@@ -22,7 +22,6 @@ in
 
   config = mkIf cfg.enable {
     boot = {
-      initrd.systemd = enabled;
 
       kernelPackages = mkDefault pkgs.linuxPackages_6_18;
 

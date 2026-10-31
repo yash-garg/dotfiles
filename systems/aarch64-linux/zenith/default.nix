@@ -35,7 +35,6 @@ in
         efiSysMountPoint = "/boot";
       };
     };
-    initrd.systemd = enabled;
   };
 
   dots = {
