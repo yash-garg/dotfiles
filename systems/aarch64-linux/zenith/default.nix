@@ -380,6 +380,12 @@ in
           domain = homeDomain;
         };
 
+        rex.loginServer = {
+          enable = true;
+          tailscaleServe.enable = true;
+          accounts.yash.principals = [ "tailscale:Yash-Garg@github" ];
+        };
+
         tailscale = enabled // {
           authKeyFile = config.sops.secrets.server-tsauthkey.path;
           ssh = true;

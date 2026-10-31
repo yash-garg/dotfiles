@@ -56,7 +56,7 @@ in
         "xcode-kotlin"
         "vault"
         "yarn"
-      ]
+      ];
     };
 
     user.name = "ygarg";

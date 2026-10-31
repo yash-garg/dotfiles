@@ -47,6 +47,7 @@
           nixos-cosmic.nixosModules.default
           nixos-generators.nixosModules.all-formats
           nixos-wsl.nixosModules.default
+          rex.nixosModules.default
           sops-nix.nixosModules.sops
           srvos.nixosModules.mixins-trusted-nix-caches
           stylix.nixosModules.stylix
@@ -176,6 +177,8 @@
 
     nur.url = "github:nix-community/NUR";
     nur.inputs.flake-parts.follows = "flake-parts";
+
+    rex.url = "https://pkgs.superlogical.com/rex/nix/preview.tar.gz";
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
