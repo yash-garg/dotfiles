@@ -181,7 +181,7 @@ in
       rex.loginServer = {
         enable = true;
         tailscaleServe.enable = true;
-        accounts.yash.principals = [ "tailscale:Yash-Garg@github" ];
+        accounts.yash.principals = [ "tailscale:yash-garg@github" ];
       };
 
       tailscale = enabled // {
