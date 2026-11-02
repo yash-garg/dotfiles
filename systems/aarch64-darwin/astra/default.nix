@@ -21,13 +21,13 @@ in
     user.uid = 501;
 
     dock.persistentApps = [
-      "Ghostty"
-      "Xcode"
-      "Cursor"
+      "Rex Beta"
       "Spotify"
       "Discord"
       "Zen"
-      "OrbStack"
+      "Obsidian"
+      "Grok Bot"
+      "Infuse"
       "WhatsApp"
       "Telegram"
     ];
