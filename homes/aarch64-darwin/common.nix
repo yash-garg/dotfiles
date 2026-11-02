@@ -7,7 +7,6 @@
 with lib.${namespace};
 {
   profiles.${namespace} = {
-    atuin = enabled;
     neovim = enabled;
     starship = enabled;
   };

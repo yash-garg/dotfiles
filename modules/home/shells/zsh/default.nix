@@ -32,7 +32,6 @@ in
         '';
       };
 
-      atuin.enableZshIntegration = true;
       eza.enableZshIntegration = true;
       fzf.enableZshIntegration = true;
       ghostty.enableZshIntegration = profiles.ghostty.enable;
