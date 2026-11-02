@@ -24,6 +24,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ cfg.quiPort ];
     sops.secrets.qui-session-secret = {
       sopsFile = lib.dots.get-file "secrets/qui.yaml";
       owner = cfg.user;

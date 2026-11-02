@@ -45,6 +45,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ cfg.port ];
     services = {
       copyparty = enabled // {
         inherit (cfg)

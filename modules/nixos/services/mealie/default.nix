@@ -17,6 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ cfg.port ];
     sops.secrets.mealie-env = {
       sopsFile = lib.dots.get-file "secrets/mealie.env";
       format = "dotenv";

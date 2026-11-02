@@ -13,7 +13,7 @@ in
   options.${namespace}.services.ntopng = {
     enable = mkEnableOption "ntopng: Network Traffic Analysis";
     domain = mkOpt types.str "ipx.ovh" "The domain to serve ntopng on";
-    openFirewall = mkBoolOpt false "Open the firewall for ntopng";
+    openFirewall = mkBoolOpt true "Open the firewall for ntopng";
     port = mkOpt types.int ports.ntopng.webui "The port for ntopng";
   };
 

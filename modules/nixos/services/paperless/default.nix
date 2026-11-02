@@ -30,6 +30,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall.allowedTCPPorts = [ ports.paperless-ngx ];
     sops.secrets.paperless-env = {
       sopsFile = lib.dots.get-file "secrets/paperless.env";
       format = "dotenv";
