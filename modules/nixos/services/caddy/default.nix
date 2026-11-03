@@ -336,6 +336,13 @@ in
 
     networking.firewall.allowedTCPPorts = mkIf cfg.internal.enable [ cfg.internal.port ];
 
+    # Disable MPTCP for CVE-2026-98432
+    # Caddy is directly vulnerable due to Go runtime binding MPTCP sockets
+    # Restarting caddy required after changing this
+    boot.kernel.sysctl = {
+      "net.mptcp.enabled" = 0;
+    };
+
     services = {
       caddy = enabled // {
         package = pkgs.caddy.withPlugins {
