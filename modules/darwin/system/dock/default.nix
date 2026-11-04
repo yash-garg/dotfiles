@@ -19,7 +19,7 @@ in
 
   config = {
     system.defaults.dock = {
-      autohide = true;
+      autohide = false;
       largesize = 110;
       magnification = true;
       mineffect = "scale";
