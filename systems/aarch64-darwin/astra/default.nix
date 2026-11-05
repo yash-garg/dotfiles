@@ -36,11 +36,10 @@ in
       additionalCasks = [
         "actual"
         "bambu-studio"
-        "chatgpt"
         "chromedriver"
-        "cursor"
         "discord"
         "notion-calendar"
+        "orcaslicer"
         "winbox"
         "zen"
       ];
