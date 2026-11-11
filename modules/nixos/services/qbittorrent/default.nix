@@ -35,13 +35,13 @@ in
       inherit (cfg) user group;
       secretFile = config.sops.secrets.qui-session-secret.path;
       settings = {
-        host = "127.0.0.1";
+        host = "0.0.0.0";
         port = cfg.quiPort;
         # Authentication is handled upstream by Authelia; qui only accepts
         # traffic from the local reverse proxy.
         authDisabled = true;
         I_ACKNOWLEDGE_THIS_IS_A_BAD_IDEA = true;
-        authDisabledAllowedCIDRs = [ "127.0.0.1/32" ];
+        authDisabledAllowedCIDRs = [ "127.0.0.1/32" "10.0.20.0/24" ];
       };
     };
 
