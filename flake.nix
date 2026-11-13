@@ -114,6 +114,8 @@
     };
 
   inputs = {
+    asterisk-jio.url = "github:yash-garg/asterisk-jio/v0.2.0";
+
     base16-schemes.url = "github:tinted-theming/schemes";
     base16-schemes.flake = false;
 

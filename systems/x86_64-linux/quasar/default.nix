@@ -41,6 +41,10 @@ in
     };
 
     services = {
+      asterisk = enabled // {
+        domain = "yashgarg.dev";
+      };
+
       arr-stack = enabled // {
         mediaDirs = [
           "/mnt/media/main"
@@ -259,6 +263,12 @@ in
       ignoreShellProgramCheck = true;
     };
   };
+
+  # Nix daemon uses its own bundled curl/OpenSSL which doesn't trust
+  # GitHub's newer Sectigo ECC certificate chain. Point it at nixpkgs'
+  # cacert so FOD fetches from github.com work.
+  systemd.services.nix-daemon.environment.NIX_SSL_CERT_FILE =
+    "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
 
   system.stateVersion = "26.05";
 }

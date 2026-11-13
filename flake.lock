@@ -1,5 +1,24 @@
 {
   "nodes": {
+    "asterisk-jio": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1794637058,
+        "narHash": "sha256-SkUBu6t09Owj/YTjVhe6tmHFxMa3xsSWeWe0vXBcF3w=",
+        "owner": "yash-garg",
+        "repo": "asterisk-jio",
+        "rev": "1630f44f80b0109e7ca787c7ae3bb11006d3dc1c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yash-garg",
+        "ref": "v0.2.0",
+        "repo": "asterisk-jio",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -585,15 +604,15 @@
       "locked": {
         "lastModified": 1793977579,
         "narHash": "sha256-WrSODdZFVIs/Hh2NzC0bY+ROByi0bATg8WfePX8dPj8=",
-        "owner": "nixos",
+        "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "4fe25e12eb9f4c744966dd3de5a05246cf098601",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
+        "owner": "NixOS",
         "repo": "nixpkgs",
+        "rev": "4fe25e12eb9f4c744966dd3de5a05246cf098601",
         "type": "github"
       }
     },
@@ -614,6 +633,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1793977579,
+        "narHash": "sha256-WrSODdZFVIs/Hh2NzC0bY+ROByi0bATg8WfePX8dPj8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4fe25e12eb9f4c744966dd3de5a05246cf098601",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1793876309,
         "narHash": "sha256-Wojg9lIH/hDH91iDVH2/EPw8oDSpxjxhXONbU1yf4Zg=",
         "owner": "nixos",
@@ -633,7 +668,7 @@
         "flake-parts": [
           "flake-parts"
         ],
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1794133758,
@@ -719,6 +754,7 @@
     },
     "root": {
       "inputs": {
+        "asterisk-jio": "asterisk-jio",
         "base16-schemes": "base16-schemes",
         "catppuccin-starship": "catppuccin-starship",
         "copyparty": "copyparty",
@@ -736,7 +772,7 @@
         "nixos-cosmic": "nixos-cosmic",
         "nixos-generators": "nixos-generators",
         "nixos-wsl": "nixos-wsl",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nur": "nur",
         "rex": "rex",
         "sops-nix": "sops-nix",
