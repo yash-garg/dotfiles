@@ -27,7 +27,7 @@ in
     rules = [
       {
         domain = "auth.${domain}";
-        policy = "one_factor";
+        policy = "two_factor";
       }
       {
         domain = "books.${domain}";
@@ -36,7 +36,7 @@ in
       }
       {
         domain = "books.${domain}";
-        policy = "one_factor";
+        policy = "two_factor";
         subject = [
           "group:internal"
           "group:books-users"
@@ -70,7 +70,7 @@ in
       }
       {
         domain = "*.${domain}";
-        policy = "one_factor";
+        policy = "two_factor";
         subject = [ "group:internal" ];
       }
     ];
@@ -140,11 +140,11 @@ in
         ];
       };
       authorization_policies = {
-        internal_one_factor = {
+        internal_two_factor = {
           default_policy = "deny";
           rules = [
             {
-              policy = "one_factor";
+              policy = "two_factor";
               subject = [ "group:internal" ];
             }
           ];
@@ -153,7 +153,7 @@ in
           default_policy = "deny";
           rules = [
             {
-              policy = "one_factor";
+              policy = "two_factor";
               subject = [
                 "group:internal"
                 "group:mealie-admins"
@@ -166,7 +166,7 @@ in
           default_policy = "deny";
           rules = [
             {
-              policy = "one_factor";
+              policy = "two_factor";
               subject = [
                 "group:internal"
                 "group:immich-users"
@@ -178,7 +178,7 @@ in
           default_policy = "deny";
           rules = [
             {
-              policy = "one_factor";
+              policy = "two_factor";
               subject = [
                 "group:internal"
                 "group:jellyfin-admins"
@@ -194,7 +194,7 @@ in
           client_name = "Actual Budget";
           client_secret = "$pbkdf2-sha512$310000$iWomIaFYWHHBwj3ILVzL.Q$l9rRfes89uaXIGQnSZqtlLsAa8zMkjHWvUL39mnjHXBq.bokav5Z.dc3.mcUZxkW.5M64InDQZ5eg/81HWlETA";
           public = false;
-          authorization_policy = "internal_one_factor";
+          authorization_policy = "internal_two_factor";
           grant_types = [
             "authorization_code"
           ];
@@ -236,7 +236,7 @@ in
           client_name = "Forgejo";
           client_secret = "$pbkdf2-sha512$310000$jZCkAHO4SX26j3DUiyRpfw$kbL7tPjDrbLK4YtFt7kLLKl2LfWoWghrp8bJFCfmKGCgKa2RXUiu1B2C/Tx19Xfn38J7z/ToB0ckgvp15CY99A";
           public = false;
-          authorization_policy = "internal_one_factor";
+          authorization_policy = "internal_two_factor";
           grant_types = [
             "authorization_code"
           ];
@@ -278,7 +278,7 @@ in
           client_name = "Hister";
           client_secret = "$pbkdf2-sha512$310000$fN5dX9GMK8Y/3t/NIiQMLg$qcerv.R.qx6P5M0MyKpyKpqe8UoWpa1dyOr6Ky3cZYO5tRKOU.5DEiujR/DQjtOsHzvbbuUOa5H0o.vVkDOJsg";
           public = false;
-          authorization_policy = "internal_one_factor";
+          authorization_policy = "internal_two_factor";
           require_pkce = false;
           grant_types = [ "authorization_code" ];
           redirect_uris = [
