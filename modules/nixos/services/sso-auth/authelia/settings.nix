@@ -216,7 +216,6 @@ in
           client_name = "Cloudflare Access";
           client_secret = "$pbkdf2-sha512$310000$0OVYTmffbZnm5QLF/aPQIA$AaOM/qZFPwy.f4sQSQW.NOsm302CovCx3osVs/C8bfTEOt1tpbsf.lSZqBCY97JBG5PAr/IuIJg2RS2rz/PT7g";
           public = false;
-          authorization_policy = "two_factor";
           claims_policy = "default";
           consent_mode = "pre-configured";
           pre_configured_consent_duration = "6M";
@@ -315,7 +314,6 @@ in
           client_name = "Vaultwarden";
           client_secret = "$pbkdf2-sha512$310000$HRXDjiBb5D0JmS0AgD8dSA$wQt2nwSwKjtW3o6a5PtkvVilo//AyAuDh2ncMpyeiBSZlUBDZswQ79x.9MoHWK6uJmcVsRQxZu4icTomW2tceQ";
           public = false;
-          authorization_policy = "two_factor";
           consent_mode = "pre-configured";
           pre_configured_consent_duration = "6M";
           require_pkce = true;
