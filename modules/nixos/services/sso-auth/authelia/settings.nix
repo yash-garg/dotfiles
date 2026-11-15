@@ -27,7 +27,7 @@ in
     rules = [
       {
         domain = "auth.${domain}";
-        policy = "two_factor";
+        policy = "one_factor";
       }
       {
         domain = "books.${domain}";
@@ -67,10 +67,6 @@ in
           "^/fever(/.*)?$"
           "^/v1(/.*)?$"
         ];
-      }
-      {
-        domain = "*.home.${domain}";
-        policy = "bypass";
       }
       {
         domain = "*.${domain}";

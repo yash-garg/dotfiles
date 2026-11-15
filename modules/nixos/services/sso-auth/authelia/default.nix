@@ -33,6 +33,7 @@ in
         hmac-secret = secretAttrs;
         ldap-secret = secretAttrs;
         notifier-settings = secretAttrs;
+        google-identity-settings = secretAttrs;
         user-settings = secretAttrs;
         oidc-key = secretAttrs // {
           sopsFile = lib.dots.get-file "secrets/oidc.key";
@@ -58,7 +59,10 @@ in
           oidcHmacSecretFile = config.sops.secrets.hmac-secret.path;
         };
         settings = import ./settings.nix { inherit lib config namespace; };
-        settingsFiles = [ config.sops.secrets.notifier-settings.path ];
+        settingsFiles = [
+          config.sops.secrets.notifier-settings.path
+          config.sops.secrets.google-identity-settings.path
+        ];
       };
 
       prometheus.scrapeConfigs = [
