@@ -421,8 +421,18 @@ in
     disable = false;
     enable_passkey_login = true;
     display_name = "Authelia";
-    attestation_conveyance_preference = "direct";
-    selection_criteria.user_verification = "preferred";
-    timeout = "60s";
+    # "none" avoids Firefox attestation bugs
+    attestation_conveyance_preference = "none";
+    timeout = "2m";
+    selection_criteria = {
+      # Required for passkey discoverable-credential flow
+      discoverability = "required";
+      user_verification = "preferred";
+    };
+    # Passkey UV (user-verification) satisfies two_factor policy —
+    # so WebAuthn alone is sufficient; TOTP is only needed after a plain password login.
+    experimental_enable_passkey_uv_two_factors = true;
+    # Allow existing credentials to be upgraded to passkeys
+    experimental_enable_passkey_upgrade = true;
   };
 }
