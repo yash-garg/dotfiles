@@ -21,9 +21,9 @@
       nurl
       pnpm
       ripgrep
-      ripe-atlas-tools
       restic
       sops
+      sngrep
       unzip
       whois
       wireguard-tools
