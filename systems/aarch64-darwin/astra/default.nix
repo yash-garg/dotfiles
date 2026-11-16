@@ -41,6 +41,7 @@ in
         "notion-calendar"
         "orcaslicer"
         "winbox"
+        "zed"
         "zen"
       ];
 
