@@ -62,6 +62,11 @@ in
 
     services.asterisk = enabled // {
       package = pkgs.asterisk;
+      # The NixOS skeleton copies symlinks only once; old store targets can be GCed.
+      # Read static documentation and sounds from the active package instead.
+      extraConfig = ''
+        astdatadir => ${config.services.asterisk.package}/var/lib/asterisk
+      '';
       useTheseDefaultConfFiles = [ ];
       confFiles = mapAttrs (_: file: builtins.readFile file) {
         "modules.conf" = ./config/modules.conf;
