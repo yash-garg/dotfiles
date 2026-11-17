@@ -29,7 +29,7 @@ in
           allowDeleteVerb = false;
           allowPutVerb = false;
           hostName = "0.0.0.0";
-          maxSize = "50G";
+          maxSize = "15G";
           secretKeyPath = config.sops.secrets.ncps-private-key.path;
           lru = {
             scheduleTimeZone = "Asia/Kolkata";

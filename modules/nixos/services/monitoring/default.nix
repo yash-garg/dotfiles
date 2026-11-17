@@ -319,6 +319,15 @@ in
             limits_config = {
               reject_old_samples = true;
               reject_old_samples_max_age = "168h";
+              retention_period = "30d";
+            };
+            compactor = {
+              working_directory = "${dataDir}/compactor";
+              compaction_interval = "10m";
+              retention_enabled = true;
+              retention_delete_delay = "2h";
+              retention_delete_worker_count = 150;
+              delete_request_store = "filesystem";
             };
             query_scheduler.max_outstanding_requests_per_tenant = 2048;
             ruler.alertmanager_url = "http://127.0.0.1:${toString config.services.prometheus.alertmanager.port}";

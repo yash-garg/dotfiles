@@ -20,7 +20,26 @@ with lib.${namespace};
 
   users.users.yash.packages = with pkgs; [ nix-output-monitor ];
 
-  nix = mkNixConfig { inherit lib pkgs; } // {
-    optimise.automatic = true;
+  nix =
+    lib.recursiveUpdate
+      (mkNixConfig {
+        inherit lib pkgs;
+      })
+      {
+        optimise.automatic = true;
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 30d";
+        };
+        settings = {
+          min-free = toString (5 * 1024 * 1024 * 1024); # 5 GiB
+          max-free = toString (10 * 1024 * 1024 * 1024); # 10 GiB
+        };
+      };
+
+  services.journald.settings.Journal = {
+    SystemMaxUse = "512M";
+    RuntimeMaxUse = "128M";
   };
 }

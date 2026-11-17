@@ -41,7 +41,10 @@ in
         # traffic from the local reverse proxy.
         authDisabled = true;
         I_ACKNOWLEDGE_THIS_IS_A_BAD_IDEA = true;
-        authDisabledAllowedCIDRs = [ "127.0.0.1/32" "10.0.20.0/24" ];
+        authDisabledAllowedCIDRs = [
+          "127.0.0.1/32"
+          "10.0.20.0/24"
+        ];
       };
     };
 
@@ -57,6 +60,7 @@ in
       openFirewall = true;
       serverConfig = {
         BitTorrent.Session = {
+          DefaultSavePath = "/mnt/downloads";
           AddTorrentStopped = true;
           GlobalMaxInactiveSeedingMinutes = 60;
           GlobalMaxRatio = -1;
