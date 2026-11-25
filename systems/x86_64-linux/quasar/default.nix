@@ -23,6 +23,11 @@ in
       neededForUsers = true;
     };
     server-tsauthkey.sopsFile = lib.dots.get-file "secrets/tailscale.yaml";
+    snmp-auth = {
+      sopsFile = lib.dots.get-file "secrets/snmp-auth.yaml";
+      key = "";
+      restartUnits = [ "prometheus-snmp-exporter.service" ];
+    };
     frigate-env = {
       sopsFile = lib.dots.get-file "secrets/frigate.env";
       format = "dotenv";
@@ -214,6 +219,8 @@ in
   services.prometheus = {
     exporters.snmp = enabled // {
       configurationPath = ./snmp.yml;
+      extraFlags = [ "--config.file=%d/snmp-auth" ];
+      listenAddress = "127.0.0.1";
       port = ports.exporters.snmp;
     };
 
@@ -246,6 +253,9 @@ in
   };
 
   systemd.targets.multi-user.enable = true;
+
+  systemd.services.prometheus-snmp-exporter.serviceConfig.LoadCredential =
+    "snmp-auth:${config.sops.secrets.snmp-auth.path}";
 
   users = {
     mutableUsers = false;
