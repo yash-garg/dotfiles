@@ -35,6 +35,23 @@ let
     "2c0f:f248::/32"
   ];
 
+  crowdsec = config.${namespace}.services.crowdsec;
+
+  # Only public requests feed HTTP detection. Internal hops retain their existing
+  # forwarded-header behavior until their source addresses are explicitly pinned.
+  publicRequestConfig = ''
+    log {
+      output file ${config.services.caddy.logDir}/access.log {
+        mode 0640
+        roll_size 100MiB
+        roll_keep 5
+        roll_keep_for 100d
+      }
+      format json
+    }
+    ${optionalString crowdsec.enable "crowdsec"}
+  '';
+
   # Common utilities
   normalizeUpstream = u: if hasPrefix "http://" u || hasPrefix "https://" u then u else "http://${u}";
 
@@ -168,6 +185,7 @@ let
     if mode == "site" then
       ''
         ${host} {
+          ${publicRequestConfig}
           ${handleContent}
         }
       ''
@@ -249,6 +267,7 @@ let
     in
     ''
       *.${domain} {
+        ${publicRequestConfig}
         ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
         ${concatStrings serviceHandles}
         handle {
@@ -377,15 +396,45 @@ in
 
     services = {
       caddy = enabled // {
-        package = pkgs.caddy.withPlugins {
-          plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-          hash = "sha256-OIQoJ+Q7rfJkoy/H01L2lEDysOlYzl63s6pOrSj9LlQ=";
-        };
+        package =
+          (pkgs.caddy.withPlugins {
+            plugins = [
+              "github.com/caddy-dns/cloudflare@v0.2.3"
+            ]
+            ++ optional crowdsec.enable "github.com/hslatman/caddy-crowdsec-bouncer/http@v0.15.0";
+            # The HTTP plugin is a package in the parent Go module. Check its
+            # registered module ID below instead of expecting it in Go build-info.
+            hash =
+              if crowdsec.enable then
+                "sha256-SAJVGwIyqMxZMB/6nYh/ylBgaJWIOYyYzmkiu+E33pE="
+              else
+                "sha256-OIQoJ+Q7rfJkoy/H01L2lEDysOlYzl63s6pOrSj9LlQ=";
+          }).overrideAttrs
+            (
+              _:
+              optionalAttrs crowdsec.enable {
+                installCheckPhase = ''
+                  runHook preInstallCheck
+                  modules="$($out/bin/caddy list-modules)"
+                  printf '%s\n' "$modules" | grep -Fx dns.providers.cloudflare
+                  printf '%s\n' "$modules" | grep -Fx http.handlers.crowdsec
+                  runHook postInstallCheck
+                '';
+              }
+            );
         environmentFile = config.sops.secrets.cf-env.path;
         globalConfig = ''
           acme_dns cloudflare {env.CF_DNS_API_TOKEN}
           email spam@${cfg.domain}
           metrics
+          ${optionalString crowdsec.enable ''
+            order crowdsec first
+            crowdsec {
+              api_url http://127.0.0.1:${toString crowdsec.port}
+              api_key {env.CROWDSEC_API_KEY}
+              ticker_interval 10s
+            }
+          ''}
           servers :443 {
             trusted_proxies static ${concatStringsSep " " cloudflareIPs}
             client_ip_headers CF-Connecting-IP
