@@ -35,8 +35,6 @@ let
     "2c0f:f248::/32"
   ];
 
-  allTrustedProxies = trustedProxies.list ++ cloudflareIPs;
-
   # Common utilities
   normalizeUpstream = u: if hasPrefix "http://" u || hasPrefix "https://" u then u else "http://${u}";
 
@@ -88,6 +86,8 @@ let
       forward_auth ${authHost} {
         uri /api/authz/forward-auth
         copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+        header_up X-Forwarded-For {client_ip}
+        header_up X-Real-IP {client_ip}
         header_up X-Forwarded-Proto https
       }
     '';
@@ -139,17 +139,30 @@ let
         else
           ''
             header_up Host {host}
-            header_up X-Real-IP {remote_host}
+            header_up X-Real-IP {client_ip}
+            header_up X-Forwarded-For {client_ip}
             header_up X-Forwarded-Proto {scheme}
           '';
 
       handleContent = ''
+        route {
+        # Remove identities supplied by the client even when auth bypasses a request.
+        request_header -Remote-User
+        request_header -Remote-Email
+        request_header -Remote-Groups
+        request_header -Remote-Name
+        # WSGI maps underscore spellings to the same HTTP_REMOTE_* variables.
+        request_header -Remote_User
+        request_header -Remote_Email
+        request_header -Remote_Groups
+        request_header -Remote_Name
         ${optionalString (svc.redirectRoot != null) ''
           @root path /
           redir @root ${svc.redirectRoot} permanent
         ''}
         ${optionalString (cfg.auth.enable && svc.auth) forwardAuthSnippet}
         ${mkReverseProxy { inherit upstreams headers hasMultiple; }}
+        }
       '';
     in
     if mode == "site" then
@@ -166,7 +179,7 @@ let
         }
       '';
 
-  # Server proxy for ingress (Ares -> backends)
+  # Server proxy for ingress (Zenith -> backends)
   mkServerProxy =
     name: srv:
     let
@@ -177,7 +190,8 @@ let
 
       headers = ''
         header_up Host {host}
-        header_up X-Real-IP {remote_host}
+        header_up X-Real-IP {client_ip}
+        header_up X-Forwarded-For {client_ip}
         header_up X-Forwarded-Proto {scheme}
         ${optionalString hasMultiple failoverOpts}
       '';
@@ -372,9 +386,23 @@ in
           acme_dns cloudflare {env.CF_DNS_API_TOKEN}
           email spam@${cfg.domain}
           metrics
-          servers {
-            trusted_proxies static ${concatStringsSep " " (allTrustedProxies ++ cfg.internal.trustedProxies)}
+          servers :443 {
+            trusted_proxies static ${concatStringsSep " " cloudflareIPs}
+            client_ip_headers CF-Connecting-IP
+            trusted_proxies_strict
           }
+          ${optionalString cfg.internal.enable ''
+            servers ${
+              optionalString (cfg.internal.scope == "loopback") "127.0.0.1"
+            }:${toString cfg.internal.port} {
+              trusted_proxies static ${
+                if cfg.internal.scope == "loopback" then
+                  "127.0.0.1"
+                else
+                  concatStringsSep " " (trustedProxies.list ++ cfg.internal.trustedProxies)
+              }
+            }
+          ''}
         '';
         logFormat = ''
           output file /var/log/caddy/caddy_main.log {
