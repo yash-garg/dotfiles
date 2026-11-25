@@ -49,7 +49,9 @@ in
         auth = enabled // {
           url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
         };
-        internal = enabled;
+        internal = enabled // {
+          scope = "tailscale";
+        };
       };
 
       minecraft-server = enabled // {

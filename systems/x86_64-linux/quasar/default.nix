@@ -63,7 +63,10 @@ in
         auth = enabled // {
           url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
         };
-        internal = enabled;
+        # Zenith also forwards over the existing direct WAN IPv6 route.
+        internal = enabled // {
+          scope = "wan";
+        };
       };
 
       calibre-web = enabled // {

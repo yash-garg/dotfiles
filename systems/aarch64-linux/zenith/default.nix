@@ -45,7 +45,6 @@ in
       ports = [
         80
         443
-        8080
       ];
     };
 
@@ -78,7 +77,7 @@ in
           };
           servers = {
             zenith = {
-              address = "http://localhost:${toString ports.caddy}";
+              address = "http://127.0.0.1:${toString ports.caddy}";
               hosts = [
                 "cache.${homeDomain}"
                 "money.${homeDomain}"

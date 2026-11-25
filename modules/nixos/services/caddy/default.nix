@@ -262,6 +262,7 @@ let
 
   internalListenerConfig = optionalString (cfg.internal.enable && cfg.services != { }) ''
     :${toString cfg.internal.port} {
+      ${optionalString (cfg.internal.scope == "loopback") "bind 127.0.0.1"}
       ${concatStrings (
         mapAttrsToList (
           name: svc:
@@ -310,6 +311,11 @@ in
 
     internal = {
       enable = mkBoolOpt false "Enable internal HTTP listener for proxied traffic";
+      scope = mkOpt (types.enum [
+        "loopback"
+        "tailscale"
+        "wan"
+      ]) "loopback" "Where upstream ingress may reach this listener";
       port = mkOpt types.int ports.caddy "Internal HTTP port";
       trustedProxies = mkOpt (types.listOf types.str) [ ] "Additional trusted proxy IPs";
     };
@@ -334,7 +340,19 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = mkIf cfg.internal.enable [ cfg.internal.port ];
+    assertions = [
+      {
+        assertion =
+          cfg.internal.enable && cfg.internal.scope == "tailscale" -> config.dots.services.tailscale.enable;
+        message = "A Tailscale-only Caddy listener requires Tailscale";
+      }
+    ];
+    networking.firewall.allowedTCPPorts = mkIf (cfg.internal.enable && cfg.internal.scope == "wan") [
+      cfg.internal.port
+    ];
+    dots.services.tailscale.interfaceOnlyTCPPorts = mkIf (
+      cfg.internal.enable && cfg.internal.scope == "tailscale"
+    ) [ cfg.internal.port ];
 
     # Disable MPTCP for CVE-2026-98432
     # Caddy is directly vulnerable due to Go runtime binding MPTCP sockets
