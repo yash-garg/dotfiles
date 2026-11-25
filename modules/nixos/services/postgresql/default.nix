@@ -28,11 +28,13 @@ in
     services = {
       postgresql = enabled // {
         inherit (cfg) package;
+        # Keep TCP available for the Gatus connectivity checks. Applications use
+        # the Unix socket and authenticate as their matching systemd service user.
         enableTCPIP = true;
         authentication = mkOverride 10 ''
-          local all  all                 trust
-          host  all  all  127.0.0.1/32   trust
-          host  all  all  ::1/128        trust
+          local all  all                 peer
+          host  all  all  127.0.0.1/32   scram-sha-256
+          host  all  all  ::1/128        scram-sha-256
         '';
         ensureUsers = [
           {
@@ -44,7 +46,10 @@ in
             ensureClauses.superuser = true;
           }
         ];
-        settings.port = cfg.port;
+        settings = {
+          port = cfg.port;
+          password_encryption = "scram-sha-256";
+        };
       };
 
       postgresqlBackup = mkIf cfg.backup.enable {
