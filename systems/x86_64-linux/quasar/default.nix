@@ -176,11 +176,7 @@ in
 
       ripe-probe = enabled;
 
-      ssh = enabled // {
-        addRootKeys = true;
-        passwordAuth = false;
-        permitRootLogin = true;
-      };
+      ssh = enabled;
 
       rex.loginServer = {
         enable = true;

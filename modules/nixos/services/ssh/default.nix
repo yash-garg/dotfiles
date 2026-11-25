@@ -20,7 +20,7 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILx1G6WZ4MQ8c4hUZy2Be+GF5fZQJSssn4qnJoQ4MPxz"
     ] "List of SSH keys to add to the authorized_keys file";
     package = mkPackageOption pkgs "openssh" { };
-    passwordAuth = mkBoolOpt true "Allow password authentication";
+    passwordAuth = mkBoolOpt false "Allow password and keyboard-interactive authentication";
     permitRootLogin = mkBoolOpt false "Allow root login";
   };
 
@@ -28,9 +28,10 @@ in
     services.openssh = enabled // {
       inherit (cfg) package openFirewall;
       settings = {
-        X11Forwarding = mkDefault true;
+        X11Forwarding = mkDefault false;
         PermitRootLogin = mkForce (bool-to-yes-no cfg.permitRootLogin);
         PasswordAuthentication = mkDefault cfg.passwordAuth;
+        KbdInteractiveAuthentication = mkDefault cfg.passwordAuth;
       };
     };
 

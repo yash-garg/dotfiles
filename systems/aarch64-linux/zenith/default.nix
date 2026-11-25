@@ -369,11 +369,7 @@ in
 
         restic = enabled;
 
-        ssh = enabled // {
-          addRootKeys = true;
-          passwordAuth = false;
-          permitRootLogin = false;
-        };
+        ssh = enabled;
 
         sso = enabled // {
           domain = homeDomain;

@@ -22,9 +22,11 @@ in
     server = enabled;
     services = {
       jellyfin = enabled;
-      ssh = disabled;
     };
   };
+
+  # The LXC profile enables socket-activated sshd by default.
+  services.openssh.enable = false;
 
   networking = {
     inherit hostName;

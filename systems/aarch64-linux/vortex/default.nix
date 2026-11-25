@@ -63,11 +63,7 @@ in
 
       restic = enabled;
 
-      ssh = enabled // {
-        addRootKeys = true;
-        passwordAuth = false;
-        permitRootLogin = false;
-      };
+      ssh = enabled;
 
       rex.loginServer = {
         enable = true;
