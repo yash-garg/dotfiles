@@ -217,7 +217,7 @@ in
             minecraft-map = {
               name = "Minecraft Map";
               group = "BOM";
-              url = "http://${vortex}:${toString ports.pl3xmap}";
+              url = "http://${vortex}:${toString ports.backend-health}/minecraft-map";
             };
             paperless = {
               name = "Paperless NGX";
