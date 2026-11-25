@@ -24,7 +24,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ ports.immich.machine-learning ];
+    dots.services.backend-health.endpoints.immich = {
+      port = cfg.port;
+      path = "/api/server/ping";
+    };
 
     sops.secrets =
       let
@@ -63,16 +66,16 @@ in
         environment = {
           IMMICH_API_METRICS_PORT = toString ports.exporters.immich;
           IMMICH_CONFIG_FILE = mkForce config.sops.templates."immich-config.json".path;
-          IMMICH_HOST = mkForce "0.0.0.0";
+          IMMICH_HOST = mkForce "127.0.0.1";
           IMMICH_IGNORE_MOUNT_CHECK_ERRORS = "true";
           IMMICH_MICROSERVICES_METRICS_PORT = toString ports.immich.microservices;
           IMMICH_TELEMETRY_INCLUDE = "all";
           IMMICH_TRUSTED_PROXIES = trustedProxies.commaSeparated;
         };
-        openFirewall = true;
+        openFirewall = false;
         machine-learning = enabled // {
           environment = {
-            IMMICH_HOST = mkForce "0.0.0.0";
+            IMMICH_HOST = mkForce "127.0.0.1";
             IMMICH_PORT = mkForce (toString ports.immich.machine-learning);
             HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
           };

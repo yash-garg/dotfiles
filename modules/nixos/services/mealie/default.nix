@@ -17,7 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ cfg.port ];
+    dots.services.backend-health.endpoints.mealie.port = cfg.port;
     sops.secrets.mealie-env = {
       sopsFile = lib.dots.get-file "secrets/mealie.env";
       format = "dotenv";
@@ -26,6 +26,8 @@ in
     services = {
       mealie = enabled // {
         inherit (cfg) port;
+        listenAddress = "127.0.0.1";
+        openFirewall = false;
         credentialsFile = config.sops.secrets.mealie-env.path;
         database.createLocally = true;
         settings = {

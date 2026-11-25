@@ -27,14 +27,17 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ ports.jellyfin ];
+    networking.firewall.allowedTCPPorts = mkIf (!config.${namespace}.services.caddy.enable) [
+      ports.jellyfin
+    ];
+    dots.services.backend-health.endpoints.jellyfin = {
+      port = ports.jellyfin;
+      path = "/health";
+    };
 
     services = {
       jellyfin = enabled // {
         inherit (cfg) user group;
-        # cfg.openFirewall only opens jellyfin's hardcoded default ports
-        # (8096/8920), not the InternalHttpPort set below, so open the real
-        # port ourselves instead.
         openFirewall = false;
       };
 
@@ -49,8 +52,9 @@ in
     systemd.services.jellyfin.preStart = ''
       ${generateXmlConfig "network" {
         NetworkConfiguration = xmlNamespaces // {
+          LocalNetworkAddresses.string = optional config.${namespace}.services.caddy.enable "127.0.0.1";
           EnableIPv4 = true;
-          EnableIPv6 = true;
+          EnableIPv6 = !config.${namespace}.services.caddy.enable;
           EnableRemoteAccess = true;
           EnableUPnP = false;
           InternalHttpPort = ports.jellyfin;

@@ -46,6 +46,8 @@ in
     };
 
     services = {
+      backend-health = enabled;
+
       asterisk = enabled // {
         domain = "yashgarg.dev";
       };

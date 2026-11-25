@@ -26,6 +26,19 @@ in
         };
       in
       {
+        backend-health.endpoints = {
+          bazarr = {
+            port = ports.bazarr;
+            statuses = [
+              200
+              302
+            ];
+          };
+          prowlarr.port = ports.prowlarr;
+          radarr.port = ports.radarr;
+          sonarr.port = ports.sonarr;
+        };
+
         caddy.services = {
           radarr = {
             inherit (cfg) domain;
@@ -51,33 +64,45 @@ in
     services = {
       bazarr = enabled // {
         inherit (cfg) group;
-        listenPort = ports.bazarr;
-        openFirewall = true;
+        settings.general = {
+          ip = "127.0.0.1";
+          port = ports.bazarr;
+        };
+        openFirewall = false;
       };
 
       prowlarr = enabled // {
-        openFirewall = true;
+        openFirewall = false;
         settings = {
           auth.authenticationMethod = "External";
-          server.port = ports.prowlarr;
+          server = {
+            port = ports.prowlarr;
+            bindaddress = "127.0.0.1";
+          };
         };
       };
 
       radarr = enabled // {
         inherit (cfg) group;
-        openFirewall = true;
+        openFirewall = false;
         settings = {
           auth.authenticationMethod = "External";
-          server.port = ports.radarr;
+          server = {
+            port = ports.radarr;
+            bindaddress = "127.0.0.1";
+          };
         };
       };
 
       sonarr = enabled // {
         inherit (cfg) group;
-        openFirewall = true;
+        openFirewall = false;
         settings = {
           auth.authenticationMethod = "External";
-          server.port = ports.sonarr;
+          server = {
+            port = ports.sonarr;
+            bindaddress = "127.0.0.1";
+          };
         };
       };
     };
