@@ -37,12 +37,11 @@ in
 
   config = mkIf cfg.enable {
     networking.firewall = {
-      allowedTCPPorts = [
-        cfg.port
-        ports.pl3xmap
-      ];
+      allowedTCPPorts = [ cfg.port ];
       allowedUDPPorts = [ cfg.port ];
     };
+
+    dots.services.backend-health.endpoints.minecraft-map.port = ports.pl3xmap;
 
     sops.secrets.minecraft-env = {
       sopsFile = lib.dots.get-file "secrets/minecraft.env";
@@ -129,8 +128,8 @@ in
       };
       ports = [
         "${toString cfg.port}:25565"
-        "${toString ports.exporters.minecraft}:25585"
-        "${toString ports.pl3xmap}:8080"
+        "127.0.0.1:${toString ports.exporters.minecraft}:25585"
+        "127.0.0.1:${toString ports.pl3xmap}:8080"
       ];
       log-driver = "journald";
       volumes = [ "${cfg.dataDir}:/data:rw" ];

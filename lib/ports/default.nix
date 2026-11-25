@@ -8,6 +8,7 @@
     atticd = 9005;
     authelia = 9006;
     bazarr = 9007;
+    backend-health = 9074;
     bentopdf = 9008;
     caddy = 9009;
     calibre = 9010;

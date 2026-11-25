@@ -24,7 +24,10 @@ in
       format = "dotenv";
     };
 
-    networking.firewall.allowedTCPPorts = [ ports.miniflux ];
+    dots.services.backend-health.endpoints.miniflux = {
+      port = ports.miniflux;
+      path = "/healthcheck";
+    };
     services = {
       miniflux = enabled // {
         adminCredentialsFile = config.sops.secrets.miniflux-env.path;
@@ -32,10 +35,10 @@ in
         config = {
           BASE_URL = "https://rss.${cfg.proxy.domain}/";
           HTTPS = 1;
-          LISTEN_ADDR = "[::]:${toString ports.miniflux}";
+          LISTEN_ADDR = "127.0.0.1:${toString ports.miniflux}";
           LOG_DATE_TIME = 1;
           LOG_FORMAT = "json";
-          METRICS_ALLOWED_NETWORKS = "0.0.0.0/0,::/0";
+          METRICS_ALLOWED_NETWORKS = "127.0.0.1/32";
           METRICS_COLLECTOR = 1;
           DISABLE_LOCAL_AUTH = 1;
           AUTH_PROXY_HEADER = "Remote-User";

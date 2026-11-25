@@ -25,13 +25,21 @@ in
   };
 
   config = mkIf cfg.enable {
+    dots.services.backend-health.endpoints.calibre-web = {
+      port = cfg.port;
+      statuses = [
+        200
+        302
+      ];
+    };
+
     services.calibre-web = enabled // {
       inherit (cfg) user group;
       listen = {
         inherit (cfg) port;
-        ip = "0.0.0.0";
+        ip = "127.0.0.1";
       };
-      openFirewall = true;
+      openFirewall = false;
       options = {
         calibreLibrary = cfg.mediaDir;
         enableBookUploading = true;

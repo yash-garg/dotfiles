@@ -17,7 +17,7 @@ in
         "Path to a file containing the secret key for the umami server";
     baseUrl = mkOpt types.str "yashgarg.dev" "Base URL for the umami server";
     port = mkOpt types.int ports.umami "The port for umami";
-    openFirewall = mkBoolOpt true "Open firewall for umami";
+    openFirewall = mkBoolOpt false "Listen on network interfaces and open the firewall for umami";
   };
 
   config = mkIf cfg.enable {
@@ -31,7 +31,7 @@ in
           DATABASE_TYPE = "postgresql";
           DISABLE_TELEMETRY = true;
           DISABLE_UPDATES = true;
-          HOSTNAME = "0.0.0.0";
+          HOSTNAME = if cfg.openFirewall then "0.0.0.0" else "127.0.0.1";
           PORT = cfg.port;
         };
       };

@@ -35,7 +35,22 @@ let
     "2c0f:f248::/32"
   ];
 
-  allTrustedProxies = trustedProxies.list ++ cloudflareIPs;
+  crowdsec = config.${namespace}.services.crowdsec;
+
+  # Only public requests feed HTTP detection. Internal hops retain their existing
+  # forwarded-header behavior until their source addresses are explicitly pinned.
+  publicRequestConfig = ''
+    log {
+      output file ${config.services.caddy.logDir}/access.log {
+        mode 0640
+        roll_size 100MiB
+        roll_keep 5
+        roll_keep_for 100d
+      }
+      format json
+    }
+    ${optionalString crowdsec.enable "crowdsec"}
+  '';
 
   # Common utilities
   normalizeUpstream = u: if hasPrefix "http://" u || hasPrefix "https://" u then u else "http://${u}";
@@ -88,6 +103,8 @@ let
       forward_auth ${authHost} {
         uri /api/authz/forward-auth
         copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+        header_up X-Forwarded-For {client_ip}
+        header_up X-Real-IP {client_ip}
         header_up X-Forwarded-Proto https
       }
     '';
@@ -139,22 +156,36 @@ let
         else
           ''
             header_up Host {host}
-            header_up X-Real-IP {remote_host}
+            header_up X-Real-IP {client_ip}
+            header_up X-Forwarded-For {client_ip}
             header_up X-Forwarded-Proto {scheme}
           '';
 
       handleContent = ''
+        route {
+        # Remove identities supplied by the client even when auth bypasses a request.
+        request_header -Remote-User
+        request_header -Remote-Email
+        request_header -Remote-Groups
+        request_header -Remote-Name
+        # WSGI maps underscore spellings to the same HTTP_REMOTE_* variables.
+        request_header -Remote_User
+        request_header -Remote_Email
+        request_header -Remote_Groups
+        request_header -Remote_Name
         ${optionalString (svc.redirectRoot != null) ''
           @root path /
           redir @root ${svc.redirectRoot} permanent
         ''}
         ${optionalString (cfg.auth.enable && svc.auth) forwardAuthSnippet}
         ${mkReverseProxy { inherit upstreams headers hasMultiple; }}
+        }
       '';
     in
     if mode == "site" then
       ''
         ${host} {
+          ${publicRequestConfig}
           ${handleContent}
         }
       ''
@@ -166,7 +197,7 @@ let
         }
       '';
 
-  # Server proxy for ingress (Ares -> backends)
+  # Server proxy for ingress (Zenith -> backends)
   mkServerProxy =
     name: srv:
     let
@@ -177,7 +208,8 @@ let
 
       headers = ''
         header_up Host {host}
-        header_up X-Real-IP {remote_host}
+        header_up X-Real-IP {client_ip}
+        header_up X-Forwarded-For {client_ip}
         header_up X-Forwarded-Proto {scheme}
         ${optionalString hasMultiple failoverOpts}
       '';
@@ -235,6 +267,7 @@ let
     in
     ''
       *.${domain} {
+        ${publicRequestConfig}
         ${concatStrings (mapAttrsToList mkServerProxy cfg.servers)}
         ${concatStrings serviceHandles}
         handle {
@@ -262,6 +295,7 @@ let
 
   internalListenerConfig = optionalString (cfg.internal.enable && cfg.services != { }) ''
     :${toString cfg.internal.port} {
+      ${optionalString (cfg.internal.scope == "loopback") "bind 127.0.0.1"}
       ${concatStrings (
         mapAttrsToList (
           name: svc:
@@ -310,6 +344,11 @@ in
 
     internal = {
       enable = mkBoolOpt false "Enable internal HTTP listener for proxied traffic";
+      scope = mkOpt (types.enum [
+        "loopback"
+        "tailscale"
+        "wan"
+      ]) "loopback" "Where upstream ingress may reach this listener";
       port = mkOpt types.int ports.caddy "Internal HTTP port";
       trustedProxies = mkOpt (types.listOf types.str) [ ] "Additional trusted proxy IPs";
     };
@@ -334,7 +373,19 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = mkIf cfg.internal.enable [ cfg.internal.port ];
+    assertions = [
+      {
+        assertion =
+          cfg.internal.enable && cfg.internal.scope == "tailscale" -> config.dots.services.tailscale.enable;
+        message = "A Tailscale-only Caddy listener requires Tailscale";
+      }
+    ];
+    networking.firewall.allowedTCPPorts = mkIf (cfg.internal.enable && cfg.internal.scope == "wan") [
+      cfg.internal.port
+    ];
+    dots.services.tailscale.interfaceOnlyTCPPorts = mkIf (
+      cfg.internal.enable && cfg.internal.scope == "tailscale"
+    ) [ cfg.internal.port ];
 
     # Disable MPTCP for CVE-2026-98432
     # Caddy is directly vulnerable due to Go runtime binding MPTCP sockets
@@ -345,18 +396,62 @@ in
 
     services = {
       caddy = enabled // {
-        package = pkgs.caddy.withPlugins {
-          plugins = [ "github.com/caddy-dns/cloudflare@v0.2.3" ];
-          hash = "sha256-OIQoJ+Q7rfJkoy/H01L2lEDysOlYzl63s6pOrSj9LlQ=";
-        };
+        package =
+          (pkgs.caddy.withPlugins {
+            plugins = [
+              "github.com/caddy-dns/cloudflare@v0.2.3"
+            ]
+            ++ optional crowdsec.enable "github.com/hslatman/caddy-crowdsec-bouncer/http@v0.15.0";
+            # The HTTP plugin is a package in the parent Go module. Check its
+            # registered module ID below instead of expecting it in Go build-info.
+            hash =
+              if crowdsec.enable then
+                "sha256-SAJVGwIyqMxZMB/6nYh/ylBgaJWIOYyYzmkiu+E33pE="
+              else
+                "sha256-OIQoJ+Q7rfJkoy/H01L2lEDysOlYzl63s6pOrSj9LlQ=";
+          }).overrideAttrs
+            (
+              _:
+              optionalAttrs crowdsec.enable {
+                installCheckPhase = ''
+                  runHook preInstallCheck
+                  modules="$($out/bin/caddy list-modules)"
+                  printf '%s\n' "$modules" | grep -Fx dns.providers.cloudflare
+                  printf '%s\n' "$modules" | grep -Fx http.handlers.crowdsec
+                  runHook postInstallCheck
+                '';
+              }
+            );
         environmentFile = config.sops.secrets.cf-env.path;
         globalConfig = ''
           acme_dns cloudflare {env.CF_DNS_API_TOKEN}
           email spam@${cfg.domain}
           metrics
-          servers {
-            trusted_proxies static ${concatStringsSep " " (allTrustedProxies ++ cfg.internal.trustedProxies)}
+          ${optionalString crowdsec.enable ''
+            order crowdsec first
+            crowdsec {
+              api_url http://127.0.0.1:${toString crowdsec.port}
+              api_key {env.CROWDSEC_API_KEY}
+              ticker_interval 10s
+            }
+          ''}
+          servers :443 {
+            trusted_proxies static ${concatStringsSep " " cloudflareIPs}
+            client_ip_headers CF-Connecting-IP
+            trusted_proxies_strict
           }
+          ${optionalString cfg.internal.enable ''
+            servers ${
+              optionalString (cfg.internal.scope == "loopback") "127.0.0.1"
+            }:${toString cfg.internal.port} {
+              trusted_proxies static ${
+                if cfg.internal.scope == "loopback" then
+                  "127.0.0.1"
+                else
+                  concatStringsSep " " (trustedProxies.list ++ cfg.internal.trustedProxies)
+              }
+            }
+          ''}
         '';
         logFormat = ''
           output file /var/log/caddy/caddy_main.log {

@@ -9,6 +9,11 @@ keys:
   - &vortex age1xp8ekv8t7fuqgm8uet6sr9a308pgj6wpry4jwcr904rz8s8vyffs424xph
   - &zenith age17qlc0x0mltj3l2dqwag3dtf5jxzvftvmfkl5a386y3fsxdh49pgqrdqd7z
 creation_rules:
+  - path_regex: ^secrets/snmp-auth\.yaml$
+    key_groups:
+      - age:
+          - *personal
+          - *quasar
   - key_groups:
       - age:
           - *personal

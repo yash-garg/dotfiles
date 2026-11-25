@@ -45,7 +45,6 @@ in
       ports = [
         80
         443
-        8080
       ];
     };
 
@@ -78,7 +77,7 @@ in
           };
           servers = {
             zenith = {
-              address = "http://localhost:${toString ports.caddy}";
+              address = "http://127.0.0.1:${toString ports.caddy}";
               hosts = [
                 "cache.${homeDomain}"
                 "money.${homeDomain}"
@@ -142,17 +141,17 @@ in
             bazarr = {
               name = "Bazarr";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.bazarr}";
+              url = "http://${quasar}:${toString ports.backend-health}/bazarr";
             };
             calibre-web = {
               name = "Calibre Web";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.calibre}";
+              url = "http://${quasar}:${toString ports.backend-health}/calibre-web";
             };
             copyparty = {
               name = "Copyparty";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.copyparty}";
+              url = "http://${quasar}:${toString ports.backend-health}/copyparty";
             };
             forgejo = {
               name = "Forgejo";
@@ -177,12 +176,12 @@ in
             immich = {
               name = "Immich";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.immich.webui}";
+              url = "http://${quasar}:${toString ports.backend-health}/immich";
             };
             jellyfin = {
               name = "Jellyfin";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.jellyfin}";
+              url = "http://${quasar}:${toString ports.backend-health}/jellyfin";
             };
             linkding = {
               name = "Linkding";
@@ -202,12 +201,12 @@ in
             mealie = {
               name = "Mealie";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.mealie}";
+              url = "http://${quasar}:${toString ports.backend-health}/mealie";
             };
             miniflux = {
               name = "Miniflux";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.miniflux}";
+              url = "http://${quasar}:${toString ports.backend-health}/miniflux";
             };
             minecraft-server = {
               name = "Minecraft Server";
@@ -217,12 +216,12 @@ in
             minecraft-map = {
               name = "Minecraft Map";
               group = "BOM";
-              url = "http://${vortex}:${toString ports.pl3xmap}";
+              url = "http://${vortex}:${toString ports.backend-health}/minecraft-map";
             };
             paperless = {
               name = "Paperless NGX";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.paperless-ngx}";
+              url = "http://${quasar}:${toString ports.backend-health}/paperless";
             };
             postgres-primary = {
               name = "PostgreSQL";
@@ -247,7 +246,7 @@ in
             ntopng = {
               name = "Ntopng";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.ntopng.webui}";
+              url = "http://${quasar}:${toString ports.backend-health}/ntopng";
             };
             alloy = {
               name = "Alloy";
@@ -267,22 +266,27 @@ in
             prowlarr = {
               name = "Prowlarr";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.prowlarr}";
+              url = "http://${quasar}:${toString ports.backend-health}/prowlarr";
             };
             qbittorrent = {
               name = "qBittorrent";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.qbittorrent.webui}";
+              url = "http://${quasar}:${toString ports.backend-health}/qbittorrent";
+            };
+            qui = {
+              name = "qui";
+              group = "DEL";
+              url = "http://${quasar}:${toString ports.backend-health}/qui";
             };
             radarr = {
               name = "Radarr";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.radarr}";
+              url = "http://${quasar}:${toString ports.backend-health}/radarr";
             };
             sonarr = {
               name = "Sonarr";
               group = "DEL";
-              url = "http://${quasar}:${toString ports.sonarr}";
+              url = "http://${quasar}:${toString ports.backend-health}/sonarr";
             };
             umami = {
               name = "Umami";
@@ -369,11 +373,7 @@ in
 
         restic = enabled;
 
-        ssh = enabled // {
-          addRootKeys = true;
-          passwordAuth = false;
-          permitRootLogin = false;
-        };
+        ssh = enabled;
 
         sso = enabled // {
           domain = homeDomain;

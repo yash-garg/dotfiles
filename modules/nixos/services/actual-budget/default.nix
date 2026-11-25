@@ -30,8 +30,9 @@ in
 
     services = {
       actual = enabled // {
-        openFirewall = true;
+        openFirewall = false;
         settings = {
+          hostname = "127.0.0.1";
           port = ports.actual-budget;
           allowedLoginMethods = [ "openid" ];
           enforceOpenId = true;

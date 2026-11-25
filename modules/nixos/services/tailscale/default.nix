@@ -21,6 +21,9 @@ in
       mkOpt (types.listOf types.str) [ ]
         "List of extra flags passed to the `tailscale` invocation";
     openFirewall = mkBoolOpt true "Open firewall for Tailscale";
+    interfaceOnlyTCPPorts =
+      mkOpt (types.listOf types.port) [ ]
+        "TCP ports reachable only through the Tailscale interface";
     setNameservers = mkBoolOpt true "Set nameservers to Tailscale's DNS servers";
     ssh = mkBoolOpt false "Enable SSH access to this device via Tailscale";
     acceptRoutes = mkBoolOpt false "Accept subnet routes advertised by other nodes";
@@ -32,6 +35,27 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.interfaceOnlyTCPPorts == [ ] || config.networking.nftables.enable;
+        message = "Tailscale interface-only ports require nftables";
+      }
+    ];
+
+    networking.firewall.interfaces.tailscale0.allowedTCPPorts = cfg.interfaceOnlyTCPPorts;
+    # Filter before the host firewall accepts connections from other trusted interfaces.
+    networking.nftables.tables.tailscale-private = mkIf (cfg.interfaceOnlyTCPPorts != [ ]) {
+      family = "inet";
+      content = ''
+        chain input {
+          type filter hook input priority -10; policy accept;
+          iifname != "tailscale0" tcp dport { ${
+            concatMapStringsSep ", " toString (unique cfg.interfaceOnlyTCPPorts)
+          } } drop
+        }
+      '';
+    };
+
     # always allow traffic from Tailscale network
     networking.firewall.trustedInterfaces = mkIf cfg.openFirewall [ "tailscale0" ];
     networking.search = [ cfg.tailnet ];

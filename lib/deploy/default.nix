@@ -6,7 +6,9 @@ in
   mkDeploy =
     { self }:
     let
-      hosts = self.nixosConfigurations or { };
+      hosts = inputs.nixpkgs.lib.filterAttrs (_: machine: machine.config.services.openssh.enable) (
+        self.nixosConfigurations or { }
+      );
       nodes = builtins.mapAttrs (_: machine: {
         hostname = machine.config.networking.hostName;
         fastConnection = true;
@@ -15,7 +17,7 @@ in
         magicRollback = false;
         profiles.system = {
           user = "root";
-          sshUser = "root";
+          sshUser = "yash";
           path = deploy-rs.lib.${machine.pkgs.system}.activate.nixos machine;
         };
       }) hosts;

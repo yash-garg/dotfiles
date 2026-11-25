@@ -24,7 +24,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ cfg.quiPort ];
+    # Keep peer traffic public; both management UIs stay on loopback.
+    networking.firewall = {
+      allowedTCPPorts = [ cfg.torrentingPort ];
+    };
+    dots.services.backend-health.endpoints = {
+      qui.port = cfg.quiPort;
+      qbittorrent.port = cfg.webuiPort;
+    };
     sops.secrets.qui-session-secret = {
       sopsFile = lib.dots.get-file "secrets/qui.yaml";
       owner = cfg.user;
@@ -35,7 +42,7 @@ in
       inherit (cfg) user group;
       secretFile = config.sops.secrets.qui-session-secret.path;
       settings = {
-        host = "0.0.0.0";
+        host = "127.0.0.1";
         port = cfg.quiPort;
         # Authentication is handled upstream by Authelia; qui only accepts
         # traffic from the local reverse proxy.
@@ -43,7 +50,6 @@ in
         I_ACKNOWLEDGE_THIS_IS_A_BAD_IDEA = true;
         authDisabledAllowedCIDRs = [
           "127.0.0.1/32"
-          "10.0.20.0/24"
         ];
       };
     };
@@ -57,7 +63,7 @@ in
         torrentingPort
         webuiPort
         ;
-      openFirewall = true;
+      openFirewall = false;
       serverConfig = {
         BitTorrent.Session = {
           DefaultSavePath = "/mnt/downloads";
@@ -71,8 +77,9 @@ in
         LegalNotice.Accepted = true;
         Preferences = {
           WebUI = {
+            Address = "127.0.0.1";
             AlternativeUIEnabled = true;
-            AuthSubnetWhitelist = "100.0.0.0/10, 127.0.0.0/8";
+            AuthSubnetWhitelist = "127.0.0.1/32";
             AuthSubnetWhitelistEnabled = true;
             Password_PBKDF2 = "@ByteArray(vVAbbSGAmkemV9cSj95beg==:dcK684mnx6yHbTTOJ8yK0YjRSrARSNTPTy7AjOioIA+ixOU6IxVUUR5FHDmJQJO+nJElxCsV2X2WB96/rYqdmg==)";
             RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";

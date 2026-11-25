@@ -45,7 +45,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ cfg.port ];
+    dots.services.backend-health.endpoints.copyparty.port = cfg.port;
     services = {
       copyparty = enabled // {
         inherit (cfg)
@@ -56,7 +56,7 @@ in
           ;
         mkHashWrapper = true;
         settings = {
-          i = "0.0.0.0";
+          i = "127.0.0.1";
           p = toString cfg.port;
           theme = 2;
           e2dsa = true;

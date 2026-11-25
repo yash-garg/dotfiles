@@ -30,7 +30,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ ports.paperless-ngx ];
+    dots.services.backend-health.endpoints.paperless = {
+      port = ports.paperless-ngx;
+      statuses = [
+        200
+        302
+      ];
+    };
+
     sops.secrets.paperless-env = {
       sopsFile = lib.dots.get-file "secrets/paperless.env";
       format = "dotenv";
@@ -44,7 +51,7 @@ in
           mediaDir
           user
           ;
-        address = "0.0.0.0";
+        address = "127.0.0.1";
         configureTika = false;
         consumptionDirIsPublic = true;
         database.createLocally = true;

@@ -25,7 +25,7 @@ in
     services.hister = enabled // {
       inherit (cfg) port;
       dataDir = "/var/lib/hister";
-      openFirewall = true;
+      openFirewall = false;
       environmentFile = config.sops.secrets.hister-env.path;
       settings = {
         app.user_handling = true;

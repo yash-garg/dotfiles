@@ -43,11 +43,15 @@ in
     };
 
     services = {
+      backend-health = enabled;
+
       caddy = enabled // {
         auth = enabled // {
           url = "http://zenith.turtle-lake.ts.net:${toString ports.authelia}";
         };
-        internal = enabled;
+        internal = enabled // {
+          scope = "tailscale";
+        };
       };
 
       minecraft-server = enabled // {
@@ -63,11 +67,7 @@ in
 
       restic = enabled;
 
-      ssh = enabled // {
-        addRootKeys = true;
-        passwordAuth = false;
-        permitRootLogin = false;
-      };
+      ssh = enabled;
 
       rex.loginServer = {
         enable = true;
